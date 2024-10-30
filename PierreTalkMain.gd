@@ -96,7 +96,7 @@ func _run():
 		addButton("Back", "If he says so", "name")
 
 	if(state == "pets2"):
-		
+		playAnimation(StageScene.Duo, "stand", {npc="pierre", npcAction="sit"})
 		pass
 		
 	if(state == "join"):
@@ -107,6 +107,7 @@ func _run():
 		elif(score > 89 and GM.main.getModuleFlag("PierreModule", "Quest_Status") > 1):
 			pass
 		elif(score > 75 and score_explored < 9999):
+			playAnimation(StageScene.Duo, "stand", {npc="pierre", npcAction="stand"})
 			saynn("You mention the intention to join his harem of pets, lust in your eyes. He looks at you and starts grinning.")
 			saynn("[say=pierre]Mmmmmm. You are almost done morsel. Not mine yet, but so close... I really like you. I really really like you. I think you have all of the qualities I'm looking for in a pet but...[/say]")
 			saynn("He looks away, and looks... Concerned? No. In deep thought rather.")
@@ -127,6 +128,7 @@ func _run():
 			else:
 				addDisabledButton("Stray kitten", "Your mind doesn't allow you to make this choice")
 		elif(score > 45 and score_explored < 76):
+			playAnimation(StageScene.Duo, "stand", {npc="pierre", npcAction="stand"})
 			saynn("[say=pierre]Heh, interesting ask. It's still a no, though I have to admit, I do see some potential in here.[/say]")
 			if (GM.pc.isBlindfolded()):
 				saynn("Pierre stands up, takes a step towards you, grabs your blindfold, pulls it higher, grabs you by your chin to look you straight in your eyes.")
@@ -150,7 +152,9 @@ func _run():
 		else:
 			saynn("[say=pierre]Look, you are lovely and all that, but I don't think you have what it takes to join my other pets. I require absolute obedience and sexual experience. Once you submit to me there is no going back, you become MY treasured pet forever. Those three? They know their place, they are ready to be mated whenever I feel like doing so. They obey my every single command. I just don't see that in you, sorry.[/say]")
 		addButton("Back", "Maybe another time then...", "pets2")
+		
 	if(state == "quest"):
+		playAnimation(StageScene.Duo, "stand", {npc="pierre", npcAction="sit"})
 		if (GM.main.getModuleFlag("PierreModule", "Quest_Status") == -1):
 			saynn("[say=pierre]I see... Disappointing, but it's your choice and I respect that.[/say]")
 			saynn("He looks at you some more, he takes away his paw from your chin, turns around and sits on his chair. A serious and... Disappointed look on his face.")
@@ -163,10 +167,27 @@ func _run():
 			sayn("He takes your tongue in between his paw fingers gently, pulls it out a little. He opens his mouth and he spits. Spit lands right on your tongue, with incredible precision right in the middle. He does it again, using the fact your mouth is still open. It lands deeper inside your mount. He pulls his paw fingers from your tongue and uses his two fingers to pressure your chin from below, giving you a signal to close your mouth.")
 			sayn("You comply. There is nothing other than his eyes staring deep at you, his will is your will. His spit doesn't feel particularly different from yours, perhaps you can pick up some flavor or two, but it's more dignified flavor than one of cum that you are so used to. You keep the spit inside your mouth for a bit, tasting it, feeling it, connecting with its owner. And you swallow it, with a visible gulp.")
 			saynn("Pierre smiles. He ruffles your " + ("hair" if GM.pc.hasHair() else "ears") + " with his paws.")
-			saynn("[say=pierre]Good pet.\nNow, to be MY pet you'll have to prove yourself further. Besides the fact I want my pets to be all famous in this little heaven of ours, I want to make sure they follow my orders and don't leave my side. For you my dear, I have a little task, nothing you can't do, I'm sure, but it will be the proof I need you can become MY pet.[/say]")
+			saynn("[say=pierre]Good pet.\nNow, to be MY pet you'll have to prove yourself further. Besides the fact I want my pets to be all famous in this little heaven of ours, I want to make sure they follow my orders. For you my dear, I have a few little tasks, nothing you can't do, I'm sure, but it will be the proof I need you can become MY pet.[/say]")
 			saynn("He turns around and moves towards his chair, where he sits.")
-			saynn("[say=pierre][/say]")
-			GM.main.setModuleFlag("PierreModule", "Quest_Status", 1)
+			saynn("[say=pierre]Your first task will require... Trust. In me. Tell me, do you trust me?[/say]")
+			addButton("Yes", "Say you trust Pierre", "questresponseyes")
+			addButton("No", "Say you don't trust Pierre", "questresponseno")
+			
+	if(state in ["questresponseyes", "questresponseno"]):
+		GM.main.setModuleFlag("PierreModule", "Quest_Status", 1)
+		if(state=="questresponseyes"):
+			saynn("Pierre grins after hearing the answer.")
+			sayn("[say=pierre]Excellent. Now, what I want to do is verify your trust, and gain some of my own trust in you. You must be acutely aware how words, especially in this place"+ (" and especially coming from a red like yourself" if GM.pc.getInmateType() == InmateType.HighSec else "") + " can be deceptive.[/say]")
+		if(state=="questresponseno"):
+			saynn("Pierre looks at you, studying you.")
+			saynn("[say=pierre]Curious. Not the answer I anticipated. It's fine, we can work on that.[/say]")
+		saynn("[say=pierre]For your first task, you'll need something I'm sure you are now well acquainted with - a blindfold. After all, what is the better tool to test someone's trust than tell them to do something stupid blind?[/say]")
+		saynn("He chuckles")
+		saynn("[say=pierre]You will have to use your little head a bit too before you put one. I'll give you a map, I've drawn it myself, but it has to do. I won't spoil your fun and tell you what it shows, I'm sure you are clever enough to figure it out by yourself, after all, this prison isn't thaaat big, right?[/say]")
+		saynn("He winks at you, and lets out a chuckle.")
+		saynn("[say=pierre]Go there, blind yourself, go through a wall and bring me the goods. The number you'll need is 84. And morsel, don't hang in there for too long, trust me on that. Don't worry, I'll know if you succeed or not, don't try to cheat. Remember, trust is the key.[/say]")
+		addButton("Leave", "Take your leave", "endthescene")
+	
 
 func calculateHaremScore():
 	var score = 0

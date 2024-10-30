@@ -99,11 +99,12 @@ func getThickness() -> int:
 	return 0
 
 func getFemininity() -> int:
-	return 50
+	return 67
 
 func createBodyparts():
 	giveBodypartUnlessSame(GlobalRegistry.createBodypart("felinehead"))
 	giveBodypartUnlessSame(GlobalRegistry.createBodypart("combedbackhair"))
+	giveBodypartUnlessSame(GlobalRegistry.createBodypart("dragonhorns"))
 	giveBodypartUnlessSame(GlobalRegistry.createBodypart("felineears"))
 	giveBodypartUnlessSame(GlobalRegistry.createBodypart("anthrobody"))
 	giveBodypartUnlessSame(GlobalRegistry.createBodypart("anthroarms"))
@@ -111,7 +112,6 @@ func createBodyparts():
 	breasts.size = 0
 	giveBodypartUnlessSame(breasts)
 	giveBodypartUnlessSame(GlobalRegistry.createBodypart("vagina"))
-	giveBodypartUnlessSame(GlobalRegistry.createBodypart("anuswomb"))
 	giveBodypartUnlessSame(GlobalRegistry.createBodypart("anuswomb"))
 	var tail = GlobalRegistry.createBodypart("felinetail")
 	tail.tailScale = 1

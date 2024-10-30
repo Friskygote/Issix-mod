@@ -13,7 +13,7 @@ func _run():
 		
 		saynn("What do you wanna do?")
 
-		addButton("Steal catnip plant", "Sneak in, grab one and get out", "catnip")
+		addButton("Take catnip", "Sneak in, grab one and get out", "catnip")
 		addButton("Don't steal", "Too dangerous", "endthescene")
 			
 	if(state == "catnip"):
@@ -37,6 +37,7 @@ func _react(_action: String, _args):
 				return
 		
 		addMessage("Seems like you got away safely")
+		addButton("Leave", "Leve the crime scene", "endthescene")
 		return
 
 	if(_action == "endthescene"):
@@ -44,3 +45,5 @@ func _react(_action: String, _args):
 		return
 	
 	setState(_action)
+
+# The amount of times I wrote "catnap" instead of "catnip" is insane. Thanks that one horror game franchise.

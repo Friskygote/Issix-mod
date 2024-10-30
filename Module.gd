@@ -9,7 +9,10 @@ func getFlags():
 		"Quest_Status": flag(FlagType.Number),
 		"Azazel_Catnip_talked": flag(FlagType.Bool),
 		"Azazel_Catnip_found": flag(FlagType.Bool),
-		"Azazel_Catnip_taken_today": flag(FlagType.Bool)
+		"Azazel_Catnip_taken_today": flag(FlagType.Bool),
+		"PC_Enslavement_Status": flag(FlagType.Number),
+		"Azazel_Catnips_given": flag(FlagType.Number),
+		"Activated_Cabinets": flag(FlagType.Dict)
 		}
 		
 
@@ -19,13 +22,15 @@ func _init():
 	
 	events = [
 		"res://Modules/PierreModule/EventTileOnEnter.gd",
-		"res://Modules/PierreModule/GreenhouseCatnip.gd"
+		"res://Modules/PierreModule/GreenhouseCatnip.gd",
+		"res://Modules/PierreModule/EngRoomClosetEvent.gd"
 		]
 		
 	scenes = [
 		"res://Modules/PierreModule/PierreTalkMain.gd",
 		"res://Modules/PierreModule/GreenhouseCatnipStealScene.gd",
-		"res://Modules/PierreModule/PetsTalkMain.gd"
+		"res://Modules/PierreModule/PetsTalkMain.gd",
+		"res://Modules/PierreModule/EngRoomScene.gd"
 		]
 		
 	characters = [
@@ -40,7 +45,9 @@ func _init():
 	]
 	
 	items = [
-		"res://Modules/PierreModule/CatnipItem.gd"
+		"res://Modules/PierreModule/CatnipItem.gd",
+		"res://Modules/PierreModule/MapItem.gd",
+		"res://Modules/PierreModule/CookieItem.gd"
 	]
 	
 	quests = [
@@ -49,3 +56,4 @@ func _init():
 
 func resetFlagsOnNewDay():
 	GM.main.setModuleFlag("PierreModule", "Azazel_Catnip_taken_today", false)
+	GM.main.setModuleFlag("PierreModule", "Activated_Cabinets", {})
