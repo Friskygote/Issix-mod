@@ -12,6 +12,7 @@ func getFlags():
 		"Azazel_Catnip_taken_today": flag(FlagType.Bool),
 		"PC_Enslavement_Status": flag(FlagType.Number),
 		"Azazel_Catnips_given": flag(FlagType.Number),
+		"Quest_Bonked": flag(FlagType.Bool),
 		"Activated_Cabinets": flag(FlagType.Dict)
 		}
 		

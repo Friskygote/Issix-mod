@@ -3,9 +3,11 @@ extends SceneBase
 var cabinets = {2: {"name": "2"}, 9: {"name": "9"}, 14: {"name": "14"}, 20: {"name": "20"}, 28: {"name": "28"}, 42: {"name": "|/\\"}, 51: {"name": "51"}, 69: {"name": "69"}, 84: {"name": "84"}, 87: {"name": "87"}, 90: {"name": "90"}}
 var empty_loots = [
 	"This shelf is filled to the brim with various metallic nuts and bolts. However it has nothing of interest to you",
-	"After putting your paw deep within the shelve you start feeling very unpleasant coldness coming from the tips of your fingers. Oof! You immediately pull out your paw.",
-	"The entire filling cabinet starts vibrating after opening this shelve. It does not bode well, you immediately close this shelve. The vibration stops. That was odd."
-]# TODO Write more of those
+	"After putting your paw deep within the shelf you start feeling very unpleasant coldness coming from the tips of your fingers. Oof! You immediately pull out your paw.",
+	"The entire filling cabinet starts vibrating after opening this shelf. It does not bode well, you immediately close this shelf. The vibration stops. That was odd.",
+	"When opening the shelf you start hearing voice outside the closet, considering how well the doors are masking the sounds from the hallway they must be really close, perhaps they want to use the closet?\nIn panic you try to find some place to hide to no avail, there is not much space to begin with. You stand terrified until voice goes quiet. After sigh of relief you check the opened shelf, however there isn't anything in there other than various replacement parts to electronic devices.",
+	"You pull out a shelf and find a single piece of paper inside. It has only one sentence on it, in large font that fills entire page saying „OH, DID U GET THE BROOM CLOSET ENDING? THEB ROOM CLOSET ENDING WAS MY FAVRITE!1 XD”. The absolute lack of context and randomness of this message fill you with concern. Engineers must have a very strange sense of humor."
+]
 var cabinet_random = RandomNumberGenerator.new()
 var current_loot = null  # TODO will not survive save/load 
 var current_cabinet = null
@@ -16,8 +18,20 @@ func _init():
 func _run():
 	if(state == ""):
 		saynn("You hesitate, last time you walked this hallway you are sure that in this part the only thing you'll meet, if you continue walking, is a wall. This entire thing sounds dumb, and yet... It's a trust excercie, no? Realistically the worst thing that will happen is that you'll eventually hit a wall, doesn't sound like something you can't take.")
-		addButton("Wall time", "Trust Pierre and walk towards the wall", "trust")
+		if GM.main.isVeryLate():
+			addButton("Wall time", "Trust Pierre and walk towards the wall", "nightwallwalking")
+		else:
+			addButton("Wall time", "Trust Pierre and walk towards the wall", "trust")
 		addButton("Nope", "You are not trusting Pierre, this is stupid", "endthescene")
+		
+	if(state == "nightwallwalking"):
+		GM.main.setModuleFlag("PierreModule", "Quest_Bonked", true)
+		processTime(1*60)
+		saynn("You decide to trust Pierre. You turn 90 degrees, take a deep breath and walk forward. Last time you went this corridor while not blind there was a wall here, an maybe this time...")
+		saynn("Four confidence in Pierre is rewarded with a loud bang on the wall. While your feet were the first to hit the wall, your head followed and... You hit the wall like a fool. Why would it work anyways, it's a solid wall.")
+		var damage_taken = GM.pc.receiveDamage(DamageType.Physical, 40, 1.0)
+		saynn("You took "+str(damage_taken)+" damage.")
+		addButton("Leave", "Leave embarassed before you give someone a reason to laugh at you", "endthescene")
 		
 	if(state == "trust"):
 		aimCameraAndSetLocName("eng_closet")
@@ -69,23 +83,60 @@ func _run():
 			if item in activated_cabinets:
 				addDisabledButton("Cabinet "+cabinets[item]["name"], "You've already looted this cabinet")
 			else:
-				addButton("Cabinet " + cabinets[item]["name"], "Check the cabinet with number "+cabinets[item]["name"], "cabinetloot", [item])
+				if item == 84 and GM.main.getModuleFlag("PierreModule", "Quest_Status") == 2:
+					addButton("Cabinet " + cabinets[item]["name"], "Check the cabinet with number "+cabinets[item]["name"], "cabinet84", [item])
+				else:
+					addButton("Cabinet " + cabinets[item]["name"], "Check the cabinet with number "+cabinets[item]["name"], "cabinetloot", [item])
 			
 	if state=="cabinetloot":
 		saynn("You chose to open cabinet number "+str(current_cabinet)+"...")
-		if(typeof(current_loot) == 2 or typeof(current_loot) == 0):  # event
-			pass
-		elif(typeof(current_loot) == 4): #nothing
+		processTime(1*60)
+		if(typeof(current_loot) == TYPE_NIL):  # event
+			markCabinetAsActivated(current_cabinet)
+		elif(typeof(current_loot) == TYPE_STRING): #nothing
 			saynn(current_loot)
-		else:
+			markCabinetAsActivated(current_cabinet)
+		else: #item
 			saynn("Inside you've found "+str(current_loot.getAmount())+" of "+ current_loot.getVisibleName() +".")
 			addButton("Take items", "Take the items", "acceptloot")
 		addButton("Cabinets", "Look at cabinets without picking up anything", "cabinets")
 			
 	if state=="cabinet84":
+		processTime(1*60)
 		saynn("It is the cabinet mentioned by Pierre. You reach your paw inside and there is a single item inside - a pack of gumball. You grab and take it.")
 		GM.main.setModuleFlag("PierreModule", "Quest_Status", 3)
+		markCabinetAsActivated(84)
 		addButton("Back", "Look at cabinets", "cabinets")
+		
+	if state=="cabinetevent1":
+		processTime(10*60)
+		saynn("You chose to open cabinet number "+str(current_cabinet)+"...")
+		var fluidType = RNG.pick(["Cum", "GirlCum", "Milk"])
+		saynn("The shelf is located a little higher than your head, since there isn't anything in the closet that you could stand on, your plan is to simply open the shelf and try to feel with your paw if there is anything there. You regret that decision the moment you open the shelf. Entire shelf is filled to brim with a kind of cold slimy fluid that spills on you the moment you open it.\n\nYou've been covered in "+fluidType.to_lower()+".")
+		GM.pc.coverBodyWithFluid(fluidType, 800.0)
+		
+	if state=="cabinetevent2":
+		processTime(3*60)
+		saynn("You chose to open cabinet number "+str(current_cabinet)+"...")
+		saynn("The shelf is located a little higher than your head, since there isn't anything in the closet that you could stand on, your plan is to simply open the shelf and try to feel with your paw if there is anything there.\n\nYou pull the shelf and it falls on you!")
+		if (RNG.randf_range(0, 1) < GM.pc.getDodgeChance()+0.1):  # Got protected from the fall, base 10% + whatever player dodge chance has
+			saynn("You were able to avoid the falling shelf with your quick reflexes. Phew. You push the shelf back where it came from.")
+		else:
+			var damage_taken: int = 0
+			if GM.pc.hasHorns():  # I were curious, so I asked search engine about this, have some cool sciency read code reader masochist! https://bioengineering.hyperbook.mcgill.ca/mechanical-analysis-of-animal-horns/
+				damage_taken = GM.pc.receiveDamage(DamageType.Physical, 40, 1.0)
+			else:
+				damage_taken = GM.pc.receiveDamage(DamageType.Physical, 60, 1.0)
+			saynn("You were unable to react in time and heavy shelf fell on your head ouch.\n" + ("Seems like your horns helped you with taking a hit from the above to some degree.\n" if GM.pc.hasHorns() else "") + "\nYou took "+str(damage_taken)+" damage.")
+			
+		
+	if state=="cabinetevent3":
+		processTime(3*60)
+		saynn("You chose to open cabinet number "+str(current_cabinet)+"...")
+		var lust_taken = RNG.randi_range(20, 50)
+		GM.pc.addLust(lust_taken)
+		saynn("A red mist surrounds you as the dust from the shelf spills out with the force of your pull.\n\nYou gain "+ str(lust_taken)+" lust.")
+		
 		
 func randomItemFromSeed(array):
 	return array[cabinet_random.randi() % array.size()]
@@ -116,14 +167,15 @@ func generateLoot(cabinet_number: int):
 			fluids.addFluid(randomItemFromSeed(allowedFluids), randomNumberFromSeed(2, 5)*100.0)
 		return newItem
 	elif (rand_num < 21):  # TODO event
-		saynn(randomItemFromSeed(empty_loots))
-		var activated_cabinets = getModuleFlag("PierreModule", "Activated_Cabinets", {})
-		activated_cabinets[cabinet_number] = true
-		GM.main.setModuleFlag("PierreModule", "Activated_Cabinets", activated_cabinets)
-		return 1
+		markCabinetAsActivated(cabinet_number)
+		return RNG.randi_range(1,3)
 	else:
 		return randomItemFromSeed(empty_loots)
 		
+func markCabinetAsActivated(cabinetNumber:int):
+	var activated_cabinets = getModuleFlag("PierreModule", "Activated_Cabinets", {})
+	activated_cabinets[cabinetNumber] = true
+	GM.main.setModuleFlag("PierreModule", "Activated_Cabinets", activated_cabinets)
 
 func _react(_action: String, _args):
 
@@ -132,13 +184,16 @@ func _react(_action: String, _args):
 		return
 		
 	if(_action == "cabinetloot"):
+		if getModuleFlag("PierreModule", "Activated_Cabinets", {}).size() > 10:
+			# TODO Do a force encounter with an engineer
+			pass
 		current_loot = generateLoot(_args[0])
 		current_cabinet = _args[0]
+		if typeof(current_loot) == TYPE_INT:
+			_action = "cabinetevent"+str(current_loot)
 			
 	if(_action == "acceptloot"):
-		var activated_cabinets = getModuleFlag("PierreModule", "Activated_Cabinets", {})
-		activated_cabinets[current_cabinet] = true
-		GM.main.setModuleFlag("PierreModule", "Activated_Cabinets", activated_cabinets)
+		markCabinetAsActivated(current_cabinet)
 		GM.pc.getInventory().addItem(current_loot)
 		_action = "cabinets"
 		

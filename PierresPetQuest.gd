@@ -14,8 +14,9 @@ func getProgress():
 	if(quest_status > 1):
 		result.append("You've found the hidden closet. Now just to find what Pierre asked of you...")
 	if(quest_status > 2):
-		result.append("You've got a pack of gumball. Return it to Pierre.")
-	
+		result.append("You've got a pack of gum. Return it to Pierre.")
+	if(quest_status > 3):
+		result.append("You've delivered a pack of gum to Pierre. ")
 	return result
 
 func isVisible():

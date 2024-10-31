@@ -1,5 +1,9 @@
 extends SceneBase
 
+var random_pierre_activities_talk = [
+	"He notices you right away and follows you with his gaze."
+]  #TODO Write more
+
 func _init():
 	sceneID = "PierreTalkScene"
 
@@ -16,7 +20,7 @@ func _run():
 			addButton("Talk", "Talk to the intimidating demon", "talk")
 			addButton("Appearance", "Take a closer look at the intimidating demon", "appearance")
 		else:
-			saynn("While exploring the station a In the corner of a platform sits a demon-dragon with three creatures.")
+			saynn("While exploring the station a in the corner of a platform sits a demon-dragon Pierre with three leashed creatures.")
 			addButton("Talk", "Talk to Pierre", "talk")
 			addButton("Appearance", "Take a closer look at Pierre", "appearance")
 		addButton("Leave", "Be on your way", "endthescene")
@@ -32,14 +36,20 @@ func _run():
 			saynn("[say=pierre]Oh hello little morsel. Don't believe I've seen you. Name is Pierre. Do you have a name?[/say]")
 			addButton("I'm "+GM.pc.getName(), "Introduce yourself with your name", "name")
 		else:
+			saynn("You approach the demon.")
+			saynn(RNG.pick(random_pierre_activities_talk))
 			addButton("Prison", "How did he end up in prison?", "prison")
 			addButton("Pets", "Have they really willingly gave to him?", "pets2")
 			addButton("Guards", "Are prison guards giving him trouble?", "guards")
+			if GM.main.getModuleFlag("PierreModule", "Quest_Status") == 1 and GM.main.getModuleFlag("PierreModule", "Quest_Bonked") == true:
+				addButton("Exercise", "Ask Pierre for explanation about your incident with the wall", "quest1bonk")
+			if GM.main.getModuleFlag("PierreModule", "Quest_Status") == 3:
+				addButton("Gumball", "Bring back the gumball to Pierre", "quest1turn")
 			addButton("Leave", "Be on your way", "endthescene")
 			
 	if(state == "name"):
 		addCharacter("pierre")
-		saynn("[say=pierre]I see. Nice to meet you "+GM.pc.getName()+" and welcome to my humble corner in this piece of heaven. My name is Pierre.[/say]")
+		saynn("[say=pierre]I see. Nice to meet you "+GM.pc.getName()+" and welcome to my humble corner in this piece of heaven.[/say]")
 		saynn("He holds his paw up to you, not fazed by the fact that you are still separated by an awkwardly long distance from the demon-dragon.\nNot wanting to be rude, you lean forwards while making extra sure you will not trample upon laying inmate or fall forwards by yourself. Eventually your " + ("hand" if len(GM.pc.getSpecies()) == 1 and GM.pc.getSpecies()[0] == "human" else "paw") + " meets his and you are able to do shake them.")  # ok, I have no idea what's the difference between buff arms and anthro arms, they seem the same, and technically neither have paws, too bad I'm the one writing dialogue though
 		saynn("[say=pierre]I own this little corner including those three wonderful leashed pets beside me. You do NOT touch my pets without permission. Normally I wouldn't think this has to be mentioned, but for some reasons inmates think otherwise, those who do - don't keep this thought for long.[/say]")
 		sayn("[say=pierre]That's probably everything you need to know about me. \nAlso, considering we didn't start on the wrong foot, you have my permission to speak with my pets. \nNow, please find some other business to attend to, unless you need something else of me?[/say]")
@@ -58,7 +68,7 @@ func _run():
 		GM.main.setModuleFlag("PierreModule", "Pets_Introduced", true)
 		saynn("[say=pc]So... Who are your pets exactly?[/say]")
 		saynn("[say=pierre]Curious about my treasured pearls, aren't you? Oh, I'm happy to introduce you, people usually talk only with me, but I feel like they could use some social interactions with someone else than myself and themselves.[/say]")
-		sayn("[say=pierre]This kitty here is my very first pet, they've recognized me as their master shortly after I came here. They were very spooked and lost in here, still unsure what exactly they did to end up in this place. I gave them meaning, they repay me by being an excellent pet. Azazel, say hi.")
+		sayn("[say=pierre]This kitty here is my very first pet, they've recognized me as their master shortly after I came here. They were very spooked and lost in here, still unsure what exactly they did to end up in this place. I gave them meaning, they repay me by being an excellent pet. Azazel, say hi.[/say]")
 		saynn("Pierre looks expectantly at Azazel - a fairly regular looking feline, he is wearing an lilac uniform. Until now he was curled and seemingly asleep, even though his ears were perking up whenever his master spoke. After hearing his master's voice speak his name however his head immediately went up, and along with it the rest of his body. He stood on his fours and turned towards you.")
 		saynn("[say=azazel]Hello... Stranger.[/say]")
 		saynn("Azazel said with reservation. He looked away from you for a second to look at face of his master, whos face didn't lose his expectant look. Turning back to you he hesitently rubbed his cheek on your leg and collapsed onto his blanket again, making sure to take a last look at his master before closing his eyelids and presumably continuing his slumber.")
@@ -188,6 +198,39 @@ func _run():
 		saynn("[say=pierre]Go there, blind yourself, go through a wall and bring me the goods. The number you'll need is 84. And morsel, don't hang in there for too long, trust me on that. Don't worry, I'll know if you succeed or not, don't try to cheat. Remember, trust is the key.[/say]")
 		addButton("Leave", "Take your leave", "endthescene")
 	
+	if(state == "quest1bonk"):
+		saynn("Before you even start speaking Pierre starts laughing maniacally, catching you off guard.")
+		saynn("[say=pierre]Oh Morsel[/say]")
+		saynn("He almost chokes with laughter.")
+		saynn("[say=pierre]I've been told you- you've had a[/say]")
+		saynn("He barely breathes thanks to constant laughter.")
+		saynn("[say=pierre]certain mee- meeting with a wall.[/say]")
+		saynn("He starts recovering from the laughter.")
+		saynn("[say=pierre]I'm sorry, it was just... I've seen the clip, little birdie showed me it, told me I'd enjoy, and oh morsel, it made my week.[/say]")
+		saynn("[say=pc]W-was it all a joke then? Have I passed your trust exercise?[/say]")
+		saynn("[say=pierre]Haha, don't get ahead of yourself there. I just didn't mention one very important fact, honestly didn't anticipate you trying to be sneaky.[/say]")
+		saynn("[say=pc]What do you mean?[/say]")
+		saynn("[say=pierre]I mean that you weren't supposed to do that at night! I appreciate the attempt, but the mechanism closes shut at night.[/say]")
+		saynn("That... Would make sense. Still unsure what mechanism Pierre is referring to, but its true that the prison isn't exactly the same when the night comes, and some places are simply locked. "+("Your tail wraps around you in embarassment" if GM.pc.hasTail() else "You blush in embarassment")+".")
+		saynn("[say=pierre]It's fine pet, you didn't know. Go there today and do the same thing, just perhaps not during the night, okey?[/say]")
+		addButton("Leave", "Nod and leave embarassed", "endthescene")
+	
+	if(state == "quest1turn"):
+		GM.main.setModuleFlag("PierreModule", "Quest_Status", 4)
+		saynn("[say=pc]Is... This what you wanted?[/say]")
+		saynn("You said with uncertainty in your voice, presenting Pierre with a packet of gumball.\nPierre looks at you elated, he claps his paws.")
+		saynn("[say=pierre]Yes, YES. This is exactly what I needed, pet.[/say]")
+		saynn("He stands up, and takes the packet of gum from your paw.")
+		saynn("He opens one end of it and immediately pops one of the gums in his mouth. He goes back to sit on his chair.")
+		saynn("[say=pierre]You know, a lot of goods in here are generally unavailable to inmates. I knew what I were getting into arriving in here, and didn't really care about most of favorite dishes or products. But this gum? I can't live without it. I were able to make sure it arrives here, in this prison just for myself regularly. You wouldn't believe just how much I had to work to have it delivered, it's not exactly the most popular destination in the galaxy. I have a contact who drops it always in same place where you got it from.[/say]")
+		saynn("He savours the taste of gum, closing his eyes and resting his head on chair's headrest.")
+		saynn("[say=pierre]Ahhhhhh. So good. I've been chewing this brand since I were little, out of all things, it never gets old.[/say]")
+		saynn("He looks back at you.")
+		if GM.main.getModuleFlag("PierreModule", "Quest_Bonked") == true:
+			saynn("[say=pierre]I assume no more, akhem, ”wall incidents”?[/say]")
+			saynn("He grins")
+		saynn("[say=pierre]And with just that you've passed my first test. Congratulations! I knew you could do it.[/say]")
+		# TODO
 
 func calculateHaremScore():
 	var score = 0
