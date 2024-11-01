@@ -5,6 +5,7 @@ func _init():
 
 func registerTriggers(es):
 	es.addTrigger(self, Trigger.EnteringRoom, "hall_ne_corner")
+	es.addEventCheck(self, "PierreBusy")
 
 func run(_triggerID, _args):
 	#if(doEventCheck("PierreBusy") != null):
@@ -23,6 +24,12 @@ func run(_triggerID, _args):
 		
 	GM.main.applyWorldEdit("PierreWorldEdit")
 	
+	if(checkCharacterBusy("PierreBusy", "Pierre is not here", "Pierre")):
+		saynn("This corner is not occupied by anyone at the momentm, just three empty blankets with a chair.")
+		if getModuleFlag("PierreModule", "Quest_Status") == 5:
+			addButton("Paper", "A piece of paper lies left in a hurry", "paper")
+		return
+		
 	saynn("You see Pierre sitting on a chair in a corner, around him there are three leashed slaves.")
 	addButton("Pierre", "Talk to Pierre", "talk")
 	if(!getModuleFlag("PierreModule", "Pets_Introduced")):
@@ -53,3 +60,9 @@ func onButton(_method, _args):
 		runScene("PierreTalkScene")
 	if(_method == "pets"):
 		runScene("PetsTalkScene")
+	if(_method == "paper"):
+		runScene("NoPetsTalkScene")
+
+func eventCheck(_checkID, _args = []):
+	if(getModuleFlag("PierreModule", "Quest_Status") == 5 and getModuleFlag("PierreModule", "Quest_Wait_Another_Day") == true):
+		return {busy=true}

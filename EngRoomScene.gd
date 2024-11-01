@@ -178,7 +178,6 @@ func markCabinetAsActivated(cabinetNumber:int):
 	GM.main.setModuleFlag("PierreModule", "Activated_Cabinets", activated_cabinets)
 
 func _react(_action: String, _args):
-
 	if(_action == "endthescene"):
 		endScene()
 		return

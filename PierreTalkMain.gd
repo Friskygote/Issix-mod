@@ -6,6 +6,11 @@ var random_pierre_activities_talk = [
 
 func _init():
 	sceneID = "PierreTalkScene"
+	
+func _reactInit():
+	if(GM.ES.triggerReact(Trigger.TalkingToNPC, ["pierre"])):
+		endScene()
+		return
 
 func _run():
 	if(state == ""):
@@ -46,6 +51,7 @@ func _run():
 			if GM.main.getModuleFlag("PierreModule", "Quest_Status") == 3:
 				addButton("Gumball", "Bring back the gumball to Pierre", "quest1turn")
 			addButton("Leave", "Be on your way", "endthescene")
+		GM.ES.triggerRun(Trigger.TalkingToNPC, ["pierre"])
 			
 	if(state == "name"):
 		addCharacter("pierre")
@@ -87,9 +93,12 @@ func _run():
 		saynn("[say=pierre]Right, of course you don't, hah. But look at him now, pristine puppy boy! He love his belly rubs and stays out of the trouble! ... Well, mostly. Anyways, despite his troubled past, he agreed to join me and became my pup! Hiisi cmon, welcome our guest, give {pc.him} a sniff!")
 		saynn("[say=hiisi]" + GM.pc.getName() + " isn't it? Umm... Hi.[/say]")
 		saynn("{hiisi.name} licks your leg, leaving a bit of saliva on your fur.")  # TODO Fur/skin
-		saynn("[say=pierre]I apologize for my pets, they aren't used to longer conversations with strangers. They've been through a lot and... *sigh* Anyways, Lamia! Lamia is a fox breed, [/say]")
+		saynn("[say=pierre]I apologize for my pets, they aren't used to longer conversations with strangers. They've been through a lot and... *sigh* Anyways, Lamia! Lamia is a fox breed, he doesn't speak. He communicates with drawings. He isn't great at them, by any means, but to me it makes him very special. He doesn't mind being mute.[/say]")
 		addButton("Leave", "Be on your way", "endthescene")
 		addButton("Pets", "Ask more about pets", "hiisipet")
+		
+	if(state == "lamia"):
+		saynn("You take a step towards Lamia to give him a pawshake. He sits on a blanket, next to him a stack of empty paper sheets, and a smaller pile of ")
 	
 	if(state == "pierredetails"):
 		saynn("You ask Pierre about himself. He looks at you with intensity, studying your face.")
@@ -217,6 +226,7 @@ func _run():
 	
 	if(state == "quest1turn"):
 		GM.main.setModuleFlag("PierreModule", "Quest_Status", 4)
+		GM.main.setModuleFlag("PierreModule", "Quest_Wait_Another_Day", true)
 		saynn("[say=pc]Is... This what you wanted?[/say]")
 		saynn("You said with uncertainty in your voice, presenting Pierre with a packet of gumball.\nPierre looks at you elated, he claps his paws.")
 		saynn("[say=pierre]Yes, YES. This is exactly what I needed, pet.[/say]")
@@ -230,13 +240,19 @@ func _run():
 			saynn("[say=pierre]I assume no more, akhem, ”wall incidents”?[/say]")
 			saynn("He grins")
 		saynn("[say=pierre]And with just that you've passed my first test. Congratulations! I knew you could do it.[/say]")
-		# TODO
+		saynn("[say=pierre]That would be it for today. For your next time I'll have to prepare a little. I should have something for you tomorrow, so please come then.[/say]")
+		addButton("Alright", "Leave", "endthescene")
+		# Which body part you hold dearest?
+		# 2 questions based on stories from Tavi, and Rahi, using their flags to phrase the questions
+		# Trolley problem?
+		# Favorite species
+		# 
 
 func calculateHaremScore():
 	var score = 0
 	score += GM.pc.getPersonality().getStat("Subby")*10  # -10 - 10
 	score += GM.pc.getReputation().getRepLevel(RepStat.Whore)*10  # 0 - 90
-	return int(score)
+	return int(score) # -10 - 100
 
 func _react(_action: String, _args):
 	if(_action == "endthescene"):

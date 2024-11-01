@@ -13,7 +13,12 @@ func getFlags():
 		"PC_Enslavement_Status": flag(FlagType.Number),
 		"Azazel_Catnips_given": flag(FlagType.Number),
 		"Quest_Bonked": flag(FlagType.Bool),
-		"Activated_Cabinets": flag(FlagType.Dict)
+		"Quest_Wait_Another_Day": flag(FlagType.Bool),
+		"Activated_Cabinets": flag(FlagType.Dict),
+		"QuestionnaireQ1": flag(FlagType.Bool),
+		"QuestionnaireQ2": flag(FlagType.Bool),
+		"QuestionnaireQ3": flag(FlagType.Text),
+		"QuestionnaireQ4": flag(FlagType.Text),
 		}
 		
 
@@ -24,14 +29,17 @@ func _init():
 	events = [
 		"res://Modules/PierreModule/EventTileOnEnter.gd",
 		"res://Modules/PierreModule/GreenhouseCatnip.gd",
-		"res://Modules/PierreModule/EngRoomClosetEvent.gd"
+		"res://Modules/PierreModule/EngRoomClosetEvent.gd",
+		"res://Modules/PierreModule/PierreQuestionnaireEvent.gd"
 		]
 		
 	scenes = [
 		"res://Modules/PierreModule/PierreTalkMain.gd",
 		"res://Modules/PierreModule/GreenhouseCatnipStealScene.gd",
 		"res://Modules/PierreModule/PetsTalkMain.gd",
-		"res://Modules/PierreModule/EngRoomScene.gd"
+		"res://Modules/PierreModule/EngRoomScene.gd",
+		"res://Modules/PierreModule/PierreQuestionnaireScene.gd",
+		"res://Modules/PierreModule/NoPetsTalkMain.gd"
 		]
 		
 	characters = [
@@ -48,7 +56,7 @@ func _init():
 	items = [
 		"res://Modules/PierreModule/CatnipItem.gd",
 		"res://Modules/PierreModule/MapItem.gd",
-		"res://Modules/PierreModule/CookieItem.gd"
+		"res://Modules/PierreModule/CookieItem.gd"  # I just felt like this game needs more variety in items, even if by themselves they don't do much
 	]
 	
 	quests = [
@@ -58,3 +66,4 @@ func _init():
 func resetFlagsOnNewDay():
 	GM.main.setModuleFlag("PierreModule", "Azazel_Catnip_taken_today", false)
 	GM.main.setModuleFlag("PierreModule", "Activated_Cabinets", {})
+	GM.main.setModuleFlag("PierreModule", "Quest_Wait_Another_Day", false)
