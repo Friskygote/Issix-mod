@@ -5,15 +5,24 @@ func _init():
 
 func registerTriggers(es):
 	es.addTrigger(self, Trigger.EnteringRoom, "med_near_wards")
+	es.addEventCheck(self, "ElizaBusy")
 
-func run(_triggerID, _args):
+func react(_triggerID, _args):
 	if(getModuleFlag("PierreModule", "Quest_Status") == 5 and getModuleFlag("PierreModule", "Quest_Wait_Another_Day") == true):
-		addButton("Investigate", "Eavesdrop on large commotion in the hospital room next to you", "main")
-
+		runScene("MedicalLamiaPeekScene")
+		return true
+		# I don't have any other way of preventing the player from entiering the medical room so we do some forcy scene on them, they would never see that coming!
+		#addButton("Investigate", "Eavesdrop on large commotion in the hospital room next to you", "main")
+		
+	return false
+		
 func getPriority():
-	return 0
+	return 150
 
 func onButton(_method, _args):
 	if(_method == "main"):
 		runScene("MedicalLamiaPeekScene")
 		
+func eventCheck(_checkID, _args = []):  # sorry player, you can't heal, Eliza is occupied by Pierre's pet
+	if(_checkID == "ElizaBusy" and getModuleFlag("PierreModule", "Quest_Status") == 5 and getModuleFlag("PierreModule", "Quest_Wait_Another_Day") == true):
+		return {busy=true}

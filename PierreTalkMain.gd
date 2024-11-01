@@ -50,8 +50,8 @@ func _run():
 				addButton("Exercise", "Ask Pierre for explanation about your incident with the wall", "quest1bonk")
 			if GM.main.getModuleFlag("PierreModule", "Quest_Status") == 3:
 				addButton("Gumball", "Bring back the gumball to Pierre", "quest1turn")
+			GM.ES.triggerRun(Trigger.TalkingToNPC, ["pierre"])
 			addButton("Leave", "Be on your way", "endthescene")
-		GM.ES.triggerRun(Trigger.TalkingToNPC, ["pierre"])
 			
 	if(state == "name"):
 		addCharacter("pierre")

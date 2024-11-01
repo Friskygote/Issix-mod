@@ -15,10 +15,18 @@ func getFlags():
 		"Quest_Bonked": flag(FlagType.Bool),
 		"Quest_Wait_Another_Day": flag(FlagType.Bool),
 		"Activated_Cabinets": flag(FlagType.Dict),
+		"Medical_Peeked": flag(FlagType.Bool),
 		"QuestionnaireQ1": flag(FlagType.Bool),
 		"QuestionnaireQ2": flag(FlagType.Bool),
 		"QuestionnaireQ3": flag(FlagType.Text),
-		"QuestionnaireQ4": flag(FlagType.Text),
+		"QuestionnaireQ4": flag(FlagType.Bool),
+		"QuestionnaireQ5": flag(FlagType.Text),
+		"QuestionnaireQ6": flag(FlagType.Bool),
+		"QuestionnaireQ7": flag(FlagType.Bool),
+		"QuestionnaireQ8": flag(FlagType.Text),
+		"QuestionnaireQ9": flag(FlagType.Bool),
+		"QuestionnaireQ10": flag(FlagType.Number),
+		"QuestionnaireQ11": flag(FlagType.Bool),
 		}
 		
 
@@ -30,7 +38,8 @@ func _init():
 		"res://Modules/PierreModule/EventTileOnEnter.gd",
 		"res://Modules/PierreModule/GreenhouseCatnip.gd",
 		"res://Modules/PierreModule/EngRoomClosetEvent.gd",
-		"res://Modules/PierreModule/PierreQuestionnaireEvent.gd"
+		"res://Modules/PierreModule/PierreQuestionnaireEvent.gd",
+		"res://Modules/PierreModule/MedicalPeekEvent.gd"
 		]
 		
 	scenes = [
@@ -39,7 +48,8 @@ func _init():
 		"res://Modules/PierreModule/PetsTalkMain.gd",
 		"res://Modules/PierreModule/EngRoomScene.gd",
 		"res://Modules/PierreModule/PierreQuestionnaireScene.gd",
-		"res://Modules/PierreModule/NoPetsTalkMain.gd"
+		"res://Modules/PierreModule/NoPetsTalkMain.gd",
+		"res://Modules/PierreModule/MedicalPeekScene.gd"
 		]
 		
 	characters = [

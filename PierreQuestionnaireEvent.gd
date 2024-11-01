@@ -13,6 +13,8 @@ func run(_triggerID, _args):
 		else:
 			addDisabledButton("Next task", "You need to wait until tomorrow")
 		return true
+	elif(GM.main.getModuleFlag("PierreModule", "Quest_Status") == 5):
+		addButton("Questionnaire", "Ask Pierre about continuing the questionnaire", "main")
 	return false
 	
 	
