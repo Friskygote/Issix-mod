@@ -19,16 +19,16 @@ func _run():
 	if(state == ""):
 		saynn("You hesitate, last time you walked this hallway you are sure that in this part the only thing you'll meet, if you continue walking, is a wall. This entire thing sounds dumb, and yet... It's a trust excercie, no? Realistically the worst thing that will happen is that you'll eventually hit a wall, doesn't sound like something you can't take.")
 		if GM.main.isVeryLate():
-			addButton("Wall time", "Trust Pierre and walk towards the wall", "nightwallwalking")
+			addButton("Wall time", "Trust Issix and walk towards the wall", "nightwallwalking")
 		else:
-			addButton("Wall time", "Trust Pierre and walk towards the wall", "trust")
-		addButton("Nope", "You are not trusting Pierre, this is stupid", "endthescene")
+			addButton("Wall time", "Trust Issix and walk towards the wall", "trust")
+		addButton("Nope", "You are not trusting Issix, this is stupid", "endthescene")
 		
 	if(state == "nightwallwalking"):
-		GM.main.setModuleFlag("PierreModule", "Quest_Bonked", true)
+		GM.main.setModuleFlag("IssixModule", "Quest_Bonked", true)
 		processTime(1*60)
-		saynn("You decide to trust Pierre. You turn 90 degrees, take a deep breath and walk forward. Last time you went this corridor while not blind there was a wall here, an maybe this time...")
-		saynn("Four confidence in Pierre is rewarded with a loud bang on the wall. While your feet were the first to hit the wall, your head followed and... You hit the wall like a fool. Why would it work anyways, it's a solid wall.")
+		saynn("You decide to trust Issix. You turn 90 degrees, take a deep breath and walk forward. Last time you went this corridor while not blind there was a wall here, an maybe this time...")
+		saynn("Four confidence in Issix is rewarded with a loud bang on the wall. While your feet were the first to hit the wall, your head followed and... You hit the wall like a fool. Why would it work anyways, it's a solid wall.")
 		var damage_taken = GM.pc.receiveDamage(DamageType.Physical, 40, 1.0)
 		saynn("You took "+str(damage_taken)+" damage.")
 		addButton("Leave", "Leave embarassed before you give someone a reason to laugh at you", "endthescene")
@@ -36,9 +36,9 @@ func _run():
 	if(state == "trust"):
 		aimCameraAndSetLocName("eng_closet")
 		GM.pc.setLocation("eng_closet")
-		GM.main.setModuleFlag("PierreModule", "Quest_Status", 2)
-		saynn("You decide to trust Pierre. You turn 90 degrees, take a deep breath and walk forward. Last time you went this corridor while not blind there was a wall here, an maybe this time...")
-		saynn("You hear a beep before you, a few screeching sounds. Holy shit, perhaps Pierre was onto something here? You continue walking, the atmosphere changes, the echo of your steps disappeared, the air is more dry and you start to feel claustrophobic. You cautiously drag your foot forward until it hits something seemingly metal. Have you reached your destination?")
+		GM.main.setModuleFlag("IssixModule", "Quest_Status", 2)
+		saynn("You decide to trust Issix. You turn 90 degrees, take a deep breath and walk forward. Last time you went this corridor while not blind there was a wall here, an maybe this time...")
+		saynn("You hear a beep before you, a few screeching sounds. Holy shit, perhaps Issix was onto something here? You continue walking, the atmosphere changes, the echo of your steps disappeared, the air is more dry and you start to feel claustrophobic. You cautiously drag your foot forward until it hits something seemingly metal. Have you reached your destination?")
 		processTime(2*60)
 		var item: ItemBase = GM.pc.getInventory().getEquippedItem(InventorySlot.Eyes)
 		if(item != null):
@@ -68,7 +68,7 @@ func _run():
 			saynn("On the other side - curiously, completely flat wall texture. You close the doors and observe how this fit of engineering doors leading to ancient technology closet fits the wall so perfectly that it leaves no evidence of ever existing, not even a tiny crevice can be seen. Above the doors is a camera, maybe it opens the doors?")
 		aimCameraAndSetLocName("eng_corridor6")
 		GM.pc.setLocation("eng_corridor6")
-		addButton("Pierre", "Guess it's time to go back to Pierre", "endthescene")
+		addButton("Issix", "Guess it's time to go back to Issix", "endthescene")
 		
 	if state=="lookaround":
 		saynn(GM.world.getRoomByID("eng_closet").getDescription())
@@ -78,12 +78,12 @@ func _run():
 	if state=="cabinets":
 		saynn("Within so many filling cabinets there are over 12 shelves. You could open some of them and see what's in them, however only one of them is really interesting to you.")  # TODO placeholder
 		addButton("Back", "Look around again", "lookaround")
-		var activated_cabinets = getModuleFlag("PierreModule", "Activated_Cabinets", {})
+		var activated_cabinets = getModuleFlag("IssixModule", "Activated_Cabinets", {})
 		for item in cabinets:
 			if item in activated_cabinets:
 				addDisabledButton("Cabinet "+cabinets[item]["name"], "You've already looted this cabinet")
 			else:
-				if item == 84 and GM.main.getModuleFlag("PierreModule", "Quest_Status") == 2:
+				if item == 84 and GM.main.getModuleFlag("IssixModule", "Quest_Status") == 2:
 					addButton("Cabinet " + cabinets[item]["name"], "Check the cabinet with number "+cabinets[item]["name"], "cabinet84", [item])
 				else:
 					addButton("Cabinet " + cabinets[item]["name"], "Check the cabinet with number "+cabinets[item]["name"], "cabinetloot", [item])
@@ -103,8 +103,8 @@ func _run():
 			
 	if state=="cabinet84":
 		processTime(1*60)
-		saynn("It is the cabinet mentioned by Pierre. You reach your paw inside and there is a single item inside - a pack of gumball. You grab and take it.")
-		GM.main.setModuleFlag("PierreModule", "Quest_Status", 3)
+		saynn("It is the cabinet mentioned by Issix. You reach your paw inside and there is a single item inside - a pack of gumball. You grab and take it.")
+		GM.main.setModuleFlag("IssixModule", "Quest_Status", 3)
 		markCabinetAsActivated(84)
 		addButton("Back", "Look at cabinets", "cabinets")
 		
@@ -173,9 +173,9 @@ func generateLoot(cabinet_number: int):
 		return randomItemFromSeed(empty_loots)
 		
 func markCabinetAsActivated(cabinetNumber:int):
-	var activated_cabinets = getModuleFlag("PierreModule", "Activated_Cabinets", {})
+	var activated_cabinets = getModuleFlag("IssixModule", "Activated_Cabinets", {})
 	activated_cabinets[cabinetNumber] = true
-	GM.main.setModuleFlag("PierreModule", "Activated_Cabinets", activated_cabinets)
+	GM.main.setModuleFlag("IssixModule", "Activated_Cabinets", activated_cabinets)
 
 func _react(_action: String, _args):
 	if(_action == "endthescene"):
@@ -183,7 +183,7 @@ func _react(_action: String, _args):
 		return
 		
 	if(_action == "cabinetloot"):
-		if getModuleFlag("PierreModule", "Activated_Cabinets", {}).size() > 10:
+		if getModuleFlag("IssixModule", "Activated_Cabinets", {}).size() > 10:
 			# TODO Do a force encounter with an engineer
 			pass
 		current_loot = generateLoot(_args[0])

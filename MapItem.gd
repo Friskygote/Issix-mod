@@ -1,10 +1,10 @@
 extends ItemBase
 
 func _init():
-	id = "PierresMap"
+	id = "IssixsMap"
 
 func getVisibleName():
-	return "Pierre's Map"
+	return "Issix's Map"
 	
 func getDescription():
 	return "A map showing directinons"
@@ -13,7 +13,7 @@ func canUseInCombat():
 	return false
 
 func useInCombat(_attacker:Character, _receiver):
-	return "Map shows the following:\n\n[font=res://Fonts/smallconsolefont.tres]"+Util.readFile("res://Modules/PierreModule/Misc/asciimapsmall.txt")+"[/font]"
+	return "Map shows the following:\n\n[font=res://Fonts/smallconsolefont.tres]"+Util.readFile("res://Modules/IssixModule/Misc/asciimapsmall.txt")+"[/font]"
 
 func getPossibleActions():
 	if(true):  # We really shouldn't assume the item is being used by a player character, but sadly game does not give us context for the item user :(
@@ -59,4 +59,4 @@ func loadData(data):
 	.loadData(data)
 
 func getInventoryImage():
-	return "res://Modules/PierreModule/Items/pierresmap.png"
+	return "res://Modules/IssixModule/Items/issixsmap.png"

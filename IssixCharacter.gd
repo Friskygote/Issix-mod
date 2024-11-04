@@ -1,7 +1,7 @@
 extends Character
 
 func _init():
-	id = "pierre"
+	id = "issix"
 	npcHasMenstrualCycle = false
 	npcCharacterType = CharacterType.Inmate
 	
@@ -84,7 +84,7 @@ func interestVerbalReaction(interest):
 		return "Overconfident much?"
 	
 func _getName():
-	return "Pierre"
+	return "Issix"
 
 func getGender():
 	return Gender.Male

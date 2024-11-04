@@ -6,7 +6,7 @@ func _init():
 func _run():
 
 	if(state == ""):
-		saynn("In front of you - three slaves belonging to Pierre.")
+		saynn("In front of you - three slaves belonging to Issix.")
 		addButton("Azazel", "Approach Azazel", "azazelmain")
 		addButton("Hiisi", "Approach Hiisi", "hiisimain")
 		addButton("Lamia", "Approach Lamia", "lamiamain")
@@ -17,7 +17,7 @@ func _run():
 		
 	if(state == "azazelmain"):
 		playAnimation(StageScene.Duo, "stand", {npc="azazel", npcAction="sit"})  # TODO There is better sitting pose, like in gym, but need to find where poses are stored
-		if GM.main.getModuleFlag("PierreModule", "PC_Enslavement_Status") == 0:
+		if GM.main.getModuleFlag("IssixModule", "PC_Enslavement_Status") == 0:
 			saynn("You approach Azazel, he recognizes sudden attention given to him, raises on his fours and streches his back before sitting towards you expectandly. You notice he took a quick peek at his master beforehand.")
 		else:
 			pass  # TODO
@@ -31,7 +31,7 @@ func _run():
 		addButton("Back", "Take a step back", "")
 			
 	if(state == "lamiamain"):
-		if GM.main.getModuleFlag("PierreModule", "PC_Enslavement_Status") == 0:
+		if GM.main.getModuleFlag("IssixModule", "PC_Enslavement_Status") == 0:
 			saynn("You approach Lamia")
 		else:
 			pass  # TODO
@@ -51,9 +51,9 @@ func _run():
 		
 		
 	if(state == "azazeltalk"):
-		GM.main.setModuleFlag("PierreModule", "Azazel_Catnip_talked", true)
+		GM.main.setModuleFlag("IssixModule", "Azazel_Catnip_talked", true)
 		addButton("Prison", "How did he end up in prison?", "azazelprison")
-		addButton("Pierre", "What he thinks of his master?", "azazelmaster")
+		addButton("Issix", "What he thinks of his master?", "azazelmaster")
 		addButton("Breeder", "What he thinks of his position as a breeding bitch?", "azazelbreeding")
 		addButton("Fetishes", "He mentioned his fetishes, perhaps he could elaborate?", "azazelfetishes")
 		addButton("Hobby", "Does he do anything other than sex???", "azazelhobby")
@@ -66,14 +66,14 @@ func _run():
 		addButton("Back", "Do something else", "azazelmain")
 		
 	if(state == "azazelappearance"):
-		saynn("You take a closer look at {azazel.name}. He is a very thin and fairly short feline, judging from him sitting he is around " + Util.cmToString(150) + " tall, with no visible muscles, likely not very strong. Overall his body is still mostly masculine, though here and there there are feminine features like his face or shoulders.\nHis fur is in majority dark grey, though his belly and face are of ligher shade of gray. A small set of horns protrudes from his head. On his backside there is a medium sized feline tail.\n\nOne significant detail is that he does not possess a penis, in its place there is a {azazel.pussyStretch} vagina, above which you can see words ”PIERRE'S PROPERTY” branded onto the skin.")
+		saynn("You take a closer look at {azazel.name}. He is a very thin and fairly short feline, judging from him sitting he is around " + Util.cmToString(150) + " tall, with no visible muscles, likely not very strong. Overall his body is still mostly masculine, though here and there there are feminine features like his face or shoulders.\nHis fur is in majority dark grey, though his belly and face are of ligher shade of gray. A small set of horns protrudes from his head. On his backside there is a medium sized feline tail.\n\nOne significant detail is that he does not possess a penis, in its place there is a {azazel.pussyStretch} vagina, above which you can see words ”ISSIX'S PROPERTY” branded onto the skin.")
 		addButton("Back", "Do something else", "azazelmain")
 
 func _react(_action: String, _args):
 	if(_action == "catnip"):
 		GM.pc.getInventory().removeXOfOrDestroy("CatnipPlant", 1)
 		GM.main.getCharacter("azazel").addLust(10)
-		GM.main.increaseModuleFlag("PierreModule", "Azazel_Catnips_given")
+		GM.main.increaseModuleFlag("IssixModule", "Azazel_Catnips_given")
 	
 	if(_action == "endthescene"):
 		endScene()

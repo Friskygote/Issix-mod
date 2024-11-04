@@ -10,7 +10,7 @@ func _init():
 func _run():
 	if(state == ""):
 		
-		if (getModuleFlag("PierreModule", "Medical_Peeked") == null):
+		if (getModuleFlag("IssixModule", "Medical_Peeked") == null):
 			saynn("You can definietely hear something happening in the hospital room north...")
 			addButtonAt(3, "Investigate", "Try to see if you can hear something", "eavesdrop")
 		else:
@@ -23,25 +23,25 @@ func _run():
 		# just force a scene of them Mr White yo
 		
 	if(state == "eavesdrop"):
-		setModuleFlag("PierreModule", "Medical_Peeked", true)
+		setModuleFlag("IssixModule", "Medical_Peeked", true)
 		saynn("There are a couple of voices you can hear throuh the doors, none of them are loud enough to make out full sentences, but from the tone you can at least make out who is speaking.")
-		saynn("[say=pierre]- long ---? --- pain?[/say]")
+		saynn("[say=issix]- long ---? --- pain?[/say]")
 		saynn("[say=eliza]-- tell, --- midnight. We've -- anesthetic -- shouldn't feel any -. ------ nutrients --, --- needs - rest.[/say]")
-		saynn("[say=pierre]-- believe --- again, -- sake![/say]")
+		saynn("[say=issix]-- believe --- again, -- sake![/say]")
 		saynn("There is a sounds of someone banging on something.")
-		saynn("[say=eliza]-- calm, Pierre, --- fine. That -, -- remove - parasite, -- integrated --- at --. -- to live --, - just - Sacrifices.[/say]")
-		saynn("[say=pierre]-- told me -- last --, --- nothing --- done?[/say]")
+		saynn("[say=eliza]-- calm, Issix, --- fine. That -, -- remove - parasite, -- integrated --- at --. -- to live --, - just - Sacrifices.[/say]")
+		saynn("[say=issix]-- told me -- last --, --- nothing --- done?[/say]")
 		saynn("[say=eliza]-- AlphaCorp --- the inmate ---... - sorry.[/say]")
 		saynn("[say=azazel]---, I - Lamia ---.[/say]")
 		saynn("[say=hiisi]--, Master, ---- be okey.[/say]")
-		saynn("[say=pierre]... Thank -, pets. --[/say]")
+		saynn("[say=issix]... Thank -, pets. --[/say]")
 		saynn("Slight weeping can be heard from behind the doors.")
-		saynn("[say=pierre]--- care ----, I can't lose ---, --? ---- together.[/say]")
+		saynn("[say=issix]--- care ----, I can't lose ---, --? ---- together.[/say]")
 		saynn("[say=azazel]-- Master! ------![/say]")
 		saynn("[say=hiisi]No ----![/say]")
-		saynn("[say=pierre]--. wait - Lamia --.[/say]")
+		saynn("[say=issix]--. wait - Lamia --.[/say]")
 		saynn("[say=eliza]-- stay ----, -- observe --.[/say]")
-		saynn("[say=pierre]Thank -, -.[/say]")
+		saynn("[say=issix]Thank -, -.[/say]")
 		saynn("The voices are now quiet, you think the conversation ended.")
 		addButton("Leave", "This seems to be over now", "")
 		

@@ -1,12 +1,13 @@
 extends Module
-class_name PierreModule
+class_name IssixModule
 
 func getFlags():
 	return {
-		"Pierre_Introduced": flag(FlagType.Bool),
+		"Issix_Introduced": flag(FlagType.Bool),
 		"Pets_Introduced": flag(FlagType.Bool),
 		"Score_Explored": flag(FlagType.Number),
 		"Quest_Status": flag(FlagType.Number),
+		"Quest_Rejected_By_Issix": flag(FlagType.Number),
 		"Azazel_Catnip_talked": flag(FlagType.Bool),
 		"Azazel_Catnip_found": flag(FlagType.Bool),
 		"Azazel_Catnip_taken_today": flag(FlagType.Bool),
@@ -26,54 +27,54 @@ func getFlags():
 		"QuestionnaireQ8": flag(FlagType.Text),
 		"QuestionnaireQ9": flag(FlagType.Bool),
 		"QuestionnaireQ10": flag(FlagType.Number),
-		"QuestionnaireQ11": flag(FlagType.Bool),
+		"QuestionnaireQ11": flag(FlagType.Bool)
 		}
 		
 
 func _init():
-	id = "PierreModule"
+	id = "IssixModule"
 	author = "Frisk"
 	
 	events = [
-		"res://Modules/PierreModule/EventTileOnEnter.gd",
-		"res://Modules/PierreModule/GreenhouseCatnip.gd",
-		"res://Modules/PierreModule/EngRoomClosetEvent.gd",
-		"res://Modules/PierreModule/PierreQuestionnaireEvent.gd",
-		"res://Modules/PierreModule/MedicalPeekEvent.gd"
+		"res://Modules/IssixModule/EventTileOnEnter.gd",
+		"res://Modules/IssixModule/GreenhouseCatnip.gd",
+		"res://Modules/IssixModule/EngRoomClosetEvent.gd",
+		"res://Modules/IssixModule/IssixQuestionnaireEvent.gd",
+		"res://Modules/IssixModule/MedicalPeekEvent.gd"
 		]
 		
 	scenes = [
-		"res://Modules/PierreModule/PierreTalkMain.gd",
-		"res://Modules/PierreModule/GreenhouseCatnipStealScene.gd",
-		"res://Modules/PierreModule/PetsTalkMain.gd",
-		"res://Modules/PierreModule/EngRoomScene.gd",
-		"res://Modules/PierreModule/PierreQuestionnaireScene.gd",
-		"res://Modules/PierreModule/NoPetsTalkMain.gd",
-		"res://Modules/PierreModule/MedicalPeekScene.gd"
+		"res://Modules/IssixModule/IssixTalkMain.gd",
+		"res://Modules/IssixModule/GreenhouseCatnipStealScene.gd",
+		"res://Modules/IssixModule/PetsTalkMain.gd",
+		"res://Modules/IssixModule/EngRoomScene.gd",
+		"res://Modules/IssixModule/IssixQuestionnaireScene.gd",
+		"res://Modules/IssixModule/NoPetsTalkMain.gd",
+		"res://Modules/IssixModule/MedicalPeekScene.gd"
 		]
 		
 	characters = [
-		"res://Modules/PierreModule/PierreCharacter.gd",
-		"res://Modules/PierreModule/LamiaCharacter.gd",
-		"res://Modules/PierreModule/HiisiCharacter.gd",
-		"res://Modules/PierreModule/AzazelCharacter.gd"
+		"res://Modules/IssixModule/IssixCharacter.gd",
+		"res://Modules/IssixModule/LamiaCharacter.gd",
+		"res://Modules/IssixModule/HiisiCharacter.gd",
+		"res://Modules/IssixModule/AzazelCharacter.gd"
 		]
 		
 	worldEdits = [
-		"res://Modules/PierreModule/PierreWorldEdit.gd"
+		"res://Modules/IssixModule/IssixWorldEdit.gd"
 	]
 	
 	items = [
-		"res://Modules/PierreModule/CatnipItem.gd",
-		"res://Modules/PierreModule/MapItem.gd",
-		"res://Modules/PierreModule/CookieItem.gd"  # I just felt like this game needs more variety in items, even if by themselves they don't do much
+		"res://Modules/IssixModule/CatnipItem.gd",
+		"res://Modules/IssixModule/MapItem.gd",
+		"res://Modules/IssixModule/CookieItem.gd"  # I just felt like this game needs more variety in items, even if by themselves they don't do much
 	]
 	
 	quests = [
-		"res://Modules/PierreModule/PierresPetQuest.gd"
+		"res://Modules/IssixModule/IssixPetQuest.gd"
 	]
 
 func resetFlagsOnNewDay():
-	GM.main.setModuleFlag("PierreModule", "Azazel_Catnip_taken_today", false)
-	GM.main.setModuleFlag("PierreModule", "Activated_Cabinets", {})
-	GM.main.setModuleFlag("PierreModule", "Quest_Wait_Another_Day", false)
+	GM.main.setModuleFlag("IssixModule", "Azazel_Catnip_taken_today", false)
+	GM.main.setModuleFlag("IssixModule", "Activated_Cabinets", {})
+	GM.main.setModuleFlag("IssixModule", "Quest_Wait_Another_Day", false)

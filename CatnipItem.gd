@@ -64,4 +64,4 @@ func loadData(data):
 	.loadData(data)
 
 func getInventoryImage():
-	return "res://Modules/PierreModule/Items/catnip.png"
+	return "res://Modules/IssixModule/Items/catnip.png"

@@ -1,8 +1,8 @@
 extends WorldEditBase
 
 func _init():
-	id = "PierreWorldEdit"
+	id = "IssixWorldEdit"
 	
 func apply(world: GameWorld):
-	if(getFlag("PierreModule.Pierre_Introduced")):
+	if(getFlag("IssixModule.Issix_Introduced")):
 		world.setRoomSprite("hall_ne_corner", RoomStuff.RoomSprite.PERSON)

@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/catnip.png-8e8639f539d499b22a07b1ce8bee6c82.stex"
+path="res://.import/catnip.png-225c9de9d66fa9225bcc1239ca3cabf0.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Modules/PierreModule/Items/catnip.png"
-dest_files=[ "res://.import/catnip.png-8e8639f539d499b22a07b1ce8bee6c82.stex" ]
+source_file="res://Modules/IssixModule/Items/catnip.png"
+dest_files=[ "res://.import/catnip.png-225c9de9d66fa9225bcc1239ca3cabf0.stex" ]
 
 [params]
 

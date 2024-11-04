@@ -23,7 +23,7 @@ func _run():
 
 func _react(_action: String, _args):
 	if(_action == "catnip"):
-		GM.main.setModuleFlag("PierreModule", "Azazel_Catnip_taken_today", true)
+		GM.main.setModuleFlag("IssixModule", "Azazel_Catnip_taken_today", true)
 		
 		GM.pc.getInventory().addItem(GlobalRegistry.createItem("CatnipPlant"))
 		addMessage("You stole catnip plant.")

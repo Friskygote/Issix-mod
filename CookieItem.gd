@@ -52,4 +52,4 @@ func loadData(data):
 	.loadData(data)
 
 func getInventoryImage():
-	return "res://Modules/PierreModule/Items/cookie.png"
+	return "res://Modules/IssixModule/Items/cookie.png"

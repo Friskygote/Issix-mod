@@ -5,12 +5,13 @@ func _init():
 	npcHasMenstrualCycle = true
 	npcCharacterType = CharacterType.Inmate
 	
-	pickedSkin="SoftSpikySkin" # TODO Check options
-	pickedSkinRColor=Color("ffca3030")
-	pickedSkinGColor=Color("ff720505")
-	pickedSkinBColor=Color("ff000000")
+	pickedSkin="AzazelSkin"
+	pickedSkinRColor=Color("ff464545")
+	pickedSkinGColor=Color("ff656465")
+	pickedSkinBColor=Color("ff72005d")
 	npcSkinData={
-	   "hair": {"r": Color("ffb05745"),"g": Color("ffb05745"),"b": Color("ff2288ab"),},
+	   "hair": {"r": Color("ff221310"),"g": Color("ff1f1514"),"b": Color("ff28000c"),},
+	   "horns": {"r": Color("ffa9a9a9"),"b": Color("ff606060"),},
 	}
 	npcPersonality = {
 		PersonalityStat.Brat: -0.9,

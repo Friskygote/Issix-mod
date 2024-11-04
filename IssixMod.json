@@ -1,0 +1,8 @@
+{
+    "name": "Issix Mod",
+    "description": "Adds 4 characters, a questline and a system where the player can become enslaved by the character",
+    "author": "Frisk",
+    "repository": "https://github.com/Friskygote/Issix-mod",
+    "modversion": "1.0",
+    "gameversion": "0.1.6"
+}
