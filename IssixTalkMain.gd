@@ -14,8 +14,10 @@ func _reactInit():
 
 func _run():
 	if(state == ""):
-		playAnimation(StageScene.Duo, "stand", {npc="issix", npcAction="sit"})
-		
+		if GM.main.getModuleFlag("IssixModule", "Quest_Status") < 6:
+			playAnimation(StageScene.Duo, "stand", {npc="issix", npcAction="sit"})
+		else:
+			playAnimation(StageScene.Duo, "kneel", {npc="issix", npcAction="sit"})
 	
 	if(state == ""):
 		if(!GM.main.getModuleFlag("IssixModule", "Issix_Introduced")):
@@ -35,13 +37,15 @@ func _run():
 		addButton("Back", "Go back", "")
 		
 	if(state == "talk"):
+		clearCharacter()
+		addCharacter("issix")
 		if(!GM.main.getModuleFlag("IssixModule", "Issix_Introduced")):
 			GM.main.setModuleFlag("IssixModule", "Issix_Introduced", true)
 			saynn("You approach the intimidating demon, with a lot of distance still in-between you and him, standing right in front of his harem.")
 			saynn("[say=issix]Oh hello little morsel. Don't believe I've seen you. Name is Issix. Do you have a name?[/say]")
 			addButton("I'm "+GM.pc.getName(), "Introduce yourself with your name", "name")
 		else:
-			saynn("You approach the demon.")
+			saynn("You approach the demon."+(" He grins, seeing you kneel." if GM.main.getModuleFlag("IssixModule", "Quest_Status") > 5 else ""))
 			saynn(RNG.pick(random_issix_activities_talk))
 			addButton("Prison", "How did he end up in prison?", "prison")
 			addButton("Pets", "Have they really willingly gave to him?", "pets2")
@@ -53,8 +57,23 @@ func _run():
 			GM.ES.triggerRun(Trigger.TalkingToNPC, ["issix"])
 			addButton("Leave", "Be on your way", "endthescene")
 			
+	if state == "prison":
+		saynn("You ask Issix about how he ended up in here. He looks at you with intensity, studying your face.")
+		saynn("[say=issix]Honestly, don't think there is much for you to know morsel. But sure, I can entertain you a little.[/say]")
+		saynn("Issix relaxes, his shoulders straight, he puts one leg on another, in crossed position.")
+		saynn("[say=issix]I wanted to be here. My position offered me plenty of opportunities, everyone had their own expectations of everyone else's needs and wishes. I gave them all a big middle finger.\nThrough my connections I became an inmate. Nobody convicted me of any crime, like everyone else in here. I simply used my connections at AlphaCorp to be here. To gain my paradise.[/say]")
+		if (GM.pc.getPersonality().getStat(PersonalityStat.Coward) < -0.2):
+			saynn("[say=pc]You are craz-[/say]")
+		else:
+			saynn("[say=pc]That's... Cr-[/say]")
+		saynn("[say=issix]Crazy. I know. I've heard it a million times, thanks.[/say]")
+		saynn("He rolls his eyes and sips water from the glass nearby.")
+		saynn("[say=pc]So how long have you been in here?[/say]")
+		saynn("[say=issix]Enough to find my place, acquire three pets and make my own little business. So 5 years or so. I have it somewhere saved, but I don't really care enough to keep count.[/say]")
+		addButton("Back", "Turn to other matters", "talk")
+			
 	if(state == "name"):
-		addCharacter("issix")
+		
 		saynn("[say=issix]I see. Nice to meet you "+GM.pc.getName()+" and welcome to my humble corner in this piece of heaven.[/say]")
 		saynn("He holds his paw up to you, not fazed by the fact that you are still separated by an awkwardly long distance from the demon-dragon.\nNot wanting to be rude, you lean forwards while making extra sure you will not trample upon laying inmate or fall forwards by yourself. Eventually your " + ("hand" if len(GM.pc.getSpecies()) == 1 and GM.pc.getSpecies()[0] == "human" else "paw") + " meets his and you are able to do shake them.")  # ok, I have no idea what's the difference between buff arms and anthro arms, they seem the same, and technically neither have paws, too bad I'm the one writing dialogue though
 		saynn("[say=issix]I own this little corner including those three wonderful leashed pets beside me. You do NOT touch my pets without permission. Normally I wouldn't think this has to be mentioned, but for some reasons inmates think otherwise, those who do - don't keep this thought for long.[/say]")
@@ -66,11 +85,14 @@ func _run():
 	if(state == "heaven"):
 		saynn("[say=pc]Did you just call this prison a piece of heaven? Why?[/say]")
 		saynn("[say=issix]Because it is. I don't understand why everyone says it's not.[/say]")
-		saynn("[say=pc]Because it's... A prison? It's a middle-of-nothing rock that belongs to some mega rich empire. Because we have collars on our necks.[/say]")
-		saynn("[say=issix]You are looking at it all wrong [/say]") # TODO
+		saynn("[say=pc]Because it's... A prison? It's a middle-of-nothing rock that belongs to some mega rich empire. Because we have collars on our necks and they expect us to mine rock for their benefit, we are just slaves.[/say]")
+		saynn("[say=issix]You are looking at it all wrong. While the rest of the galaxy is participating in a rat-race for who is the most awful of them all, when they are murdering each other daily in show of dominance, when food shortages, speciesism, chaos is happening out there, here? Sure we still have a lot of show of power, but nobody is murdering each other because of it, we have shitty, but food, and speciesism isn't as bad as out there because what's the point, everyone has been reduced to just an inmate. Slavery here isn't only restricted to AlphaCorp's and Syndicate's of the galaxy, which what allows me to have those wonderful pets in here.[/say]")
+		saynn("[say=pc]So you like it here because you can have your own slaves?[/say]")
+		saynn("[say=issix]I like it here because I can enjoy what the fuck I enjoy and whatever restrictions this place has don't bother me.[/say]")
 		addButton("Continue", "Ask about something else", "name")
 		
 	if(state == "pets"):
+		addCharacter("azazel")
 		GM.main.setModuleFlag("IssixModule", "Pets_Introduced", true)
 		saynn("[say=pc]So... Who are your pets exactly?[/say]")
 		saynn("[say=issix]Curious about my treasured pearls, aren't you? Oh, I'm happy to introduce you, people usually talk only with me, but I feel like they could use some social interactions with someone else than myself and themselves.[/say]")
@@ -84,6 +106,9 @@ func _run():
 		addButton("Move on", "Learn about second pet", "hiisi")
 		
 	if(state in ["hiisipet", "hiisi"]):
+		removeCharacter("azazel")
+		addCharacter("hiisi")
+		addCharacter("lamia")
 		if(state == "hiisipet"):
 			saynn("You crouch and gently pet Azazel's head. You can feel very delicate vibrations produced by the kitten. He doesn't open his eyes, but it's clear cat enjoys this treatment.")
 			sayn("Master looks at this interaction with interest and sincere smile on his face.")
@@ -100,22 +125,11 @@ func _run():
 		saynn("While Issix's words seem playful, Lamia still is saddened by his Master's words.")
 		saynn("[say=issix]Anyways, those are the three of my beloved pets. ")
 		addButton("Back", "Turn to other matters", "talk")
-		
-	if(state == "lamia"):
-		saynn("You take a step towards Lamia to give him a pawshake. He sits on a blanket, next to him a stack of empty paper sheets, and a smaller pile of ")
 	
 	if(state == "issixdetails"):
-		saynn("You ask Issix about himself. He looks at you with intensity, studying your face.")
-		saynn("[say=issix]Honestly, don't think there is much for you to know morsel. But sure, I can entertain you a little.[/say]")
-		saynn("Issix relaxes, his shoulders straight, he puts one leg on another, in crossed position.")
-		saynn("[say=issix]I wanted to be here. My position offered me plenty of opportunities, everyone had their own expectations of everyone else's needs and wishes. I gave them all a big middle finger.\nThrough my connections I became an inmate. Nobody convicted me of any crime, like everyone else in here. I simply used my connections at AlphaCorp to be here. To gain my paradise.[/say]")
-		if (GM.pc.getPersonality().getStat(PersonalityStat.Coward) < -0.2):
-			saynn("[say=pc]You are craz-[/say]")
-		else:
-			saynn("[say=pc]That's... Cr-[/say]")
-		saynn("[say=issix]Crazy. I know. I've heard it a million times, thanks.[/say]")
-		saynn("He rolls his eyes and sips water from the glass nearby.")
-		saynn("[say=issix]Anyways, this short story will have to do, morsel. I've talked enough about myself.[/say]")
+		saynn("[say=pc]Who are you?[/say]")
+		saynn("[say=issix]Oh, I'm just a dragon-demon, nobody special. I dabble in... Equipment, and make bunch of things out of it. If you have some unused restraints, feel free to donate them to me, I'll be sure to make use of them, and maybe reward you a little, if I feel like it.[/say]")
+		saynn("[say=pc]How long have you been in here?[/say]")
 		addButton("Back", "If he says so", "name")
 
 	if(state == "pets2"):

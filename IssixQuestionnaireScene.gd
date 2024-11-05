@@ -456,6 +456,7 @@ func _run():
 		
 	if state == "finalresults":
 		saynn("He looks at responses, counts them, tries to figure something out, finally reaches a conclusion and in official tone announces...")
+		GM.main.setModuleFlag("IssixModule", "Quest_Wait_Another_Day", true)
 		if strikes == 0:
 			saynn("[say=issix]I have no objections to you becoming my pet. As far as I'm aware you were honest with all of the answers. That was the only thing that truthfully mattered during the test.[/say]")
 			saynn("You are happy to hear the result")

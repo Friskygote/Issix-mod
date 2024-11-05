@@ -12,7 +12,7 @@ func getFlags():
 		"Azazel_Catnip_found": flag(FlagType.Bool),
 		"Azazel_Catnip_taken_today": flag(FlagType.Bool),
 		"PC_Enslavement_Status": flag(FlagType.Number),
-		"Azazel_Catnips_given": flag(FlagType.Number),
+		"Azazel_Affection_given": flag(FlagType.Number),
 		"Quest_Bonked": flag(FlagType.Bool),
 		"Quest_Wait_Another_Day": flag(FlagType.Bool),
 		"Activated_Cabinets": flag(FlagType.Dict),
@@ -27,7 +27,12 @@ func getFlags():
 		"QuestionnaireQ8": flag(FlagType.Text),
 		"QuestionnaireQ9": flag(FlagType.Bool),
 		"QuestionnaireQ10": flag(FlagType.Number),
-		"QuestionnaireQ11": flag(FlagType.Bool)
+		"QuestionnaireQ11": flag(FlagType.Bool),
+		"Lamia_Is_Hungry": flag(FlagType.Bool),
+		"Azazel_Sky_Response": flag(FlagType.Bool),
+		"Received_Portrait_From_Lamia": flag(FlagType.Bool),
+		"Placed_Portrait_In_Cell": flag(FlagType.Bool),
+		"Hissi_RPS_data": flag(FlagType.Dict)
 		}
 		
 
@@ -40,7 +45,9 @@ func _init():
 		"res://Modules/IssixModule/GreenhouseCatnip.gd",
 		"res://Modules/IssixModule/EngRoomClosetEvent.gd",
 		"res://Modules/IssixModule/IssixQuestionnaireEvent.gd",
-		"res://Modules/IssixModule/MedicalPeekEvent.gd"
+		"res://Modules/IssixModule/MedicalPeekEvent.gd",
+		"res://Modules/IssixModule/PetWalkExamEvent.gd",
+		"res://Modules/IssixModule/PlayerCellModifierEvent.gd"
 		]
 		
 	scenes = [
@@ -50,7 +57,9 @@ func _init():
 		"res://Modules/IssixModule/EngRoomScene.gd",
 		"res://Modules/IssixModule/IssixQuestionnaireScene.gd",
 		"res://Modules/IssixModule/NoPetsTalkMain.gd",
-		"res://Modules/IssixModule/MedicalPeekScene.gd"
+		"res://Modules/IssixModule/MedicalPeekScene.gd",
+		"res://Modules/IssixModule/PetWalkExamScene.gd",
+		"res://Modules/IssixModule/PlayerCellModifierScene.gd"
 		]
 		
 	characters = [
@@ -73,6 +82,11 @@ func _init():
 	quests = [
 		"res://Modules/IssixModule/IssixPetQuest.gd"
 	]
+
+# External
+# "res://Scenes/ParadedOnALeashScene.gd"
+# "res://Game/World/Floors/Closet.gd"
+# "res://Game/World/Floors/Closet.tscn"
 
 func resetFlagsOnNewDay():
 	GM.main.setModuleFlag("IssixModule", "Azazel_Catnip_taken_today", false)
