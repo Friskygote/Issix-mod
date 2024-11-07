@@ -11,7 +11,7 @@ func getProgress():
 	var quest_await = GM.main.getModuleFlag("IssixModule", "Quest_Wait_Another_Day", false)
 	var quest_rejection = GM.main.getModuleFlag("IssixModule", "Quest_Rejected_By_Issix", 0)
 	var result = []
-	if quest_rejection == 1:
+	if quest_rejection == 1 or quest_rejection == 4:
 		return ["You rejected Issix's offer to become his pet."]
 	result.append("Issix gave you a map and a task - to get him whatever is in a place marked on the map, and look for number 84. Apparently this trust exercise requires you to wear a blindfold, wonder why...")
 	if(quest_status > 1):
@@ -30,7 +30,7 @@ func getProgress():
 		result.append("You started the questionnaire, however your answering session was abruptly interrupted by medical emergency of Lamia. Issix asked you to come other day.")
 	if(quest_status == 5 and !quest_await):
 		result.append("You started the questionnaire, however your answering session was abruptly interrupted by medical emergency of Lamia. Issix asked you to come other day, at least a day has passed so you should check up with them.")
-	if(quest_rejection == 2):
+	if(quest_rejection > 1):
 		result.append("Issix rejected the idea of you being his pet after you failed his test.")
 	return result
 
@@ -50,4 +50,6 @@ func isMainQuest():
 # 2 - arrived at closet
 # 3 - looted the gumball
 # 4 - gave the gumball to Issix
-# 5 - 
+# 5 - answered first part of questionnaire
+# 6 - answered second part of questionnaire, waits for the walk
+# 7 - got accepted as a pet

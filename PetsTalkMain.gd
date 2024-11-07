@@ -6,6 +6,7 @@ func _init():
 func _run():
 
 	if(state == ""):
+		setLocationName("Issix's Corner")
 		saynn("In front of you - three slaves belonging to Issix.")
 		addCharacter("azazel")
 		addCharacter("lamia")
@@ -32,13 +33,40 @@ func _run():
 			else:
 				pass  # TODO
 		addButton("Back", "Take a step back", "")
+		
+	if state == "hiisimain":
+		if getModuleFlag("IssixModule", "PC_Enslavement_Status", 0) == 0:
+			saynn("You approach Lamia")
+			
+		else:
+			addButton("Talk", "Talk to Lamia", "hiisitalk")
+			addButton("Appearance", "Look at Lamia", "hiisiappearance")
+		
+	if state == "hiisitalk":
+		var HiisiRPS = getModuleFlag("IssixModule", "Hissi_RPS_data")
+		if HiisiRPS != null:
+			if HiisiRPS["chosen_reward"] == 3 and HiisiRPS["reward_acquired"] == false:
+				addButton("Drink", "Ask Hiisi about energy drink that you've won through the game of Rock Paper Scissors", "hiisienergy")
+				
+				
+		# TODO
+	if state == "hiisienergy":
+		var HiisiRPS = getModuleFlag("IssixModule", "Hissi_RPS_data")
+		HiisiRPS["reward_acquired"] = true
+		setModuleFlag("IssixModule", "Hissi_RPS_data", HiisiRPS)
+		saynn("[say=hiisi]Sure, I got it, here you go.[/say]")
+		saynn("He passes energy drink can to you. Thanks for brightening my mood that day.")
+		saynn("You received 1 Energy Drink.")
+		addButton("Back", "Take a step back", "hiisitalk")
 			
 	if(state == "lamiamain"):
 		if getModuleFlag("IssixModule", "PC_Enslavement_Status", 0) == 0:
 			saynn("You approach Lamia")
-			addButton("Try drawing", "You can try and draw something with lamia", "lamiadraw")  # TODO
+			
 		else:
 			pass  # TODO
+		addButton("Talk", "Talk to Lamia", "lamiatalk")
+		addButton("Appearance", "Look at Lamia", "lamiaappearance")
 		saynn("")
 			
 	if(state == "catnip"):
@@ -87,7 +115,7 @@ func _run():
 		else:
 			saynn("When approaching there is one distinct smell coming from Azazel - his own pheromones advertising his fertility to everyone around.")
 		saynn("You take a closer look at {azazel.name}. He is a very thin and fairly short feline, judging from him sitting he is around " + Util.cmToString(150) + " tall, with no visible muscles, likely not very strong. Overall his body is still mostly masculine, though here and there there are feminine features like his face or shoulders.\nHis fur is in majority dark grey, though his belly and face are of ligher shade of gray. A small set of horns protrudes from his head. On his backside there is a medium sized feline tail.\n\nOne significant detail is that he does not possess a penis, in its place there is a {azazel.pussyStretch} vagina, above which you can see a womb tattoo seemingly glowing a bit in shade of red.")
-		saynn("On his back words ”ISSIX'S PROPERTY” branded onto the skin - a mark of his master.")
+		saynn("On his lower back words ”PROPERTY OF ISSIX” branded onto the skin - a mark of his master.")
 		addButton("Back", "Do something else", "azazelmain")
 
 	if state == "azazelprison":
@@ -104,12 +132,18 @@ func _run():
 		saynn("He says the last one, showing you his tongue at you in a grin")
 		saynn("[say=azazel]So... Yeah... That's how I ended up here. Not a happy story, but I doubt anyone's is. Ironically, I think I'm better here, and I can still engage in sex without any stupid license.[/say]")
 		addButton("Back", "Do something else", "azazelmain")
+		
+	if state == "lamiatalk":
+		addButton("Try drawing", "You can try and draw something with lamia", "lamiadraw")  # TODO
 
 func _react(_action: String, _args):
 	if(_action == "catnip"):
 		GM.pc.getInventory().removeXOfOrDestroy("CatnipPlant", 1)
 		GM.main.getCharacter("azazel").addLust(10)
 		GM.main.increaseModuleFlag("IssixModule", "Azazel_Affection_given")
+	
+	if _action == "hiisienergy":
+		GM.pc.getInventory().addItem(GlobalRegistry.createItem("EnergyDrink"))
 	
 	if(_action == "endthescene"):
 		endScene()

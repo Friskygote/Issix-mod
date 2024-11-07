@@ -32,7 +32,8 @@ func getFlags():
 		"Azazel_Sky_Response": flag(FlagType.Bool),
 		"Received_Portrait_From_Lamia": flag(FlagType.Bool),
 		"Placed_Portrait_In_Cell": flag(FlagType.Bool),
-		"Hissi_RPS_data": flag(FlagType.Dict)
+		"Hissi_RPS_data": flag(FlagType.Dict),
+		"Shared_Marshmallows": flag(FlagType.Bool)
 		}
 		
 

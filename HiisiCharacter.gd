@@ -1,19 +1,22 @@
 extends Character
 
+# Hiisi is a relatively dominating character out of all three pets. He still has some HighSec energy in them
+
 func _init():
 	id = "hiisi"
 	npcHasMenstrualCycle = false
 	npcCharacterType = CharacterType.Inmate
 	
-	pickedSkin="SoftSpikySkin" # TODO Check options
-	pickedSkinRColor=Color("ffca3030")
-	pickedSkinGColor=Color("ff720505")
-	pickedSkinBColor=Color("ff000000")
+	pickedSkin="ArconSkin"
+	pickedSkinRColor=Color("ffc8c2c2")
+	pickedSkinGColor=Color("ff423c51")
+	pickedSkinBColor=Color("ff767676")
 	npcSkinData={
-	   "hair": {"r": Color("ffb05745"),"g": Color("ffb05745"),"b": Color("ff2288ab"),},
+	"hair": {"r": Color("ffb05745"),"g": Color("ffb05745"),"b": Color("ff2288ab"),},
+	"penis": {"r": Color("ff4e2626"),"g": Color("ff9d2121"),"b": Color("ff991a1a"),},
 	}
 	npcPersonality = {
-		PersonalityStat.Brat: -0.9,
+		PersonalityStat.Brat: 0.1,
 		PersonalityStat.Mean: 0.4,
 		PersonalityStat.Subby: 1.0,
 		PersonalityStat.Impatient: 0.9,
@@ -23,25 +26,24 @@ func _init():
 	npcDefaultFetishInterest = FetishInterest.Neutral
 	npcFetishes = {
 		Fetish.AnalSexReceiving : FetishInterest.ReallyDislikes,
-		Fetish.AnalSexGiving : FetishInterest.Hates,
-		Fetish.VaginalSexGiving : FetishInterest.Hates,
-		Fetish.VaginalSexReceiving : FetishInterest.Loves,
+		Fetish.AnalSexGiving : FetishInterest.Likes,
+		Fetish.VaginalSexGiving : FetishInterest.Likes,
 		Fetish.OralSexReceiving : FetishInterest.Likes,
-		Fetish.OralSexGiving : FetishInterest.Likes,
-		Fetish.Sadism : FetishInterest.ReallyDislikes,
+		Fetish.OralSexGiving : FetishInterest.SlightlyDislikes,
+		Fetish.Sadism : FetishInterest.Likes,
 		Fetish.Masochism : FetishInterest.Hates,
-		Fetish.UnconsciousSex : FetishInterest.Loves,
-		Fetish.BeingBred : FetishInterest.Dislikes,
+		Fetish.UnconsciousSex : FetishInterest.Likes,
 		Fetish.Bondage : FetishInterest.Likes,
 		Fetish.Rigging : FetishInterest.Likes,
-		Fetish.Condoms : FetishInterest.Dislikes,
-		Fetish.DrugUse : FetishInterest.Likes,
-		Fetish.Exhibitionism : FetishInterest.Loves,
-		Fetish.Tribadism : FetishInterest.SlightlyDislikes,
+		Fetish.Breeding : FetishInterest.Dislikes,
+		Fetish.Condoms : FetishInterest.Likes,
+		Fetish.DrugUse : FetishInterest.SlightlyDislikes,
+		Fetish.Tribadism : FetishInterest.Dislikes,
 		Fetish.StraponSexVaginal : FetishInterest.Dislikes,
-		Fetish.StraponSexAnal : FetishInterest.SlightlyDislikes,
-		Fetish.Choking : FetishInterest.SlightlyDislikes,
-		Fetish.HypnosisSubject : FetishInterest.Loves,
+		Fetish.StraponSexAnal : FetishInterest.Dislikes,
+		Fetish.Choking : FetishInterest.Likes,
+		Fetish.HypnosisSubject : FetishInterest.Hates,
+		Fetish.HypnosisHypnotist : FetishInterest.Loves
 	}
 	npcLustInterests = {
 		InterestTopic.TallyMarks: Interest.ReallyLikes,
@@ -51,27 +53,20 @@ func _init():
 		InterestTopic.BDSMRestraints: Interest.Loves,
 		InterestTopic.ButtPlugs: Interest.Dislikes,
 		InterestTopic.VaginalPlugs: Interest.Dislikes,
-		InterestTopic.FeminineBody: Interest.KindaLikes,
+		InterestTopic.FeminineBody: Interest.Likes,
 		InterestTopic.AndroBody: Interest.Likes,
-		InterestTopic.MasculineBody: Interest.ReallyLikes,
-		InterestTopic.ThickBody: Interest.Dislikes,
-		InterestTopic.SlimBody: Interest.Likes,
-		InterestTopic.BigBreasts: Interest.Hates,
 		InterestTopic.StuffedPussy: Interest.Likes,
 		InterestTopic.StuffedPussyOrAss: Interest.KindaLikes,
-		InterestTopic.Pregnant: Interest.ReallyLikes,
-		InterestTopic.StuffedThroat: Interest.ReallyLikes,
-		InterestTopic.CoveredInCum: Interest.ReallyLikes,
-		InterestTopic.CoveredInLotsOfCum: Interest.Likes,
-		InterestTopic.FullyNaked: Interest.Loves,
+		InterestTopic.StuffedThroat: Interest.Likes,
+		InterestTopic.CoveredInCum: Interest.Dislikes,
+		InterestTopic.CoveredInLotsOfCum: Interest.Dislikes,
+		InterestTopic.FullyNaked: Interest.Likes,
 		InterestTopic.ExposedPussy: Interest.ReallyLikes,
 		InterestTopic.ExposedAnus: Interest.ReallyLikes,
-		InterestTopic.ExposedBreasts: Interest.ReallyLikes,
-		InterestTopic.ExposedCock: Interest.ReallyLikes,
-		InterestTopic.ExposedPanties: Interest.Hates,
-		InterestTopic.ExposedBra: Interest.Hates,
-		InterestTopic.LooseAnus: Interest.SlightlyDislikes,
-		InterestTopic.LoosePussy: Interest.SlightlyDislikes,
+		InterestTopic.ExposedBreasts: Interest.Likes,
+		InterestTopic.ExposedCock: Interest.KindaLikes,
+		InterestTopic.ExposedPanties: Interest.Likes,
+		InterestTopic.ExposedBra: Interest.Likes,
 		InterestTopic.TightAnus: Interest.Likes,
 		InterestTopic.TightPussy: Interest.Likes,
 		InterestTopic.BigCock: Interest.Hates,

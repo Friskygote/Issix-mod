@@ -14,6 +14,7 @@ func _reactInit():
 
 func _run():
 	if(state == ""):
+		setLocationName("Issix's Corner")
 		if GM.main.getModuleFlag("IssixModule", "Quest_Status") < 6:
 			playAnimation(StageScene.Duo, "stand", {npc="issix", npcAction="sit"})
 		else:

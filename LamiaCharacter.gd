@@ -5,12 +5,15 @@ func _init():
 	npcHasMenstrualCycle = false
 	npcCharacterType = CharacterType.Inmate
 	
-	pickedSkin="SoftSpikySkin" # TODO Check options
-	pickedSkinRColor=Color("ffca3030")
-	pickedSkinGColor=Color("ff720505")
-	pickedSkinBColor=Color("ff000000")
+	pickedSkin="DappledSkin"
+	pickedSkinRColor=Color("ffca6702")
+	pickedSkinGColor=Color("ffbb3e03")
+	pickedSkinBColor=Color("ff9b2226")
 	npcSkinData={
-	   "hair": {"r": Color("ffb05745"),"g": Color("ffb05745"),"b": Color("ff2288ab"),},
+	"hair": {"r": Color("ff274fb9"),"g": Color("ff243770"),"b": Color("ff3022ab"),},
+	"horns": {"r": Color("ff000000"),"g": Color("ff000000"),},
+	"penis": {"r": Color("ff2b2a2a"),"g": Color("ff373232"),"b": Color("ff8b0000"),},
+	"tail": {"skin": "WildSkin",},
 	}
 	npcPersonality = {
 		PersonalityStat.Brat: -0.9,
@@ -25,44 +28,44 @@ func _init():
 		Fetish.AnalSexReceiving : FetishInterest.ReallyDislikes,
 		Fetish.AnalSexGiving : FetishInterest.Hates,
 		Fetish.VaginalSexGiving : FetishInterest.Hates,
-		Fetish.VaginalSexReceiving : FetishInterest.Loves,
-		Fetish.OralSexReceiving : FetishInterest.Likes,
-		Fetish.OralSexGiving : FetishInterest.Likes,
-		Fetish.Sadism : FetishInterest.ReallyDislikes,
+		Fetish.OralSexReceiving : FetishInterest.Dislikes,
+		Fetish.OralSexGiving : FetishInterest.Dislikes,
+		Fetish.Sadism : FetishInterest.Hates,
 		Fetish.Masochism : FetishInterest.Hates,
-		Fetish.UnconsciousSex : FetishInterest.Loves,
-		Fetish.BeingBred : FetishInterest.Dislikes,
-		Fetish.Bondage : FetishInterest.Likes,
-		Fetish.Rigging : FetishInterest.Likes,
+		Fetish.UnconsciousSex : FetishInterest.Hates,
+		Fetish.Breeding : FetishInterest.Hates,
+		Fetish.Bondage : FetishInterest.Dislikes,
+		Fetish.Rigging : FetishInterest.Dislikes,
 		Fetish.Condoms : FetishInterest.Dislikes,
-		Fetish.DrugUse : FetishInterest.Likes,
-		Fetish.Exhibitionism : FetishInterest.Loves,
+		Fetish.DrugUse : FetishInterest.Dislikes,
+		Fetish.Exhibitionism : FetishInterest.Dislikes,
 		Fetish.Tribadism : FetishInterest.SlightlyDislikes,
 		Fetish.StraponSexVaginal : FetishInterest.Dislikes,
 		Fetish.StraponSexAnal : FetishInterest.SlightlyDislikes,
 		Fetish.Choking : FetishInterest.SlightlyDislikes,
-		Fetish.HypnosisSubject : FetishInterest.Loves,
+		Fetish.HypnosisSubject : FetishInterest.Hates,
+		Fetish.HypnosisHypnotist : FetishInterest.Hates,
 	}
 	npcLustInterests = {
-		InterestTopic.TallyMarks: Interest.ReallyLikes,
-		InterestTopic.Bodywritings: Interest.KindaLikes,
-		InterestTopic.Gags: Interest.Loves,
-		InterestTopic.Blindfolds: Interest.Loves,
-		InterestTopic.BDSMRestraints: Interest.Loves,
+		InterestTopic.TallyMarks: Interest.Dislikes,
+		InterestTopic.Bodywritings: Interest.Dislikes,
+		InterestTopic.Gags: Interest.Dislikes,
+		InterestTopic.Blindfolds: Interest.Dislikes,
+		InterestTopic.BDSMRestraints: Interest.Dislikes,
 		InterestTopic.ButtPlugs: Interest.Dislikes,
 		InterestTopic.VaginalPlugs: Interest.Dislikes,
 		InterestTopic.FeminineBody: Interest.KindaLikes,
 		InterestTopic.AndroBody: Interest.Likes,
 		InterestTopic.MasculineBody: Interest.ReallyLikes,
 		InterestTopic.ThickBody: Interest.Dislikes,
-		InterestTopic.SlimBody: Interest.Likes,
+		InterestTopic.SlimBody: Interest.Dislikes,
 		InterestTopic.BigBreasts: Interest.Hates,
-		InterestTopic.StuffedPussy: Interest.Likes,
-		InterestTopic.StuffedPussyOrAss: Interest.KindaLikes,
-		InterestTopic.Pregnant: Interest.ReallyLikes,
-		InterestTopic.StuffedThroat: Interest.ReallyLikes,
-		InterestTopic.CoveredInCum: Interest.ReallyLikes,
-		InterestTopic.CoveredInLotsOfCum: Interest.Likes,
+		InterestTopic.StuffedPussy: Interest.Dislikes,
+		InterestTopic.StuffedPussyOrAss: Interest.Dislikes,
+		InterestTopic.Pregnant: Interest.Dislikes,
+		InterestTopic.StuffedThroat: Interest.Dislikes,
+		InterestTopic.CoveredInCum: Interest.Dislikes,
+		InterestTopic.CoveredInLotsOfCum: Interest.Dislikes,
 		InterestTopic.FullyNaked: Interest.Loves,
 		InterestTopic.ExposedPussy: Interest.ReallyLikes,
 		InterestTopic.ExposedAnus: Interest.ReallyLikes,
@@ -70,10 +73,10 @@ func _init():
 		InterestTopic.ExposedCock: Interest.ReallyLikes,
 		InterestTopic.ExposedPanties: Interest.Hates,
 		InterestTopic.ExposedBra: Interest.Hates,
-		InterestTopic.LooseAnus: Interest.SlightlyDislikes,
-		InterestTopic.LoosePussy: Interest.SlightlyDislikes,
-		InterestTopic.TightAnus: Interest.Likes,
-		InterestTopic.TightPussy: Interest.Likes,
+		InterestTopic.LooseAnus: Interest.Dislikes,
+		InterestTopic.LoosePussy: Interest.Dislikes,
+		InterestTopic.TightAnus: Interest.Dislikes,
+		InterestTopic.TightPussy: Interest.Dislikes,
 		InterestTopic.BigCock: Interest.Hates,
 	}
 	
@@ -90,7 +93,7 @@ func getGender():
 	return Gender.Male
 	
 func getSmallDescription() -> String:
-	return "Wears an orange uniform with number P-655. He is the embodiment of ”meek”."
+	return "Wears an orange uniform with number P-1211."
 
 func getSpecies():
 	return [Species.Canine]  # if in the future foxes are introduced, the character is canonically a fox

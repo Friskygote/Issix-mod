@@ -514,6 +514,21 @@ func _react(_action: String, _args):
 	setState(_action)
 
 
+func saveData():
+	var data = .saveData()
+	
+	data["answer"] = answer
+	data["strikes"] = strikes
+	
+	return data
+	
+func loadData(data):
+	.loadData(data)
+	
+	answer = SAVE.loadVar(data, "answer", null)
+	strikes = SAVE.loadVar(data, "strikes", 0)
+
+
 func getDevCommentary():
 	return "Writing questionnaire took me a while. I knew I wanted to write wuestionnaire and I wanted it to be meaningful in a way. At first the idea was that a player will choose some options and then Issix will use them to apply punishments and rewards according to those responses. However evantually I felt like this may not be the best usage of questionnaire. One thing that to me is missing in the game is the lack of impact of choices made in other character arcs on the rest of the prison, I really wanted to do something about it, so I decided to possibly involve choices made in Tavi's questline as well as Rahi's to judge player for slavery fitness. There is also the fact that I enjoy ethics, so I slapped some ethics questions as well, this allows me to show that Issix is not a two-dimensional character and works according to some rules he subscribes to as well. The end result is a weird mix of stuff. Don't know how I ultimately feel about all of this, but I think the idea of questionnaire is a solid one in here. Also, the abrupt break was added as I were writing the quiestionnaire, completely on impulse. I've felt like we needed some dramatic break or this would feel too boring, and it would allow me to add some relevant foreshadowing and story bits for later. Didn't want the quest to be this quick. It should be spread across multiple days, sorry for artificial filler ><"
 
