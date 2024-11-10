@@ -11,13 +11,14 @@ func getFlags():
 		"Azazel_Catnip_talked": flag(FlagType.Bool),
 		"Azazel_Catnip_found": flag(FlagType.Bool),
 		"Azazel_Catnip_taken_today": flag(FlagType.Bool),
-		"PC_Enslavement_Status": flag(FlagType.Number),
+		"PC_Enslavement_Role": flag(FlagType.Number),
+		"PC_Enslavement_Noncon": flag(FlagType.Bool),
 		"Azazel_Affection_given": flag(FlagType.Number),
 		"Quest_Bonked": flag(FlagType.Bool),
 		"Quest_Wait_Another_Day": flag(FlagType.Bool),
 		"Activated_Cabinets": flag(FlagType.Dict),
 		"Medical_Peeked": flag(FlagType.Bool),
-		"QuestionnaireQ1": flag(FlagType.Bool),
+		"QuestionnaireQ1": flag(FlagType.Bool), # Creatures possess a soul
 		"QuestionnaireQ2": flag(FlagType.Bool),
 		"QuestionnaireQ3": flag(FlagType.Text),
 		"QuestionnaireQ4": flag(FlagType.Bool),
@@ -42,32 +43,32 @@ func _init():
 	author = "Frisk"
 	
 	events = [
-		"res://Modules/IssixModule/EventTileOnEnter.gd",
-		"res://Modules/IssixModule/GreenhouseCatnip.gd",
-		"res://Modules/IssixModule/EngRoomClosetEvent.gd",
-		"res://Modules/IssixModule/IssixQuestionnaireEvent.gd",
-		"res://Modules/IssixModule/MedicalPeekEvent.gd",
-		"res://Modules/IssixModule/PetWalkExamEvent.gd",
-		"res://Modules/IssixModule/PlayerCellModifierEvent.gd"
+		"res://Modules/IssixModule/Events/EngRoomClosetEvent.gd",
+		"res://Modules/IssixModule/Events/EventTileOnEnter.gd", 
+		"res://Modules/IssixModule/Events/GreenhouseCatnipEvent.gd", 
+		"res://Modules/IssixModule/Events/IssixQuestionnaireEvent.gd", 
+		"res://Modules/IssixModule/Events/MedicalPeekEvent.gd", 
+		"res://Modules/IssixModule/Events/PetWalkExamEvent.gd", 
+		"res://Modules/IssixModule/Events/PlayerCellModifierEvent.gd"
 		]
 		
 	scenes = [
-		"res://Modules/IssixModule/IssixTalkMain.gd",
-		"res://Modules/IssixModule/GreenhouseCatnipStealScene.gd",
-		"res://Modules/IssixModule/PetsTalkMain.gd",
-		"res://Modules/IssixModule/EngRoomScene.gd",
-		"res://Modules/IssixModule/IssixQuestionnaireScene.gd",
-		"res://Modules/IssixModule/NoPetsTalkMain.gd",
-		"res://Modules/IssixModule/MedicalPeekScene.gd",
-		"res://Modules/IssixModule/PetWalkExamScene.gd",
-		"res://Modules/IssixModule/PlayerCellModifierScene.gd"
+		"res://Modules/IssixModule/Scenes/EngRoomScene.gd", 
+		"res://Modules/IssixModule/Scenes/GreenhouseCatnipStealScene.gd", 
+		"res://Modules/IssixModule/Scenes/IssixQuestionnaireScene.gd", 
+		"res://Modules/IssixModule/Scenes/IssixTalkMain.gd", 
+		"res://Modules/IssixModule/Scenes/MedicalPeekScene.gd", 
+		"res://Modules/IssixModule/Scenes/NoPetsTalkMain.gd", 
+		"res://Modules/IssixModule/Scenes/PetsTalkMain.gd", 
+		"res://Modules/IssixModule/Scenes/PetWalkExamScene.gd", 
+		"res://Modules/IssixModule/Scenes/PlayerCellModifierScene.gd"
 		]
 		
 	characters = [
-		"res://Modules/IssixModule/IssixCharacter.gd",
-		"res://Modules/IssixModule/LamiaCharacter.gd",
-		"res://Modules/IssixModule/HiisiCharacter.gd",
-		"res://Modules/IssixModule/AzazelCharacter.gd"
+		"res://Modules/IssixModule/Characters/AzazelCharacter.gd", 
+		"res://Modules/IssixModule/Characters/HiisiCharacter.gd", 
+		"res://Modules/IssixModule/Characters/IssixCharacter.gd", 
+		"res://Modules/IssixModule/Characters/LamiaCharacter.gd"
 		]
 		
 	worldEdits = [
