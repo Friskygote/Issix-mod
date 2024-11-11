@@ -25,32 +25,25 @@ func run(_triggerID, _args):
 	GM.main.applyWorldEdit("IssixWorldEdit")
 	
 	if(checkCharacterBusy("IssixBusy", "Issix is not here", "Issix")):
-		saynn("This corner is not occupied by anyone at the momentm, just three empty blankets with a chair.")
+		saynn("This corner is not occupied by anyone at the moment, just three empty blankets with a chair.")
 		if getModuleFlag("IssixModule", "Quest_Status") == 5:
 			addButton("Paper", "A piece of paper lies left in a hurry", "paper")
 		return
 		
-	saynn("You see Issix sitting on a chair in a corner, around him there are three leashed slaves.")
-	addButton("Issix", "Talk to Issix", "talk")
-	if(!getModuleFlag("IssixModule", "Pets_Introduced")):
-		#addButton("Look at pets", "Look at pets", "pets")
-		addDisabledButton("Talk with pets", "You should probably first talk with intimidating figure who got them leashed")
+	var player_enslaved = getModuleFlag("IssixModule", "PC_Enslavement_Role")
+	if player_enslaved != null and player_enslaved > 0:
+		saynn("You see your Master sitting on his chair in the corner, around him there is Azazel, Hiisi and Lamia.")
+		addButton("Issix", "Talk to Master", "talk")
+		addButton("Pets", "Look at Master's pets", "pets")
 	else:
-		addButton("Pets", "Look at pets", "pets")
-	#if(checkCharacterBusy("RahiBusy", "Seems like the kitty is not here", "Rahi")):
-	#	return
-	#
-	#if(getModuleFlag("RahiModule", "Rahi_NotThereToday", false)):
-	#	saynn("Seems like the kitty is not here")
-	#	
-	#	addDisabledButton("Rahi", "She is not here today")
-	#	return
-	
-	#if(!getModuleFlag("RahiModule", "Rahi_Introduced")):
-	#	saynn("You see some unknown feline sitting on a bench")
-	#else:
-	#	saynn("You see the Kitty sitting on a bench")
-	#addButtonUnlessLate("Rahi", "Talk to the feline", "talk")
+		saynn("You see Issix sitting on a chair in a corner, around him there are three leashed slaves.")
+		addButton("Issix", "Talk to Issix", "talk")
+		if(!getModuleFlag("IssixModule", "Pets_Introduced")):
+			#addButton("Look at pets", "Look at pets", "pets")
+			addDisabledButton("Talk with pets", "You should probably first talk with intimidating figure who got them leashed")
+		else:
+			addButton("Pets", "Look at pets", "pets")
+
 
 func getPriority():
 	return 0

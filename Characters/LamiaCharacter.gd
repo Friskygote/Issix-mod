@@ -132,3 +132,4 @@ func createBodyparts():
 	tail.tailScale = 0.5
 	giveBodypartUnlessSame(tail)
 	giveBodypartUnlessSame(GlobalRegistry.createBodypart("digilegs"))
+	skillsHolder.addPerk(Perk.StartInfertile)

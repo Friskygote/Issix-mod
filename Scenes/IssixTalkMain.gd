@@ -135,6 +135,25 @@ func _run():
 
 	if(state == "pets2"):
 		playAnimation(StageScene.Duo, "stand", {npc="issix", npcAction="sit"})
+		saynn("[say=pc]Have your pets willingly gave to you? Can't imagine anyone giving up their freedom of their free will.[/say]")
+		saynn("He looks at you with a mix of curiosity and amusement.")
+		saynn("[say=issix]Oh? You think I'm a brute taking strays from the corridors of this prison against their will and making them my own?[/say]")
+		saynn("He sips the drink from his glass. As he tries to read your very soul through your eyes.")
+		if GM.main.getPCSlaveAmount() > 0:  # Judgement wooho
+			saynn("[say=issix]Perhaps that's something you'd do. Perhaps you think that taking someone as your own is just a matter of violence and power. Perhaps you think that someone's will is yours to take on your command just like that, just because they walk this prison.[/say]")
+			saynn("He recoils, you see a sliver of regret in his eyes.")
+			saynn("[say=issix]No, fuck that. That's amateur hour. This is exactly what just another brute in this prison would think.[/say]")
+			saynn("[say=ussux]There is more to making someone a pet than simple violence. I don't [/say]")
+		elif getModuleFlag("RahiModule", "rahiMile7Enslaved") == true:
+			saynn("[say=issix]Perhaps not. Perhaps I misjudged you. Though, it is strange of you to ask me this question this way, considering you yourself look like someone who would enslave someone else with their own permission, giving themselves to you willingly. Am I mistaken?[/say]")
+			saynn("His grin is very telling, he knows more than you tell him")
+			saynn("[say=issix]Thought so. I don't like using violence and power to make someone my pet. Non-[/say]")
+			saynn("He cuts himself in the middle")
+			saynn("[say=issix]-my pets submitted to me willingly. I don't subscribe to other methods. That's all.[/say]")
+			addButton("Back", "He gestures he is done talking on this topic", "talk")
+		else:
+			saynn("[say=issix]I'm not like this. My pets are here of their own will. They chose to give themselves to me. [/say]")
+
 		pass
 		
 	if(state == "join"):

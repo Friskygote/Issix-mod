@@ -32,6 +32,8 @@ func getProgress():
 		result.append("You started the questionnaire, however your answering session was abruptly interrupted by medical emergency of Lamia. Issix asked you to come other day, at least a day has passed so you should check up with them.")
 	if quest_status > 6 and quest_rejection == 0:
 		result.append("You've succeeded Issix's last trial and have gotten permission to become Issix's pet. Issix said that your introduction is the next day,")
+	if quest_status > 8:
+		result.append("Issix has became your new Master as you've given into him as his "+IssixModule.getPlayerRole()+".")
 	if(quest_rejection > 1):
 		result.append("Issix rejected the idea of you being his pet after you failed his test.")
 	return result

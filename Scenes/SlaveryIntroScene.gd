@@ -25,9 +25,11 @@ func _run():
 
 	if state == "acceptslavery":
 		playAnimation(StageScene.Duo, "kneel", {npc="issix", npcAction="stand", bodyState={leashedBy="issix"}})
+		GM.main.setModuleFlag("IssixModule", "Quest_Status", 11)
 		saynn("[say=issix]That's most wonderful to hear. You've had multiple opportunities to reject becoming my pet and yet you persisted. Good.[/say]")
 		saynn("[say=issix]From this time onward, you'll always refer to me as Master or Master Issix. As my pet, I consider your body belongs to me now.[/say]")
 		saynn("[say=issix]Tell me now, what role would you like to accept as defacto my slave? A pet or a prostitute?[/say]")
+		addMessage("You gained 100 experience for completing „Becoming something lesser” quest")
 		addButton("Pet", "Tell Issix you'd rather become his pet, just like his other 3 pets", "petrole")
 		addDisabledButton("Prostitute", "This option is not yet available in the mod, it is planned in the future however")  # TODO 1.1
 
@@ -95,8 +97,69 @@ func _run():
 		playAnimation(StageScene.SexMissionary, "fast", {pc="issix", npc="pc", bodyState={naked=true, hard=true}, npcBodyState={naked=true, hard=true}})
 		saynn("[say=issix]Keep that up and some day you may become as good as Azazel at this. Ahhh.[/say]")
 		saynn("[say=pc]I, ahhh. Will tryyy.[/say]")
-		saynn("Various moans coming from both of you ")
+		saynn("Various moans coming from both of you, you catch glimpses of Azazel's lustfully jealous looks and rather neutral looks of the other pets or passerby's. Every passerby seeing a dragon-demon thrusting into your body like it was a daily ritual. And you think, it might just be one, your thoughts of submission making you feel like you wouldn't mind, no. You'd LOVE that. Issix's thrusts are synchronized, not erratic, not irregular. He takes his time with you, very slowly (and barely noticeably) speeding up.")
+		saynn("[say=issix]Still holding up? Lets see how you handle THIS.[/say]")
+		saynn("Suddenly he started thrusting deeper, his member feeling bigger than before, spreading your insides.")
+		saynn("[say=pc]AWwhhhhhhhh[/say]")
+		saynn("Seemingly unable to communicate anymore due to bliss resulting from your breeding. You realize at some point that your are very close to your climax. You can only imagine that your Master so lost in his breeding frenzy is in similar situation.")
+		saynn("[say=issix]I'm. Close. PET.[/say]")
+		addButton("Climax", "Reach your own climax", "normalroute4")
 
+	if state == "normalroute4":
+		playAnimation(StageScene.SexMissionary, "inside", {pc="issix", npc="pc", pcCum=true, npcCum=true, bodyState={naked=true, hard=true}, npcBodyState={naked=true, hard=true}})
+		if GM.pc.hasVagina():
+			saynn("Your whimpers finally reach the apex and you climax, covering your Master's hard cock with your pussy juices as he continues to ram you.")
+		else:
+			saynn("Your whimpers finally reach the apex and you climax, covering the blanket underneath with your sperm, your Master, however, is not done breeding your ass.")
+		saynn("Although you can feel that those are his last thrusts, his speed declining. You are as ready as you ever will be for your Master's first breeding of you. And just moments later he gives in and puts his virile load into your " + ("vagina" if GM.pc.hasVagina() else "anus") + ". He stays inside of you for a minute, as he recollects himself.")
+		saynn("[say=issix]First claiming done. Though, I would prefer if my seed stayed in you for a while longer. Wouldn't you want that?[/say]")
+		saynn("[say=pc]Yes, Master, I'd love that.[/say]")
+		saynn("You vibrate with pleasure as your Master plugs your "+("vagina" if GM.pc.hasVagina() else "hole") + " with a plug.")
+		saynn("[say=issix]Good pet. Let it stay inside of you and continue making you mine.[/say]")
+		addButton("Continue", "End the breeding session", "normalroute5")
+
+	if state == "normalroute5":
+		playAnimation(StageScene.Duo, "kneel", {npc="issix", npcAction="stand", bodyState={leashedBy="issix"}})
+		saynn("He stands up, still holding his end of leash connected to a collar on your neck. He puts his foot on your belly to further ingrain in your mind that he has control over you now.")
+		saynn("[say=issix]That was good. I expect of you to allow me to breed you just like this when I feel like it. Understood?[/say]")
+		saynn("[say=pc]Yes..,[/say]")
+		saynn("[say=issix]Yes?[/say]")
+		saynn("[say=pc]Yes Master Issix.[/say]")
+		saynn("[say=issix]Good puppy.[/say]")  # TODO puppy/kitten need to find a way to put those.
+		saynn("He takes his foot out of your belly.")
+		if(OPTIONS.isContentEnabled(ContentType.Watersports)):
+			saynn("[say=issix]For today there is one more thing for me to do. Azazel, can you tell my new pet what it is?[/say]")
+			saynn("[say=azazel]Master wants... To leave his mark on you, the other kind of mark.[/say]")
+			saynn("Issix grins as he slightly tugs on your leash.")
+			saynn("[say=issix]Very convenient timing, because I were just about to go to toilet before you showed up. Let me just...[/say]")
+			saynn("He takes out the blanket from under your back in a swift manner. A cold, hard floor makes contact with your floor. Those blankets have a very important function after all. Your Master stands above you, his feet on both sides of your body, his penis directed at your head, he is about to pee.")
+			addButton("Open mouth", "Open your mouth and close your eyes in anticipation of the golden shower", "pissnormalmouth")
+			addButton("Stay closed", "Don't open your mouth in anticipation of the golden shower", "pissnormal")
+		else:
+			saynn("[say=issix]This will be all for today. Wouldn't want to reward you too much in just one day, you could get the wrong idea. I expect to see you tomorrow, just like every other day. I know you are busy. Other than that, feel free to spend time with my other pets.[/say]")
+			addButton("Leave", "Leave the place", "endthescene")
+
+	if state == "pissnormalmouth":
+		saynn("You open your mouth, close your eyes, showing you don't mind your Master's nectar in your mouth. You want to taste it, to feel it at deeper level. To be marked in as many ways as you can. Seeing this Issix chuckles and you feel impact of his fluid assulting your face. It falls on various parts of your face, sometimes inside, mostly around. The sweet and bitter taste hits you like a train, the aroma of your master in your nose becomes truthfully pungent. You gulp down his piss.")
+		saynn("[say=issix]Didn't think you have that in you, a natural piss slut. What a treat.[/say]")
+		saynn("His stream moves towards your lower part of the body, for a brief moment hitting your neck but then staying on chest, arms, your not so private anymore parts as well as your legs. His objective very clear - to cover as much of your body as possible, to mark you - no, to drench you in his smell. As his stream from his hose drains and he stops pissing, while you feel there are still one or two dry spots on your body, the rest is wet with your Master's piss. You reek of your Master stronger than any other of his pets. Is that introductory treatment? Why are you so special? You ask yourself, your questions answered shortly after.")
+		saynn("[say=issix]Don't be surprised. I like to mark my new pets GOOD, I want you to get used to my smell. And this is the best way I can think of. I expect you to come back tomorrow reeking of day old piss, my piss, do you understand? I don't want you to shower until we meet again.[/say]")
+		saynn("This is your order, coming from your Master. Do not shower, take in his smell and sleep with it.")
+		saynn("[say=pc]Your order is my command, Master![/say]")
+		saynn("After obtaining permission from your Master you stand up. Feeling small ticking in your fur as the fluids travel downwards along your body. You'll be dripping with his piss for a while. Your Master produces some kind of a cloth to clean up his piss from the floor and put your blanket back in this place. You leave.")
+		saynn("[say=issix]This will be all for today. Wouldn't want to reward you too much in just one day, you could get the wrong idea. I expect to see you tomorrow, just like every other day. I know you are busy. Other than that, feel free to spend time with my other pets.[/say]")
+		addButton("Leave", "Leave the place", "endthescene")
+
+	if state == "pissnormal":
+		saynn("You decide to keep your mouth closed. You close your eyes and await. Finally, you can feel it, a shower of your Master's piss landing on various parts of your face. The aroma of your master in your nose becomes truthfully pungent.")
+		saynn("[say=issix]A shame you seem a bit reluctant with taking in my sweet nectar. We will work on that.[/say][/say]")
+		saynn("His stream moves towards your lower part of the body, for a brief moment hitting your neck but then staying on chest, arms, your not so private anymore parts as well as your legs. His objective very clear - to cover as much of your body as possible, to mark you - no, to drench you in his smell. As his stream from his hose drains and he stops pissing, while you feel there are still one or two dry spots on your body, the rest is wet with your Master's piss. You reek of your Master stronger than any other of his pets. Is that introductory treatment? Why are you so special? You ask yourself, your questions answered shortly after.")
+		saynn("[say=issix]Don't be surprised. I like to mark my new pets GOOD, I want you to get used to my smell. And this is the best way I can think of. I expect you to come back tomorrow reeking of day old piss, my piss, do you understand? I don't want you to shower until we meet again.[/say]")
+		saynn("This is your order, coming from your Master. Do not shower, take in his smell and sleep with it.")
+		saynn("[say=pc]Your order is my command, Master![/say]")
+		saynn("After obtaining permission from your Master you stand up. Feeling small ticking in your fur as the fluids travel downwards along your body. You'll be dripping with his piss for a while. Your Master produces some kind of a cloth to clean up his piss from the floor and put your blanket back in this place. You leave.")
+		saynn("[say=issix]This will be all for today. Wouldn't want to reward you too much in just one day, you could get the wrong idea. I expect to see you tomorrow, just like every other day. I know you are busy. Other than that, feel free to spend time with my other pets.[/say]")
+		addButton("Leave", "Leave the place", "endthescene")
 
 	if state == "maybelater":
 		saynn("[say=pc]I need to take my time to make my decision... It's a lot to take in.[/say]")
@@ -106,6 +169,7 @@ func _run():
 		addButton("Continue", "End the conversation", "endthescene")
 
 	if state == "rejection":
+		GM.main.setModuleFlag("IssixModule", "Quest_Rejected_By_Issix", 4)
 		saynn("Issix raises his eyebrows. This was not an answer he expected or wanted to hear.")
 		saynn("[say=issix]That's... Surprising. You are a perfect candidate, you could become MY pet. MY plaything, and yet you reject it? Why? Is it that you are worried about being under someone? You don't like my other pets? Did you not like the walk? Are you scared of questions I asked you during questionnaire? Did the talk about forever having my mark burned into you scare you? Do you value your time so much, that you'd rather not spend time with me and my harem? Or do you value your life so much that you think you'd do a better job living it by yourself than under me?[/say]")
 		saynn("He grew visibly more frustrated with each question. Each question, adding more oil into already enormous flames consuming everything around. His aura so intense, his eyes so enraged. This version of the dragon-demon is the most intimidating creature you've ever seen, so far from the image of him you've had in your head for past days doing his tasks and so on. And yet... He closes his eyes, connects palms of his paws and takes a deep breath. His aura changes again, it's calm and composed, as if it was a completely different person from the one you've seen just seconds ago. He opens his eyes.")
@@ -114,6 +178,8 @@ func _run():
 		addButton("Continue", "End the conversation", "endthescene")
 
 func _react(_action: String, _args):
+	if _action == "acceptslavery":
+		GM.pc.addExperience(100)
 
 	if _action == "normalroute2":
 		var itemRef = GlobalRegistry.getItemRef("HeatPill")
@@ -121,6 +187,23 @@ func _react(_action: String, _args):
 			return
 		itemRef.useInSex(GM.pc)
 
+	if _action == "normalroute4":
+		if GM.pc.hasVagina():
+			GM.pc.cummedInVaginaBy("issix", FluidSource.Penis, 150.0)
+			var item = GlobalRegistry.createItem("vaginalplug")
+			GM.pc.getInventory().forceEquipByStoreOtherUnlessRestraint(item, "issix")
+		else:
+			GM.pc.cummedInAnusBy("issix", FluidSource.Penis, 150.0)
+			var item = GlobalRegistry.createItem("buttplug")
+			GM.pc.getInventory().forceEquipByStoreOtherUnlessRestraint(item, "issix")
+
+	if _action == "pissnormalmouth":
+		GM.pc.cummedInMouthBy("issix", FluidSource.Pissing, 0.7)
+		GM.pc.cummedOnBy("issix", FluidSource.Pissing, 1.0)
+		#GM.pc.coverBodyWithFluid()
+		
+	if _action == "pissnormal":
+		GM.pc.cummedOnBy("issix", FluidSource.Pissing, 1.0)
 
 	if(_action == "endthescene"):
 		endScene()

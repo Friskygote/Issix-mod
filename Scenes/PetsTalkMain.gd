@@ -152,7 +152,22 @@ func _run():
 		
 	if state == "azazelmaster":
 		saynn("[say=pc]So what do you think of your Master?[/say]")
-		saynn("[say=azazel][/say]")
+		saynn("[say=azazel]My Master? Hmm. Back when I ended up in the prison he noticed me and gave place to be, he gave me protection, food - well, something else than the regular scrap you get in the prison kitchen, and helped me with my fears and anxiety I've had after coming in here. I really don't know what I'd do if he wasn't here, I think he... Saved me, you know? This place is scary in many ways if you don't have someone to show you around. Some may think that he is a bad person for simply what he has done to me or Lamia but he isn't.[/say]")
+		saynn("[say=pc]Is he very strict with you?[/say]")
+		saynn("[say=azazel]Not at all! He is a very understanding Master. He cares about us and does his best to keep us happy. What he asks of us is very little, I know how it sounds... But I speak from the bottom of my heart when I say it! He is a good Master.[/say]")
+		saynn("[say=pc]Is that so? Hmm. How did you meet him?[/say]")
+		saynn("He thinks for a second")
+		saynn("[say=azazel]Well, I remember getting in here, being „processed” with the collar and all and basically pushed into new life. My first few days were spent trying to be quiet as a mouse *laughs*, everyone felt intimidating, and I've seen inmates getting harassed and used against their will. This seems to be the culture of this place, restraints are like free candy. There were one or two incidents I had with some bullies, I were assulted and used. One day Master Issix saw me hiding, he approached me and talked to me a bit, about why am I hiding, what am I doing in here and if someone is after me. From then I visited him daily, he... Grew on me. And one day he gave me a proposition to become his pet. At first I were hesitant, as anyone would be, but at the same time, he let himself be a very sweet person to me, and he never assulted me. So I accepted, and became his first sl- *he coughts* pet.[/say]")
+		saynn("He smiles at you.")
+		saynn("[say=azazel]I think he needed me as much as I needed him. So... Yeah. That's about it.[/say]")
+		addButton("Back", "End this conversation", "azazelmain")
+
+	if state == "azazelbreeding":
+		saynn("[say=pc]Are you okey with your position as a breeder... Breeding bitch in the harem?[/say]")
+		saynn("[say=azazel]Of course! Truth is, I'm the only one who can bear children out of us three... So of course I have huge responsibility. Master says that I'd be a good mother, haha. Can't test that theory in here, but oh well, I don't know. I don't really know why does Master want us to keep breeding, maybe he has something from it? He can't keep them either. Maybe that's just what he likes. Anyways, I don't mind. At this point I'm pretty good at making him litter, and I think he is proud of me too.[/say]")
+		saynn("[say=oc]Doesn't it get tiring?[/say]")
+		saynn("[say=azazel]Sometimes? I guess. I have those wants and needs when I'm pregnant, but Master always tries his best to keep me happy either way. And besides, if I'm not bred I tend to get really annoying, haha. Yeah...[/say]")
+		addButton("Back", "End this conversation", "azazelmain")
 
 
 	if state == "lamiatalk":

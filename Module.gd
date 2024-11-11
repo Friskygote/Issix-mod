@@ -34,7 +34,9 @@ func getFlags():
 		"Received_Portrait_From_Lamia": flag(FlagType.Bool),
 		"Placed_Portrait_In_Cell": flag(FlagType.Bool),
 		"Hissi_RPS_data": flag(FlagType.Dict),
-		"Shared_Marshmallows": flag(FlagType.Bool)
+		"Shared_Marshmallows": flag(FlagType.Bool),
+		"Todays_Bred_Slave": flag(FlagType.Text),
+		"Progression_Day_Next": flag(FlagType.Number)
 		}
 		
 
@@ -89,8 +91,11 @@ func _init():
 # "res://Scenes/ParadedOnALeashScene.gd"
 # "res://Game/World/Floors/Closet.gd"
 # "res://Game/World/Floors/Closet.tscn"
+func getPlayerRole():
+	return "pet" if GM.main.getModuleFlag("TaviModule", "PC_Enslavement_Role", 1) == 1 else "prostitute"
 
 func resetFlagsOnNewDay():
 	GM.main.setModuleFlag("IssixModule", "Azazel_Catnip_taken_today", false)
 	GM.main.setModuleFlag("IssixModule", "Activated_Cabinets", {})
 	GM.main.setModuleFlag("IssixModule", "Quest_Wait_Another_Day", false)
+	GM.main.setModuleFlag("IssixModule", "Todays_Bred_Slave", RNG.pick(['azazel', 'pc', 'hiisi']))
