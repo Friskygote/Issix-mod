@@ -33,7 +33,7 @@ func run(_triggerID, _args):
 	var player_enslaved = getModuleFlag("IssixModule", "PC_Enslavement_Role")
 	if player_enslaved != null and player_enslaved > 0:
 		saynn("You see your Master sitting on his chair in the corner, around him there is Azazel, Hiisi and Lamia.")
-		addButton("Issix", "Talk to Master", "talk")
+		addButton("Master", "Talk to Master Issix", "talk")
 		addButton("Pets", "Look at Master's pets", "pets")
 	else:
 		saynn("You see Issix sitting on a chair in a corner, around him there are three leashed slaves.")

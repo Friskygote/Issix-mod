@@ -11,7 +11,7 @@ func react(_triggerID, _args):
 	if(getModuleFlag("IssixModule", "Quest_Status") == 5 and getModuleFlag("IssixModule", "Quest_Wait_Another_Day") == true):
 		runScene("MedicalLamiaPeekScene")
 		return true
-		# I don't have any other way of preventing the player from entiering the medical room so we do some forcy scene on them, they would never see that coming!
+		# I don't have any other way of preventing the player from entering the medical room so we do some forcy scene on them, they would never see that coming!
 		#addButton("Investigate", "Eavesdrop on large commotion in the hospital room next to you", "main")
 		
 	return false

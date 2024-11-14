@@ -55,6 +55,7 @@ func _run():
 				addButton("Exercise", "Ask Issix for explanation about your incident with the wall", "quest1bonk")
 			if GM.main.getModuleFlag("IssixModule", "Quest_Status") == 3:
 				addButton("Gumball", "Bring back the gumball to Issix", "quest1turn")
+			addButton("Become his", "Ask if he'd like to make you his own pet", "join")
 			GM.ES.triggerRun(Trigger.TalkingToNPC, ["issix"])
 			addButton("Leave", "Be on your way", "endthescene")
 			
@@ -152,9 +153,12 @@ func _run():
 			saynn("[say=issix]-my pets submitted to me willingly. I don't subscribe to other methods. That's all.[/say]")
 			addButton("Back", "He gestures he is done talking on this topic", "talk")
 		else:
-			saynn("[say=issix]I'm not like this. My pets are here of their own will. They chose to give themselves to me. [/say]")
-
-		pass
+			saynn("[say=issix]I'm not like this. My pets are here of their own will. They chose to give themselves to me. I don't enslave people if they don't want to, that's amateur and unfun.[/say]")
+			saynn("[say=issix]I don't feel like you'd know a lot about slavery. Doesn't seem like you. Are you maybe an obedient puppy type of person?[/say]")
+			saynn("He smiles")
+			saynn("[say=issix]Well, if you are, I could show you exactly how my pets came to be my pets. If you allow, of course. All up to you.[/say]")
+			saynn("This feels like a serious offer.")
+			addButton("Back", "That's all on this topic", "talk")
 		
 	if(state == "join"):
 		var score = calculateHaremScore()
@@ -174,13 +178,13 @@ func _run():
 			saynn("He looks at you, his black eyes again staring into yours. His face is neutral, still hazed by wandering thoughts.")
 			saynn("[say=issix]... Is interested, but he still needs to prove he is worthy to be owned by your master.[/say]")
 			saynn("He comes closer to you, leashes in his paw, eyes on you. There are only two steps separating you and him, but with each his tall posture makes you feel as if he is getting taller and taller, or perhaps you smaller and smaller. Eventually you can feel his body heat on yours, he is standing just in front of you, a peanut away. Your face meets his chest, you don't dare to look him in the face.\nHis paw reaches your chin to correct that. You see his black eyes again, looking down on you, as if you were a little feral kitten looking at big human. Insignificant. Tiny. His face has a serious expression.")
-			saynn("[say=issix]Tell me {pc.name}, do you want to be my pet or do you want to stay a stray kitten?[/say]")  # TODO depending on species
+			saynn("[say=issix]Tell me {pc.name}, do you want to be my pet or do you want to stay a stray?[/say]")
 			GM.main.setModuleFlag("IssixModule", "Score_Explored", score)
 			addButton("Y-your pet", "Submit to Issix", "quest")
 			if (GM.pc.getPersonality().getStat(PersonalityStat.Subby) < 0.3) and GM.pc.getLust() < 30 and !GM.pc.isWearingHypnovisor() and !GM.pc.hasEffect(StatusEffect.Suggestible) and !GM.pc.hasEffect(StatusEffect.UnderHypnosis):  # Good luck lol
 				GM.main.setModuleFlag("IssixModule", "Quest_Status", 0)
 				setModuleFlag("IssixModule", "Quest_Rejected_By_Issix", 1)
-				addButton("Stray kitten", "You don't want to be his kitten", "quest")
+				addButton("Stray", "You don't want to be his", "quest")
 			else:
 				addDisabledButton("Stray kitten", "Your mind doesn't allow you to make this choice")
 		elif(score > 75 and score_explored < 90):
@@ -210,7 +214,7 @@ func _run():
 					else:
 						saynn("[say=issix]What a nice little tool you have there. I'll be honest, I'd feel bad if you had a bigger penis, all this potential would be wasted, but this makes things simpler. Bitch.[/say]")
 			saynn("He ends exploring your body and comes back to his chair.")
-			saynn("[say=issix]I like what I see. You are almost ready, but not yet. When the time comes I expect you to show up again for my judgement. Then, I'll give you a chance. Don't waste it.[/say]")
+			saynn("[say=issix]I like what I see. You are almost ready, but not yet. When the time comes I expect you to show up again for my judgment. Then, I'll give you a chance. Don't waste it.[/say]")
 			GM.main.setModuleFlag("IssixModule", "Score_Explored", score)
 		elif(score > 45 and score_explored < 76):
 			playAnimation(StageScene.Duo, "stand", {npc="issix", npcAction="stand"})

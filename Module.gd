@@ -11,8 +11,6 @@ func getFlags():
 		"Azazel_Catnip_talked": flag(FlagType.Bool),
 		"Azazel_Catnip_found": flag(FlagType.Bool),
 		"Azazel_Catnip_taken_today": flag(FlagType.Bool),
-		"PC_Enslavement_Role": flag(FlagType.Number),
-		"PC_Enslavement_Noncon": flag(FlagType.Bool),
 		"Azazel_Affection_given": flag(FlagType.Number),
 		"Quest_Bonked": flag(FlagType.Bool),
 		"Quest_Wait_Another_Day": flag(FlagType.Bool),
@@ -35,8 +33,15 @@ func getFlags():
 		"Placed_Portrait_In_Cell": flag(FlagType.Bool),
 		"Hissi_RPS_data": flag(FlagType.Dict),
 		"Shared_Marshmallows": flag(FlagType.Bool),
+
+		# Slavery related
+		"PC_Enslavement_Role": flag(FlagType.Number),
+		"PC_Enslavement_Noncon": flag(FlagType.Bool),
 		"Todays_Bred_Slave": flag(FlagType.Text),
-		"Progression_Day_Next": flag(FlagType.Number)
+		"Progression_Day_Next": flag(FlagType.Number),
+		"Last_Day_Visited_Master": flag(FlagType.Number),
+		"Misc_Slavery_Info": flag(FlagType.Dict),
+		"Progression_Points": flag(FlagType.Number)
 		}
 		
 
@@ -91,8 +96,10 @@ func _init():
 # "res://Scenes/ParadedOnALeashScene.gd"
 # "res://Game/World/Floors/Closet.gd"
 # "res://Game/World/Floors/Closet.tscn"
-func getPlayerRole():
-	return "pet" if GM.main.getModuleFlag("TaviModule", "PC_Enslavement_Role", 1) == 1 else "prostitute"
+
+
+static func getPlayerRole():
+	return "pet" if GM.main.getModuleFlag("IssixModule", "PC_Enslavement_Role", 1) == 1 else "prostitute"
 
 func resetFlagsOnNewDay():
 	GM.main.setModuleFlag("IssixModule", "Azazel_Catnip_taken_today", false)

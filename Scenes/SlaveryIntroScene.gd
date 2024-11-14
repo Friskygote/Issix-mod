@@ -36,10 +36,61 @@ func _run():
 	if state == "petrole":
 		setModuleFlag("IssixModule", "PC_Enslavement_Role", 1) # pet
 		saynn("[say=pc]I'd like to become your pet, Master.[/say]")
-		saynn("[say=issix]Excellent. In that case... There is one, maybe final question for you today. None of my pets decided on that, but I figured you might be interested. I'm not going to lie, I'm not too fond of this method as I like my pets to still have some control, but what I can offer you is to completely give yourself to me. not just your body, but your very SOUL as well. Just like with becoming my pet, once you make this decision, there is no going back. You will do exactly as I say, you won't have an option to disobey me. I'll become extension of your will, at best you'll have second wheel - entirely insignificant, a mere puppet. I'll own you fully, and you'll be just a husk of yourself.[/say]")
-		saynn("[say=issix]If that's not for you that's all the better. It's an option for those who not only want to dedicate their life in servitude, but also surrender the keys to their soul and mind - to become broken beyond any comprehension. Some people call it becoming a drone. Some people call it simply killing a person. I prefer „surrendering soul”. Kinda romantic, don't you think? Or perhaps it's just demon humor. Either way, tell me, what do you want?[/say]")
-		addButton("Yes", "Tell your Master that you want him to take your soul (WARNING: this is EXTREME, you won't have a chance to avoid certain content, it will literally strip you of choice and make your game MORE DIFFICULT. Not for the fainthearted, CW: parasite, soul vore, non-con, watersports, blood)", "becomepuppet")
-		addButton("No", "Tell your Master that you wish to retain your mind (recommended)", "normalroute")
+		saynn("[say=issix]Of course. In this case, you'll be my pet from now on. Let's discuss what I expect of you.[/say]")
+		saynn("[say=issix]You are free to talk. But you have to know when to talk. I'm sure you will learn your place after you spend some time in here. My other pets are already well trained, you can follow their lead on this. [/say]")
+
+
+	# The following lines pertain to a functionality which in first iteration I wanted to be one of the first choices player makes when it comes to enslavement, stripping them of future choices. However as I develop the mod I think there are various reasons (wanting to be over with initial mod release, leaving significant changes to gameplay available as a reward for progression) why I decided to develop this functionality later as something player can obtain as a reward
+
+	# if state == "petrole":
+	# 	setModuleFlag("IssixModule", "PC_Enslavement_Role", 1) # pet
+	# 	saynn("[say=pc]I'd like to become your pet, Master.[/say]")
+	# 	saynn("[say=issix]Excellent. In that case... There is one, maybe final question for you today. None of my pets decided on that, but I figured you might be interested. I'm not going to lie, I'm not too fond of this method as I like my pets to still have some control, but what I can offer you is to completely give yourself to me. not just your body, but your very SOUL as well. Just like with becoming my pet, once you make this decision, there is no going back. You will do exactly as I say, you won't have an option to disobey me. I'll become extension of your will, at best you'll have second wheel - entirely insignificant, a mere puppet. I'll own you fully, and you'll be just a husk of yourself.[/say]")
+	# 	saynn("[say=issix]If that's not for you that's all the better. It's an option for those who not only want to dedicate their life in servitude, but also surrender the keys to their soul and mind - to become broken beyond any comprehension. Some people call it becoming a drone. Some people call it simply killing a person. I prefer „surrendering soul”. Kinda romantic, don't you think? Or perhaps it's just demon humor. Either way, tell me, what do you want?[/say]")
+	# 	addButton("Yes", "Tell your Master that you want him to take your soul (WARNING: this is EXTREME, you won't have a chance to avoid certain content, it will literally strip you of choice and make your game MORE DIFFICULT. Not for the fainthearted, CW: parasite, soul vore, non-con, watersports, blood)", "becomepuppet")
+	# 	addButton("No", "Tell your Master that you wish to retain your mind (recommended)", "normalroute")
+ #
+	# if state == "becomepuppet":
+	# 	playAnimation(StageScene.Duo, "kneel", {npc="issix", npcAction="stand", bodyState={leashedBy="issix"}})
+	# 	setModuleFlag("IssixModule", "PC_Enslavement_Noncon", true)
+	# 	saynn("[say=pc]I-I'd like that. I'd want to become your servant in mind and body. I don't want control of my own, Master.[/say]")
+	# 	saynn("[say=issix]That's okey my pet. That's your choice you are making, your LAST choice. If you are truthfully ready to give me everything you have, to become a forever puppet of mine then I'll make your last wish true.[/say]")
+	# 	saynn("He leans forward and attaches a leash to your collar.")
+	# 	saynn("[say=issix]Let's go then. We will do that in my cell. Azazel, you know the drill, I'm out till tomorrow, you know where to find me.[/say]")
+	# 	saynn("[say=azazel]Of course, Master![/say]")
+	# 	addButton("Continue", "Follow your Master", "walktocell")
+ #
+	# if state == "walktocell":
+	# 	processTime(5*60)
+	# 	aimCamera("cellblock_red_nearcell")
+	# 	setLocationName("Issix's Cell")
+	# 	saynn("You arrive at his cell. It feels oddly small, even claustrophobic with you two in it. Has the essentials and that's about it. It surprises you considering what character Issix is, but then, he spends most of his time in the main hall with his pets. Perhaps he doesn't need luxury in here.")
+	# 	saynn("[say=issix]Welcome. This is my cell. It's small but enough for us two. I'd say get comfortable but it's not what we are going to do here. Can you just stand behind me? Great.[/say]")
+	# 	GM.pc.addConsciousness(-0.2)
+	# 	if getModuleFlag("IssixModule", "QuestionnaireQ1", "false"):
+	# 		saynn("He kneels next to his stash in opposite side of the cell from the entrance. His paws are searching, looking for something. He pulls out various restraints.")
+	# 	else:
+	# 		saynn("He kneels next to his stash in opposite side of the cell from the entrance. His paws are searching, looking for something. Finally he puts aside what looks to be googles? Mask? Hypnovisors? Hard to tell. He pulls various restraints. His search continues for a while longer. He does find what he was looking for, pulling some kind of small object you didn't have the time to see before he hid it behind his paw.")
+	# 	saynn("[say=issix]Wonderful. I think that's should be... It. Yeah, now, put your paws above.[/say]")
+	# 	if getModuleFlag("IssixModule", "QuestionnaireQ1", "false"):
+	# 		addButton("Comply", "Put your paws in the air", "soulfull")
+	# 	else:
+	# 		addButton("Comply", "Put your paws in the air", "soulless")
+ #
+	# if state == "soulfull":
+	# 	playAnimation(StageScene.HangingDuo, "idle", {pc="pc", npc="issix", bodyState={naked=true}, npcBodyState={naked=true}})
+	# 	saynn("[say=issix]Good, good.[/say]")
+	# 	saynn("He attaches your wrists to the ceiling. Your feet paws comfortably stand on the floor, though if you were one centimeter shorter you'd likely have to make effort to stand. He then picks up ankle cuffs attaching them to the floor, you can't really do much in this state even if you wanted to.")
+	# 	saynn("[say=issix]Safety and comfort measures. I think you are ready.[/say]")
+	# 	saynn("He circles you, as much as he can with space in his cell. Being so vulnerable, your fur in full display. He touches parts of your body every now and then. You are hanging like meat on a hook.")
+	# 	saynn("[say=issix]I never thought anyone would be so easy. You willingly want to give me your very soul. I can't complain, though it makes me wonder, why? Do you really hate life so much you don't want to participate in it? Do you hate choices? Do you trust me so much, that you think I'll be better you than yourself? You will soon stop mattering in the slightest. You will be rendered nothing. There will be only me and what I want. To go this far and give up your very self to me... I can't say I understand, mortal. Maybe you are just a sucker for someone else taking control...[/say]")
+	# 	saynn("You open your mouth to explain yourself, he puts his finger on your lips.")
+	# 	saynn("[say=issix]It doesn't matter. What you have to say no longer matters. You made your last choice 10 minutes ago. Now, the only thing that matters is what I say and think.[/say]")
+	# 	saynn("You nod your head in silence.")
+ #
+	# if state == "soulless":
+	# 	playAnimation(StageScene.HangingDuo, "idle", {pc="pc", npc="issix", bodyState={naked=true}, npcBodyState={naked=true}})
+
 
 	if state == "normalroute":
 		playAnimation(StageScene.SexMissionary, "tease", {pc="issix", npc="pc", bodyState={naked=true, hard=true}, npcBodyState={naked=true, hard=true}})
@@ -52,12 +103,12 @@ func _run():
 		saynn("His face is filled with a cruel smile once again.")
 		if !GM.pc.isFullyNaked():
 			saynn("[say=issix]Now, with decisions made, I need to tell you what I intend to happen. I want you to strip naked for me. I want to see your entire body again, completely bare. I want to know what I'm working with. You'll have to lose whatever conception of shame you have and embrace being completely naked as normal. At least for now. You will still be able to wear your inmate uniform, I don't mind. But you have to lose inhibitions you have.[/say]")
-			for slot in GM.pc.getInventory().getEquippedItems():  # Force unequip all items, why is there getEquippedItems and getAllEquippedItems doing the same thing lol
-				saynn("Issix took off your "+GM.pc.getInventory()[slot].getVisibleName()+".")
-				GM.pc.getInventory().unequipSlot(slot)
 			#GM.pc.unequipAllRestraints()
 		else:
 			saynn("[say=issix]You are such a good pet that you are already naked. That's really good, as I want to know every part of your body before I have fun with you.[/say]")
+		for slot in GM.pc.getInventory().getEquippedItems():  # Force unequip all items, why is there getEquippedItems and getAllEquippedItems doing the same thing lol
+			saynn("Issix took off your "+GM.pc.getInventory()[slot].getVisibleName()+".")
+			GM.pc.getInventory().unequipSlot(slot)
 		saynn("He grabs a leash hanging from the armrest of his chair, shows it to you.")
 		saynn("[say=issix]Ready to become my pet for real this time? You've already given your fate into my paws, we might as well get this over with.[/say]")
 		saynn("He once again raises your head by your chin, this time more forcefully than last time. With ease he attaches the end of the leash and gives it some pulls.")
@@ -178,8 +229,24 @@ func _run():
 		addButton("Continue", "End the conversation", "endthescene")
 
 func _react(_action: String, _args):
+	if _action == "walktocell":
+		runScene("ParadedOnALeashScene", ["issix", GM.pc.getLocation(), "cellblock_red_nearcell", [
+			"We're almost there, don't worry",
+			"Hope you are ready, there is no going back from this",
+			"Looking forward to letting go?",
+			"Thinking is too hard for you, that's why you came to me. Don't worry, I'll relieve you of this burden soon",
+			"You've made your choice, very soon you won't be able to make another"
+		], "cellblock_red_nearcell", "crawl"])
+
+	if _action == "soulfull":
+		var cuff = GlobalRegistry.createItem("inmateanklecuffs")
+		GM.pc.getInventory().forceEquipStoreOther(cuff)
+
 	if _action == "acceptslavery":
 		GM.pc.addExperience(100)
+		setModuleFlag("IssixModule", "Misc_Slavery_Info", {"day_enslaved": GM.main.getDays(), "scenes_seen": []})
+		setModuleFlag("IssixModule", "Progression_Points", 1)
+		setModuleFlag("IssixModule", "Progression_Day_Next", GM.main.getDays()+1)
 
 	if _action == "normalroute2":
 		var itemRef = GlobalRegistry.getItemRef("HeatPill")
