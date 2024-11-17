@@ -37,7 +37,8 @@ func _run():
 		setModuleFlag("IssixModule", "PC_Enslavement_Role", 1) # pet
 		saynn("[say=pc]I'd like to become your pet, Master.[/say]")
 		saynn("[say=issix]Of course. In this case, you'll be my pet from now on. Let's discuss what I expect of you.[/say]")
-		saynn("[say=issix]You are free to talk. But you have to know when to talk. I'm sure you will learn your place after you spend some time in here. My other pets are already well trained, you can follow their lead on this. [/say]")
+		saynn("[say=issix]You are free to talk. But you have to know when to talk. I'm sure you will learn your place after you spend some time in here. My other pets are already well trained, you can follow their lead on this. Don't cause too much mishap, I don't enjoy rescuing my pets out of trouble. There is still much you have to learn, but it will come with time.[/say]")
+		addButton("Nod", "Continue the conversation", "normalroute")
 
 
 	# The following lines pertain to a functionality which in first iteration I wanted to be one of the first choices player makes when it comes to enslavement, stripping them of future choices. However as I develop the mod I think there are various reasons (wanting to be over with initial mod release, leaving significant changes to gameplay available as a reward for progression) why I decided to develop this functionality later as something player can obtain as a reward
@@ -95,12 +96,12 @@ func _run():
 	if state == "normalroute":
 		playAnimation(StageScene.SexMissionary, "tease", {pc="issix", npc="pc", bodyState={naked=true, hard=true}, npcBodyState={naked=true, hard=true}})
 		setModuleFlag("IssixModule", "PC_Enslavement_Noncon", false)
-		if getModuleFlag("IssixModule", "QuestionnaireQ1"):
-			saynn("[say=pc]I'd prefer to retain my soul, if that's okey with you Master.[/say]")
-		else:
-			saynn("[say=pc]I'd still prefer to retain my mind like Azazel and your other pets, Master.[/say]")
-		saynn("[say=issix]But of course, you are most welcome to it. Retaining what little autonomy you have is an option I prefer for you myself.[/say]")
-		saynn("His face is filled with a cruel smile once again.")
+		# if getModuleFlag("IssixModule", "QuestionnaireQ1"):
+		# 	saynn("[say=pc]I'd prefer to retain my soul, if that's okey with you Master.[/say]")
+		# else:
+		# 	saynn("[say=pc]I'd still prefer to retain my mind like Azazel and your other pets, Master.[/say]")
+		# saynn("[say=issix]But of course, you are most welcome to it. Retaining what little autonomy you have is an option I prefer for you myself.[/say]")
+		# saynn("His face is filled with a cruel smile once again.")
 		if !GM.pc.isFullyNaked():
 			saynn("[say=issix]Now, with decisions made, I need to tell you what I intend to happen. I want you to strip naked for me. I want to see your entire body again, completely bare. I want to know what I'm working with. You'll have to lose whatever conception of shame you have and embrace being completely naked as normal. At least for now. You will still be able to wear your inmate uniform, I don't mind. But you have to lose inhibitions you have.[/say]")
 			#GM.pc.unequipAllRestraints()
@@ -229,18 +230,18 @@ func _run():
 		addButton("Continue", "End the conversation", "endthescene")
 
 func _react(_action: String, _args):
-	if _action == "walktocell":
-		runScene("ParadedOnALeashScene", ["issix", GM.pc.getLocation(), "cellblock_red_nearcell", [
-			"We're almost there, don't worry",
-			"Hope you are ready, there is no going back from this",
-			"Looking forward to letting go?",
-			"Thinking is too hard for you, that's why you came to me. Don't worry, I'll relieve you of this burden soon",
-			"You've made your choice, very soon you won't be able to make another"
-		], "cellblock_red_nearcell", "crawl"])
-
-	if _action == "soulfull":
-		var cuff = GlobalRegistry.createItem("inmateanklecuffs")
-		GM.pc.getInventory().forceEquipStoreOther(cuff)
+	# if _action == "walktocell":
+	# 	runScene("ParadedOnALeashScene", ["issix", GM.pc.getLocation(), "cellblock_red_nearcell", [
+	# 		"We're almost there, don't worry",
+	# 		"Hope you are ready, there is no going back from this",
+	# 		"Looking forward to letting go?",
+	# 		"Thinking is too hard for you, that's why you came to me. Don't worry, I'll relieve you of this burden soon",
+	# 		"You've made your choice, very soon you won't be able to make another"
+	# 	], "cellblock_red_nearcell", "crawl"])
+ #
+	# if _action == "soulfull":
+	# 	var cuff = GlobalRegistry.createItem("inmateanklecuffs")
+	# 	GM.pc.getInventory().forceEquipStoreOther(cuff)
 
 	if _action == "acceptslavery":
 		GM.pc.addExperience(100)

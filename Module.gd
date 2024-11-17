@@ -37,6 +37,8 @@ func getFlags():
 		# Slavery related
 		"PC_Enslavement_Role": flag(FlagType.Number),
 		"PC_Enslavement_Noncon": flag(FlagType.Bool),
+		"PC_Training_Level": flag(FlagType.Number),
+		"Issix_Mood": flag(FlagType.Number),
 		"Todays_Bred_Slave": flag(FlagType.Text),
 		"Progression_Day_Next": flag(FlagType.Number),
 		"Last_Day_Visited_Master": flag(FlagType.Number),
@@ -97,6 +99,13 @@ func _init():
 # "res://Game/World/Floors/Closet.gd"
 # "res://Game/World/Floors/Closet.tscn"
 
+static func addSceneToWatched(scene: String):
+	var scenes = GM.main.getModuleFlag("IssixModule", "Misc_Slavery_Info", {})
+	scenes["scenes_seen"].append(scene)
+	GM.main.setModuleFlag("IssixModule", "Misc_Slavery_Info",scenes)
+
+static func addIssixMood(mood: int):
+	setModuleFlag("IssixModule", "Issix_Mood", clamp(GM.main.getModuleFlag("IssixModule", "Issix_Mood", 50)+mood, 0, 100))
 
 static func getPlayerRole():
 	return "pet" if GM.main.getModuleFlag("IssixModule", "PC_Enslavement_Role", 1) == 1 else "prostitute"
@@ -106,3 +115,6 @@ func resetFlagsOnNewDay():
 	GM.main.setModuleFlag("IssixModule", "Activated_Cabinets", {})
 	GM.main.setModuleFlag("IssixModule", "Quest_Wait_Another_Day", false)
 	GM.main.setModuleFlag("IssixModule", "Todays_Bred_Slave", RNG.pick(['azazel', 'pc', 'hiisi']))
+	if GM.main.getModuleFlag("IssixModule", "Helped_Lamia_With_Drawings_Today") != null:
+		GM.main.setModuleFlag("IssixModule", "Helped_Lamia_With_Drawings_Today", false)
+	addIssixMood(RNG.randi_range(-7, 7))

@@ -15,7 +15,7 @@ A mod for Broken Dreams Correctional Center. Introduces Issix and his harem of s
 
 # Goals
 ## Mod's audience
-Mod is directed pretty much exclusively at players who are submissive. In game there are already a bunch of ways the player can effectively submit to other creatures - recentlishly added hypnokink is a great example of that, Tavi's questline also has a route/revolves around player submitting to Tavi as their pet. Those things are wonderful and I love them, but in-game slave system is definitely directed at dominant players. This mod tries to address that by adding a character that can enslave **the player**.
+Mod is directed pretty much exclusively at players who are submissive. In game there are already a bunch of ways the player can effectively submit to other creatures - recentlishly added hypnokink is a great example of that, Tavi's questline also has a route/revolves around player submitting to Tavi as their pet. Those things are wonderful and I love them, but in-game slave system is definitely directed at dominant players. This mod tries to address that by adding a character that can enslave **the player**. It features degradation, pet-play content.
 
 ## Slavery
 I think there is a reason why there are dozens of harem-management games where player becomes harem's owner and manages slave instead of being one. I think in large part there isn't much of a way to make the player be a slave and keep the gameplay entertaining. If becoming a slave means less choice - the game may become boring. In this mod I'm trying my best to still feel like player is enslaved while at the same time let them continue playing the game with full functionality. This is not an easy task to do, but probably better than eternity of being stuck in one time playing card game with another pet.
@@ -45,7 +45,7 @@ So many reasons.
 - I wanted to see if content I write can still have effect on myself (I doubt lol).
 - I wanted to express my own sexuality in a way.
 - I want the mod to be a little statement and action behind my words of supporting sex-positivity by contributing something sexual and being public about it (like on my website, also, this is not to say that the mod is for myself, even though in part it is)
-- I wanted to make a statement. I'm writing this mod in times where certain awful people gain power over incredibly powerful state in the world, their policies represent oppression against LGBT+ creatures. So in part, this mod is part of my advocacy for sex-positivity as well as acceptance of LGBT+ creatures, and therefore a political statement.
+- I wanted to make a statement. I'm writing this mod in times where certain awful people gain power over incredibly powerful state in the world, their policies represent oppression against creatures. So in part, this mod is part of my advocacy for sex-positivity as well as acceptance of LGBT+ creatures, and therefore a political statement.
 
 Majority of this mod's content has been written without too much thought put into it, on fly and on sheer impulse. I'm certainly far from award winning story writer, but I tried my best, only you can judge how good of a job I've done.
 

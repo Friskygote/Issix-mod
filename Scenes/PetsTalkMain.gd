@@ -1,5 +1,35 @@
 extends SceneBase
 
+var pick_up_lamia_art = [
+	"You pick up another art from the stash",
+	"With some difficulty you manage to separate the last artwork from the pile from the rest to look at it",
+	"You grab yet another artwork from the pile",
+	"With a swift grab another artwork from the pile is now yours to look at"
+	]
+
+var humanoids_lamia_art = [
+	"a group of inmates celebrating someone's birthday",
+	"an inmate staring at the cosmos behind the reinforced glass display",
+	"various species of humanoids having a party on what looks to be flying... Egg",
+	"a wolf person firing fireworks",
+	"a dragon person sitting inside the elevator, reading newspapers in her paws",
+	"portrait of a snake person with particularly long fangs sticking out from their maw"
+	]
+
+var animal_flora_lamia_art = [
+	"a goat standing on top of a mountain",
+	"a rabbit jumping above a huge ravine, even though they there is no way their paws could put them so high, considering their position they will likely land on the other side",
+	"a crow with a yellow circular object held in their beak",
+	"bear",
+	"multiple cats chasing each other as their small ones rest on a pillow nearby",
+	"a horse galloping in the distance"
+	]
+
+var background_lamia_art = [
+	"a large valley full of trees and small stream of water going down",
+	"a desert, with one dead tree on it, a couple of paw prints visible in the sand"
+	]
+
 func _init():
 	sceneID = "PetsTalkScene"
 
@@ -67,6 +97,10 @@ func _run():
 			pass  # TODO
 		addButton("Talk", "Talk to Lamia", "lamiatalk")
 		addButton("Appearance", "Look at Lamia", "lamiaappearance")
+		if getModuleFlag("IssixModule", "Helped_Lamia_With_Drawings_Today", false) == false:
+			addButton("Help", "You see a big stack of drawings and some drawers, it seems Lamia categorizes their drawings, ask if you could help?", "lamiahelp")
+		else:
+			addDisabledButton("Help", "You've helped the fox boyy today already")
 		saynn("")
 			
 	if(state == "catnip"):
@@ -169,9 +203,61 @@ func _run():
 		saynn("[say=azazel]Sometimes? I guess. I have those wants and needs when I'm pregnant, but Master always tries his best to keep me happy either way. And besides, if I'm not bred I tend to get really annoying, haha. Yeah...[/say]")
 		addButton("Back", "End this conversation", "azazelmain")
 
+	if state == "lamiahelp":
+		if getModuleFlag("IssixModule", "Helped_Lamia_With_Drawings_Today") == null:
+			saynn("You look at Lamia picking his artwork from the pile, staring at it for a moment and putting it into one of 4 containers on the side.")
+			saynn("[say=pc]Hey Lamia... Do you need help with that? I think your pile is quite large.[/say]")
+			saynn("They look at you with huge smile and nod their head in agreement, aggressively.")
+			saynn("[say=pc]Alright alright, but you'll have to show me what you are doing here. You are... Categorizing, right?[/say]")
+			saynn("They nod their head once again, grab some crayons, a sheet of paper and start drawing something. Not even a full minute in and they show you the effect.\nOn the drawing you can see four boxes one colored blue, red, green, purple respectively. Above the blue one there is a stick figure as well as a... Pen and a key.")
+			saynn("[say=pc]Hmm, so like, humanoids, pens and keys?[/say]")
+			saynn("They shake their head, pick a few artworks from the blue box, on them there are pretty regular things, anthro holding a baloon, another simply depicts a glass of water, yet another has just an anthro skunk on it. You wonder for a second, look at artwork in other boxes.")
+			saynn("[say=pc]Perhaps humanoids and... Things? Like items?[/say]")
+			saynn("They give you a smile and a nod, seems like you got that one. You look on the right, there is a red box with two arrows pointing at it from what looks to be a feral goat of some sorts as well as flowers.")
+			saynn("[say=pc]Nature maybe? Animals and flowers?[/say]")
+			saynn("Lamia nods excited.")
+			saynn("[say=pc]I'm getting good at this![/say]")
+			saynn("You look at the 3rd box. A green one. This is a rectangle which has a lot of colors on it. As if someone just wanted a colorful rectangle. You look at the artwork at the top of the green box and understand what's this about. It has a very detailed environment, with landscapes you'd never imagine exist in real life. But so beautiful too. It looks to be some sort of sandy area with large sandstone arch in the middle. There is a small but dry dree on the right.")
+			saynn("[say=pc]Backgrounds! Right?[/say]")
+			saynn("Lamia gives you thumbs up, they are shaking in excitement, one more and they may just have the energy to shoot out of this station. You laugh, and look at 4th box - purple one. This one is strange, there is just an arrow pointing at it from a circle? And square next to it.")
+			saynn("[say=pc]Figures maybe?[/say]")
+			saynn("Lamia moves their head from side to side. Are you close?")
+			saynn("[say=pc]Hmm. Geometrical shapes? Lines?[/say]")
+			saynn("They shake their head, that's not it. They again draw first three boxes and cross them out, they point at 4th box.")
+			saynn("[say=pc]Umm, whatever doesn't go in the first three goes in the last one?[/say]")
+			saynn("Lamia vigorously nods their head, that's it.")
+			saynn("[say=pc]Ahhhhhhh. I seeeee...[/say]")
+			addButton("Continue", "This doesn't seem to be all of it", "lamiaexplanationcont")
+
+	if state == "lamiaexplanationcont":
+
+		saynn("Lamia draws more things, he draws a stick figure with a goat, circles them and points arrow to the blue box, then they draw a goat, stick figure and a background, connect them in one circle and once again point arrow to the blue box. You enter deep thought what this could mean until an idea dawns on you.")
+		saynn("[say=pc]Do you mean connections? Like when one picture has more elements it goes to the blue box?[/say]")
+		saynn("Lamia nods.")
+		saynn("[say=pc]I seeee, so I assume if something has a humanoid then it always belongs in the blue box?[/say]")
+		saynn("Lamia nods again.")
+		saynn("[say=pc]Got you.[/say]")
+		saynn("Lamia then draws a goat and a background, but without a stick figure this time, encircles them and points to green box.")
+		saynn("[say=pc]Green box takes the priority when something doesn't go into blue box but has a background.[/say]")
+		saynn("Lamia confirms your guess. At last they draw a... Tablet? And a baton with sparks? Then a... Flashlight, you think.")
+		saynn("[say=pc]Hmm. Electronic devices?[/say]")
+		saynn("Lamia nods and makes an arrow pointing to the purple box.")
+		saynn("[say=pc]I see, I see.[/say]")
+		saynn("With that, Lamia gives you the piece of paper he drew explanations on. This seems to be all... You look at it for the last time and think you are ready to go.")
+		saynn("[say=pc]Alright, can you watch me when I try for the first time?[/say]")
+		saynn("Lamia nods, very happy with himself.")
+		addButton("Help out", "Start sorting through the artwork stash.", "artminigame")
+
+	if state == "artminigame":
+
+
 
 	if state == "lamiatalk":
 		addButton("Try drawing", "You can try and draw something with lamia", "lamiadraw")  # TODO
+
+func generate_artwork_desc():
+
+	return
 
 func _react(_action: String, _args):
 	if(_action == "catnip"):

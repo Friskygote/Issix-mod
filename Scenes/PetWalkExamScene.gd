@@ -83,6 +83,8 @@ func _run():
 	if state == "walkies3":
 		processTime(15*60)
 		clearCharacter()
+		aimCamera("yard_waterfall")
+		setLocationName("Pasture")
 		addCharacter("azazel")
 		addCharacter("hiisi")
 		addCharacter("lamia")
