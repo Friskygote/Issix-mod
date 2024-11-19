@@ -43,7 +43,8 @@ func getFlags():
 		"Progression_Day_Next": flag(FlagType.Number),
 		"Last_Day_Visited_Master": flag(FlagType.Number),
 		"Misc_Slavery_Info": flag(FlagType.Dict),
-		"Progression_Points": flag(FlagType.Number)
+		"Progression_Points": flag(FlagType.Number),
+		"Taught_To_Use_Bowl": flag(FlagType.Bool)
 		}
 		
 

@@ -1,5 +1,9 @@
 extends SceneBase
 
+var artwork = null
+var arts_reviewed = 0
+var arts_correct = 0
+
 var pick_up_lamia_art = [
 	"You pick up another art from the stash",
 	"With some difficulty you manage to separate the last artwork from the pile from the rest to look at it",
@@ -13,7 +17,7 @@ var humanoids_lamia_art = [
 	"various species of humanoids having a party on what looks to be flying... Egg",
 	"a wolf person firing fireworks",
 	"a dragon person sitting inside the elevator, reading newspapers in her paws",
-	"portrait of a snake person with particularly long fangs sticking out from their maw"
+	"portrait of a snake person with particularly long fangs sticking out from their maw",
 	]
 
 var animal_flora_lamia_art = [
@@ -25,9 +29,37 @@ var animal_flora_lamia_art = [
 	"a horse galloping in the distance"
 	]
 
+var humanoids_animals_lamia_art = [
+	"an anthro cat holding a little feral mouse on palm of their paw"
+	]
+
 var background_lamia_art = [
 	"a large valley full of trees and small stream of water going down",
-	"a desert, with one dead tree on it, a couple of paw prints visible in the sand"
+	"a desert, with one dead tree on it, a couple of paw prints visible in the sand",
+	"momentous buildings stretching in all directions, various shuttle tracks between them",
+	"darkness extending everywhere, the little light that can be found on the picture gives you a hint that the drawing shows some kind of a mine, with glistering rock and a lake in the distance",
+	"stalactites and stalagmites extending from the top and bottom of the cave, a torch is visible somewhere deeper in the cave"
+	]
+	
+var animals_backgrounds_lamia_art = [
+		"a jungle full of flora, you see giant trees as well as a large amount of green plants, some purple flowers growing here and there",
+	]
+
+var humanoids_backgrounds_lamia_art = [
+	"an anthro bull stands at the top of the mountain looking at clear view of green terrains below them"
+]
+
+var electronics_lamia_art = [
+	"lorem ipsum"
+	]
+
+var all_features_combined_lamia_art = [
+		"lorem ipsum"
+	]
+
+var odd_lamia_art = [
+	"a worm that seems to have a very slippery texture, on one of the ends there is a simple „tail” with spike like ending, while the other seems to be a hollowed circle with numerous tiny teeth around it",
+	"at first it seems like a tube of some sorts, though later you notice that this tube ends with a hole on one end, around the „hole” a bunch of yellowish protrusions extending from the fleshy tube"
 	]
 
 func _init():
@@ -204,6 +236,8 @@ func _run():
 		addButton("Back", "End this conversation", "azazelmain")
 
 	if state == "lamiahelp":
+		arts_reviewed = 0
+		arts_correct = 0
 		if getModuleFlag("IssixModule", "Helped_Lamia_With_Drawings_Today") == null:
 			saynn("You look at Lamia picking his artwork from the pile, staring at it for a moment and putting it into one of 4 containers on the side.")
 			saynn("[say=pc]Hey Lamia... Do you need help with that? I think your pile is quite large.[/say]")
@@ -230,7 +264,6 @@ func _run():
 			addButton("Continue", "This doesn't seem to be all of it", "lamiaexplanationcont")
 
 	if state == "lamiaexplanationcont":
-
 		saynn("Lamia draws more things, he draws a stick figure with a goat, circles them and points arrow to the blue box, then they draw a goat, stick figure and a background, connect them in one circle and once again point arrow to the blue box. You enter deep thought what this could mean until an idea dawns on you.")
 		saynn("[say=pc]Do you mean connections? Like when one picture has more elements it goes to the blue box?[/say]")
 		saynn("Lamia nods.")
@@ -249,17 +282,74 @@ func _run():
 		addButton("Help out", "Start sorting through the artwork stash.", "artminigame")
 
 	if state == "artminigame":
+		saynn(RNG.choice(pick_up_lamia_art)+". The new artwork features "+artwork[1])
+		addButton("Blue box", "Put the artwork on top of others in the blue box", "blueboxlamia1")
+		addButton("Red box", "Put the artwork on top of others in the red box", "redboxlamia2")
+		addButton("Green box", "Put the artwork on top of others in the green box", "greenboxlamia3")
+		addButton("Purple box", "Put the artwork on top of others in the purple box", "purpleboxlamia4")
 
+	if state == "artminigamegoodend":
+		pass
 
+	if state == "artminigamebadend":
+		pass
 
 	if state == "lamiatalk":
 		addButton("Try drawing", "You can try and draw something with lamia", "lamiadraw")  # TODO
 
-func generate_artwork_desc():
+func generate_artwork_desc(descriptors: Array):
+	if descriptors.size() > 1 and RNG.randi_range(1, 6) < 3:
+		match descriptors:
+			[1, 2]:
+				return RNG.choice(humanoids_animals_lamia_art)
+			[1, 3]:
+				return RNG.choice(humanoids_backgrounds_lamia_art)
+			[2, 3]:
+				return RNG.choice(animals_backgrounds_lamia_art)
+			_:
+				return RNG.choice(all_features_combined_lamia_art)
+	else:
+		var result = ""
+		descriptors.shuffle()
+		while descriptors.size() > 0:
+			if result != "":
+				result = result + ", "
+			var feature = descriptors.pop_front()
+			match feature:
+				1:
+					result = result + RNG.choice(humanoids_lamia_art)
+				2:
+					result = result + RNG.choice(animal_flora_lamia_art)
+				3:
+					result = result + RNG.choice(background_lamia_art)
+				4:
+					result = result + RNG.choice(electronics_lamia_art)
+				5:
+					result = result + RNG.choice(odd_lamia_art)
+		return result
 
-	return
+
+func verify_response(response: int):
+	pass
+
 
 func _react(_action: String, _args):
+	if _action in ["blueboxlamia1", "redboxlamia2", "greenboxlamia3", "purpleboxlamia4"]:
+		verify_response(int(_action[-1]))
+		arts_reviewed += 1
+		if arts_reviewed >= 10:
+			if arts_correct > 7:
+				_action = "artminigamegoodend"
+			else:
+				_action = "artminigamebadend"
+		else:
+			_action = "artminigame"
+
+	if _action == "artminigame":
+		# 1 - humanoids and items, 2 - feral animals and flora, 3 - backgrounds, 4 - others/electronic devices
+		var art_rand = RNG.pickWeighted([[1], [2], [3], [4], [1, 2], [1, 3], [2, 3], [1, 2, 3], [5]], [15, 15, 15, 5, 15, 15, 5, 4, 1])
+		artwork = [art_rand, generate_artwork_desc(art_rand)]
+
 	if(_action == "catnip"):
 		GM.pc.getInventory().removeXOfOrDestroy("CatnipPlant", 1)
 		GM.main.getCharacter("azazel").addLust(10)
