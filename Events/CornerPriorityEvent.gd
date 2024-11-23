@@ -1,10 +1,10 @@
 extends EventBase
 
 func _init():
-	id = "IssixEvent"
+	id = "IssixSpecialEvent"
 
 
-var registered_special_scenes = [['IssixSlaveryIntroCont', 1]]
+var registered_special_scenes = [['IssixSlaveryIntroCont', 1], ['IssixSlaveryBowlTraing', 2]]
 
 func sort_by_progressionpoints(a, b):
 	if a[1] < b[1]:

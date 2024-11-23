@@ -12,6 +12,8 @@ func getFlags():
 		"Azazel_Catnip_found": flag(FlagType.Bool),
 		"Azazel_Catnip_taken_today": flag(FlagType.Bool),
 		"Azazel_Affection_given": flag(FlagType.Number),
+		"Lamia_Times_Helped": flag(FlagType.Number),
+		"Helped_Lamia_With_Drawings_Today": flag(FlagType.Bool),
 		"Quest_Bonked": flag(FlagType.Bool),
 		"Quest_Wait_Another_Day": flag(FlagType.Bool),
 		"Activated_Cabinets": flag(FlagType.Dict),
@@ -44,7 +46,8 @@ func getFlags():
 		"Last_Day_Visited_Master": flag(FlagType.Number),
 		"Misc_Slavery_Info": flag(FlagType.Dict),
 		"Progression_Points": flag(FlagType.Number),
-		"Taught_To_Use_Bowl": flag(FlagType.Bool)
+		"Taught_To_Use_Bowl": flag(FlagType.Bool),
+		"Issix_Branded_PC": flag(FlagType.Bool)
 		}
 		
 
@@ -59,7 +62,9 @@ func _init():
 		"res://Modules/IssixModule/Events/IssixQuestionnaireEvent.gd", 
 		"res://Modules/IssixModule/Events/MedicalPeekEvent.gd", 
 		"res://Modules/IssixModule/Events/PetWalkExamEvent.gd", 
-		"res://Modules/IssixModule/Events/PlayerCellModifierEvent.gd"
+		"res://Modules/IssixModule/Events/PlayerCellModifierEvent.gd",
+		"res://Modules/IssixModule/Events/CornerPriorityEvent.gd",
+		"res://Modules/IssixModule/Events/SlaveryIntroEvent.gd"
 		]
 		
 	scenes = [
@@ -71,7 +76,10 @@ func _init():
 		"res://Modules/IssixModule/Scenes/NoPetsTalkMain.gd", 
 		"res://Modules/IssixModule/Scenes/PetsTalkMain.gd", 
 		"res://Modules/IssixModule/Scenes/PetWalkExamScene.gd", 
-		"res://Modules/IssixModule/Scenes/PlayerCellModifierScene.gd"
+		"res://Modules/IssixModule/Scenes/PlayerCellModifierScene.gd",
+		"res://Modules/IssixModule/Scenes/Overwrites/EatInCanteenScene.gd",
+		"res://Modules/IssixModule/Scenes/SlaveryFirst/SlaveryIntroContScene.gd",
+		"res://Modules/IssixModule/Scenes/SlaveryFirst/SlaveryTrainingBowlScene.gd"
 		]
 		
 	characters = [
@@ -95,6 +103,8 @@ func _init():
 		"res://Modules/IssixModule/IssixPetQuest.gd"
 	]
 
+	GlobalRegistry.registerLustTopicFolder("res://Modules/IssixModule/InterestTopics/")
+
 # External
 # "res://Scenes/ParadedOnALeashScene.gd"
 # "res://Game/World/Floors/Closet.gd"
@@ -106,7 +116,7 @@ static func addSceneToWatched(scene: String):
 	GM.main.setModuleFlag("IssixModule", "Misc_Slavery_Info",scenes)
 
 static func addIssixMood(mood: int):
-	setModuleFlag("IssixModule", "Issix_Mood", clamp(GM.main.getModuleFlag("IssixModule", "Issix_Mood", 50)+mood, 0, 100))
+	GM.main.setModuleFlag("IssixModule", "Issix_Mood", clamp(GM.main.getModuleFlag("IssixModule", "Issix_Mood", 50)+mood, 0, 100))
 
 static func getPlayerRole():
 	return "pet" if GM.main.getModuleFlag("IssixModule", "PC_Enslavement_Role", 1) == 1 else "prostitute"

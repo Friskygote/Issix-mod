@@ -18,19 +18,24 @@ var humanoids_lamia_art = [
 	"a wolf person firing fireworks",
 	"a dragon person sitting inside the elevator, reading newspapers in her paws",
 	"portrait of a snake person with particularly long fangs sticking out from their maw",
+	"an anthro zebra dancing on a strip pole",
+	"multiple versions of legs belonging to a bovine anthro, likely drawn for practice"
 	]
 
 var animal_flora_lamia_art = [
 	"a goat standing on top of a mountain",
 	"a rabbit jumping above a huge ravine, even though they there is no way their paws could put them so high, considering their position they will likely land on the other side",
 	"a crow with a yellow circular object held in their beak",
-	"bear",
+	"feral bear fishing",
 	"multiple cats chasing each other as their small ones rest on a pillow nearby",
-	"a horse galloping in the distance"
+	"a horse galloping in the distance",
+	"a spread purple flower that has multiple petals of various sizes attached"
 	]
 
 var humanoids_animals_lamia_art = [
-	"an anthro cat holding a little feral mouse on palm of their paw"
+	"an anthro cat holding a little feral mouse on palm of their paw",
+	"a cat person leading their feral dog on a leash",
+	"coyote person releasing a bird - a white dove from their paws into the air, the dove flies away"
 	]
 
 var background_lamia_art = [
@@ -38,28 +43,32 @@ var background_lamia_art = [
 	"a desert, with one dead tree on it, a couple of paw prints visible in the sand",
 	"momentous buildings stretching in all directions, various shuttle tracks between them",
 	"darkness extending everywhere, the little light that can be found on the picture gives you a hint that the drawing shows some kind of a mine, with glistering rock and a lake in the distance",
-	"stalactites and stalagmites extending from the top and bottom of the cave, a torch is visible somewhere deeper in the cave"
+	"stalactites and stalagmites extending from the top and bottom of the cave, a torch is visible somewhere deeper in the cave",
+	"what looks to be an empty dog park with various dog attractions in it, in the background you can see sun raising from the horizon - it must be early morning",
 	]
 	
 var animals_backgrounds_lamia_art = [
 		"a jungle full of flora, you see giant trees as well as a large amount of green plants, some purple flowers growing here and there",
+		"a bird's-eye view of abandoned city, reclaimed by nature, full of thorny vines and trees growing from the houses"
 	]
 
 var humanoids_backgrounds_lamia_art = [
 	"an anthro bull stands at the top of the mountain looking at clear view of green terrains below them"
 ]
 
-var electronics_lamia_art = [
-	"lorem ipsum"
+var other_lamia_art = [
+	"a wide assortment of geometrical figures - squares, triangles and hexadecagons",
+	""
 	]
 
 var all_features_combined_lamia_art = [
-		"lorem ipsum"
+		"some sort of a spaceship, multiple people hanging out, laughing and eating in its living area, you can spot a feral bird in one of the cages placed on a table in this wide open space",
+		"a bunch of masculine tribe anthropomorphic canines hunting for what looks to be a wyvern of some sort in the air, they use primitive tools like spears thrown into air, the area they are located in seems very swampy with plenty of mud and flora that usually grows in highly watery places"
 	]
 
 var odd_lamia_art = [
 	"a worm that seems to have a very slippery texture, on one of the ends there is a simple „tail” with spike like ending, while the other seems to be a hollowed circle with numerous tiny teeth around it",
-	"at first it seems like a tube of some sorts, though later you notice that this tube ends with a hole on one end, around the „hole” a bunch of yellowish protrusions extending from the fleshy tube"
+	"at first what seems like a tube of some sorts, though later you notice that this tube ends with a hole on one end, around the „hole” a bunch of yellowish protrusions extending from the fleshy tube"
 	]
 
 func _init():
@@ -109,9 +118,32 @@ func _run():
 		if HiisiRPS != null:
 			if HiisiRPS["chosen_reward"] == 3 and HiisiRPS["reward_acquired"] == false:
 				addButton("Drink", "Ask Hiisi about energy drink that you've won through the game of Rock Paper Scissors", "hiisienergy")
-				
-				
-		# TODO
+		addButton("Name", "Ask Hiisi about his name", "hiisiname")
+
+	if state == "hiisiname":
+		saynn("[say=pc]Hey Hiisi, can you tell me something more about your name? It feels kind of odd.[/say]")
+		saynn("Hiisi looks down")
+		saynn("[say=hiisi]I suppose, not a common one. And I don't really know much, I don't know much about my name, I don't remember much of my past.[/say]")
+		saynn("[say=pc]Oh? That... Sucks...[/say]")
+		saynn("[say=hiisi]Yeah. It's also pretty common that inmates make fun of it.[/say]")
+		saynn("[say=pc]Why?[/say]")
+		saynn("[say=hiisi]You know... The other word. Even though it's not really pronounced the same way, there are similarities.[/say]")
+		saynn("[say=pc]The other wor- Ohhhh. I'm sorry to hear that.[/say]")
+		saynn("[say=hiisi]It's not easy to get used to it, should I even get used to it? I don't know. I've heard it so many times now that it only makes me angry. It hurts.[/say]")
+		saynn("Hiisi's voice is breaking down, he is about to cry.")
+		addButton("Reassure", "Hug Hiisi and let him know you are here for him", "hiisireassure")
+		addButton("Silence", "Let Hiisi deal with his feelings by himself", "hiisisilence")
+		addButton("Man up", "Tell Hiisi to harden up and stop whining", "hiisiadvice")
+
+	if state == "hiisireassure":
+		saynn("You approach Hiisi and embrace him in a warm hug. You choose not to say anything, deciding that this comfort is telling enough, you aren't judging them for crying, it's only natural. They weep for a few seconds, before stopping.")
+		saynn("[say=hiisi]... Thank you, I needed this.[/say]")
+		saynn("[say=pc]Hey, it's not your fault, people are just jerks.[/say]")
+		saynn("[say=hiisi]I know... I know...[/say]")
+		saynn("You release Hiisi from your embrace, he still looks like a mess but they seem better now.")
+
+
+
 	if state == "hiisienergy":
 		var HiisiRPS = getModuleFlag("IssixModule", "Hissi_RPS_data")
 		HiisiRPS["reward_acquired"] = true
@@ -124,15 +156,26 @@ func _run():
 	if(state == "lamiamain"):
 		if getModuleFlag("IssixModule", "PC_Enslavement_Role", 0) == 0:
 			saynn("You approach Lamia")
-			
+			var lamia_mood = getModuleFlag("IssixModule", "Lamia_Times_Helped")
+			if lamia_mood < -5:
+				saynn("He notices you and gives you a neural look of face, awaiting your further interactions.")
+			elif lamia_mood < 5:
+				saynn("He notices you and smiles.")
+			elif lamia_mood < 15:
+				saynn("He notices you, gives you a warm smile and invites you onto his blanket.")
+			else:
+				saynn("He notices you and immediately his fox tail swishes right and left, his face expression very happy to see you he invites you onto his blanket.")
 		else:
 			pass  # TODO
 		addButton("Talk", "Talk to Lamia", "lamiatalk")
 		addButton("Appearance", "Look at Lamia", "lamiaappearance")
-		if getModuleFlag("IssixModule", "Helped_Lamia_With_Drawings_Today", false) == false:
-			addButton("Help", "You see a big stack of drawings and some drawers, it seems Lamia categorizes their drawings, ask if you could help?", "lamiahelp")
-		else:
-			addDisabledButton("Help", "You've helped the fox boyy today already")
+		match getModuleFlag("IssixModule", "Helped_Lamia_With_Drawings_Today"):
+			null:
+				addButton("Help", "You see a big stack of drawings and some drawers, it seems Lamia categorizes their drawings, ask if you could help?", "lamiahelp")
+			true:
+				addDisabledButton("Help", "You've helped the fox boyy today already")
+			false:
+				addButton("Help", "You see a big stack of drawings filled again, ask if you could help sorting it?", "artminigame")
 		saynn("")
 			
 	if(state == "catnip"):
@@ -243,10 +286,10 @@ func _run():
 			saynn("[say=pc]Hey Lamia... Do you need help with that? I think your pile is quite large.[/say]")
 			saynn("They look at you with huge smile and nod their head in agreement, aggressively.")
 			saynn("[say=pc]Alright alright, but you'll have to show me what you are doing here. You are... Categorizing, right?[/say]")
-			saynn("They nod their head once again, grab some crayons, a sheet of paper and start drawing something. Not even a full minute in and they show you the effect.\nOn the drawing you can see four boxes one colored blue, red, green, purple respectively. Above the blue one there is a stick figure as well as a... Pen and a key.")
-			saynn("[say=pc]Hmm, so like, humanoids, pens and keys?[/say]")
-			saynn("They shake their head, pick a few artworks from the blue box, on them there are pretty regular things, anthro holding a baloon, another simply depicts a glass of water, yet another has just an anthro skunk on it. You wonder for a second, look at artwork in other boxes.")
-			saynn("[say=pc]Perhaps humanoids and... Things? Like items?[/say]")
+			saynn("They nod their head once again, grab some crayons, a sheet of paper and start drawing something. Not even a full minute in and they show you the effect.\nOn the drawing you can see four boxes one colored blue, red, green, purple respectively. Above the blue one there is a stick figure.")
+			# saynn("[say=pc]Hmm, so like, people?[/say]")
+			# saynn("They shake their head, pick a few artworks from the blue box, on them there are pretty regular things, anthro holding a baloon, another simply depicts a glass of water, yet another has just an anthro skunk on it. You wonder for a second, look at artwork in other boxes.")
+			saynn("[say=pc]Perhaps... People?[/say]")
 			saynn("They give you a smile and a nod, seems like you got that one. You look on the right, there is a red box with two arrows pointing at it from what looks to be a feral goat of some sorts as well as flowers.")
 			saynn("[say=pc]Nature maybe? Animals and flowers?[/say]")
 			saynn("Lamia nods excited.")
@@ -264,14 +307,14 @@ func _run():
 			addButton("Continue", "This doesn't seem to be all of it", "lamiaexplanationcont")
 
 	if state == "lamiaexplanationcont":
-		saynn("Lamia draws more things, he draws a stick figure with a goat, circles them and points arrow to the blue box, then they draw a goat, stick figure and a background, connect them in one circle and once again point arrow to the blue box. You enter deep thought what this could mean until an idea dawns on you.")
+		saynn("Lamia draws more things, he draws a stick figure with a goat, circles them and points arrow to the blue box, then they draw a goat, stick figure and a background, connect them in one circle and points arrow to the green box. You enter deep thought what this could mean until an idea dawns on you.")
 		saynn("[say=pc]Do you mean connections? Like when one picture has more elements it goes to the blue box?[/say]")
 		saynn("Lamia nods.")
-		saynn("[say=pc]I seeee, so I assume if something has a humanoid then it always belongs in the blue box?[/say]")
+		saynn("[say=pc]I seeee, so I assume if something would go to the blue and red box then it belongs in the blue box? Like, humanoids take priority?[/say]")
 		saynn("Lamia nods again.")
 		saynn("[say=pc]Got you.[/say]")
-		saynn("Lamia then draws a goat and a background, but without a stick figure this time, encircles them and points to green box.")
-		saynn("[say=pc]Green box takes the priority when something doesn't go into blue box but has a background.[/say]")
+		saynn("Lamia then draws a goat and a background, but without a stick figure this time, encircles them and points to red box.")
+		saynn("[say=pc]If there is something from the red box but it also has a background it should still go to the red box. That does make sense, you want to focus on elements on the drawings when categorizing, and sometimes you just draw background for them but it isn't just the background artwork.[/say]")
 		saynn("Lamia confirms your guess. At last they draw a... Tablet? And a baton with sparks? Then a... Flashlight, you think.")
 		saynn("[say=pc]Hmm. Electronic devices?[/say]")
 		saynn("Lamia nods and makes an arrow pointing to the purple box.")
@@ -282,17 +325,30 @@ func _run():
 		addButton("Help out", "Start sorting through the artwork stash.", "artminigame")
 
 	if state == "artminigame":
-		saynn(RNG.choice(pick_up_lamia_art)+". The new artwork features "+artwork[1])
+		if arts_reviewed:
+			saynn("You've rated "+str(arts_reviewed)+"/10 artworks.")
+		if artwork[2] == true:
+			saynn(RNG.choice(pick_up_lamia_art)+". The new artwork features "+RNG.choice(odd_lamia_art)+". Although after short moment the artowrk is swiftly taken from you by Lamia who feels unusually flustered about you seeing it. He flips it upside down so the drawings are not visible to anyone anymore and puts it into the last box like this. Embarrassed he picks up another artwork from the pile and hands it to you. The new artwork features "+artwork[1]+".")
+		else:
+			saynn(RNG.choice(pick_up_lamia_art)+". The new artwork features "+artwork[1]+".")
 		addButton("Blue box", "Put the artwork on top of others in the blue box", "blueboxlamia1")
 		addButton("Red box", "Put the artwork on top of others in the red box", "redboxlamia2")
 		addButton("Green box", "Put the artwork on top of others in the green box", "greenboxlamia3")
 		addButton("Purple box", "Put the artwork on top of others in the purple box", "purpleboxlamia4")
 
 	if state == "artminigamegoodend":
-		pass
+		saynn("Putting the last artwork into the box together both you and Lumia have reached the end of artwork to sort. Lumia very happy the job has been done gives you a pat on your head and a large smile.")
+		if RNG.randi_range(1,3)==2:
+			saynn("Seeing the great job you've done he also shares half of a cookie with you, which you consume on spot.")
+			GM.pc.addStamina(10)
+
+		saynn("[say=pc]So... A job well done?[/say]")
+		saynn("Lamia decisively agrees. He grabs boxes, stacks them and puts nearby, stretching their limbs.")
+		addButton("Finish", "You've helped Lamia sort through the art, there is no more artwork to be sorted", "lamiamain")
 
 	if state == "artminigamebadend":
-		pass
+		saynn("Putting the last artwork into the box you finally empty the pile of unsorted artwork. Lumia thanks you for your help and sends you off. When you look behind he is picking artwork from some of the sorted piles and moves his work between boxes, have you made mistakes?")
+		addButton("Finish", "You've helped Lamia sort through the art, there is no more artwork to be sorted", "lamiamain")
 
 	if state == "lamiatalk":
 		addButton("Try drawing", "You can try and draw something with lamia", "lamiadraw")  # TODO
@@ -323,32 +379,48 @@ func generate_artwork_desc(descriptors: Array):
 				3:
 					result = result + RNG.choice(background_lamia_art)
 				4:
-					result = result + RNG.choice(electronics_lamia_art)
-				5:
-					result = result + RNG.choice(odd_lamia_art)
+					result = result + RNG.choice(other_lamia_art)
 		return result
 
 
 func verify_response(response: int):
-	pass
+	if artwork[0] == [1, 2, 3]:
+		return response == 3
+	elif artwork[0] == [1, 2]:
+		return response == 1
+	elif 1 in artwork[0]:
+		return response == 1
+	elif 2 in artwork[0]:
+		return response == 2
+	elif artwork[0] == [3]:
+		return response == 3
+	return response == 4
 
 
 func _react(_action: String, _args):
 	if _action in ["blueboxlamia1", "redboxlamia2", "greenboxlamia3", "purpleboxlamia4"]:
-		verify_response(int(_action[-1]))
+		if verify_response(int(_action[-1])):
+			arts_correct += 1
 		arts_reviewed += 1
 		if arts_reviewed >= 10:
 			if arts_correct > 7:
 				_action = "artminigamegoodend"
 			else:
 				_action = "artminigamebadend"
+			GM.main.setModuleFlag("IssixModule", "Helped_Lamia_With_Drawings_Today", true)
 		else:
 			_action = "artminigame"
 
+	if _action == "artminigamegoodend":
+		increaseModuleFlag("IssixModule", "Lamia_Times_Helped")
+
+	if _action == "artminigamebadend":
+		increaseModuleFlag("IssixModule", "Lamia_Times_Helped", -1)
+
 	if _action == "artminigame":
 		# 1 - humanoids and items, 2 - feral animals and flora, 3 - backgrounds, 4 - others/electronic devices
-		var art_rand = RNG.pickWeighted([[1], [2], [3], [4], [1, 2], [1, 3], [2, 3], [1, 2, 3], [5]], [15, 15, 15, 5, 15, 15, 5, 4, 1])
-		artwork = [art_rand, generate_artwork_desc(art_rand)]
+		var art_rand = RNG.pickWeighted([[1], [2], [3], [4], [1, 2], [1, 3], [2, 3], [1, 2, 3]], [15, 15, 15, 5, 15, 15, 5, 4])
+		artwork = [art_rand, generate_artwork_desc(art_rand), RNG.randi_range(1,151) == 50]
 
 	if(_action == "catnip"):
 		GM.pc.getInventory().removeXOfOrDestroy("CatnipPlant", 1)

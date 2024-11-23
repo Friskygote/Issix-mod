@@ -59,6 +59,16 @@ func _run():
 			GM.ES.triggerRun(Trigger.TalkingToNPC, ["issix"])
 			addButton("Leave", "Be on your way", "endthescene")
 			
+	if state == "guards":
+		saynn("[say=pc]What about guards? Are they not a problem for your operations?[/say]")
+		saynn("[say=issix]Guards? No. They are just a gear in the system. As to my attitude towards them - I guess it's pretty symbiotic. I'm a very nice inmate not making them any trouble and they leave me alone to my devious plans. My past earned me some privileges in here that no other can claim, by no means I'm untouchable but I'm close to being that. There are a few deals I have with the guards that allow me to live in here on my own terms, and its to their own benefit as well.[/say]")
+		saynn("[say=pc]Really? So you are a big deal?[/say]")
+		saynn("He takes a long breath")
+		saynn("[say=issix]Nothing you have to worry about, morsel. All you need to know is to not cross me or any of my precious pets. That's all I want you to keep in mind.[/say]")
+		saynn("[say=pc]Any way I could get on on some of deals you've mentioned?[/say]")
+		saynn("[say=issix]Don't push it, morsel. If you are looking for charity this isn't the way to look.[/say]")
+		addButton("Back","Issix seems annoyed, marking this conversation over", "talk")
+
 	if state == "prison":
 		saynn("You ask Issix about how he ended up in here. He looks at you with intensity, studying your face.")
 		saynn("[say=issix]Honestly, don't think there is much for you to know morsel. But sure, I can entertain you a little.[/say]")
@@ -132,6 +142,7 @@ func _run():
 		saynn("[say=pc]Who are you?[/say]")
 		saynn("[say=issix]Oh, I'm just a dragon-demon, nobody special. I dabble in... Equipment, and make bunch of things out of it. If you have some unused restraints, feel free to donate them to me, I'll be sure to make use of them, and maybe reward you a little, if I feel like it.[/say]")
 		saynn("[say=pc]How long have you been in here?[/say]")
+		saynn("[say=issix]A long while, compared to the others in here, several years at least. Enough to make some reputation for myself. [/say]")
 		addButton("Back", "If he says so", "name")
 
 	if(state == "pets2"):
@@ -240,7 +251,7 @@ func _run():
 			saynn("[say=issix]Hmm. you still look mostly the same, still unworthy.[/say]")
 		else:
 			saynn("[say=issix]Look, you are lovely and all that, but I don't think you have what it takes to join my other pets. I require absolute obedience and sexual experience. Once you submit to me there is no going back, you become MY treasured pet forever. Those three? They know their place, they are ready to be mated whenever I feel like doing so. They obey my every single command. I just don't see that in you, sorry.[/say]")
-		addButton("Back", "Maybe another time then...", "pets2")
+		addButton("Back", "Maybe another time then...", "talk")
 		
 	if(state == "quest"):
 		playAnimation(StageScene.Duo, "stand", {npc="issix", npcAction="sit"})
@@ -312,11 +323,7 @@ func _run():
 		saynn("[say=issix]And with just that you've passed my first test. Congratulations! I knew you could do it.[/say]")
 		saynn("[say=issix]That would be it for today. For your next time I'll have to prepare a little. I should have something for you tomorrow, so please come then.[/say]")
 		addButton("Alright", "Leave", "endthescene")
-		# Which body part you hold dearest?
-		# 2 questions based on stories from Tavi, and Rahi, using their flags to phrase the questions
-		# Trolley problem?
-		# Favorite species
-		# 
+
 
 func calculateHaremScore():
 	var score = 0
