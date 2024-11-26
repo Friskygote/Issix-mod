@@ -108,7 +108,7 @@ func _run():
 		else:
 			saynn("[say=issix]You are such a good pet that you are already naked. That's really good, as I want to know every part of your body before I have fun with you.[/say]")
 		for slot in GM.pc.getInventory().getEquippedItems():  # Force unequip all items, why is there getEquippedItems and getAllEquippedItems doing the same thing lol
-			saynn("Issix took off your "+GM.pc.getInventory()[slot].getVisibleName()+".")
+			saynn("Issix took off your "+GM.pc.getInventory()["equippedItems"][slot].getVisibleName()+".")
 			GM.pc.getInventory().unequipSlot(slot)
 		saynn("He grabs a leash hanging from the armrest of his chair, shows it to you.")
 		saynn("[say=issix]Ready to become my pet for real this time? You've already given your fate into my paws, we might as well get this over with.[/say]")

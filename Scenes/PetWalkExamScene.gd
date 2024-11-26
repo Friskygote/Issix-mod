@@ -53,7 +53,7 @@ func _run():
 		
 	if state == "walkies2":
 		processTime(10*60)
-		aimCamera("main_yard_connector")
+		aimCameraAndSetLocName("main_yard_connector")
 		setLocationName("Corridor")
 		addCharacter("issix")
 		addCharacter("nova")

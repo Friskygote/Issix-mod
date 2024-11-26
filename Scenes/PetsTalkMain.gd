@@ -141,6 +141,10 @@ func _run():
 		saynn("[say=pc]Hey, it's not your fault, people are just jerks.[/say]")
 		saynn("[say=hiisi]I know... I know...[/say]")
 		saynn("You release Hiisi from your embrace, he still looks like a mess but they seem better now.")
+		addButton("Back", "You've helped the doggo", "hiisitalk")
+
+	if state == "hiisisilence":
+		saynn("Instead of proactive approach you let Hiisi sort his stuff on his own, he weeps for a minute, not saying anything")
 
 
 

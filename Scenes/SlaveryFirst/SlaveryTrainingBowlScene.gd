@@ -69,10 +69,12 @@ func _react(_action: String, _args):
 	if _action == "nofood":
 		GM.pc.addStamina(30)
 		GM.pc.addPain(-10)
+		setModuleFlag("IssixModule", "Progression_Day_Next", GM.main.getDays()+6)
 
 	if _action == "yesfood":
 		GM.pc.addStamina(60)
 		GM.pc.addPain(-10)
+		setModuleFlag("IssixModule", "Progression_Day_Next", GM.main.getDays()+3)
 
 	if(_action == "endthescene"):
 		increaseModuleFlag("IssixModule", "PC_Training_Level")

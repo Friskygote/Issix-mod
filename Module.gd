@@ -79,7 +79,8 @@ func _init():
 		"res://Modules/IssixModule/Scenes/PlayerCellModifierScene.gd",
 		"res://Modules/IssixModule/Scenes/Overwrites/EatInCanteenScene.gd",
 		"res://Modules/IssixModule/Scenes/SlaveryFirst/SlaveryIntroContScene.gd",
-		"res://Modules/IssixModule/Scenes/SlaveryFirst/SlaveryTrainingBowlScene.gd"
+		"res://Modules/IssixModule/Scenes/SlaveryFirst/SlaveryTrainingBowlScene.gd",
+		"res://Modules/IssixModule/Scenes/SlaveryFirst/SlaveryBrandingScene.gd"
 		]
 		
 	characters = [
@@ -111,7 +112,7 @@ func _init():
 # "res://Game/World/Floors/Closet.tscn"
 
 static func addSceneToWatched(scene: String):
-	var scenes = GM.main.getModuleFlag("IssixModule", "Misc_Slavery_Info", {})
+	var scenes = GM.main.getModuleFlag("IssixModule", "Misc_Slavery_Info", {"scenes_seen": []})
 	scenes["scenes_seen"].append(scene)
 	GM.main.setModuleFlag("IssixModule", "Misc_Slavery_Info",scenes)
 
