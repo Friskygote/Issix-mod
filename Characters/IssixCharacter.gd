@@ -94,7 +94,7 @@ func getGender():
 	return Gender.Male
 	
 func getSmallDescription() -> String:
-	return "Wears a red block uniform with number P-9533. He is an intimidating tall demon-dragon, has red fur."
+	return "Wears a red block uniform with number P-533. He is an intimidating tall demon-dragon, has red fur."
 
 func getSpecies():
 	return [Species.Dragon, Species.Demon]

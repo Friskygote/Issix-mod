@@ -93,7 +93,7 @@ func getGender():
 	return Gender.Male
 	
 func getSmallDescription() -> String:
-	return "Wears an orange uniform with number P-1211."
+	return "Wears an orange uniform with number P-790."
 
 func getSpecies():
 	return [Species.Canine]  # if in the future foxes are introduced, the character is canonically a fox
@@ -105,7 +105,7 @@ func getBirthWaitTime():
 	return 60*60*24*2
 
 func getDefaultEquipment():
-	return ["inmatecollar", "inmateuniformGeneral"]
+	return ["inmatecollar", "inmateuniform"]
 
 func getThickness() -> int:
 	return 70

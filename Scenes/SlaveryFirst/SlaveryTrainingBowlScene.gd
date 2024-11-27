@@ -78,6 +78,7 @@ func _react(_action: String, _args):
 
 	if(_action == "endthescene"):
 		increaseModuleFlag("IssixModule", "PC_Training_Level")
+		increaseModuleFlag("IssixModule", "Progression_Points")
 		endScene()
 		return
 

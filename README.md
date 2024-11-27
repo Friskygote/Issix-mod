@@ -3,6 +3,9 @@
 # Issix
 A mod for Broken Dreams Correctional Center. Introduces Issix and his harem of s[l](https://kenashcorp.bandcamp.com/track/im-your-slave)- pets.
 
+## Disclaimer
+The mod and contents in it is - surprise surprise - a work of fiction. Author does not support, condone, advocate for, endorse, stand up for non-consensual activities, relationships or violence.
+
 # Existing content (assuming I don't get lazy before 1.0)
 - Issix - a dragon-demon hybrid, he owns 3 pets, all of them have some story that you can uncover (and which may be expanded in the future)
  - Azazel - a feline breeding bitch
@@ -30,6 +33,8 @@ Here is a list of planned content:
 - More Issix/pet related scenes around the prison
 - Issix's mechanic of dealing in BDSM restraints
 - A "last choice" reward, making the game harder and more annoying by stripping player's choices completely in relation to some slave related mechanics
+- Making use of existing system to improve affection with pets
+  - Including ability to make love with Hiisi and Azazel
 
 ## Technical stuff
 The goal is to create a mod with as little of overwriting the core modules to preserve compatibility and not have a dance every time base game gets an update. This means that we'll try to use as many of mechanics that already exist in the game as possible. Granted, while I'm a coder, I'm unsure I can properly implement complex system in Godot, so I might need some help with that.
@@ -60,3 +65,6 @@ One does not simply make a kinky lewd game of this caliber in a single month.
 Thus, Rahi deserves a big chunk of the credit. While working on scenes, and other things I've used their existing work to make my own. It goes without saying that without BDCC, this mod wouldn't exist. So I'm grateful for their commitment and time. While I wish they were a bit more engaged at least on GitHub repo itself, I claim no expectations in that regard, they are free to have any amount of commitment they want.
 
 So at the end, if you like what I did, consider [supporting Rahi on Subscribestar](https://subscribestar.adult/rahi).
+
+# Alternatives
+During development of this modification Katz released their own „Dragon Slave” datapack which has similar goal of adding another Master with ability to enslave the player character. You may want to check that one out as well :)

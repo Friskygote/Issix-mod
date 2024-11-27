@@ -12,8 +12,8 @@ func _init():
 	pickedSkinGColor=Color("ff423c51")
 	pickedSkinBColor=Color("ff767676")
 	npcSkinData={
-	"hair": {"r": Color("ffb05745"),"g": Color("ffb05745"),"b": Color("ff2288ab"),},
-	"penis": {"r": Color("ff4e2626"),"g": Color("ff9d2121"),"b": Color("ff991a1a"),},
+		"hair": {"r": Color("ffb05745"),"g": Color("ffb05745"),"b": Color("ff2288ab"),},
+		"penis": {"r": Color("ff4e2626"),"g": Color("ff9d2121"),"b": Color("ff991a1a"),},
 	}
 	npcPersonality = {
 		PersonalityStat.Brat: 0.1,
@@ -123,4 +123,4 @@ func getBirthWaitTime():
 	return 60*60*24*2
 
 func getDefaultEquipment():
-	return ["inmatecollar", "inmateuniformHighSec"]
+	return ["inmatecollar", "inmateuniformHighsec"]

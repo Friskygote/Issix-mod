@@ -245,7 +245,7 @@ func _run():
 			1:
 				saynn("[say=hiisi]We can do that in here... If you want. But, would you like to be in charge or should I?[/say]")
 				addButton("Dom Hiisi", "Say you'd like to dominate Hiisi", "hiisisubsex")
-				addButton("Sub Hiisi", "Say you'd like Hiisi to take charge", "hiisidomsex")  # TODO
+				addDisabledButton("Sub Hiisi", "Say you'd like Hiisi to take charge")  # TODO, "hiisidomsex"
 			2:
 				saynn("[say=hiisi]Let's do it![/say]")
 				saynn("He exlaims, excited")
@@ -269,7 +269,7 @@ func _run():
 		saynn("[say=pc]Good. Let's start.[/say]")
 		if GM.pc.hasReachablePenis():
 			addButton("Anal", "Use your tool in doggy ass", "hiisisubanal")
-			addButton("Oral", "Make the doggo suck your tool", "hiisisuboral")  # TODO
+			addDisabledButton("Oral", "Make the doggo suck your tool")  # TODO, "hiisisuboral"
 		elif (GM.pc.isWearingStrapon() or GM.pc.hasStrapons() and GM.pc.canWearStrapon()):
 			var strapons: ItemBase = GM.pc.getStrapons()
 			for strapon in strapons:

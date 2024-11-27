@@ -13,8 +13,6 @@ var pick_up_lamia_art = [
 
 var humanoids_lamia_art = [
 	"a group of inmates celebrating someone's birthday",
-	"an inmate staring at the cosmos behind the reinforced glass display",
-	"various species of humanoids having a party on what looks to be flying... Egg",
 	"a wolf person firing fireworks",
 	"a dragon person sitting inside the elevator, reading newspapers in her paws",
 	"portrait of a snake person with particularly long fangs sticking out from their maw",
@@ -23,8 +21,7 @@ var humanoids_lamia_art = [
 	]
 
 var animal_flora_lamia_art = [
-	"a goat standing on top of a mountain",
-	"a rabbit jumping above a huge ravine, even though they there is no way their paws could put them so high, considering their position they will likely land on the other side",
+	"a goat with impressive curly horns",
 	"a crow with a yellow circular object held in their beak",
 	"feral bear fishing",
 	"multiple cats chasing each other as their small ones rest on a pillow nearby",
@@ -49,16 +46,20 @@ var background_lamia_art = [
 	
 var animals_backgrounds_lamia_art = [
 		"a jungle full of flora, you see giant trees as well as a large amount of green plants, some purple flowers growing here and there",
-		"a bird's-eye view of abandoned city, reclaimed by nature, full of thorny vines and trees growing from the houses"
+		"a bird's-eye view of abandoned city, reclaimed by nature, full of thorny vines and trees growing from the houses",
+		"a rabbit jumping above a huge ravine, even though they there is no way their paws could put them so high, considering their position they will likely land on the other side",
+		"a feral dragon sitting atop a pile of gold, crusty fries, nearby there is a small well filled to the brim with red liquid (ketchup, you presume), with a single giant fry sticking out of it"
 	]
 
 var humanoids_backgrounds_lamia_art = [
-	"an anthro bull stands at the top of the mountain looking at clear view of green terrains below them"
+	"an anthro bull standing at the top of the mountain looking at clear view of green terrains below them",
+	"an inmate staring at the cosmos behind the reinforced glass display",
+	"various species of humanoids having a party on what looks to be a flying... Egg",
 ]
 
 var other_lamia_art = [
 	"a wide assortment of geometrical figures - squares, triangles and hexadecagons",
-	""
+	"a collar, very similar to the one every inmate wears, on it a barbed wire"
 	]
 
 var all_features_combined_lamia_art = [
@@ -106,19 +107,29 @@ func _run():
 		addButton("Back", "Take a step back", "")
 		
 	if state == "hiisimain":
+		clearCharacter()
+		addCharacter("hiisi")
+		playAnimation(StageScene.Duo, "kneel", {pc="hiisi", npc="pc", bodyState={naked=false, hard=false}, npcBodyState={naked=false, hard=false}})
 		if getModuleFlag("IssixModule", "PC_Enslavement_Role", 0) == 0:
-			saynn("You approach Lamia")
-			
+			saynn("You approach Hiisi, he acknowledges your presence but other than that doesn't give you much attention, continuing to lay on his front looking at his master with his muzzle being supported by own arms.")
+			addButton("Talk", "Talk to Hiisi", "hiisitalk")
+			addButton("Appearance", "Look at Hiisi", "hiisiappearance")
 		else:
-			addButton("Talk", "Talk to Lamia", "hiisitalk")
-			addButton("Appearance", "Look at Lamia", "hiisiappearance")
+			saynn("You approach Hiisi, he rolls to the side facing you.")
+			addButton("Talk", "Talk to Hiisi", "hiisitalk")
+			addButton("Appearance", "Look at Hiisi", "hiisiappearance")
+		addButton("Back", "Take a step back", "")
 		
 	if state == "hiisitalk":
 		var HiisiRPS = getModuleFlag("IssixModule", "Hissi_RPS_data")
 		if HiisiRPS != null:
 			if HiisiRPS["chosen_reward"] == 3 and HiisiRPS["reward_acquired"] == false:
 				addButton("Drink", "Ask Hiisi about energy drink that you've won through the game of Rock Paper Scissors", "hiisienergy")
-		addButton("Name", "Ask Hiisi about his name", "hiisiname")
+		if not getModuleFlag("IssixModule", "Hiisi_Name_Helped", false):
+			addDisabledButton("Name", "You already asked Hiisi about his name")
+		else:
+			addButton("Name", "Ask Hiisi about his name", "hiisiname")
+		addButton("Back", "Do something else", "hiisimain")
 
 	if state == "hiisiname":
 		saynn("[say=pc]Hey Hiisi, can you tell me something more about your name? It feels kind of odd.[/say]")
@@ -144,9 +155,20 @@ func _run():
 		addButton("Back", "You've helped the doggo", "hiisitalk")
 
 	if state == "hiisisilence":
-		saynn("Instead of proactive approach you let Hiisi sort his stuff on his own, he weeps for a minute, not saying anything")
+		saynn("Instead of proactive approach you let Hiisi sort his stuff on his own, he weeps for a minute, not saying anything, after his paws remove countless tears he looks at you again.")
+		saynn("[say=hiisi]Sorry... Didn't expect thinking about this to make me feel so miserable *sniff* [/say]")
+		saynn("[say=pc]It's alright, sorry it happens to you.[/say]")
+		saynn("[say=hiisi]Thank you...[/say]")
+		addButton("Back", "You've helped the doggo", "hiisitalk")
 
-
+	if state == "hiisiadvice":  # it was hurting me to even write this dialogue, toxic masculinity fucking sucks, if you pick this dialogue you are either an idiot or made a mistake, yes, I'm judging you for how you play this game that gives you a choice lol
+		saynn("Hiisi starts weeping, tears dropping from their face, despite his attempts to remove them with his arm")
+		saynn("[say=pc]Grow up Hiisi, are you really crying because someone makes fun of your name? Are you a child?[/say]")
+		saynn("[say=hiisi]I... I... Sor-[/say]")
+		saynn("He breaks down completely, he starts crying loudly, getting attention of everyone around")
+		saynn("[say=issix]What the fuck did you say to Hiisi? Get away. Hells...[/say]")
+		saynn("Issix descends from his chair and kneels next to Hiisi, taking his paws in his and speaks to him. THey exchange looks, Issix gives Hiisi a handkerchief to deal with the tears. You want to explain yourself but one look from Issix towards you efficiently dissuades you from trying.")
+		addButton("Leave", "You aren't welcome here for now", "endthescene")
 
 	if state == "hiisienergy":
 		var HiisiRPS = getModuleFlag("IssixModule", "Hissi_RPS_data")
@@ -158,9 +180,12 @@ func _run():
 		addButton("Back", "Take a step back", "hiisitalk")
 			
 	if(state == "lamiamain"):
+		clearCharacter()
+		addCharacter("lamia")
+		playAnimation(StageScene.Duo, "kneel", {pc="lamia", npc="pc", bodyState={naked=false, hard=false}})
 		if getModuleFlag("IssixModule", "PC_Enslavement_Role", 0) == 0:
 			saynn("You approach Lamia")
-			var lamia_mood = getModuleFlag("IssixModule", "Lamia_Times_Helped")
+			var lamia_mood = getModuleFlag("IssixModule", "Lamia_Times_Helped", 0)
 			if lamia_mood < -5:
 				saynn("He notices you and gives you a neural look of face, awaiting your further interactions.")
 			elif lamia_mood < 5:
@@ -173,14 +198,15 @@ func _run():
 			pass  # TODO
 		addButton("Talk", "Talk to Lamia", "lamiatalk")
 		addButton("Appearance", "Look at Lamia", "lamiaappearance")
-		match getModuleFlag("IssixModule", "Helped_Lamia_With_Drawings_Today"):
-			null:
-				addButton("Help", "You see a big stack of drawings and some drawers, it seems Lamia categorizes their drawings, ask if you could help?", "lamiahelp")
-			true:
-				addDisabledButton("Help", "You've helped the fox boyy today already")
-			false:
-				addButton("Help", "You see a big stack of drawings filled again, ask if you could help sorting it?", "artminigame")
-		saynn("")
+		if false:  # TODO Get this behind some flag after talking to them
+			match getModuleFlag("IssixModule", "Helped_Lamia_With_Drawings_Today"):
+				null:
+					addButton("Help", "You see a big stack of drawings and some drawers, it seems Lamia categorizes their drawings, ask if you could help?", "lamiahelp")
+				true:
+					addDisabledButton("Help", "You've helped the fox boyy today already")
+				false:
+					addButton("Help", "You see a big stack of drawings filled again, ask if you could help sorting it?", "artminigame")
+		addButton("Back", "Take a step back", "")
 			
 	if(state == "catnip"):
 		saynn("You take the catnip and slowly reach your paw with the plant to the feline. Halfway there feline snatches the catnip from you paw and throws it in the air. His paws go above and he plays airborne valley...catnip with it? Eventually he misses with his paw and catnip falls on his muzzle, he freezes for a moment as if paralyzed, the pupils in his eyes become large.")
@@ -196,7 +222,7 @@ func _run():
 		
 	if(state == "azazeltalk"):
 		GM.main.setModuleFlag("IssixModule", "Azazel_Catnip_talked", true)
-		var affection = getModuleFlag("IssixModule", "Azazel_Affection_given")
+		var affection = getModuleFlag("IssixModule", "Azazel_Affection_given", 0)
 		addButton("Prison", "Ask how did he end up in prison?", "azazelprison")
 		addButton("Hobby", "Ask what hobbies does he have", "azazelhobby")
 		if affection > 2:
@@ -227,7 +253,7 @@ func _run():
 			saynn("When approaching there are two distinct smells coming from Azazel - his own pheromones advertising his fertility to everyone around, as well another strong smell of his master. Azazel has been marked, in more ways than one.")
 		else:
 			saynn("When approaching there is one distinct smell coming from Azazel - his own pheromones advertising his fertility to everyone around.")
-		saynn("You take a closer look at {azazel.name}. He is a very thin and fairly short feline, judging from him sitting he is around " + Util.cmToString(150) + " tall, with no visible muscles, likely not very strong. Overall his body is still mostly masculine, though here and there there are feminine features like his face or shoulders.\nHis fur is in majority dark grey, though his belly and face are of ligher shade of gray. A small set of horns protrudes from his head. On his backside there is a medium sized feline tail.\n\nOne significant detail is that he does not possess a penis, in its place there is a {azazel.pussyStretch} vagina, above which you can see a womb tattoo seemingly glowing a bit in shade of red.")
+		saynn("You take a closer look at {azazel.name}. He is a very thin and fairly short feline, judging from him sitting he is around " + Util.cmToString(150) + " tall, with no visible muscles, likely not very strong. Overall his body is still mostly masculine, though here and there there are feminine features like his face or shoulders.\nHis fur is in majority dark grey, though his belly and face are of ligher shade of gray. A small set of horns protrudes from his head. On his backside there is a medium sized feline tail.\n\nOne significant detail is that he does not possess a penis, in its place there is a {azazel.pussyStretch} vagina, above which you can see a womb tattoo seemingly glowing a bit in shade of red.")  # TODO Makes no sense player can see that at this point, Azazel is clothed
 		saynn("On his lower back words ”PROPERTY OF ISSIX” branded onto the skin - a mark of his master.")
 		addButton("Back", "Do something else", "azazelmain")
 
@@ -241,7 +267,7 @@ func _run():
 		saynn("You both sit in awkward silence while Azazel recovers.")
 		saynn("[say=azazel]I will never understand groups as that one. There are more of those all over the galaxy, I know that. They ruin the lives of so many of us.. Workers. What have we done to wrong them? Nothing, we just sell our time and bodies to give others and ourselves some temporary pleasures in this grim world we live in.[/say]")
 		saynn("He sighs, it seems to have calmed him down")
-		saynn("[say=azazel]When I first arrived here I were so lost. Still very confused by this series of events, felt betrayed, hurt. Eventually I've met Master, they saw something in me and theey guided me through my trauma. I were really happy to become his pet. And honestly? It's not so bad, I have food, shelter and Master who takes care of me. And my heats.[/say]")
+		saynn("[say=azazel]When I first arrived here I were so lost. Still very confused by this series of events, felt betrayed, hurt. Eventually I've met Master, they saw something in me and they guided me through my trauma. I were really happy to become his pet. And honestly? It's not so bad, I have food, shelter and Master who takes care of me. And my heats.[/say]")
 		saynn("He says the last one, showing you his tongue at you in a grin")
 		saynn("[say=azazel]So... Yeah... That's how I ended up here. Not a happy story, but I doubt anyone's is. Ironically, I think I'm better here, and I can still engage in sex without any stupid license.[/say]")
 		addButton("Back", "Do something else", "azazelmain")
@@ -283,6 +309,7 @@ func _run():
 		addButton("Back", "End this conversation", "azazelmain")
 
 	if state == "lamiahelp":
+		playAnimation(StageScene.Duo, "kneel", {pc="lamia", npc="pc", npcAction="kneel", bodyState={naked=false, hard=false}})
 		arts_reviewed = 0
 		arts_correct = 0
 		if getModuleFlag("IssixModule", "Helped_Lamia_With_Drawings_Today") == null:
@@ -309,6 +336,11 @@ func _run():
 			saynn("Lamia vigorously nods their head, that's it.")
 			saynn("[say=pc]Ahhhhhhh. I seeeee...[/say]")
 			addButton("Continue", "This doesn't seem to be all of it", "lamiaexplanationcont")
+		else:
+			saynn("[say=pc]Would you like my help with sorting artwork today?[/say]")
+			saynn("Lamia gives you a nod and invites you to sit with him.")
+			addButton("Work", "Get to sorting!", "artminigame")
+
 
 	if state == "lamiaexplanationcont":
 		saynn("Lamia draws more things, he draws a stick figure with a goat, circles them and points arrow to the blue box, then they draw a goat, stick figure and a background, connect them in one circle and points arrow to the green box. You enter deep thought what this could mean until an idea dawns on you.")
@@ -332,13 +364,24 @@ func _run():
 		if arts_reviewed:
 			saynn("You've rated "+str(arts_reviewed)+"/10 artworks.")
 		if artwork[2] == true:
-			saynn(RNG.choice(pick_up_lamia_art)+". The new artwork features "+RNG.choice(odd_lamia_art)+". Although after short moment the artowrk is swiftly taken from you by Lamia who feels unusually flustered about you seeing it. He flips it upside down so the drawings are not visible to anyone anymore and puts it into the last box like this. Embarrassed he picks up another artwork from the pile and hands it to you. The new artwork features "+artwork[1]+".")
+			saynn(RNG.pick(pick_up_lamia_art)+". The new artwork features "+RNG.pick(odd_lamia_art)+". Although after short moment the artwork is swiftly taken from you by Lamia who feels unusually flustered about you seeing it. He flips it upside down so the drawings are not visible to anyone anymore and puts it into the last box like this. Embarrassed he picks up another artwork from the pile and hands it to you. The new artwork features "+artwork[1]+".")
 		else:
-			saynn(RNG.choice(pick_up_lamia_art)+". The new artwork features "+artwork[1]+".")
+			saynn(RNG.pick(pick_up_lamia_art)+". The new artwork features "+artwork[1]+".")
+		#saynn("DEBUG: "+str(artwork[0])+". VER 1: "+str(verify_response(1))+" VER 2: "+str(verify_response(2))+" VER 3: "+str(verify_response(3))+" VER 4: "+str(verify_response(4)))
 		addButton("Blue box", "Put the artwork on top of others in the blue box", "blueboxlamia1")
 		addButton("Red box", "Put the artwork on top of others in the red box", "redboxlamia2")
 		addButton("Green box", "Put the artwork on top of others in the green box", "greenboxlamia3")
 		addButton("Purple box", "Put the artwork on top of others in the purple box", "purpleboxlamia4")
+		addButton("Explanation", "Try to remember the rules of categorizing Lamia's artwork", "lamiaartexplanation")
+
+	if state == "lamiaartexplanation":
+		saynn("You recall the following about Lamia's explanations:")
+		saynn("The [color=blue]blue box[/color] is associatied with PEOPLE, humanoids, anthropomorphic animals. If artwork features only a humanoid, or it has a feral animal along with humanoid, or the humanoid is drawn with a background - the artwork goes to this box.")
+		saynn("The [color=red]red box[/color] is associated with feral animals and plants. If the artwork features only animal/plant or animal/plant and a background then it belongs in this box.")
+		saynn("The [color=green]green box[/color] is for backgrounds, though optionally artwork goes there if it has all of the elements - so animals/plants, humanoids as well as the background.")
+		saynn("The [color=purple]purple box[/color] is for everything that doesn't fit in other boxes. Abstract art, simple text, figures or items.")
+		addButton("Back", "Go back to categorizing art!", "artminigameae")
+
 
 	if state == "artminigamegoodend":
 		saynn("Putting the last artwork into the box together both you and Lumia have reached the end of artwork to sort. Lumia very happy the job has been done gives you a pat on your head and a large smile.")
@@ -356,18 +399,23 @@ func _run():
 
 	if state == "lamiatalk":
 		addButton("Try drawing", "You can try and draw something with lamia", "lamiadraw")  # TODO
+		addButton("Back", "Do something else", "lamiamain")
+
+	if state == "lamiaappearance":
+		saynn("Lamia is very visibly a fox breed, their fur has very vivid and unusual orange/red pallette. Red mostly visible on their arms and a little bit on their legs. To contrast that, their hair is painted in shades of blue. They are wearing a general block inmate uniform.")
+		addButton("Back", "Stop looking at fox-breed", "lamiamain")
 
 func generate_artwork_desc(descriptors: Array):
 	if descriptors.size() > 1 and RNG.randi_range(1, 6) < 3:
 		match descriptors:
 			[1, 2]:
-				return RNG.choice(humanoids_animals_lamia_art)
+				return RNG.pick(humanoids_animals_lamia_art)
 			[1, 3]:
-				return RNG.choice(humanoids_backgrounds_lamia_art)
+				return RNG.pick(humanoids_backgrounds_lamia_art)
 			[2, 3]:
-				return RNG.choice(animals_backgrounds_lamia_art)
+				return RNG.pick(animals_backgrounds_lamia_art)
 			_:
-				return RNG.choice(all_features_combined_lamia_art)
+				return RNG.pick(all_features_combined_lamia_art)
 	else:
 		var result = ""
 		descriptors.shuffle()
@@ -377,13 +425,13 @@ func generate_artwork_desc(descriptors: Array):
 			var feature = descriptors.pop_front()
 			match feature:
 				1:
-					result = result + RNG.choice(humanoids_lamia_art)
+					result = result + RNG.pick(humanoids_lamia_art)
 				2:
-					result = result + RNG.choice(animal_flora_lamia_art)
+					result = result + RNG.pick(animal_flora_lamia_art)
 				3:
-					result = result + RNG.choice(background_lamia_art)
+					result = result + RNG.pick(background_lamia_art)
 				4:
-					result = result + RNG.choice(other_lamia_art)
+					result = result + RNG.pick(other_lamia_art)
 		return result
 
 
@@ -415,6 +463,17 @@ func _react(_action: String, _args):
 		else:
 			_action = "artminigame"
 
+	if _action == "hiisireassure":
+		increaseModuleFlag("IssixModule", "Hiisi_Affection", 5)
+		setModuleFlag("IssixModule", "Hiisi_Name_Helped", true)
+
+	if _action == "hiisiadvice":
+		increaseModuleFlag("IssixModule", "Hiisi_Affection", -5)
+		setModuleFlag("IssixModule", "Hiisi_Name_Helped", true)
+
+	if _action == "hiisisilence":
+		setModuleFlag("IssixModule", "Hiisi_Name_Helped", true)
+
 	if _action == "artminigamegoodend":
 		increaseModuleFlag("IssixModule", "Lamia_Times_Helped")
 
@@ -424,7 +483,10 @@ func _react(_action: String, _args):
 	if _action == "artminigame":
 		# 1 - humanoids and items, 2 - feral animals and flora, 3 - backgrounds, 4 - others/electronic devices
 		var art_rand = RNG.pickWeighted([[1], [2], [3], [4], [1, 2], [1, 3], [2, 3], [1, 2, 3]], [15, 15, 15, 5, 15, 15, 5, 4])
-		artwork = [art_rand, generate_artwork_desc(art_rand), RNG.randi_range(1,151) == 50]
+		artwork = [art_rand.duplicate(), generate_artwork_desc(art_rand), RNG.randi_range(1,151) == 50]  # Here Frisk learned about how Godot variables lifespan ends with the end of _react leaving a very empty array after this function ends. Gave me quite a lot of confusion, but was fun to debug I suppose, Python would track the reference to a variable, Godot doesn't, sad.
+
+	if _action == "artminigameae":  # Don't reroll new artwork
+		_action = "artminigame"
 
 	if(_action == "catnip"):
 		GM.pc.getInventory().removeXOfOrDestroy("CatnipPlant", 1)

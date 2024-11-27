@@ -13,6 +13,7 @@ func getFlags():
 		"Azazel_Catnip_taken_today": flag(FlagType.Bool),
 		"Azazel_Affection_given": flag(FlagType.Number),
 		"Lamia_Times_Helped": flag(FlagType.Number),
+		"Hiisi_Affection": flag(FlagType.Number),
 		"Helped_Lamia_With_Drawings_Today": flag(FlagType.Bool),
 		"Quest_Bonked": flag(FlagType.Bool),
 		"Quest_Wait_Another_Day": flag(FlagType.Bool),
@@ -34,6 +35,7 @@ func getFlags():
 		"Received_Portrait_From_Lamia": flag(FlagType.Bool),
 		"Placed_Portrait_In_Cell": flag(FlagType.Bool),
 		"Hissi_RPS_data": flag(FlagType.Dict),
+		"Hiisi_Name_Helped": flag(FlagType.Bool),
 		"Shared_Marshmallows": flag(FlagType.Bool),
 
 		# Slavery related

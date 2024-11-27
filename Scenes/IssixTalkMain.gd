@@ -22,7 +22,7 @@ func _run():
 	
 	if(state == ""):
 		if(!GM.main.getModuleFlag("IssixModule", "Issix_Introduced")):
-			sayn("While exploring the cellblock you stumble upon an uncommon sight - three leashed creatures resting on blankets around a sitting man. One of the creatures appears to be sleeping, the other one is laying on their front turned towards the man sitting on the chair and the third one is licking their paws with their eyes closed.\nThe sitting figure appears to be talking with the creature laying on their belly.")
+			saynn("While exploring the cellblock you stumble upon an uncommon sight - three leashed creatures resting on red blankets around a sitting man. One of the creatures appears to be sleeping, the other one is laying on their front turned towards the man sitting on the chair and the third one is licking their paws with their eyes closed, below them sheets of paper with drawings.\n\nThe sitting figure appears to be talking with the creature laying on their belly.")
 			if(OPTIONS.isContentEnabled(ContentType.Watersports)):
 				sayn("All of the three leashed creatures give off a pretty strong smell - they are all marked. While their fur seems dry, it's undeniable it had contact with piss, of a single male. Not difficult to figure out which.")
 			addButton("Talk", "Talk to the intimidating demon", "talk")
@@ -61,7 +61,7 @@ func _run():
 			
 	if state == "guards":
 		saynn("[say=pc]What about guards? Are they not a problem for your operations?[/say]")
-		saynn("[say=issix]Guards? No. They are just a gear in the system. As to my attitude towards them - I guess it's pretty symbiotic. I'm a very nice inmate not making them any trouble and they leave me alone to my devious plans. My past earned me some privileges in here that no other can claim, by no means I'm untouchable but I'm close to being that. There are a few deals I have with the guards that allow me to live in here on my own terms, and its to their own benefit as well.[/say]")
+		saynn("[say=issix]Guards? No. They are just a gear in the system. As to my attitude towards them - I guess it's pretty symbiotic. I'm a very nice inmate, not making them any trouble and they leave me alone to my devious plans. My past earned me some privileges in here that no other can claim, by no means I'm untouchable but I'm close to being that. There are a few deals I have with the guards that allow me to live in here on my own terms, and its to their own benefit as well.[/say]")
 		saynn("[say=pc]Really? So you are a big deal?[/say]")
 		saynn("He takes a long breath")
 		saynn("[say=issix]Nothing you have to worry about, morsel. All you need to know is to not cross me or any of my precious pets. That's all I want you to keep in mind.[/say]")
@@ -85,19 +85,20 @@ func _run():
 		addButton("Back", "Turn to other matters", "talk")
 			
 	if(state == "name"):
-		
 		saynn("[say=issix]I see. Nice to meet you {pc.name} and welcome to my humble corner in this piece of heaven.[/say]")
 		saynn("He holds his paw up to you, not fazed by the fact that you are still separated by an awkwardly long distance from the demon-dragon.\nNot wanting to be rude, you lean forwards while making extra sure you will not trample upon laying inmate or fall forwards by yourself. Eventually your " + ("hand" if len(GM.pc.getSpecies()) == 1 and GM.pc.getSpecies()[0] == "human" else "paw") + " meets his and you are able to do shake them.")  # ok, I have no idea what's the difference between buff arms and anthro arms, they seem the same, and technically neither have paws, too bad I'm the one writing dialogue though
-		saynn("[say=issix]I own this little corner including those three wonderful leashed pets beside me. You do NOT touch my pets without permission. Normally I wouldn't think this has to be mentioned, but for some reasons inmates think otherwise, those who do - don't keep this thought for long.[/say]")
+		saynn("[say=issix]What leads you to me? I don't suppose you are here to admire me like the three here.[/say]")
+		saynn("He lets out a laugh")
+		saynn("[say=issix]Anyways, I own this little corner including those three wonderful leashed pets beside me. You do NOT touch my pets without permission. Normally I wouldn't think this has to be mentioned, but for some reasons inmates think otherwise, those who do - don't keep this thought for long.[/say]")
 		sayn("[say=issix]That's probably everything you need to know about me. \nAlso, considering we didn't start on the wrong foot, you have my permission to speak with my pets. \nNow, please find some other business to attend to, unless you need something else of me?[/say]")
 		addButton("Heaven?", "Did you hear that correctly?", "heaven")
-		addButton("Issix", "Learn more about Issix", "issixdetails")
+		addButton("You", "Learn more about Issix", "issixdetails")
 		addButton("Pets", "Who are the pets?", "pets")
 		
 	if(state == "heaven"):
 		saynn("[say=pc]Did you just call this prison a piece of heaven? Why?[/say]")
 		saynn("[say=issix]Because it is. I don't understand why everyone says it's not.[/say]")
-		saynn("[say=pc]Because it's... A prison? It's a middle-of-nothing rock that belongs to some mega rich empire. Because we have collars on our necks and they expect us to mine rock for their benefit, we are just slaves.[/say]")
+		saynn("[say=pc]Because it's... A prison?" + (" It's a middle-of-nothing rock that belongs to some mega rich empire. Because we have collars on our necks and they expect us to mine rock for their benefit, we are just slaves." if GM.main.getFlag("Mining_IntroducedToMinning", false) else "") + "[/say]")
 		saynn("[say=issix]You are looking at it all wrong. While the rest of the galaxy is participating in a rat-race for who is the most awful of them all, when they are murdering each other daily in show of dominance, when food shortages, speciesism, chaos is happening out there, here? Sure we still have a lot of show of power, but nobody is murdering each other because of it, we have shitty, but food, and speciesism isn't as bad as out there because what's the point, everyone has been reduced to just an inmate. Slavery here isn't only restricted to AlphaCorp's and Syndicate's of the galaxy, which what allows me to have those wonderful pets in here.[/say]")
 		saynn("[say=pc]So you like it here because you can have your own slaves?[/say]")
 		saynn("[say=issix]I like it here because I can enjoy what the fuck I enjoy and whatever restrictions this place has don't bother me.[/say]")
@@ -107,9 +108,9 @@ func _run():
 		addCharacter("azazel")
 		GM.main.setModuleFlag("IssixModule", "Pets_Introduced", true)
 		saynn("[say=pc]So... Who are your pets exactly?[/say]")
-		saynn("[say=issix]Curious about my treasured pearls, aren't you? Oh, I'm happy to introduce you, people usually talk only with me, but I feel like they could use some social interactions with someone else than myself and themselves.[/say]")
-		sayn("[say=issix]This kitty here is my very first pet, they've recognized me as their master shortly after I came here. They were very spooked and lost in here, still unsure what exactly they did to end up in this place. I gave them meaning, they repay me by being an excellent pet. Azazel, say hi.[/say]")
-		saynn("Issix looks expectantly at Azazel - a fairly regular looking feline, he is wearing an lilac uniform. Until now he was curled and seemingly asleep, even though his ears were perking up whenever his master spoke. After hearing his master's voice speak his name however his head immediately went up, and along with it the rest of his body. He stood on his fours and turned towards you.")
+		saynn("[say=issix]Curious about my treasured pearls, aren't you? Oh, I'm happy to introduce you, people usually talk only with me, but I feel like pets could use some social interactions with someone else than myself and themselves.[/say]")
+		saynn("[say=issix]This kitty here is my very first pet, they've recognized me as their master shortly after I came here. They were very spooked and lost in here, still unsure what exactly they did to end up in this place. I gave them meaning, they repay me by being an excellent pet. Azazel, say hi.[/say]")
+		saynn("Issix looks expectantly at Azazel - a fairly regular looking feline, he is wearing an lilac uniform. Until now he was curled and seemingly asleep, even though his ears were perking up whenever his master spoke. After hearing his master's voice speak his name however, his head immediately went up, and along with it the rest of his body. He stood on his fours and turned towards you.")
 		saynn("[say=azazel]Hello... Stranger.[/say]")
 		saynn("Azazel said with reservation. He looked away from you for a second to look at face of his master, whos face didn't lose his expectant look. Turning back to you he hesitently rubbed his cheek on your leg and collapsed onto his blanket again, making sure to take a last look at his master before closing his eyelids and presumably continuing his slumber.")
 		saynn("[say=issix]Good kitty. He is the best breeding bitch in this entire institution, that's what nature made him to be. He doesn't mind petting his head, if that's something you'd like, otherwise we can move on.[/say]")
@@ -125,17 +126,15 @@ func _run():
 			saynn("You crouch and gently pet Azazel's head. You can feel very delicate vibrations produced by the kitten. He doesn't open his eyes, but it's clear cat enjoys this treatment.")
 			sayn("Master looks at this interaction with interest and sincere smile on his face.")
 			saynn("After a short moment you stand back up and look at pet on your right.")
-		saynn("[say=issix]This one here is Hiisi. He is my latest, which doesn't mean I love him any different. This puppy was actually one of the more recognized troublemakers around this prison.\nHe's been getting into pants of everyone against their own will, it got to a point where even guards started getting concerned and wanted to take action. At one point he even attempted to breed my precious kitty Azazel, do you remember that Hiisi?[/say]")  # TODO
-		saynn("Hissi looks at his master and shakes his head.")
-		saynn("[say=issix]Right, of course you don't, hah. But look at him now, pristine puppy boy! He love his belly rubs and stays out of the trouble! ... Well, mostly. Anyways, despite his troubled past, he agreed to join me and became my pup! Hiisi cmon, welcome our guest, give {pc.him} a sniff![/say]")
+		saynn("[say=issix]This one here is Hiisi. He is my latest, which doesn't mean I love him any different. This puppy rather keeps to himself, you may have difficulties getting him to open to you, if you'd ever want to do that. He's.. A troubled one, to say the least, but look at him, isn't he the pristine puppy boy? He loves his belly rubs and stays out of the trouble! ... Well, mostly. Anyways, despite his troubled past, he agreed to join me and became my pup! Hiisi cmon, welcome our guest, give {pc.him} a sniff![/say]")
 		saynn("[say=hiisi]{pc.name} isn't it? Umm... Hi.[/say]")
 		saynn("{hiisi.name} licks your leg, leaving a bit of saliva on your fur.")  # TODO Fur/skin
 		saynn("[say=issix]I apologize for my pets, they aren't used to longer conversations with strangers. They've been through a lot and... *sigh* Anyways, Lamia! Lamia is a fox breed, he doesn't speak. He communicates with drawings. He is getting pretty good at them. He also doesn't seem to mind being mute, quite to the opposite, he seems excited that his... Speech is in form of images.[/say]")
 		saynn("You can see Lamia drawing something, Issix gives you a signal to just wait a second. After a minute, Lamia presents you with a drawing, smiling.")
 		saynn("The drawing shows a pretty good representation of yourself, on fours, while leashed by a figure that you can only infer to be Issix. There is Lamia, Azazel and Hiisi hanging around there as well besides you. Issix laughs when he sees the drawing.")
 		saynn("[say=issix]Lamia, please, don't scare our guest, not every friendly face you see must become my pet. You selfish little rascal.[/say]")
-		saynn("While Issix's words seem playful, Lamia still is saddened by his Master's words.")
-		saynn("[say=issix]Anyways, those are the three of my beloved pets. [/say]")
+		saynn("While Issix's words seem playful, Lamia still is saddened by his master's words.")
+		saynn("[say=issix]That would be it for introductions. If you have any problems with my pets you come to me, understood? Good.[/say]")
 		addButton("Back", "Turn to other matters", "talk")
 	
 	if(state == "issixdetails"):

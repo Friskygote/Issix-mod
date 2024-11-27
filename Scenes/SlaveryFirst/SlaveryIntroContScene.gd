@@ -13,14 +13,13 @@ func _run():
 		saynn("As you approach the corner your Master stands, grinning. You assume your position on your blanket.")
 		saynn("[say=issix]Good day, pet.[/say]")
 		if(OPTIONS.isContentEnabled(ContentType.Watersports)):
+			increaseModuleFlag("IssixModule", "Progression_Points")
 			if GM.pc.getFluids().hasFluidTypeWithCharID("Piss", "issix"):
-				increaseModuleFlag("IssixModule", "Progression_Points")
 				setModuleFlag("IssixModule", "Progression_Day_Next", GM.main.getDays()+1)
 				saynn("[say=issix]My my. My piss slut came back and {pc.he} is still smelling like myself. Good job.[/say]")
 				saynn("He leans down and pets your head. You yip in appreciation.")  # TODO Yip/meow/bark
 				saynn("[say=issix]Since you are such a good pet, today I'd like to train you a little. Are you ready?[/say]")
 			else:
-				increaseModuleFlag("IssixModule", "Progression_Points")
 				setModuleFlag("IssixModule", "Progression_Day_Next", GM.main.getDays()+4)
 				saynn("[say=issix]You don't smell like me, what happened? Someone woke you up with a water bucket on your head? That's not great. It was your first order as my pet and you blew it. I'm incredibly disappointed.[/say]")
 				saynn("A look of disappointment is on Masters's face. He expected you to still have his mark from yesterday.")

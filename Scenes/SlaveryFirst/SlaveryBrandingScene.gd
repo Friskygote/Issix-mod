@@ -1,6 +1,7 @@
 extends SceneBase
 
 var attitude = null
+var timedifference = 0
 
 func _init():
 	sceneID = "IssixSlaveryBranding"
@@ -161,8 +162,34 @@ func _run():
 		saynn("Finally the doors open once again, Master Issix goes through first, after him Eliza. Without saying anything Master kneels again next to you and one by one unlocks the restraints holding your body. Even after the last one finally is removed you continue laying on your front, you worry that if you move the pain will be even worse.")
 		saynn("[say=issix]Do you need a bit more cold water on there?[/say]")
 		saynn("You nod, while not great, this relief gave you some amount of comfort previously and you are certain it can do that again. Master brings a hose and stream of cold water once again hits the burned place. Even though the cold water hitting other parts of your body doesn't feel pleasant, you still feel relieved by temporary escape from the most persistent and unpleasant feeling of being burned under your skin. Your Master's paw ruffles your fur on the back above the branding, which gives you yet another pleasant feeling. After few minutes like that you felt your body getting really cold and asked Master to stop, which he did, not before jokingly turning the stream towards his other pets who got a small cold shower and wet fur, a joke appreciated only by your Master, even though you would lie if you said they didn't look funny.\nEventually you felt confident to sit on the device, which only led you to get dizzy and stumping on the cushioned top of the breeding stocks.")
-		saynn("[say=issix]Aww. that took a lot from you did it? It's okey, don't worry.[/say]")
-		saynn("Master grabs you by your hips ")
+		saynn("[say=issix]Aww. that took a lot from you did it? It's okey, don't worry about it, you can rest.[/say]")
+		saynn("Master grabs you by your hips and picks up your mostly limp and pained body on his shoulder, at this point you drift off, not remembering much.")
+		addButton("Wake up", "Wake up", "afterbrandingwakeup")
+
+	if state == "afterbrandingwakeup":
+		aimCamera("hall_ne_corner")
+		saynn("Your eyes open, first thing that you feel is disorientation, you can see the blurry legs of red dragon in front of you, things slowly getting sharper, you are on your left side? You grumble moving your head a little to look around, you see your Master nearby who also starts looking at you seeing your woke up.")
+		saynn("[say=issix]Hello there, what a timing, how are you feeling?[/say]")
+		saynn("[say=pc]Ummm.. I don't know. Confused? Where are the others?[/say]")
+		saynn("[say=issix]They went to their cells just moments ago, I were wondering if I should get you to yours as well, can you walk?[/say]")
+		saynn("The pain on the back creeps in. You memory of recent events flood your brain.")
+		saynn("[say=pc]How long have I been out?[/say]")
+		if timedifference > 2*60*60:
+			saynn("[say=issix]For few hours, at least, you had a nice sleepy time, other pets were worried about you.[/say]")
+		else:
+			saynn("[say=issix]Surprisingly, not that long, just a while, didn't stop other pets from worrying about you.[/say]")
+		saynn("[say=pc]Thank you, Master, should I go to my cell too?[/say]")
+		saynn("[say=issix]That depends. We do have to go to our cells already, but whether you get there by yourself or not depends if you can walk or not.[/say]")
+		saynn("You get on your butt while avoiding any contact with newly branded part above your butt, so far so goo. You stand up on your paws and just stand there, trying to see if you'll have a similar blackout like the last time.")
+		saynn("[say=pc]Hmm, I think I'm fine now. That nap gave me some energy, I guess.[/say]")
+		saynn("[say=issix]Are you sure? Hmm. I see. If that's the case then you are free to go back to your cell on your own. I'll be right behind, a good night of sleep will do good for both of us.[/say]")
+		saynn("[say=pc]Yeah...[/say]")
+		saynn("You take few steps forward, feeling pretty normal, shouldn't have a difficult time going back to the cell on your own.")
+		if GM.pc.getPersonality().getStat("Mean") < 0:
+			saynn("[say=pc]... Thank you, Master, for... Everything.[/say]")
+			saynn("Your Master smiles at you")
+			saynn("[say=issix]But of course, pet.[/say]")
+		addButton("Leave", "Leave the corner", "endthescene")
 
 
 
@@ -183,6 +210,11 @@ func loadData(data):
 func _react(_action: String, _args):
 	processTime(2*60)
 
+	if _action == "afterbrandingwakeup":
+		timedifference = GM.main.getTimeCap() - GM.main.timeOfDay
+		processTime(timedifference)
+		increaseModuleFlag("IssixModule", "Progression_Points")
+
 	if _action == "brandtalk":
 		attitude = _args[0]
 
@@ -190,6 +222,9 @@ func _react(_action: String, _args):
 		processTime(20*60)
 		GM.pc.addStamina(-300)
 		GM.pc.addPain(300)
+
+	if _action == "afterbrandingwakeup":
+		pass
 
 	if _action == "firstwalk":
 		processTime(10*60)
@@ -215,9 +250,8 @@ func _react(_action: String, _args):
 			"I got this branding iron as a gift, actually. not a very standard one, would you agree?",
 		], "medical_confessionary", "crawl"])
 
-
 	if(_action == "endthescene"):
-		increaseModuleFlag("IssixModule", "PC_Training_Level")
+		setModuleFlag("IssixModule", "Progression_Day_Next", GM.main.getDays()+4)
 		endScene()
 		return
 
