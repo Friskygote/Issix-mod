@@ -1,3 +1,5 @@
+# Originally written by Rahi at https://github.com/Alexofp/BDCC/blob/main/Scenes/Cellblock/EatInCanteenScene.gd
+
 extends "res://Scenes/SceneBase.gd"
 
 func _init():

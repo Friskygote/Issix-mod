@@ -463,7 +463,7 @@ func _run():
 			saynn("[say=issix]There is only one more trial before I make my final decision. You'll face it tomorrow. And from tomorrow, I expect you to kneel before me, understood?[/say]")
 			setModuleFlag("IssixModule", "Quest_Status", 6)
 		elif strikes == 1:
-			saynn("[say=issix]You pass. While I feel like you weren't entirely honest with me duright the questionnaire, I'll chuck it as a mistake.[/say]")
+			saynn("[say=issix]You pass. While I feel like you weren't entirely honest with me during the questionnaire, I'll chuck it as a mistake.[/say]")
 			saynn("You are happy to hear the result")
 			saynn("[say=issix]Mind you, there is one more thing that I expect you to do, the last trial. That's for tomorrow, you got it? And from tomorrow onwards, I expect you to kneel before me when you address me.[/say]")
 			setModuleFlag("IssixModule", "Quest_Status", 6)

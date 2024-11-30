@@ -241,7 +241,6 @@ func _run():
 			addButton("Pussy", "Azazel has a pussy and yet he is rather masculine", "azazelintersex")
 		else:
 			addDisabledButton("Pussy", "You don't have good enough relationship with Azazel to ask about his genitalia")
-		#addButton("Hero", "")
 		if(GM.pc.getInventory().hasItemID("CatnipPlant")):
 			pass
 		else:
@@ -341,7 +340,6 @@ func _run():
 			saynn("Lamia gives you a nod and invites you to sit with him.")
 			addButton("Work", "Get to sorting!", "artminigame")
 
-
 	if state == "lamiaexplanationcont":
 		saynn("Lamia draws more things, he draws a stick figure with a goat, circles them and points arrow to the blue box, then they draw a goat, stick figure and a background, connect them in one circle and points arrow to the green box. You enter deep thought what this could mean until an idea dawns on you.")
 		saynn("[say=pc]Do you mean connections? Like when one picture has more elements it goes to the blue box?[/say]")
@@ -398,11 +396,28 @@ func _run():
 		addButton("Finish", "You've helped Lamia sort through the art, there is no more artwork to be sorted", "lamiamain")
 
 	if state == "lamiatalk":
+		var lamia_affection = getModuleFlag("IssixModule", "Lamia_Times_Helped", 0)
 		addButton("Try drawing", "You can try and draw something with lamia", "lamiadraw")  # TODO
+		addButton("Mute", "Ask if he's been mute since they were born")
+		if lamia_affection > 2:
+			addButton("Explicit", "You've noticed Lamia doesn't draw any explicit things, perhaps worth asking about it?", "lamiaexplicit")
+		if lamia_affection > 6:
+			addButton("Prison", "Ask Lamia how they ended up in the prison", "lamiaprison")
+		else:
+			addDisabledButton("Prison", "You don't feel like there is enough connection between you two to ask him that")
+		if lamia_affection > 11:
+			addButton("Favorite", "Ask Lamia what is their favorite thing to draw", "lamiafavorite")
+		else:
+			addDisabledButton("Favorite", "You don't feel like there is enough connection between you two to ask him that")
+		if lamia_affection > 17:
+			addButton("Draw", "Ask Lamia to draw something for you", "lamiadrawforme")
+		else:
+			addDisabledButton("Draw", "You don't feel like there is enough connection between you two to ask him to draw for you something")
 		addButton("Back", "Do something else", "lamiamain")
 
 	if state == "lamiaappearance":
-		saynn("Lamia is very visibly a fox breed, their fur has very vivid and unusual orange/red pallette. Red mostly visible on their arms and a little bit on their legs. To contrast that, their hair is painted in shades of blue. They are wearing a general block inmate uniform.")
+		saynn("Lamia is very visibly a fox breed, their fur has very vivid and unusual orange/red pallette. Red mostly visible on their arms, tip of their tail and a little bit on their legs. To contrast that, their hair is painted in shades of blue. They are wearing a general block inmate uniform.")
+		saynn("There are two slightly curved horns protruding from their head with black base and red endings.")
 		addButton("Back", "Stop looking at fox-breed", "lamiamain")
 
 func generate_artwork_desc(descriptors: Array):

@@ -57,10 +57,10 @@ func _run():
 	if state=="leave":
 		if(GM.pc.isBlindfolded()):
 			if(GM.pc.hasBlockedHands()):
-				saynn("You attempt to retrace your setps back where you came from, however it seems like whatever you went through has closed. It's hard to judge how can you even open the doors. After a while of trying, you blast the doors with a serios of forceful pushes, it does not budge.")
+				saynn("You attempt to retrace your steps back where you came from, however it seems like whatever you went through has closed. It's hard to judge how can you even open the doors. After a while of trying, you blast the doors with a serios of forceful pushes, it does not budge.")
 				processTime(7*60)
 			else:
-				saynn("You attempt to retrace your setps back where you came from, however it seems like whatever you went through has closed. Thankfully, it seems like from this end there is a very analog door handle that pulling seems to lead back to the hallway. Or at least you judge that from the sounds.")
+				saynn("You attempt to retrace your steps back where you came from, however it seems like whatever you went through has closed. Thankfully, it seems like from this end there is a very analog door handle that pulling seems to lead back to the hallway. Or at least you judge that from the sounds.")
 				processTime(4*60)
 		else:
 			processTime(2*60)
@@ -76,7 +76,7 @@ func _run():
 		addButton("Leave", "Try to leave the room", "leave")
 		
 	if state=="cabinets":
-		saynn("Within so many filling cabinets there are over 12 shelves. You could open some of them and see what's in them, however only one of them is really interesting to you.")  # TODO placeholder
+		saynn("Within so many filling cabinets there are over 11 shelves. You could open some of them and see what's in them, however only one of them is really interesting to you.")  # TODO placeholder
 		addButton("Back", "Look around again", "lookaround")
 		var activated_cabinets = getModuleFlag("IssixModule", "Activated_Cabinets", {})
 		for item in cabinets:
@@ -89,7 +89,7 @@ func _run():
 					addButton("Cabinet " + cabinets[item]["name"], "Check the cabinet with number "+cabinets[item]["name"], "cabinetloot", [item])
 			
 	if state=="cabinetloot":
-		saynn("You chose to open cabinet number "+str(current_cabinet)+"...")
+		saynn("You chose to open cabinet number "+("number "+str(current_cabinet) if current_cabinet != 42 else "with a number you can't read")+"...")
 		processTime(1*60)
 		if(typeof(current_loot) == TYPE_NIL):  # event
 			markCabinetAsActivated(current_cabinet)
@@ -110,14 +110,15 @@ func _run():
 		
 	if state=="cabinetevent1":
 		processTime(10*60)
-		saynn("You chose to open cabinet number "+str(current_cabinet)+"...")
+		saynn("You chose to open cabinet number "+("number "+str(current_cabinet) if current_cabinet != 42 else "with a number you can't read")+"...")
 		var fluidType = RNG.pick(["Cum", "GirlCum", "Milk"])
 		saynn("The shelf is located a little higher than your head, since there isn't anything in the closet that you could stand on, your plan is to simply open the shelf and try to feel with your paw if there is anything there. You regret that decision the moment you open the shelf. Entire shelf is filled to brim with a kind of cold slimy fluid that spills on you the moment you open it.\n\nYou've been covered in "+fluidType.to_lower()+".")
 		GM.pc.coverBodyWithFluid(fluidType, 800.0)
+		addButton("Back", "Look at cabinets", "cabinets")
 		
 	if state=="cabinetevent2":
 		processTime(3*60)
-		saynn("You chose to open cabinet number "+str(current_cabinet)+"...")
+		saynn("You chose to open cabinet "+("number "+str(current_cabinet) if current_cabinet != 42 else "with a number you can't read")+"...")
 		saynn("The shelf is located a little higher than your head, since there isn't anything in the closet that you could stand on, your plan is to simply open the shelf and try to feel with your paw if there is anything there.\n\nYou pull the shelf and it falls on you!")
 		if (RNG.randf_range(0, 1) < GM.pc.getDodgeChance()+0.1):  # Got protected from the fall, base 10% + whatever player dodge chance has
 			saynn("You were able to avoid the falling shelf with your quick reflexes. Phew. You push the shelf back where it came from.")
@@ -127,15 +128,19 @@ func _run():
 				damage_taken = GM.pc.receiveDamage(DamageType.Physical, 40, 1.0)
 			else:
 				damage_taken = GM.pc.receiveDamage(DamageType.Physical, 60, 1.0)
-			saynn("You were unable to react in time and heavy shelf fell on your head ouch.\n" + ("Seems like your horns helped you with taking a hit from the above to some degree.\n" if GM.pc.hasHorns() else "") + "\nYou took "+str(damage_taken)+" damage.")
+			saynn("You were unable to react in time and heavy shelf fell on your head ouch.\n" + ("Seems like your horns helped you with taking a hit from the above to some degree.\n" if GM.pc.hasHorns() else ""))
+			addMessage("You took "+str(damage_taken)+" damage.")
+		addButton("Back", "Look at cabinets", "cabinets")
 			
 		
 	if state=="cabinetevent3":
 		processTime(3*60)
-		saynn("You chose to open cabinet number "+str(current_cabinet)+"...")
+		saynn("You chose to open cabinet number "+("number "+str(current_cabinet) if current_cabinet != 42 else "with a number you can't read")+"...")
 		var lust_taken = RNG.randi_range(20, 50)
 		GM.pc.addLust(lust_taken)
-		saynn("A red mist surrounds you as the dust from the shelf spills out with the force of your pull.\n\nYou gain "+ str(lust_taken)+" lust.")
+		saynn("A red mist surrounds you as the dust from the shelf spills out with the force of your pull.")
+		addMessage("You gain "+ str(lust_taken)+" lust.")
+		addButton("Back", "Look at cabinets", "cabinets")
 		
 		
 func randomItemFromSeed(array):
@@ -167,6 +172,7 @@ func generateLoot(cabinet_number: int):
 			fluids.addFluid(randomItemFromSeed(allowedFluids), randomNumberFromSeed(2, 5)*100.0)
 		return newItem
 	elif (rand_num < 21):  # TODO event
+		# warning-ignore:return_value_discarded
 		markCabinetAsActivated(cabinet_number)
 		return RNG.randi_range(1,3)
 	else:
@@ -191,9 +197,15 @@ func _react(_action: String, _args):
 		if typeof(current_loot) == TYPE_INT:
 			_action = "cabinetevent"+str(current_loot)
 			
+	if _action == "cabinets":
+		var activated_cabinets = getModuleFlag("IssixModule", "Activated_Cabinets", {})
+		if activated_cabinets.size() > 9:
+			if RNG.chance(50):
+				runScene("ClosetCaughtOfflimitsScene", {}, "caughtbyeng")
+
 	if(_action == "acceptloot"):
-		markCabinetAsActivated(current_cabinet)
 		GM.pc.getInventory().addItem(current_loot)
+		markCabinetAsActivated(current_cabinet)
 		_action = "cabinets"
 		
 	if(_action == "strugglemenu"):
@@ -201,3 +213,10 @@ func _react(_action: String, _args):
 		return
 	
 	setState(_action)
+
+func _react_scene_end(_tag, _result):
+	if(_tag == "caughtbyeng"):
+		if _result[0] == "out":
+			endScene()
+		else:
+			setState("cabinets")

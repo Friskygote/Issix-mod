@@ -24,6 +24,11 @@ func _init():
 		PersonalityStat.Naive: -1.0,
 		PersonalityStat.Coward: -0.7,
 	}
+	npcLevel = 50
+	npcBasePain = 500
+	npcBaseLust = 500
+	npcBaseStamina = 500
+
 	npcDefaultFetishInterest = FetishInterest.Neutral
 	npcFetishes = {
 		Fetish.AnalSexReceiving : FetishInterest.ReallyDislikes,

@@ -24,7 +24,7 @@ func _run():
 		if(!GM.main.getModuleFlag("IssixModule", "Issix_Introduced")):
 			saynn("While exploring the cellblock you stumble upon an uncommon sight - three leashed creatures resting on red blankets around a sitting man. One of the creatures appears to be sleeping, the other one is laying on their front turned towards the man sitting on the chair and the third one is licking their paws with their eyes closed, below them sheets of paper with drawings.\n\nThe sitting figure appears to be talking with the creature laying on their belly.")
 			if(OPTIONS.isContentEnabled(ContentType.Watersports)):
-				sayn("All of the three leashed creatures give off a pretty strong smell - they are all marked. While their fur seems dry, it's undeniable it had contact with piss, of a single male. Not difficult to figure out which.")
+				saynn("All of the three leashed creatures give off a pretty strong smell - they are all marked. While their fur seems dry, it's undeniable it had contact with piss, of a single male. Not difficult to figure out which.")
 			addButton("Talk", "Talk to the intimidating demon", "talk")
 			addButton("Appearance", "Take a closer look at the intimidating demon", "appearance")
 		else:
@@ -39,6 +39,7 @@ func _run():
 		
 	if(state == "talk"):
 		clearCharacter()
+		playAnimation(StageScene.Duo, "stand", {npc="issix", npcAction="sit"})
 		addCharacter("issix")
 		if(!GM.main.getModuleFlag("IssixModule", "Issix_Introduced")):
 			GM.main.setModuleFlag("IssixModule", "Issix_Introduced", true)
@@ -55,7 +56,16 @@ func _run():
 				addButton("Exercise", "Ask Issix for explanation about your incident with the wall", "quest1bonk")
 			if GM.main.getModuleFlag("IssixModule", "Quest_Status") == 3:
 				addButton("Gumball", "Bring back the gumball to Issix", "quest1turn")
-			addButton("Become his", "Ask if he'd like to make you his own pet", "join")
+			match GM.main.getModuleFlag("IssixModule", "Quest_Rejected_By_Issix", 0):
+				0:
+					if GM.main.getModuleFlag("IssixModule", "Quest_Status", 0) == 0:
+						addButton("Become his", "Ask if he'd like to make you his own pet", "join")
+					else:
+						addDisabledButton("Become his", "You are currently trying to become his")
+				1, 3, 4:
+					addDisabledButton("Become his", "You don't think there is much sense in asking anymore after you rejected Issix's proposition")
+				2:
+					addDisabledButton("Become his", "You don't think Issix trusts you enough to become his pet")
 			GM.ES.triggerRun(Trigger.TalkingToNPC, ["issix"])
 			addButton("Leave", "Be on your way", "endthescene")
 			
@@ -90,7 +100,7 @@ func _run():
 		saynn("[say=issix]What leads you to me? I don't suppose you are here to admire me like the three here.[/say]")
 		saynn("He lets out a laugh")
 		saynn("[say=issix]Anyways, I own this little corner including those three wonderful leashed pets beside me. You do NOT touch my pets without permission. Normally I wouldn't think this has to be mentioned, but for some reasons inmates think otherwise, those who do - don't keep this thought for long.[/say]")
-		sayn("[say=issix]That's probably everything you need to know about me. \nAlso, considering we didn't start on the wrong foot, you have my permission to speak with my pets. \nNow, please find some other business to attend to, unless you need something else of me?[/say]")
+		saynn("[say=issix]That's probably everything you need to know about me. \nAlso, considering we didn't start on the wrong foot, you have my permission to speak with my pets. \nNow, please find some other business to attend to, unless you need something else of me?[/say]")
 		addButton("Heaven?", "Did you hear that correctly?", "heaven")
 		addButton("You", "Learn more about Issix", "issixdetails")
 		addButton("Pets", "Who are the pets?", "pets")
@@ -124,7 +134,7 @@ func _run():
 		addCharacter("lamia")
 		if(state == "hiisipet"):
 			saynn("You crouch and gently pet Azazel's head. You can feel very delicate vibrations produced by the kitten. He doesn't open his eyes, but it's clear cat enjoys this treatment.")
-			sayn("Master looks at this interaction with interest and sincere smile on his face.")
+			saynn("Master looks at this interaction with interest and sincere smile on his face.")
 			saynn("After a short moment you stand back up and look at pet on your right.")
 		saynn("[say=issix]This one here is Hiisi. He is my latest, which doesn't mean I love him any different. This puppy rather keeps to himself, you may have difficulties getting him to open to you, if you'd ever want to do that. He's.. A troubled one, to say the least, but look at him, isn't he the pristine puppy boy? He loves his belly rubs and stays out of the trouble! ... Well, mostly. Anyways, despite his troubled past, he agreed to join me and became my pup! Hiisi cmon, welcome our guest, give {pc.him} a sniff![/say]")
 		saynn("[say=hiisi]{pc.name} isn't it? Umm... Hi.[/say]")
@@ -173,6 +183,7 @@ func _run():
 	if(state == "join"):
 		var score = calculateHaremScore()
 		var score_explored = GM.main.getModuleFlag("IssixModule", "Score_Explored")
+		saynn("[say=pc]"+RNG.pick(["What would you say about me becoming one of your pets?", "Do you think I would fit in with your harem?", "I'd like to become one of your pets, is this possible?"])+"[/say]")
 		if(GM.pc.getPersonality().getStat(PersonalityStat.Subby) < 0):
 			saynn("[say=issix]Look, you are lovely and all that, but I don't think you are the right fit. I require absolute obedience. Once you submit to me there is no going back, you become MY treasured pet forever. Those three? They know their place, they are ready to be mated whenever I feel like doing so. You? You strike me as leader - like myself. Why not just be business partners in here eh? I think you are entirely capable of gathering your own pets.[/say]")
 		elif(score > 89):
@@ -192,12 +203,10 @@ func _run():
 			GM.main.setModuleFlag("IssixModule", "Score_Explored", score)
 			addButton("Y-your pet", "Submit to Issix", "quest")
 			if (GM.pc.getPersonality().getStat(PersonalityStat.Subby) < 0.3) and GM.pc.getLust() < 30 and !GM.pc.isWearingHypnovisor() and !GM.pc.hasEffect(StatusEffect.Suggestible) and !GM.pc.hasEffect(StatusEffect.UnderHypnosis):  # Good luck lol
-				GM.main.setModuleFlag("IssixModule", "Quest_Status", 0)
-				setModuleFlag("IssixModule", "Quest_Rejected_By_Issix", 1)
-				addButton("Stray", "You don't want to be his", "quest")
+				addButton("Stray", "You don't want to be his", "questreject")
 			else:
 				addDisabledButton("Stray kitten", "Your mind doesn't allow you to make this choice")
-		elif(score > 75 and score_explored < 90):
+		elif(score > 75 and score_explored < 76):
 			playAnimation(StageScene.Duo, "stand", {npc="issix", npcAction="stand"})
 			saynn("[say=issix]Hmm.[/say]")
 			saynn("He approaches you. Studying details of your face, he puts two of his paw fingers on your mouth opening it, he checks your teeth, if you have fangs. Without asking he grabs your arm rotating it, looking at every possible detail. You don't put up resistance at any point, you expected this treatment, after all. Being a pet is very intimate experience submitting yourself to someone else, after all.")
@@ -211,12 +220,14 @@ func _run():
 					saynn("[say=issix]Eager to be milked? A pet cow would be most welcome in my corner. How are your cow impressions?[/say]")
 					saynn("You figure it's a rhetorical question and keep quiet as he moves to your other body parts.")
 			saynn("He continues to explore your {pc.thick} {pc.masc} body, continuing wandering with his paws further down.")
-			if GM.pc.isFullyNaked() or !GM.pc.isWearingAnyUnderwear():
+			if GM.pc.getInventory().hasSlotEquipped(InventorySlot.UnderwearBottom) or GM.pc.getInventory().hasSlotEquipped(InventorySlot.Body):
 				if GM.pc.hasVagina() or GM.pc.hasPenis():
 					saynn("[say=issix]You like having your babymaker visible to everyone, [pulse color=#00FFAA height=0.0 freq=1.0]slut[/pulse]?[/say]")
+				else:
+					saynn("[say=issix]Nothing there? That's okey by me, everyone comes with at least one hole.[/say]")
 				if GM.pc.hasReachableVagina():
 					var fluid = GM.pc.getBodypart(BodypartSlot.Vagina).getOrifice().getFluids().getDominantFluidID()
-					saynn("He puts his finger into your {pc.pussyStretch} pussy, exploring it from the inside. You close your eyes as the dragon explores your body completely unrestricted as if you were just a [pulse color=#00FFAA height=0.0 freq=1.0]piece of meat[/pulse], a mix of pleasure and humiliation inside of your head. At last, he pulls out, his finger "+ ("covered in "+GlobalRegistry.getFluid(fluid).getVisibleName().to_lower() if fluid != null else "a bit moisty")+".")
+					saynn("He puts his finger into your {pc.pussyStretch} pussy, exploring it from the inside. You close your eyes as the dragon explores your body completely unrestricted as if you were just a [pulse color=#00FFAA height=0.0 freq=1.0]piece of meat[/pulse], a mix of pleasure and humiliation inside of your head. At last, he pulls out, his finger "+ ("covered in "+GlobalRegistry.getFluid(fluid).getVisibleName().to_lower() if fluid != null else "a bit moist")+".")
 				if GM.pc.hasReachablePenis():
 					saynn("He wraps around his paw around your {pc.penis}, stroking it a little. It already had some encouragement earlier, but now with some stroking from dominant dragon it became much harder.")
 					if GM.pc.getPenisSize() > 14:
@@ -226,7 +237,7 @@ func _run():
 			saynn("He ends exploring your body and comes back to his chair.")
 			saynn("[say=issix]I like what I see. You are almost ready, but not yet. When the time comes I expect you to show up again for my judgment. Then, I'll give you a chance. Don't waste it.[/say]")
 			GM.main.setModuleFlag("IssixModule", "Score_Explored", score)
-		elif(score > 45 and score_explored < 76):
+		elif(score > 45 and score_explored < 46):
 			playAnimation(StageScene.Duo, "stand", {npc="issix", npcAction="stand"})
 			saynn("[say=issix]Heh, interesting ask. It's still a no, though I have to admit, I do see some potential in here.[/say]")
 			if (GM.pc.isBlindfolded()):
@@ -237,13 +248,13 @@ func _run():
 			else:
 				saynn("Issix stands up, takes a step towards you, grabs you by your chin without asking and looks you straight into your eyes.")
 			GM.pc.addLust(30)
-			sayn("The moment takes forever, just as his gaze pierces through your eyes, you also observe his black, void pupils and irises. For a moment, it feels as if his pupil turned bright red. Could be just a play of light or something... But then... There is allure in those eyes. Something dangerous, yet enticing. You feel primal, bare. With every moment of this eye contact you feel less in control, weaker, inferior. Your knees start to bend ever so slightly before Issix stedies your head again and takes his paws from your chin.")
+			saynn("The moment takes forever, just as his gaze pierces through your eyes, you also observe his black, void pupils and irises. For a moment, it feels as if his pupil turned bright red. Could be just a play of light or something... But then... There is allure in those eyes. Something dangerous, yet enticing. You feel primal, bare. With every moment of this eye contact you feel less in control, weaker, inferior. Your knees start to bend ever so slightly before Issix stedies your head again and takes his paws from your chin.")
 			if (GM.pc.isBlindfolded()):
-				sayn("He fixes your blindfold to be back on your eyes.")
+				saynn("He fixes your blindfold to be back on your eyes.")
 			saynn("[say=issix]Yess, you have the potential, whether you'll use it or not is up to you.[/say]")
 			saynn("Issix goes back to his chair and sits, staring at you with a grin on his face.")
 			GM.main.setModuleFlag("IssixModule", "Score_Explored", score)
-		elif(score > 25 and score_explored < 46):
+		elif(score > 25 and score_explored < 26):
 			saynn("[say=issix]I gotta say, I did hear of a certain {pc.name} around doing some whoring, but that's about it. You must understand, my pets must have prior experience and right spirit that I can exploit. You seem like a small fish. So no, my apologies but I'm simply not interested in you at the moment.[/say]")
 			GM.main.setModuleFlag("IssixModule", "Score_Explored", score)
 		elif(score_explored > 1):
@@ -252,31 +263,32 @@ func _run():
 			saynn("[say=issix]Look, you are lovely and all that, but I don't think you have what it takes to join my other pets. I require absolute obedience and sexual experience. Once you submit to me there is no going back, you become MY treasured pet forever. Those three? They know their place, they are ready to be mated whenever I feel like doing so. They obey my every single command. I just don't see that in you, sorry.[/say]")
 		addButton("Back", "Maybe another time then...", "talk")
 		
+	if state == "questreject":
+		setModuleFlag("IssixModule", "Quest_Rejected_By_Issix", 1)
+		saynn("[say=issix]I see... Disappointing, but it's your choice and I respect that.[/say]")
+		saynn("He looks at you some more, he takes away his paw from your chin, turns around and sits on his chair. A serious and... Disappointed look on his face.")
+		saynn("[say=issix]Go on then, unless you want to donate some items.[/say]")
+		addButton("Leave", "Take your leave", "endthescene")
+
 	if(state == "quest"):
 		playAnimation(StageScene.Duo, "stand", {npc="issix", npcAction="sit"})
-		if (GM.main.getModuleFlag("IssixModule", "Quest_Status") == -1):
-			saynn("[say=issix]I see... Disappointing, but it's your choice and I respect that.[/say]")
-			saynn("He looks at you some more, he takes away his paw from your chin, turns around and sits on his chair. A serious and... Disappointed look on his face.")
-			saynn("[say=issix]I'll give you one more chance if you change your mind. But this one will be final. My pets trust me, and they don't say no to me.[/say]")
-			addButton("Leave", "Take your leave", "endthescene")
-		else:
-			saynn("He smiles briefly.")
-			saynn("[say=issix]Very well.[/say]")
-			saynn("He puts his paws on sides of your head and starts scratching you behind your ears. Immediately you feel... Comfortable. Loved. Protected. You closed your eyes in bliss. And then he... Stops, the feeling of his paws is filled with void. You feel empty, unfulfilled. You open your eyes and meet his eyes staring at you again from the above. He looks at you expectendly. You aren't sure what to do, you don't want to fail your Master, but... His black eyes speak to you, yes. They want you to open your mouth. You don't even realize when your mouth opens. You didn't do that by yourself, did you?")
-			sayn("He takes your tongue in between his paw fingers gently, pulls it out a little. He opens his mouth and he spits. Spit lands right on your tongue, with incredible precision right in the middle. He does it again, using the fact your mouth is still open. It lands deeper inside your mount. He pulls his paw fingers from your tongue and uses his two fingers to pressure your chin from below, giving you a signal to close your mouth.")
-			sayn("You comply. There is nothing other than his eyes staring deep at you, his will is your will. His spit doesn't feel particularly different from yours, perhaps you can pick up some flavor or two, but it's more dignified flavor than one of cum that you are so used to. You keep the spit inside your mouth for a bit, tasting it, feeling it, connecting with its owner. And you swallow it, with a visible gulp.")
-			saynn("Issix smiles. He ruffles your " + ("hair" if GM.pc.hasHair() else "ears") + " with his paws.")
-			saynn("[say=issix]Good pet.\nNow, to be MY pet you'll have to prove yourself further. Besides the fact I want my pets to be all famous in this little heaven of ours, I want to make sure they follow my orders. For you my dear, I have a few little tasks, nothing you can't do, I'm sure, but it will be the proof I need you can become MY pet.[/say]")
-			saynn("He turns around and moves towards his chair, where he sits.")
-			saynn("[say=issix]Your first task will require... Trust. In me. Tell me, do you trust me?[/say]")
-			addButton("Yes", "Say you trust Issix", "questresponseyes")
-			addButton("No", "Say you don't trust Issix", "questresponseno")
+		saynn("He smiles briefly.")
+		saynn("[say=issix]Very well.[/say]")
+		saynn("He puts his paws on sides of your head and starts scratching you behind your ears. Immediately you feel... Comfortable. Loved. Protected. You closed your eyes in bliss. And then he... Stops, the feeling of his paws is filled with void. You feel empty, unfulfilled. You open your eyes and meet his eyes staring at you again from the above. He looks at you expectendly. You aren't sure what to do, you don't want to fail your Master, but... His black eyes speak to you, yes. They want you to open your mouth. You don't even realize when your mouth opens. You didn't do that by yourself, did you?")
+		saynn("He takes your tongue in between his paw fingers gently, pulls it out a little. He opens his mouth and he spits. Spit lands right on your tongue, with incredible precision right in the middle. He does it again, using the fact your mouth is still open. It lands deeper inside your mount. He pulls his paw fingers from your tongue and uses his two fingers to pressure your chin from below, giving you a signal to close your mouth.")
+		saynn("You comply. There is nothing other than his eyes staring deep at you, his will is your will. His spit doesn't feel particularly different from yours, perhaps you can pick up some flavor or two, but it's more dignified flavor than one of cum that you are so used to. You keep the spit inside your mouth for a bit, tasting it, feeling it, connecting with its owner. And you swallow it, with a visible gulp.")
+		saynn("Issix smiles. He ruffles your " + ("hair" if GM.pc.hasHair() else "ears") + " with his paws.")
+		saynn("[say=issix]Good pet.\nNow, to be MY pet you'll have to prove yourself further. Besides the fact I want my pets to be all famous in this little heaven of ours, I want to make sure they follow my orders. For you my dear, I have a few little tasks, nothing you can't do, I'm sure, but it will be the proof I need you can become MY pet.[/say]")
+		saynn("He turns around and moves towards his chair, where he sits.")
+		saynn("[say=issix]Your first task will require... Trust. In me. Tell me, do you trust me?[/say]")
+		addButton("Yes", "Say you trust Issix", "questresponseyes")
+		addButton("No", "Say you don't trust Issix", "questresponseno")
 			
 	if(state in ["questresponseyes", "questresponseno"]):
 		GM.main.setModuleFlag("IssixModule", "Quest_Status", 1)
 		if(state=="questresponseyes"):
 			saynn("Issix grins after hearing the answer.")
-			sayn("[say=issix]Excellent. Now, what I want to do is verify your trust, and gain some of my own trust in you. You must be acutely aware how words, especially in this place"+ (" and especially coming from a red like yourself" if GM.pc.getInmateType() == InmateType.HighSec else "") + " can be deceptive.[/say]")
+			saynn("[say=issix]Excellent. Now, what I want to do is verify your trust, and gain some of my own trust in you. You must be acutely aware how words, especially in this place"+ (" and especially coming from a red like yourself" if GM.pc.getInmateType() == InmateType.HighSec else "") + " can be deceptive.[/say]")
 		if(state=="questresponseno"):
 			saynn("Issix looks at you, studying you.")
 			saynn("[say=issix]Curious. Not the answer I anticipated. It's fine, we can work on that.[/say]")
@@ -285,6 +297,7 @@ func _run():
 		saynn("[say=issix]You will have to use your little head a bit too before you put one. I'll give you a map, I've drawn it myself, but it has to do. I won't spoil your fun and tell you what it shows, I'm sure you are clever enough to figure it out by yourself, after all, this prison isn't thaaat big, right?[/say]")
 		saynn("He winks at you, and lets out a chuckle.")
 		saynn("[say=issix]Go there, blind yourself, go through a wall and bring me the goods. The number you'll need is 84. And morsel, don't hang in there for too long, trust me on that. Don't worry, I'll know if you succeed or not, don't try to cheat. Remember, trust is the key.[/say]")
+		addMessage("You've received a map.")
 		addButton("Leave", "Take your leave", "endthescene")
 	
 	if(state == "quest1bonk"):
@@ -309,7 +322,7 @@ func _run():
 		GM.main.setModuleFlag("IssixModule", "Quest_Wait_Another_Day", true)
 		saynn("[say=pc]Is... This what you wanted?[/say]")
 		saynn("You said with uncertainty in your voice, presenting Issix with a packet of gumball.\nIssix looks at you elated, he claps his paws.")
-		saynn("[say=issix]Yes, YES. This is exactly what I needed, pet.[/say]")
+		saynn("[say=issix]Yes, YES. This is exactly what I needed, morsel.[/say]")
 		saynn("He stands up, and takes the packet of gum from your paw.")
 		saynn("He opens one end of it and immediately pops one of the gums in his mouth. He goes back to sit on his chair.")
 		saynn("[say=issix]You know, a lot of goods in here are generally unavailable to inmates. I knew what I were getting into arriving in here, and didn't really care about most of favorite dishes or products. But this gum? I can't live without it. I were able to make sure it arrives here, in this prison just for myself regularly. You wouldn't believe just how much I had to work to have it delivered, it's not exactly the most popular destination in the galaxy. I have a contact who drops it always in same place where you got it from.[/say]")
@@ -331,6 +344,9 @@ func calculateHaremScore():
 	return int(score) # -10 - 100
 
 func _react(_action: String, _args):
+	if _action in ["questresponseno", "questresponseyes"]:
+		GM.pc.getInventory().addItem(GlobalRegistry.createItem("IssixsMap"))
+
 	if(_action == "endthescene"):
 		endScene()
 		return

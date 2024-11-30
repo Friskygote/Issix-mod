@@ -82,7 +82,8 @@ func _init():
 		"res://Modules/IssixModule/Scenes/Overwrites/EatInCanteenScene.gd",
 		"res://Modules/IssixModule/Scenes/SlaveryFirst/SlaveryIntroContScene.gd",
 		"res://Modules/IssixModule/Scenes/SlaveryFirst/SlaveryTrainingBowlScene.gd",
-		"res://Modules/IssixModule/Scenes/SlaveryFirst/SlaveryBrandingScene.gd"
+		"res://Modules/IssixModule/Scenes/SlaveryFirst/SlaveryBrandingScene.gd",
+		"res://Modules/IssixModule/Scenes/CaughtInTheCloset.gd"
 		]
 		
 	characters = [
@@ -97,9 +98,7 @@ func _init():
 	]
 	
 	items = [
-		"res://Modules/IssixModule/CatnipItem.gd",
-		"res://Modules/IssixModule/MapItem.gd",
-		"res://Modules/IssixModule/CookieItem.gd"  # I just felt like this game needs more variety in items, even if by themselves they don't do much
+		 "res://Modules/IssixModule/Items/CatnipItem.gd", "res://Modules/IssixModule/Items/ClosetMap.gd", "res://Modules/IssixModule/Items/CookieItem.gd" # I just felt like this game needs more variety in items, even if by themselves they don't do much
 	]
 	
 	quests = [
@@ -107,6 +106,10 @@ func _init():
 	]
 
 	GlobalRegistry.registerLustTopicFolder("res://Modules/IssixModule/InterestTopics/")
+	GlobalRegistry.registerSkinsFolder("res://Modules/IssixModule/Skins/")
+	GlobalRegistry.registerStatusEffectFolder("res://Modules/IssixModule/StatusEffects/")
+	GlobalRegistry.sortRegisteredStatusEffectsByPriority()
+	GlobalRegistry.registerMapFloorFolder("res://Modules/IssixModule/Floors/")
 
 # External
 # "res://Scenes/ParadedOnALeashScene.gd"
