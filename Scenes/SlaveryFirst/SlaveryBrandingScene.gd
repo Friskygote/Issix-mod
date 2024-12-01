@@ -222,9 +222,7 @@ func _react(_action: String, _args):
 		processTime(20*60)
 		GM.pc.addStamina(-300)
 		GM.pc.addPain(300)
-
-	if _action == "afterbrandingwakeup":
-		pass
+		GM.pc.addEffect("AfterBrandPain")
 
 	if _action == "firstwalk":
 		processTime(10*60)

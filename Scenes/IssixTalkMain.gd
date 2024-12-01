@@ -15,7 +15,7 @@ func _reactInit():
 func _run():
 	if(state == ""):
 		setLocationName("Issix's Corner")
-		if GM.main.getModuleFlag("IssixModule", "Quest_Status") < 6:
+		if GM.main.getModuleFlag("IssixModule", "Quest_Status") < 6 and GM.main.getModuleFlag("IssixModule", "Quest_Rejected_By_Issix", 0) == 0:
 			playAnimation(StageScene.Duo, "stand", {npc="issix", npcAction="sit"})
 		else:
 			playAnimation(StageScene.Duo, "kneel", {npc="issix", npcAction="sit"})
@@ -39,7 +39,10 @@ func _run():
 		
 	if(state == "talk"):
 		clearCharacter()
-		playAnimation(StageScene.Duo, "stand", {npc="issix", npcAction="sit"})
+		if GM.main.getModuleFlag("IssixModule", "Quest_Status") < 6 and GM.main.getModuleFlag("IssixModule", "Quest_Rejected_By_Issix", 0) == 0:
+			playAnimation(StageScene.Duo, "stand", {npc="issix", npcAction="sit"})
+		else:
+			playAnimation(StageScene.Duo, "kneel", {npc="issix", npcAction="sit"})
 		addCharacter("issix")
 		if(!GM.main.getModuleFlag("IssixModule", "Issix_Introduced")):
 			GM.main.setModuleFlag("IssixModule", "Issix_Introduced", true)

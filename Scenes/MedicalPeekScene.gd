@@ -11,10 +11,10 @@ func _run():
 	if(state == ""):
 		
 		if (getModuleFlag("IssixModule", "Medical_Peeked") == null):
-			saynn("You can definietely hear something happening in the hospital room north...")
+			saynn("You can definietely hear something happening in the hospital room nearby...")
 			addButtonAt(3, "Investigate", "Try to see if you can hear something", "eavesdrop")
 		else:
-			saynn("The room to north seems to be quiet now, occassionally some ruffling can be heard.")
+			saynn("The room to north seems to be quiet now, occasionally some ruffling can be heard.")
 		addDisabledButtonAt(6, "North", "The double doors leading to the room are closed shut, you can't go in")
 		addButtonAt(10, "West", "Go west", "west")
 		addButtonAt(12, "East", "Go east", "east")

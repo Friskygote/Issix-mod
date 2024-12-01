@@ -29,7 +29,7 @@ func _run():
 		saynn("„Do you believe creatures possess a soul?”")
 		saynn("This question lingers in for you a second, but your ultimate answer is...")
 		addButton("Yes", "Yes, you do believe souls exist", "q1yes", [true])
-		addButton("No", "You don't believe in existance of souls", "q1no", [false])
+		addButton("No", "You don't believe in existence of souls", "q1no", [false])
 		
 	if(state == "q1yes"):
 		saynn("[say=pc]I do believe creatures possess a soul, yeah.[/say]")
@@ -45,6 +45,8 @@ func _run():
 		addButton("Next question", "Moving on", "q2")
 		
 	if(state == "q2"):
+		if answer == true:
+			saynn("[say=issix]Fascinating, thank you.[/say]")
 		saynn("Looking back at tablet's screen, next question pops up.")
 		saynn("„Do you consider yourself loyal?”")
 		saynn("Not an unexpected question for this quiz.")
@@ -91,7 +93,7 @@ func _run():
 		saynn("You look back at your tablet. You stare it for good 10 seconds, but no new question comes up. You start wondering if something is wrong or...")
 		saynn("[say=issix]Give me that for a second.[/say]")
 		saynn("He takes the tablet from your paws and holds it. He then shakes it in all directions as if it was a snow globe toy, hitting it a few times on the floor for a good measure. After a solid minute of this treatment the tablet flashes with Lilac color for a second and displays the next question.")
-		saynn("[say=issix]Here you go. Technology is sometimes stubborn, you'd think that violence is never an option, but for electronics? Those things fear you. Givving them a good whack sometimes helps them come to their senses.[/say]")
+		saynn("[say=issix]Here you go. Technology is sometimes stubborn, you'd think that violence is never an option, but for electronics? Those things fear you. Giving them a good whack sometimes helps them come to their senses.[/say]")
 		saynn("He laughs, while passing the tablet back to you. Next questions says...")
 		saynn("„What body part of yours do you consider most desirable?”")
 		saynn("[say=issix]By that I mean, which one of them you find the most essential to your identity... I guess...[/say]")
@@ -114,7 +116,7 @@ func _run():
 		saynn("You can hear sense of urgency in Azazel's voice.")
 		saynn("[say=issix]Yes, pet? What happened?[/say]")
 		saynn("[say=azazel]Lamia, they... I think they...[/say]")
-		saynn("Everyone immediately starts looking at Lamia. The fox is curled up, their head hidden under all of their fluff, they are visibly shaking.\nIssix jumps out of the chair, it falling on its back and making a lot of noise. He kneels next to Lamia and puts his paw gently under their head to see their face. Lamia is in tears, it's difficult to look at him at this state.")
+		saynn("Everyone immediately starts looking at Lamia. The fox is curled up, their head hidden under all of their fluff, they are visibly shaking.\nIssix jumps out of the chair, chair falling on its back and making a lot of noise. He kneels next to Lamia and puts his paw gently under his head to see his face. Lamia is in tears, it's difficult to look at him at this state.")
 		saynn("[say=issix]Lamia, please, show.[/say]")
 		saynn("He grabs a pen and hands it to Lamia. Lamia with great struggle takes the pen and scribbles something on piece of paper, you can't see it, it's behind Issix's body. Issix looks at the piece of paper and as he realizes what Lamia drew he shouts")
 		saynn("[say=issix]Pets, with me. To medical, now.[/say]")
@@ -196,13 +198,15 @@ func _run():
 		saynn("Screen of the tablet flashes, in Evergreen color this time, and a new question appears.")
 		saynn("„What species do you find most attractive?”")
 		var species = GlobalRegistry.getAllPlayableSpecies()
+		if species.size() > 15:  # ladies and gentleman, we are fucked
+			pass  # TODO handle this
 		for species_id in species:
 			addButton(species[species_id].getVisibleName()+"s", "I find "+species[species_id].getVisibleName()+"s to be most attractive", "q8answer", [str(species_id)])
 
 	if(state == "q9"):
 		if(answer in ['demon', 'dragon']):
 			saynn("Issix laugs")
-			saynn("[say=issix]I hope my body had no effect on that answer[/say]")
+			saynn("[say=issix]I hope my body had not contributed to this answer[/say]")
 		saynn("Issix notes the answer, he puts his own tablet on the floor as he picks up a glass of water to drink")
 		saynn("[say=issix]How do you feel about your answers so far? I hope you are honest with those, you know.[/say]")
 		saynn("He puts the glass back on its earlier position, taps his tablet and you get the next question.")
@@ -235,9 +239,9 @@ func _run():
 			saynn("He laugs.")
 		saynn("[say=issix]We are at the end, last question.[/say]")
 		saynn("„What do you think about AlphaCorp?” the screen displays.")
-		addButton("Good", "AlphaCorp is doing good work, better than anyone else in this part of the galaxy", "q11answer", true)
+		addButton("Good", "AlphaCorp is doing good work, better than anyone else in this part of the galaxy", "q11answer", [true])
 		addButton("Neutral", "You either have no opinion or feel entirely neutral about AlphaCorp", "q11answer")
-		addButton("Bad", "Your typical corrupt corporation, you dislike/hate it", "q11answer", false)
+		addButton("Bad", "Your typical corrupt corporation, you dislike/hate it", "q11answer", [false])
 
 	if(state == "q11answer"):
 		saynn("He writes notes your last answer.")
@@ -287,7 +291,7 @@ func _run():
 		saynn("[say=issix]If you are wondering what I'm going to do with this information, I will say - time will tell.[/say]")  # no, really, I have no fucking idea lol
 		answer = getModuleFlag("IssixModule", "QuestionnaireQ4")
 		var wants_to = getModuleFlag("IssixModule", "QuestionnaireQ9")
-		var was_pregnant = GM.CS.getChildrenAmountOfOnlyMother("pc")
+		var was_pregnant = GM.CS.getChildrenAmountOfOnlyMother("pc") > 0
 		saynn("[say=issix]Next, you answered that you "+("can become pregnant with a child" if answer else "cannot become pregnant with a child")+".[/say]")
 		if answer == false and was_pregnant == true:
 			saynn("[say=issix]Hmm, interesting. I'm aware of you having a child in the past in this very prison, did something happen in the meantime?[/say]")
@@ -381,7 +385,7 @@ func _run():
 		
 		saynn("Issix seems to be a little aroused by your answer, considering his penis peeking out.")
 		answer = getModuleFlag("IssixModule", "QuestionnaireQ6")
-		saynn("[say=issix]Annyyyways. Let's move on. I've asked you next if you have any slaves, it was yet another question to you to test your honesty. It's pretty trivial for me to learn of such facts, so I'm not sure why would one lie in that easily verifiable question, but nonetheless, you've said that "+("you own a slave" if answer else "you don't own a slave") +".")
+		saynn("[say=issix]Annyyyways. Let's move on. I've asked you next if you have any slaves, it was yet another question to you to test your honesty. It's pretty trivial for me to learn of such facts, so I'm not sure why would one lie in that easily verifiable question, but nonetheless, you've said that "+("you own a slave" if answer else "you don't own a slave") +".[/say]")
 		var slaves = GM.main.getPCSlaveAmount()
 		var dialogue = ""
 		if answer == false:
@@ -403,7 +407,7 @@ func _run():
 				saynn("[say=issix]That seems to check out. I'm aware you have at least one slave. Just to let you know - it does not bother me. Even though, I have certain expectations of my pets, and no, any kind of dominative behavior will not be tolerated. You'll be my slave, keep that in mind. What you do with your slaves is of no concern to me.[/say]")
 			else:
 				saynn("[say=issix]You do have slaves huh? Where? In this prison? Are you trying to impress me? Don't be a fool. I'm not aware of you owning any slave, I'd know that, I do my research morsel. Do not try to deceive me.[/say]")
-		saynn("Issix relaxes on his chair, streatches and breathes loudly.")
+		saynn("Issix relaxes on his chair, stretches and breathes loudly.")
 		if strikes>1:
 			saynn("[say=issix]Maybe you have found your place, not with me, mind you, but in here, in this institution. Perhaps you are planning on staying here for a long time huh?[/say]")
 			saynn("He smiles")
@@ -434,7 +438,7 @@ func _run():
 		if answer == true:
 			saynn("[say=issix]Seems like you approve of AlphaCorp, either you are absolutely blind to what they've been doing and are doing, you are a fool or there is some other reason for you to take their side. Like I mentioned - has nothing to do with us. I'd love to know what made you believe this way but that's a conversation for some other day, maybe.[/say]")
 		elif answer == false:
-			saynn("[say=issix]You've told me that you dislike AlphaCorp as well. Don't know your motives, whether it's because you are where you are, they killed your family or something else - I'm with you on that. AlphaCorp is just another entirely corrupt bullshit machine that uses doesn't know any other way to do anything other than resort to violence. Their executives are bunch of dickheads who's brains long time ago got eaten by money worms. But you probably know all of that. Hope one day comes where AlphaCorp is no more.[/say]")
+			saynn("[say=issix]You've told me that you dislike AlphaCorp as well. Don't know your motives, whether it's because you are where you are, they killed your family or something else - I'm with you on that. AlphaCorp is just another entirely corrupt bullshit machine that doesn't know any other way to resolve complex issues other than resort to violence. Their executives are bunch of dickheads who's brains got eaten by money worms a long time ago. But you probably know all of that. Hope one day comes where AlphaCorp is no more.[/say]")
 		else:
 			saynn("[say=issix]Seems like you don't have an opinion on that, that's fair. I'd ask why, when politics have such large impact on us all, but I've lived enough to just let it be. You know how I feel about this intergalatic corpo shitstain, that's probably all you need to know. Whatever, I'm sick of talking politics for now.[/say]")
 		saynn("[say=issix]That would be all of the questions covered. Let's see... That makes it that... Plus this...[/say]")
@@ -530,7 +534,7 @@ func loadData(data):
 
 
 func getDevCommentary():
-	return "Writing questionnaire took me a while. I knew I wanted to write wuestionnaire and I wanted it to be meaningful in a way. At first the idea was that a player will choose some options and then Issix will use them to apply punishments and rewards according to those responses. However evantually I felt like this may not be the best usage of questionnaire. One thing that to me is missing in the game is the lack of impact of choices made in other character arcs on the rest of the prison, I really wanted to do something about it, so I decided to possibly involve choices made in Tavi's questline as well as Rahi's to judge player for slavery fitness. There is also the fact that I enjoy ethics, so I slapped some ethics questions as well, this allows me to show that Issix is not a two-dimensional character and works according to some rules he subscribes to as well. The end result is a weird mix of stuff. Don't know how I ultimately feel about all of this, but I think the idea of questionnaire is a solid one in here. Also, the abrupt break was added as I were writing the quiestionnaire, completely on impulse. I've felt like we needed some dramatic break or this would feel too boring, and it would allow me to add some relevant foreshadowing and story bits for later. Didn't want the quest to be this quick. It should be spread across multiple days, sorry for artificial filler ><"
+	return "Writing questionnaire took me a while. I knew I wanted to write questionnaire and I wanted it to be meaningful in a way. At first the idea was that a player will choose some options and then Issix will use them to apply punishments and rewards according to those responses. However eventually I felt like this may not be the best usage of questionnaire. One thing that to me is missing in the game is the lack of impact of choices made in other character arcs on the rest of the prison, I really wanted to do something about it, so I decided to possibly involve choices made in Tavi's questline as well as Rahi's to judge player for slavery fitness. There is also the fact that I enjoy ethics, so I slapped some ethics questions as well, this allows me to show that Issix is not a two-dimensional character and works according to some rules he subscribes to as well. The end result is a weird mix of stuff. Don't know how I ultimately feel about all of this, but I think the idea of questionnaire is a solid one in here. Also, the abrupt break was added as I were writing the questionnaire, completely on impulse. I've felt like we needed some dramatic break or this would feel too boring, and it would allow me to add some relevant foreshadowing and story bits for later. Didn't want the quest to be this quick. It should be spread across multiple days, sorry for artificial filler ><"
 
 func hasDevCommentary():
 	return true

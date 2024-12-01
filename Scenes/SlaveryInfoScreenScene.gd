@@ -1,10 +1,7 @@
 extends SceneBase
 
 func _init():
-	sceneID = "IssixSlaveryIntroCont"
-
-func requirements_met():
-	return getModuleFlag("IssixModule", "Misc_Slavery_Info", {"scenes_seen": []})["scenes_seen"].find("IssixSlaveryIntroCont") == -1
+	sceneID = "SlaveryInfoScreen"
 
 func _run():
 	if(state == ""):
@@ -13,8 +10,21 @@ func _run():
 		saynn("Your training: "+trainingCheck())
 		saynn("Master's mood: "+getMood())
 		saynn("Issix's slave for "+str(getDays())+" days")
-		if GM.main.getModuleFlag("IssixModule", "PC_Enslavement_Role", 1) == 1:
-			saynn("Amount of time spent in Master's harem today: "+str(getTimeSpent()) + " minutes")
+		match GM.main.getModuleFlag("IssixModule", "PC_Enslavement_Role", 1):
+			1:
+				saynn("Amount of time spent in Master's harem today: "+str(getTimeSpent()) + " minutes")
+			2:
+				saynn("To pay Master for sluttying around yesterday: " + str(GM.main.getModuleFlag("IssixModule", "Prostituation_fee_yesterday", 0) + GM.main.getModuleFlag("IssixModule", "Prostituation_flat_fee", 0)))
+			_:
+				pass
+		addButton("Master", "Talk with your master about something", "issixpetmenu")
+		addButton("Azazel", "Actions in relation to Azazel", "azazelpetmenu")
+		addButton("Hiisi", "Actions in relation to Hiisi", "hiisipetmenu")
+		addButton("Lamia", "Actions in relation to Lamia", "lamiapetmenu")
+
+	if state == "issixpetmenu":
+
+
 
 func getTimeSpent():
 	return ""
@@ -56,7 +66,7 @@ func trainingCheck():
 func _react(_action: String, _args):
 
 	if(_action == "endthescene"):
-		increaseModuleFlag("IssixModule", "PC_Training_Level")
+		# increaseModuleFlag("IssixModule", "PC_Training_Level")
 		endScene()
 		return
 
