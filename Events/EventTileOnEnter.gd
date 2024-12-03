@@ -30,11 +30,16 @@ func run(_triggerID, _args):
 			addButton("Paper", "A piece of paper lies left in a hurry", "paper")
 		return
 		
-	var player_enslaved = getModuleFlag("IssixModule", "PC_Enslavement_Role")
-	if player_enslaved != null and player_enslaved > 0:
+	var player_enslaved = getModuleFlag("IssixModule", "PC_Enslavement_Role", 0)
+	if player_enslaved > 0:
 		saynn("You see your Master sitting on his chair in the corner, around him there is Azazel, Hiisi and Lamia.")
 		addButton("Master", "Talk to Master Issix", "talk")
 		addButton("Pets", "Look at Master's pets", "pets")
+		match player_enslaved:
+			1:
+				addButton("Pet tasks", "Get a read on today's pet tasks", "slavery")
+			2:
+				addButton("Prostitution", "Open prostitution info", "slavery")
 	else:
 		saynn("You see Issix sitting on a chair in a corner, around him there are three leashed slaves.")
 		addButton("Issix", "Talk to Issix", "talk")
@@ -55,6 +60,8 @@ func onButton(_method, _args):
 		runScene("PetsTalkScene")
 	if(_method == "paper"):
 		runScene("NoPetsTalkScene")
+	if _method == "slavery":
+		runScene("SlaveryInfoScreen")
 
 func eventCheck(_checkID, _args = []):
 	if(getModuleFlag("IssixModule", "Quest_Status") == 5 and getModuleFlag("IssixModule", "Quest_Wait_Another_Day") == true):

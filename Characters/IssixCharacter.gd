@@ -41,6 +41,7 @@ func _init():
 		Fetish.Masochism : FetishInterest.Hates,
 		Fetish.UnconsciousSex : FetishInterest.Loves,
 		Fetish.BeingBred : FetishInterest.Dislikes,
+		Fetish.Breeding : FetishInterest.Loves,
 		Fetish.Bondage : FetishInterest.Likes,
 		Fetish.Rigging : FetishInterest.Likes,
 		Fetish.Condoms : FetishInterest.Dislikes,

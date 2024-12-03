@@ -125,6 +125,8 @@ func _run():
 		if HiisiRPS != null:
 			if HiisiRPS["chosen_reward"] == 3 and HiisiRPS["reward_acquired"] == false:
 				addButton("Drink", "Ask Hiisi about energy drink that you've won through the game of Rock Paper Scissors", "hiisienergy")
+			if HiisiRPS["winh"] > 2 and HiisiRPS["reward_acquired"] == false:
+				addButtonWithChecks("Hypnovisor", "Ask Hiisi to fulfill his request with hypnovisors", "hiisihypnovisors", [], [[ButtonChecks.HasItemID, "HypnovisorMk0"]])
 		if not getModuleFlag("IssixModule", "Hiisi_Name_Helped", false):
 			addDisabledButton("Name", "You already asked Hiisi about his name")
 		else:
@@ -179,6 +181,18 @@ func _run():
 		saynn("You received 1 Energy Drink.")
 		addButton("Back", "Take a step back", "hiisitalk")
 			
+	if state == "hiisihypnovisors":
+		saynn("[say=pc]Umm, I have those, you wanted me to wear those the other day, right?[/say]")
+
+		saynn("hHiisi gives you a grin")
+		saynn("[say=hiisi]Yeah, I did. Can you pass them to me for a moment?[/say]")
+		saynn("[say=pc]Sure?[/say]")
+		saynn("You hand the Hypnovisor to Hiisi, he pulls out a small box out of nowhere and swipes it near the hypnovisors, he skillfully baps and presses a few places on the hypnovisors and turns them on for a second as if to confirm something. Satisfied he turns them off and passes back to you.")
+		saynn("[say=hiisi]Done! Now just put them on and let me watch![/say]")
+		addButton("Refuse", "Say that you feel uncomfortable putting the hypnovisors on with those changes", "hiisihypnono")
+		addButton("Put on", "Put the hypnovisors on yourself and turn them on", "hiisihypnoyes")
+
+
 	if(state == "lamiamain"):
 		clearCharacter()
 		addCharacter("lamia")
@@ -419,6 +433,16 @@ func _run():
 		saynn("Lamia is very visibly a fox breed, their fur has very vivid and unusual orange/red pallette. Red mostly visible on their arms, tip of their tail and a little bit on their legs. To contrast that, their hair is painted in shades of blue. They are wearing a general block inmate uniform.")
 		saynn("There are two slightly curved horns protruding from their head with black base and red endings.")
 		addButton("Back", "Stop looking at fox-breed", "lamiamain")
+
+	if state == "lamiaexplicit":
+		saynn("[say=pc]I've noticed you haven't drawn any explicit scenes when I were helping you sort your artwork, you don't like drawing those? This prison seems like grounds ripe for this sort of scenes, if you needed inspiration.[/say]")
+		saynn("Lamia shrugs, he starts drawing. At first a koala eating a bamboo shows up, a happy face drawn above it. Then he draws canine member and canine pussy with a stick figure doing shrug with their arms. What strikes you as odd is that even though Lamia doesn't seem to draw explicit scenes, their genitalia art is drawn with plenty of detail and effort.")
+		saynn("[say=pc]Wow, that's pretty good, but I guess you kinda don't care much for those? Sex and all just doesn't do it for you, huh?[/say]")
+		saynn("They nod in agreement.")
+		saynn("[say=pc]I con respect that. You are a great artist, and you should draw whatever the fuck you want, that's the way to go.[/say]")
+		saynn("You give them headpats.")
+		addButton("Back", "Finish this conversation", "lamiamain")
+
 
 func generate_artwork_desc(descriptors: Array):
 	if descriptors.size() > 1 and RNG.randi_range(1, 6) < 3:

@@ -18,7 +18,7 @@ func _run():
 		saynn("[say=pc]Will I have time for myself? Other pets are leashed here all the time.[/say]")
 		saynn("[say=issix]They do so of their own volition. They don't believe there is a better place to be than at my side, I give them place and they worship me as their master deserves. But if you so desire, you do not have to be at my side all the time. However I'll still have expectations of you, you will be my tool to mold and I expect you to be at my disposal at all times.[/say]")
 		if GM.pc.getGender() == Gender.Female:
-			saynn("[say=issix]Also, as you have seen, all of my pets are masculine identifying as male pets. I've never had a female before. I don't say that to make you scared or anything, I'm fairly certain in my ability to train and care for pets of all gender expressions, but I figured you should take that into consideration before you make a decision. My little... Harem in here is very male dominated.[/say]")
+			saynn("[say=issix]Also, as you have seen, all of my pets are mostly masculine pets, with them all identifying as male. I've never had a female before. I don't say that to make you scared or anything, I'm fairly certain in my ability to train and care for pets of all gender expressions, but I figured you should take that into consideration before you make a decision. My little... Harem in here is very male dominated.[/say]")
 		addButton("Slave", "Tell Issix you are ready to become his slave (WARNING: this will make the game generally harder and may involve a tedious daily tasks, but is the only way to continue PC slavery option)", "acceptslavery")
 		addButton("Need time", "Tell Issix you need to think more about this decision", "maybelater")
 		addButton("Reject", "Tell Issix you will not become his slave", "rejection")
@@ -258,21 +258,21 @@ func _react(_action: String, _args):
 
 	if _action == "normalroute4":
 		if GM.pc.hasVagina():
-			GM.pc.cummedInVaginaBy("issix", FluidSource.Penis, 150.0)
+			GM.pc.cummedInVaginaBy("issix", FluidSource.Penis, 1.1)
 			var item = GlobalRegistry.createItem("vaginalplug")
 			GM.pc.getInventory().forceEquipByStoreOtherUnlessRestraint(item, "issix")
 		else:
-			GM.pc.cummedInAnusBy("issix", FluidSource.Penis, 150.0)
+			GM.pc.cummedInAnusBy("issix", FluidSource.Penis, 1.1)
 			var item = GlobalRegistry.createItem("buttplug")
 			GM.pc.getInventory().forceEquipByStoreOtherUnlessRestraint(item, "issix")
 
 	if _action == "pissnormalmouth":
 		GM.pc.cummedInMouthBy("issix", FluidSource.Pissing, 0.7)
-		GM.pc.cummedOnBy("issix", FluidSource.Pissing, 1.0)
+		GM.pc.cummedOnBy("issix", FluidSource.Pissing, 1.5)
 		#GM.pc.coverBodyWithFluid()
 		
 	if _action == "pissnormal":
-		GM.pc.cummedOnBy("issix", FluidSource.Pissing, 1.0)
+		GM.pc.cummedOnBy("issix", FluidSource.Pissing, 1.5)
 
 	if(_action == "endthescene"):
 		endScene()

@@ -49,7 +49,9 @@ func getFlags():
 		"Misc_Slavery_Info": flag(FlagType.Dict),
 		"Progression_Points": flag(FlagType.Number),
 		"Taught_To_Use_Bowl": flag(FlagType.Bool),
-		"Issix_Branded_PC": flag(FlagType.Bool)
+		"Issix_Branded_PC": flag(FlagType.Bool),
+		"Pet_Time_Interaction_Today": flag(FlagType.Number),
+		"Is_Player_Forced_Today": flag(FlagType.Number)  # If player is forced to stay in harem this will have amount of seconds player needs to spend in the harem today
 		}
 		
 
@@ -83,7 +85,9 @@ func _init():
 		"res://Modules/IssixModule/Scenes/SlaveryFirst/SlaveryIntroContScene.gd",
 		"res://Modules/IssixModule/Scenes/SlaveryFirst/SlaveryTrainingBowlScene.gd",
 		"res://Modules/IssixModule/Scenes/SlaveryFirst/SlaveryBrandingScene.gd",
-		"res://Modules/IssixModule/Scenes/CaughtInTheCloset.gd"
+		"res://Modules/IssixModule/Scenes/CaughtInTheCloset.gd",
+		"res://Modules/IssixModule/Scenes/SlaveryIntroScene.gd",
+		"res://Modules/IssixModule/Scenes/SlaveryInfoScreenScene.gd"
 		]
 		
 	characters = [
@@ -127,11 +131,28 @@ static func addIssixMood(mood: int):
 static func getPlayerRole():
 	return "pet" if GM.main.getModuleFlag("IssixModule", "PC_Enslavement_Role", 1) == 1 else "prostitute"
 
+func breedSlaveIfNpc():
+	## Function to process breeding by Master on randomly selected TODO maybe do that during the day as an event?
+	var current_slave = GM.main.getModuleFlag("IssixModule", "Todays_Bred_Slave")
+	if current_slave == "pc" or (GM.main.getDays() % 3 != 0):
+		return  # This will be handled by separate event
+	current_slave = GM.main.getCharacter(current_slave)
+	if RNG.chance(5):
+		current_slave.cummedInMouthBy("issix")
+	if current_slave.hasVagina():  # azazel
+		current_slave.cummedInVaginaBy("issix")
+		if RNG.chance(40):
+			current_slave.cummedInAnusBy("issix")
+	else:  # hiisi
+		current_slave.cummedInAnusBy("issix")
+
 func resetFlagsOnNewDay():
 	GM.main.setModuleFlag("IssixModule", "Azazel_Catnip_taken_today", false)
 	GM.main.setModuleFlag("IssixModule", "Activated_Cabinets", {})
 	GM.main.setModuleFlag("IssixModule", "Quest_Wait_Another_Day", false)
+	GM.main.setModuleFlag("IssixModule", "Is_Player_Forced_Today", 0)
 	GM.main.setModuleFlag("IssixModule", "Todays_Bred_Slave", RNG.pick(['azazel', 'pc', 'hiisi']))
 	if GM.main.getModuleFlag("IssixModule", "Helped_Lamia_With_Drawings_Today") != null:
 		GM.main.setModuleFlag("IssixModule", "Helped_Lamia_With_Drawings_Today", false)
 	addIssixMood(RNG.randi_range(-7, 7))
+	GM.main.setModuleFlag("IssixModule", "Pet_Time_Interaction_Today", 0)

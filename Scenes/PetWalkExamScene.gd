@@ -434,7 +434,7 @@ func _run():
 		saynn("To not be short of silliness that apparently is contagious, you arch back your head to look at Lamia's face. This move has been helped by the fact you already stretched yourself pretty well in previous exercises, but even with that, your arch has its limit and you don't see the full face of Lamia, just from their nose up, and of course the face appears upside down.")
 		saynn("[say=pc]I see a fox, I see a fox.[/say]")
 
-		saynn("Not seeing their full face expression, what you can see is a good indicator of very amused and happy face of orange fox breed. They give you a polite kiss on your nose just before you finish fooling around with your stretchy pose that started to get difficult to maintain.")
+		saynn("Not seeing their full face expression, what you can see is a good indicator of very amused and happy face of orange fox breed. They give you a polite kiss on your muzzle basket just before you finish fooling around with your stretchy pose that started to get difficult to maintain. You wish the muzzle basket didn't stop your nose from getting kissed but at the very least it's just temporary.")
 		saynn("You fool around for a little longer, Lamia keeps you in embrace as you reciprocate those feelings by massaging their legs with your own paws. At some point you both grow tired of this position and go back to doing other things.")
 		addButton("Back", "All great times and at some point, time to go back", "walkies4")
 
