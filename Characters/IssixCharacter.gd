@@ -28,7 +28,13 @@ func _init():
 	npcBasePain = 500
 	npcBaseLust = 500
 	npcBaseStamina = 500
-
+	npcArmor = {
+		DamageType.Physical: 15,
+		DamageType.Lust: 30,
+	}
+	npcStats = {
+		Stat.Strength: 40,
+	}
 	npcDefaultFetishInterest = FetishInterest.Neutral
 	npcFetishes = {
 		Fetish.AnalSexReceiving : FetishInterest.ReallyDislikes,

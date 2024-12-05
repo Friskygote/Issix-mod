@@ -8,9 +8,9 @@ The mod and contents in it is - surprise surprise - a work of fiction. Author do
 
 # Existing content (assuming I don't get lazy before 1.0)
 - Issix - a dragon-demon hybrid, he owns 3 pets, all of them have some story that you can uncover (and which may be expanded in the future)
- - Azazel - a feline breeding bitch
- - Hiisi - a troubled pup
- - Lamia - a mute fox
+ - Azazel - a kind feline breeding bitch
+ - Hiisi - a troubled pup - guardian angel of the harem (after Issix)
+ - Lamia - a mute and sexually absent fox
 - One quest that leads to your enslavement by Issix (currently only implemented voluntary enslavement as a pet, this is a sweet type of enslavement), there are a bunch of fun elements in it, like figuring out an ASCII map or filling a questionnaire with a possible little twist
 - Each pet has their own mechanic that increases their trust/affection towards the player
 - Finally, voluntary enslavement, if you eventually get enslaved it may make your game a bit more difficult
@@ -19,7 +19,7 @@ The mod and contents in it is - surprise surprise - a work of fiction. Author do
 
 # Goals
 ## Mod's audience
-Mod is directed pretty much exclusively at players who are submissive. In game there are already a bunch of ways the player can effectively submit to other creatures - recentlishly added hypnokink is a great example of that, Tavi's questline also has a route/revolves around player submitting to Tavi as their pet. Those things are wonderful and I love them, but in-game slave system is definitely directed at dominant players. This mod tries to address that by adding a character that can enslave **the player**. It features degradation, pet-play content, watersports (for those who switch it on), branding.
+Mod is directed pretty much exclusively at players who are submissive. In game there are already a bunch of ways the player can effectively submit to other creatures - recentlishly added hypnokink is a great example of that, Tavi's questline also has a route/revolves around player submitting to Tavi as their pet. Those things are wonderful and I love them, but in-game slave system is definitely directed at dominant players. This mod tries to address that by adding a character that can enslave **the player**. It features degradation, pet-play content, watersports (for those who switch it on), branding. In addition - worth noting that the entire harem of pets is male.
 
 ## Slavery
 I think there is a reason why there are dozens of harem-management games where player becomes harem's owner and manages slave instead of being one. I think in large part there isn't much of a way to make the player be a slave and keep the gameplay entertaining. If becoming a slave means less choice - the game may become boring. In this mod I'm trying my best to still feel like player is enslaved while at the same time let them continue playing the game with full functionality. This is not an easy task to do, but probably better than eternity of being stuck in one time playing card game with another pet.

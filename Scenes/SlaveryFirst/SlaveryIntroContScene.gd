@@ -81,6 +81,7 @@ func _react(_action: String, _args):
 
 	if(_action == "endthescene"):
 		increaseModuleFlag("IssixModule", "PC_Training_Level")
+		setModuleFlag("IssixModule", "Last_Walk", GM.main.getDays())
 		endScene()
 		return
 

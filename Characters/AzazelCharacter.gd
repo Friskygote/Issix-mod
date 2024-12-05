@@ -28,6 +28,7 @@ func _init():
 	npcBaseLust = 80
 	npcBaseStamina = 80
 	npcDefaultFetishInterest = FetishInterest.Neutral
+	
 	npcFetishes = {
 		Fetish.AnalSexReceiving : FetishInterest.Loves,
 		Fetish.AnalSexGiving : FetishInterest.Hates,
@@ -124,6 +125,7 @@ func createBodyparts():
 	tail.tailScale = 1
 	giveBodypartUnlessSame(tail)
 	giveBodypartUnlessSame(GlobalRegistry.createBodypart("plantilegs"))
+	skillsHolder.addPerk(Perk.FertilityBroodmother)
 
 
 func onGivingBirth(_impregnatedEggCells: Array, _newkids: Array):

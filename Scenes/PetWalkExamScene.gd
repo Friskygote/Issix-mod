@@ -730,14 +730,17 @@ func _react(_action: String, _args):
 		], "hall_ne_corner", "crawl"])
 
 	if _action == "lamiaexercise":
+		GM.pc.addStamina(-40)
 		processTime(10*60)
 
 	if _action == "lamiaexercise2":
 		processTime(10*60)
+		GM.pc.addStamina(-40)
 		GM.pc.addEffect(StatusEffect.Yoga)
 		GM.main.getCharacter("lamia").addEffect(StatusEffect.Yoga)
 
 	if _action == "lamiaexercise3":
+		GM.pc.addStamina(-20)
 		processTime(10*60)
 		GM.pc.addLust(10)
 

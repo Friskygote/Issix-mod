@@ -8,7 +8,7 @@ func initArgs(_args = []):
 	if(_args.size() > 0):
 		turns = _args[0]
 	else:
-		turns = 72*60*60
+		turns = 48*60*60
 
 func processBattleTurn():
 	pass

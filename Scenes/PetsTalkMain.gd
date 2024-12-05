@@ -78,6 +78,7 @@ func _init():
 func _run():
 
 	if(state == ""):
+		playAnimation(StageScene.Solo, "stand", {pc="pc", bodyState={naked=false, hard=false}, npcBodyState={naked=false, hard=false}})
 		setLocationName("Issix's Corner")
 		saynn("In front of you - three slaves belonging to Issix.")
 		addCharacter("azazel")
@@ -105,7 +106,7 @@ func _run():
 			else:
 				pass  # TODO
 		addButton("Back", "Take a step back", "")
-		
+
 	if state == "hiisimain":
 		clearCharacter()
 		addCharacter("hiisi")
@@ -126,7 +127,7 @@ func _run():
 			if HiisiRPS["chosen_reward"] == 3 and HiisiRPS["reward_acquired"] == false:
 				addButton("Drink", "Ask Hiisi about energy drink that you've won through the game of Rock Paper Scissors", "hiisienergy")
 			if HiisiRPS["winh"] > 2 and HiisiRPS["reward_acquired"] == false:
-				addButtonWithChecks("Hypnovisor", "Ask Hiisi to fulfill his request with hypnovisors", "hiisihypnovisors", [], [[ButtonChecks.HasItemID, "HypnovisorMk0"]])
+				addButtonWithChecks("Hypnovisor", "Ask Hiisi to fulfill his request with hypnovisors", "hiisihypnovisors", [], [[ButtonChecks.HasItemWithTag, ItemTag.Hypnovisor]])
 		if not getModuleFlag("IssixModule", "Hiisi_Name_Helped", false):
 			addDisabledButton("Name", "You already asked Hiisi about his name")
 		else:
@@ -173,24 +174,70 @@ func _run():
 		addButton("Leave", "You aren't welcome here for now", "endthescene")
 
 	if state == "hiisienergy":
-		var HiisiRPS = getModuleFlag("IssixModule", "Hissi_RPS_data")
-		HiisiRPS["reward_acquired"] = true
-		setModuleFlag("IssixModule", "Hissi_RPS_data", HiisiRPS)
 		saynn("[say=hiisi]Sure, I got it, here you go.[/say]")
 		saynn("He passes energy drink can to you. Thanks for brightening my mood that day.")
 		saynn("You received 1 Energy Drink.")
 		addButton("Back", "Take a step back", "hiisitalk")
 			
 	if state == "hiisihypnovisors":
+		playAnimation(StageScene.Duo, "kneel", {pc="hiisi", npc="pc", npcAction="kneel", bodyState={naked=false, hard=false}, npcBodyState={naked=false, hard=false}})
 		saynn("[say=pc]Umm, I have those, you wanted me to wear those the other day, right?[/say]")
 
-		saynn("hHiisi gives you a grin")
+		saynn("Hiisi gives you a grin")
 		saynn("[say=hiisi]Yeah, I did. Can you pass them to me for a moment?[/say]")
 		saynn("[say=pc]Sure?[/say]")
 		saynn("You hand the Hypnovisor to Hiisi, he pulls out a small box out of nowhere and swipes it near the hypnovisors, he skillfully baps and presses a few places on the hypnovisors and turns them on for a second as if to confirm something. Satisfied he turns them off and passes back to you.")
 		saynn("[say=hiisi]Done! Now just put them on and let me watch![/say]")
 		addButton("Refuse", "Say that you feel uncomfortable putting the hypnovisors on with those changes", "hiisihypnono")
 		addButton("Put on", "Put the hypnovisors on yourself and turn them on", "hiisihypnoyes")
+
+	if state == "hiisihypnono":
+		saynn("[say=pc]Sorry, Hiisi, but I'm not comfortable putting them on after you tinkered with them.[/say]")
+		saynn("[say=hiisi]Oh cmoon, you agreed to doing something for me! I just wanted to test something![/say]")
+		saynn("[say=pc]That's still a no.[/say]")
+		saynn("[say=hiisi]Oh fucking hell. Fine then, be an asshole. I've won fair and square and you treat me like this. Fuck off.[/say]")
+		saynn("He is not having any of it, seems like he is sulking now. You are left with the hypnovisors, you attempt to set them to fabric settings and you seemingly succeed. You have your unsabotaged hypnovisors back.")
+		addButton("Continue", "Hiisi continues to sulk", "")
+
+	if state == "hiisihypnoyes":
+		saynn("[say=pc]Are you sure it's safe?[/say]")
+		saynn("[say=hiisi]Yeah...[/say]")
+		saynn("He doesn't sound sure about that himself, though you did promise him and he won fair and square.")
+		saynn("[say=pc]Okeeeyy, in that case here I go.[/say]")
+		saynn("You put on the Hypnovisors. They don't feal any different from regularly working hypnovisors, at least at first. As the time goes you start feeling stressed, anxious even fearful, and despite it, you are [pulse color=#00FFAA height=0.0 freq=1.0]drawn to it[/pulse]. Like moth to the flame, you want to [pulse color=#00FFAA height=0.0 freq=1.1]continue[/pulse]. You allow more of that [pulse color=#00FFAA height=0.0 freq=1.2]violent poison[/pulse] into you, the visor on your face [pulse color=#00FFAA height=0.0 freq=1.3]deciding for you[/pulse]. You have never felt such strong desire to [pulse color=#00FFAA height=0.0 freq=1.4]destroy what you are made of[/pulse]. To [pulse color=#00FFAA height=0.0 freq=1.5]let others make use of you[/pulse]. Your brain is a mush, you are drifting on the sea where the sea has all of the [pulse color=#00FFAA height=0.0 freq=1.6]control[/pulse], every movement is dictated by the waves. The sea [pulse color=#00FFAA height=0.0 freq=1.9]controls you[/pulse] with fear, fear of taking everything of yours...")
+		addButton("Black out", "You lose consciousness", "hiisihypnodone")
+
+	if state == "hiisihypnodone":
+		playAnimation(StageScene.Duo, "kneel", {pc="issix", npc="pc", npcAction="kneel", bodyState={naked=false, hard=false}, npcBodyState={naked=false, hard=false}})
+		saynn("[say=issix]{pc.Name}, {pc.name}? You there?[/say]")
+		saynn("You hear your name being called, are you asleep? You open your eyes and see Issix's face.")
+		saynn("[say=issix]Oh thank galactic squid you are okey. Fuck.[/say]")
+		saynn("Memories flood back to you, you were putting headvisors and all then felt all of those unpleasant and pleasant feelings, but you can't remember what exactly were they, or what they meant or really anything else.")
+		if GM.main.getModuleFlag("IssixModule", "PC_Enslavement_Role", 0) == 1:  # is a pet
+			saynn("[say=issix]I'm sorry my pet, I should have noticed sooner that something was amiss. Hiisi was doing some experimentation on his own, and clearly it got out of control. How many fingers do you see?[/say]")
+			saynn("He shows 2 fingers")
+			saynn("[say=pc]Two.[/say]")
+			saynn("[say=issix]Okey, your sight looks fine. Can you recall who am I? Where you are? Who you are?[/say]")
+			saynn("[say=pc]I think so. You are my Master, name is Issix. I'm {pc.name} and we are in the corner of the main hall of the prison.[/say]")
+			saynn("[say=issix]That checks out, good good. I think that even though you lost consciousness, *cough* for whatever reason, you seem just fine. Hiisi![/say]")
+			saynn("He looks at the sad leashed pup with anger, tugging on his leash.")
+			saynn("[say=hiisi]I'm sorry {pc.name}. I shouldn't have experimented on you.[/say]")
+			saynn("[say=issix]I do NOT want to see this happen again, understood?[/say]")
+			saynn("[say=hiisi]Yes, Master.[/say]")
+			saynn("Pup, with curled ears, completely in submission to his master responds.")
+		else:
+			saynn("[say=issix]I apologize for my pet Hiisi, I should have known something was amiss. Hiisi was doing some experimentation on his own, and clearly it got out of control. How many fingers do you see?[/say]")
+			saynn("He shows 2 fingers")
+			saynn("[say=pc]Two.[/say]")
+			saynn("[say=issix]Okey, your sight looks fine. Can you recall who am I? Where you are? Who you are?[/say]")
+			saynn("[say=pc]I think so. You are Issix, I'm {pc.name} and we both are imprisoned.[/say]")
+			saynn("[say=issix]Good good. Sounds about correct. Hiisi![/say]")
+			saynn("He looks at the sad leashed pup with anger, tugging on his leash.")
+			saynn("[say=hiisi]I'm sorry {pc.name}. I shouldn't have experimented on you.[/say]")
+			saynn("[say=issix]I do NOT want to see this happen again, understood?[/say]")
+			saynn("[say=hiisi]Yes, Master.[/say]")
+			saynn("Pup, with curled ears, completely in submission to his master responds.")
+		addButton("Back", "Well, that happened, end the conversation", "")
 
 
 	if(state == "lamiamain"):
@@ -487,6 +534,10 @@ func verify_response(response: int):
 		return response == 3
 	return response == 4
 
+func markHiisiRewardAsAquired():
+	var HiisiRPS = getModuleFlag("IssixModule", "Hissi_RPS_data", {})
+	HiisiRPS["reward_acquired"] = true
+	setModuleFlag("IssixModule", "Hissi_RPS_data", HiisiRPS)
 
 func _react(_action: String, _args):
 	if _action in ["blueboxlamia1", "redboxlamia2", "greenboxlamia3", "purpleboxlamia4"]:
@@ -513,6 +564,23 @@ func _react(_action: String, _args):
 	if _action == "hiisisilence":
 		setModuleFlag("IssixModule", "Hiisi_Name_Helped", true)
 
+	if _action == "hiisihypnono":
+		markHiisiRewardAsAquired()
+		setModuleFlag("IssixModule", "Hiisi_Put_Sabotaged_Headvisors", false)
+		increaseModuleFlag("IssixModule", "Hiisi_Affection", -3)
+
+	if _action == "hiisihypnoyes":
+		markHiisiRewardAsAquired()
+		GM.pc.addConsciousness(-0.6)
+		GM.pc.inventory.forceEquipStoreOther(GM.pc.inventory.getItemsWithTag(ItemTag.Hypnovisor)[0])
+		setModuleFlag("IssixModule", "Hiisi_Put_Sabotaged_Headvisors", true)
+		increaseModuleFlag("IssixModule", "Hiisi_Affection", 3)
+
+	if _action == "hiisihypnodone":
+		processTime(20*60)
+		GM.pc.inventory.unequipSlot(InventorySlot.Eyes)
+		GM.pc.addConsciousness(1.0)
+
 	if _action == "artminigamegoodend":
 		increaseModuleFlag("IssixModule", "Lamia_Times_Helped")
 
@@ -533,6 +601,7 @@ func _react(_action: String, _args):
 		GM.main.increaseModuleFlag("IssixModule", "Azazel_Affection_given")
 	
 	if _action == "hiisienergy":
+		markHiisiRewardAsAquired()
 		GM.pc.getInventory().addItem(GlobalRegistry.createItem("EnergyDrink"))
 	
 	if(_action == "endthescene"):

@@ -168,8 +168,13 @@ func _run():
 		
 	if(state == "q6"):
 		processTime(2*60)
-		saynn("Another question shows up on your screen")
-		saynn("„Do you own any slaves of your own?”")
+		saynn("Another question shows up on your screen, along with it an ominous screaming face momentarily appears on the screen, you flinch, which doesn't go unnoticed.")
+		saynn("[say=issix]Everything alright? You looked as if you saw a ghost.[/say]")
+		saynn("He looks at the screen of the tablet, not seeing anything wrong.")
+		saynn("[say=issix]Something wrong with the question?[/say]")
+		saynn("[say=pc]Uhhh, no, I thought I saw something on the screen but it's not there anymore.[/say]")
+		saynn("[say=issix]... Odd. But well, it's certainly not there anymore, just a boring question, go ahead, respond to it.[/say]")
+		saynn("Question reads „Do you own any slaves of your own?”")
 		addButton("Yes", "You do have slaves", "q6answer", [true])
 		addButton("No", "I do not have slaves", "q6answer", [false])
 		

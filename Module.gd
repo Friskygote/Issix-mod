@@ -1,6 +1,8 @@
 extends Module
 class_name IssixModule
 
+const APPROX_WALK_DELAY = 9
+
 func getFlags():
 	return {
 		"Issix_Introduced": flag(FlagType.Bool),
@@ -14,6 +16,7 @@ func getFlags():
 		"Azazel_Affection_given": flag(FlagType.Number),
 		"Lamia_Times_Helped": flag(FlagType.Number),
 		"Hiisi_Affection": flag(FlagType.Number),
+		"Hiisi_Put_Sabotaged_Headvisors": flag(FlagType.Bool),
 		"Helped_Lamia_With_Drawings_Today": flag(FlagType.Bool),
 		"Quest_Bonked": flag(FlagType.Bool),
 		"Quest_Wait_Another_Day": flag(FlagType.Bool),
@@ -51,7 +54,9 @@ func getFlags():
 		"Taught_To_Use_Bowl": flag(FlagType.Bool),
 		"Issix_Branded_PC": flag(FlagType.Bool),
 		"Pet_Time_Interaction_Today": flag(FlagType.Number),
-		"Is_Player_Forced_Today": flag(FlagType.Number)  # If player is forced to stay in harem this will have amount of seconds player needs to spend in the harem today
+		"Is_Player_Forced_Today": flag(FlagType.Number),  # If player is forced to stay in harem this will have amount of seconds player needs to spend in the harem today
+		"Last_Walk": flag(FlagType.Number),
+		"Eaten_Today": flag(FlagType.Bool)
 		}
 		
 
@@ -114,6 +119,7 @@ func _init():
 	GlobalRegistry.registerStatusEffectFolder("res://Modules/IssixModule/StatusEffects/")
 	GlobalRegistry.sortRegisteredStatusEffectsByPriority()
 	GlobalRegistry.registerMapFloorFolder("res://Modules/IssixModule/Floors/")
+	GlobalRegistry.registerSpeechModifiersFolder("res://Modules/IssixModule/SpeechModifiers/")
 
 # External
 # "res://Scenes/ParadedOnALeashScene.gd"
@@ -127,6 +133,9 @@ static func addSceneToWatched(scene: String):
 
 static func addIssixMood(mood: int):
 	GM.main.setModuleFlag("IssixModule", "Issix_Mood", clamp(GM.main.getModuleFlag("IssixModule", "Issix_Mood", 50)+mood, 0, 100))
+
+static func getWalkDelay():
+	return APPROX_WALK_DELAY
 
 static func getPlayerRole():
 	return "pet" if GM.main.getModuleFlag("IssixModule", "PC_Enslavement_Role", 1) == 1 else "prostitute"
@@ -146,6 +155,12 @@ func breedSlaveIfNpc():
 	else:  # hiisi
 		current_slave.cummedInAnusBy("issix")
 
+func tickDay():
+	breedSlaveIfNpc()
+	addIssixMood(RNG.randi_range(-7, 7))
+	if GM.main.getDays() - GM.getModuleFlag("IssixModule", "Last_Day_Visited_Master", GM.main.getDays()) > 1:
+		addIssixMood(-10)
+
 func resetFlagsOnNewDay():
 	GM.main.setModuleFlag("IssixModule", "Azazel_Catnip_taken_today", false)
 	GM.main.setModuleFlag("IssixModule", "Activated_Cabinets", {})
@@ -154,5 +169,7 @@ func resetFlagsOnNewDay():
 	GM.main.setModuleFlag("IssixModule", "Todays_Bred_Slave", RNG.pick(['azazel', 'pc', 'hiisi']))
 	if GM.main.getModuleFlag("IssixModule", "Helped_Lamia_With_Drawings_Today") != null:
 		GM.main.setModuleFlag("IssixModule", "Helped_Lamia_With_Drawings_Today", false)
-	addIssixMood(RNG.randi_range(-7, 7))
 	GM.main.setModuleFlag("IssixModule", "Pet_Time_Interaction_Today", 0)
+	if GM.main.getDays()-GM.main.getModuleFlag("IssixModule", "Last_Walk", GM.main.getDays()) == APPROX_WALK_DELAY:
+		GM.main.setModuleFlag("IssixModule", "Last_Walk", GM.main.getDays())
+	GM.main.setModuleFlag("IssixModule", "Eaten_Today", false)

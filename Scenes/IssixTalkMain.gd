@@ -1,7 +1,10 @@
 extends SceneBase
 
 var random_issix_activities_talk = [
-	"He notices you right away and follows you with his gaze."
+	"He notices you right away and follows you with his gaze.",
+	"He is busy tinkering with some metal parts before noticing you.",
+	"He sings a song to himself while gesticulating with his paws keeping the eyes closed, until he sees you approach.",
+
 ]  #TODO Write more
 
 func _init():

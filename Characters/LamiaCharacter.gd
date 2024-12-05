@@ -26,8 +26,12 @@ func _init():
 	npcDefaultFetishInterest = FetishInterest.Neutral
 	npcLevel = 20
 	npcBasePain = 180
-	npcBaseLust = 2000
+	npcBaseLust = 1000
 	npcBaseStamina = 100
+	npcArmor = {
+		DamageType.Lust: 100,
+	}
+
 	npcFetishes = {
 		Fetish.AnalSexReceiving : FetishInterest.ReallyDislikes,
 		Fetish.AnalSexGiving : FetishInterest.Hates,
@@ -137,3 +141,4 @@ func createBodyparts():
 	giveBodypartUnlessSame(tail)
 	giveBodypartUnlessSame(GlobalRegistry.createBodypart("digilegs"))
 	skillsHolder.addPerk(Perk.StartInfertile)
+	skillsHolder.addPerk(Perk.StartNoHeat)

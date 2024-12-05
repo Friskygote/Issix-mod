@@ -256,7 +256,11 @@ func _react(_action: String, _args):
 			return
 		itemRef.useInSex(GM.pc)
 
+	if _action == "normalroute3":
+		GM.pc.addStamina(-40)
+
 	if _action == "normalroute4":
+		GM.pc.addStamina(-40)  # A little bit of difference in how it usually works in BDCC, Issix is a demon, he will get his fill in many ways, including life force vampirism during sex (kinda like incubus though he isn't one)
 		if GM.pc.hasVagina():
 			GM.pc.cummedInVaginaBy("issix", FluidSource.Penis, 1.1)
 			var item = GlobalRegistry.createItem("vaginalplug")
