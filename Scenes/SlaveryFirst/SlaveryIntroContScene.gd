@@ -3,9 +3,6 @@ extends SceneBase
 func _init():
 	sceneID = "IssixSlaveryIntroCont"
 
-func requirements_met():
-	return getModuleFlag("IssixModule", "Misc_Slavery_Info", {"scenes_seen": []})["scenes_seen"].find("IssixSlaveryIntroCont") == -1
-
 func _run():
 	if(state == ""):
 		playAnimation(StageScene.Duo, "kneel", {npc="issix", npcAction="stand"})
@@ -29,6 +26,7 @@ func _run():
 				saynn("You obediently lie on your back, unsure what to expect. Master takes your blanket and without further comment starts relieving himself above you. His hot piss hitting your belly. He doesn't drench you in piss like the last time. Rather just leaving enough for anyone nearby to smell him on you.")
 				saynn("[say=issix]I expect you to stay here one hour, I'm not going to give you a reward.[/say]")
 		else:
+			setModuleFlag("IssixModule", "Progression_Day_Next", GM.main.getDays()+2)
 			saynn("[say=issix]I'm glad to see you. Are you ready for your first day of training?[/say]")
 		addButton("Yes", "You are ready for the training", "training1")
 
@@ -63,13 +61,18 @@ func _run():
 
 
 func _react(_action: String, _args):
+
+	if _action == "training1":
+		if(OPTIONS.isContentEnabled(ContentType.Watersports)) and GM.pc.getFluids().hasFluidTypeWithCharID("Piss", "issix") == false:
+			GM.pc.cummedOnBy("issix", FluidSource.Pissing, 0.4)
+
 	if _action == "walkies2":
 		processTime(4*60)
-		runScene("ParadedOnALeashScene", ["issix", GM.pc.getLocation(), "gym_entrance", [
-			"Good job, keep it up",
-			"Eyes on me, pet",
-			"Watch the pace, pet",
-		], "hall_ne_corner", "crawl"])
+		# runScene("ParadedOnALeashScene", ["issix", GM.pc.getLocation(), "gym_entrance", [
+		# 	"Good job, keep it up",
+		# 	"Eyes on me, pet",
+		# 	"Watch the pace, pet",
+		# ], "hall_ne_corner", "crawl"])
 
 	if(_action == "walkies1"):
 		processTime(4*60)
@@ -81,7 +84,6 @@ func _react(_action: String, _args):
 
 	if(_action == "endthescene"):
 		increaseModuleFlag("IssixModule", "PC_Training_Level")
-		setModuleFlag("IssixModule", "Last_Walk", GM.main.getDays())
 		endScene()
 		return
 

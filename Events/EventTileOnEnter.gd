@@ -36,10 +36,12 @@ func run(_triggerID, _args):
 		addButton("Master", "Talk to Master Issix", "talk")
 		addButton("Pets", "Look at Master's pets", "pets")
 		match player_enslaved:
-			1:
+			1.0:  # WHY ARE NUMBER FLAGS FLOATS ASDJASODHASUDHASIDHBASHDASHDOASDJASD kill me
 				addButton("Pet tasks", "Get a read on today's pet tasks", "slavery")
-			2:
+			2.0:
 				addButton("Prostitution", "Open prostitution info", "slavery")
+			_:
+				saynn(player_enslaved)
 	else:
 		saynn("You see Issix sitting on a chair in a corner, around him there are three leashed slaves.")
 		addButton("Issix", "Talk to Issix", "talk")

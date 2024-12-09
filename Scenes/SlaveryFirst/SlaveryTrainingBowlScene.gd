@@ -3,9 +3,6 @@ extends SceneBase
 func _init():
 	sceneID = "IssixSlaveryBowlTraing"
 
-func requirements_met():
-	return getModuleFlag("IssixModule", "Misc_Slavery_Info", {"scenes_seen": []})["scenes_seen"].find("IssixSlaveryBowlTraing") == -1
-
 func _run():
 	if(state == ""):
 		playAnimation(StageScene.Duo, "kneel", {npc="issix", npcAction="stand"})

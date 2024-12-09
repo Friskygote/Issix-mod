@@ -249,6 +249,7 @@ func _react(_action: String, _args):
 		setModuleFlag("IssixModule", "Progression_Points", 1)
 		setModuleFlag("IssixModule", "Progression_Day_Next", GM.main.getDays()+1)
 		setModuleFlag("IssixModule", "Issix_Mood", 50)
+		setModuleFlag("IssixModule", "Last_Walk", GM.main.getDays())
 
 	if _action == "normalroute2":
 		var itemRef = GlobalRegistry.getItemRef("HeatPill")

@@ -11,15 +11,15 @@ func _run():
 		playAnimation(StageScene.Duo, "kneel", {npc="issix", npcAction="stand"})
 		if pet_time_start == null:
 			pet_time_start = GM.main.getTime()
-		saynn("WARNING: A lot of the content in here is a placeholder. It will change, it will break, it will cause calamities. Treat it as a sneek peek into the (potential) future.")
+		addMessage("WARNING: A lot of the content in here is a placeholder. It will change, it will break, it will cause calamities. Treat it as a sneek peek into the (potential) future.")
 		saynn("Your slave role: "+IssixModule.getPlayerRole())
 		saynn("Your training: "+trainingCheck())
 		saynn("Master's mood: "+getMood())
 		saynn("Issix's slave for "+str(getDays())+" days")
 		match GM.main.getModuleFlag("IssixModule", "PC_Enslavement_Role", 1):
-			1:
+			1.0:
 				saynn("Amount of time spent in Master's harem today: "+str(getTimeSpentReadable()))
-			2:
+			2.0:
 				saynn("To pay Master for sluttying around yesterday: " + str(GM.main.getModuleFlag("IssixModule", "Prostituation_fee_yesterday", 0) + GM.main.getModuleFlag("IssixModule", "Prostituation_flat_fee", 0)))
 			_:
 				pass
@@ -42,9 +42,11 @@ func _run():
 				addDisabledButton("Walk", "Walks are unimplemented at the moment, possibly in future releases!")
 			else:
 				addDisabledButton("Walk", "Too late for a walk")
+		addButton("Pass", "Pass the time (placeholder button for now, supposed to be actions with pets/master later)", "passtime")
+		if getModuleFlag("IssixModule", "Comic_Book_Unlocked", false) == true and getModuleFlag("IssixModule", "Comic_Books", 0) > 0:
+			addButton("Comic", "Read one of "+ str(getModuleFlag("IssixModule", "Comic_Books", 0)) +" comic books", "readabook")
 		if not (GM.main.getModuleFlag("IssixModule", "Is_Player_Forced_Today", 0) > (getTimeSpent())) or GM.main.isVeryLate():
 			addButton("Leave", "Leave", "endthescene")
-		addButton("Pass", "Pass the time (placeholder button for now, supposed to be actions with pets/master later)", "passtime")
 
 	if state == "issixpetmenu":
 		saynn("[say=issix]"+getMoodMessage()+"[/say]")
@@ -88,7 +90,7 @@ func _run():
 		addButton("Back", "Go back", "")
 
 	if state == "lamiapetmenu":
-		addButton("Placeholder", "Placeholder for activities", "")
+		addButton("Read", "Read comic books", "")
 		addButton("Pets", "Ask for pets", "lamiapetrequest")
 		addButton("Back", "Go back", "")
 
@@ -97,8 +99,11 @@ func _run():
 		if last_walk + 5 > GM.main.getDays():
 			saynn("[say=issix]We've just been on a walk pretty recently, so you'll have to be a little bit more patient my pet.[/say]")
 		else:
-			saynn("[say=issix]Hmm, soonish, probably in around {0} days. Are you excited for the next walk?[/say]".format(IssixModule.getWalkDelay()-(GM.main.getDays()-last_walk)))
+			saynn("[say=issix]Hmm, soonish, probably in around "+ str(IssixModule.getWalkDelay()-(GM.main.getDays()-last_walk)) + " days. Are you excited for the next walk?[/say]")
 		addButton("Back", "Go back", "issixpetmenu")
+
+	if state == "readabook":
+		addButton("Back", "Go back", "")
 
 
 
@@ -171,6 +176,10 @@ func trainingCheck():
 		return "very good"
 
 func _react(_action: String, _args):
+	if _action == "readabook":
+		processTime(20*60)
+		increaseModuleFlag("IssixModule", "Comic_Books", -1)
+
 	if _action == "haremeat":
 		processTime(10*60)
 		GM.pc.addStamina(60)

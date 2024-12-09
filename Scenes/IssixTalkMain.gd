@@ -66,6 +66,8 @@ func _run():
 				0:
 					if GM.main.getModuleFlag("IssixModule", "Quest_Status", 0) == 0:
 						addButton("Become his", "Ask if he'd like to make you his own pet", "join")
+					elif GM.main.getModuleFlag("IssixModule", "Quest_Status", 0) > 10:
+						pass
 					else:
 						addDisabledButton("Become his", "You are currently trying to become his")
 				1, 3, 4:

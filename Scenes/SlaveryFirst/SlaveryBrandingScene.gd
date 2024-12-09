@@ -6,9 +6,6 @@ var timedifference = 0
 func _init():
 	sceneID = "IssixSlaveryBranding"
 
-func requirements_met():
-	return getModuleFlag("IssixModule", "Misc_Slavery_Info", {"scenes_seen": []})["scenes_seen"].find("IssixSlaveryBranding") == -1
-
 func _run():
 	if(state == ""):
 		playAnimation(StageScene.Duo, "kneel", {npc="issix", npcAction="stand"})

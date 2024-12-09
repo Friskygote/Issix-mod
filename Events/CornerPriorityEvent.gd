@@ -4,21 +4,35 @@ func _init():
 	id = "IssixSpecialEvent"
 
 
-var registered_special_scenes = [['IssixSlaveryIntroCont', 1], ['IssixSlaveryBowlTraing', 2], ['IssixSlaveryBranding', 3]]
+var registered_special_scenes = [['IssixSlaveryIntroCont', 1, {}], ['IssixBringsComicbooks', 2, {"Comic_Books": 1}], ['IssixSlaveryBowlTraing', 2, {}], ['IssixSlaveryBranding', 3, {}]]
 
-func sort_by_progressionpoints(a, b):
-	if a[1] < b[1]:
-		return true
-	return false
+class CustomSorter:
+	static func sort_by_progressionpoints(a, b):
+		if a[1] < b[1]:
+			return true
+		return false
+
+func checkRequirements(requirements: Dictionary):
+	for key in requirements.keys():
+		if requirements[key] is int or requirements[key] is float:
+			if getModuleFlag("IssixModule", key, 0) < requirements[key]:
+				return false
+		elif requirements[key] is String:
+			if getModuleFlag("IssixModule", key, 0) != requirements[key]:
+				return false
+	return true
 
 func shouldBeShownForcedEvent():
+	var scenes_seen = getModuleFlag("IssixModule", "Misc_Slavery_Info", {"scenes_seen": []})["scenes_seen"]
 	var current_progression_points = GM.main.getModuleFlag("IssixModule", "Progression_Points", 1)
 	if GM.main.getDays() == GM.main.getModuleFlag("IssixModule", "Progression_Day_Next", 0):
-		registered_special_scenes.sort_custom("sort_by_progressionpoints")
+		registered_special_scenes.sort_custom(CustomSorter, "sort_by_progressionpoints")
 		for scene in registered_special_scenes:
+			Console.printLine("secene")
 			if scene[1] > current_progression_points:
 				return null
-			if GM.main.getSceneByUniqueID(scene[0]).requirements_met():
+			if scenes_seen.find(scene[0]) == -1 and checkRequirements(scene[2]):
+				Console.printLine("requirements met")
 				return scene[0]
 	return null
 
