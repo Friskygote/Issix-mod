@@ -25,8 +25,8 @@ func _init():
 		PersonalityStat.Coward: -0.7,
 	}
 	npcLevel = 50
-	npcBasePain = 500
-	npcBaseLust = 500
+	npcBasePain = 400
+	npcBaseLust = 400
 	npcBaseStamina = 500
 	npcArmor = {
 		DamageType.Physical: 15,
@@ -104,6 +104,9 @@ func _getName():
 
 func getGender():
 	return Gender.Male
+
+func _getAttacks():
+	return ["IssixSlaveTease", "trygetupattack", "simplepunchattack","CuffPCHands", "ForceGagPC", "ForceMuzzlePC", "simplekickattack", "biteattack", "shoveattack"]
 	
 func getSmallDescription() -> String:
 	return "Wears a red block uniform with number P-533. He is an intimidating tall demon-dragon, has red fur."

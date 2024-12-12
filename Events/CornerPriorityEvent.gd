@@ -23,16 +23,14 @@ func checkRequirements(requirements: Dictionary):
 	return true
 
 func shouldBeShownForcedEvent():
-	var scenes_seen = getModuleFlag("IssixModule", "Misc_Slavery_Info", {"scenes_seen": []})["scenes_seen"]
+	var scenes_seen = getModuleFlag("IssixModule", "Misc_Slavery_Info", {"scenes_seen": []})
 	var current_progression_points = GM.main.getModuleFlag("IssixModule", "Progression_Points", 1)
-	if GM.main.getDays() == GM.main.getModuleFlag("IssixModule", "Progression_Day_Next", 0):
+	if GM.main.getDays() >= GM.main.getModuleFlag("IssixModule", "Progression_Day_Next", 0) and !GM.main.getModuleFlag("IssixModule", "Unwelcome_At_Corner", false):
 		registered_special_scenes.sort_custom(CustomSorter, "sort_by_progressionpoints")
 		for scene in registered_special_scenes:
-			Console.printLine("secene")
 			if scene[1] > current_progression_points:
 				return null
-			if scenes_seen.find(scene[0]) == -1 and checkRequirements(scene[2]):
-				Console.printLine("requirements met")
+			if scenes_seen["scenes_seen"].find(scene[0]) == -1 and checkRequirements(scene[2]):
 				return scene[0]
 	return null
 
@@ -43,9 +41,12 @@ func react(_triggerID, _args):
 	#if(doEventCheck("IssixBusy") != null):
 	#	return false
 	var scene_to_show = shouldBeShownForcedEvent()
+	Console.printLine("test1")
 	if scene_to_show != null:
+		Console.printLine("test2")
 		runScene(scene_to_show)
 		return true
+	Console.printLine("test3")
 	return false
 
 

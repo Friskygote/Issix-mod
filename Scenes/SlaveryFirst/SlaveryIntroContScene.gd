@@ -6,7 +6,6 @@ func _init():
 func _run():
 	if(state == ""):
 		playAnimation(StageScene.Duo, "kneel", {npc="issix", npcAction="stand"})
-		IssixModule.addSceneToWatched(sceneID)
 		saynn("As you approach the corner your Master stands, grinning. You assume your position on your blanket.")
 		saynn("[say=issix]Good day, pet.[/say]")
 		if(OPTIONS.isContentEnabled(ContentType.Watersports)):
@@ -63,6 +62,7 @@ func _run():
 func _react(_action: String, _args):
 
 	if _action == "training1":
+		IssixModule.addSceneToWatched(sceneID)
 		if(OPTIONS.isContentEnabled(ContentType.Watersports)) and GM.pc.getFluids().hasFluidTypeWithCharID("Piss", "issix") == false:
 			GM.pc.cummedOnBy("issix", FluidSource.Pissing, 0.4)
 

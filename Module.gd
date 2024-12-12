@@ -56,7 +56,12 @@ func getFlags():
 		"Pet_Time_Interaction_Today": flag(FlagType.Number),
 		"Is_Player_Forced_Today": flag(FlagType.Number),  # If player is forced to stay in harem this will have amount of seconds player needs to spend in the harem today
 		"Last_Walk": flag(FlagType.Number),
-		"Eaten_Today": flag(FlagType.Bool)
+		"Eaten_Today": flag(FlagType.Bool),
+		"Comic_Books": flag(FlagType.Number),
+		"Comic_Book_Unlocked": flag(FlagType.Bool),
+		"Strikes_For_Disobedience": flag(FlagType.Number),
+		"Unwelcome_At_Corner": flag(FlagType.Bool)
+		#"Gym_Bullies_Left_Alone": flag(FlagType.Bool)  Currently cannot change the behavior of this :(
 		}
 		
 
@@ -73,7 +78,9 @@ func _init():
 		"res://Modules/IssixModule/Events/PetWalkExamEvent.gd", 
 		"res://Modules/IssixModule/Events/PlayerCellModifierEvent.gd",
 		"res://Modules/IssixModule/Events/CornerPriorityEvent.gd",
-		"res://Modules/IssixModule/Events/SlaveryIntroEvent.gd"
+		"res://Modules/IssixModule/Events/SlaveryIntroEvent.gd",
+		"res://Modules/IssixModule/Events/IssixRegularSearch.gd"
+		#"res://Modules/IssixModule/Events/Overwrites/BullyGangEvent.gd"  Cannot overwrite module that loads after
 		]
 		
 	scenes = [
@@ -92,7 +99,10 @@ func _init():
 		"res://Modules/IssixModule/Scenes/SlaveryFirst/SlaveryBrandingScene.gd",
 		"res://Modules/IssixModule/Scenes/CaughtInTheCloset.gd",
 		"res://Modules/IssixModule/Scenes/SlaveryIntroScene.gd",
-		"res://Modules/IssixModule/Scenes/SlaveryInfoScreenScene.gd"
+		"res://Modules/IssixModule/Scenes/SlaveryInfoScreenScene.gd",
+		"res://Modules/IssixModule/Scenes/SlaveryFirst/IssixBringsComicbooks.gd",
+		#"res://Modules/IssixModule/Scenes/Overwrites/BullyGangScene.gd"
+		"res://Modules/IssixModule/Scenes/SlaveryFirst/IssixFindsAvoidingPlayer.gd"
 		]
 		
 	characters = [
@@ -120,6 +130,7 @@ func _init():
 	GlobalRegistry.sortRegisteredStatusEffectsByPriority()
 	GlobalRegistry.registerMapFloorFolder("res://Modules/IssixModule/Floors/")
 	GlobalRegistry.registerSpeechModifiersFolder("res://Modules/IssixModule/SpeechModifiers/")
+	GlobalRegistry.registerAttackFolder("res://Modules/IssixModule/Attacks/", true)
 
 # External
 # "res://Scenes/ParadedOnALeashScene.gd"
@@ -129,7 +140,7 @@ func _init():
 static func addSceneToWatched(scene: String):
 	var scenes = GM.main.getModuleFlag("IssixModule", "Misc_Slavery_Info", {"scenes_seen": []})
 	scenes["scenes_seen"].append(scene)
-	GM.main.setModuleFlag("IssixModule", "Misc_Slavery_Info",scenes)
+	GM.main.setModuleFlag("IssixModule", "Misc_Slavery_Info", scenes.duplicate(true))
 
 static func addIssixMood(mood: int):
 	GM.main.setModuleFlag("IssixModule", "Issix_Mood", clamp(GM.main.getModuleFlag("IssixModule", "Issix_Mood", 50)+mood, 0, 100))
@@ -139,6 +150,16 @@ static func getWalkDelay():
 
 static func getPlayerRole():
 	return "pet" if GM.main.getModuleFlag("IssixModule", "PC_Enslavement_Role", 1) == 1 else "prostitute"
+
+static func getPlayerPetName():
+	if Species.Canine in GM.pc.getSpecies():
+		return "puppy"
+	elif Species.Feline in GM.pc.getSpecies():
+		return "kitty"
+	elif Species.Equine in GM.pc.getSpecies():
+		return "pony"
+	else:
+		return "pet"
 
 func breedSlaveIfNpc():
 	## Function to process breeding by Master on randomly selected TODO maybe do that during the day as an event?
@@ -156,20 +177,25 @@ func breedSlaveIfNpc():
 		current_slave.cummedInAnusBy("issix")
 
 func tickDay():
-	breedSlaveIfNpc()
 	addIssixMood(RNG.randi_range(-7, 7))
-	if GM.main.getDays() - GM.getModuleFlag("IssixModule", "Last_Day_Visited_Master", GM.main.getDays()) > 1:
+	if GM.main.getDays() - GM.getModuleFlag("IssixModule", "Last_Day_Visited_Master", GM.main.getDays()) > 1:  # TODO detect player in soft-lock (medical/etc)
 		addIssixMood(-10)
+	if GM.main.getDays() % 7 == 0:
+		GM.main.increaseModuleFlag("IssixModule", "Comic_Books", RNG.randi_range(5, 8))
 
-func resetFlagsOnNewDay():
+func resetFlagsOnNewDay():  # I apologize for abusing this hook, but startNewDay does not have ANY other hooks I can use and SleepInCell as a trigger is not covering all cases of days passing by
 	GM.main.setModuleFlag("IssixModule", "Azazel_Catnip_taken_today", false)
 	GM.main.setModuleFlag("IssixModule", "Activated_Cabinets", {})
 	GM.main.setModuleFlag("IssixModule", "Quest_Wait_Another_Day", false)
+	GM.main.setModuleFlag("IssixModule", "Unwelcome_At_Corner", false)
 	GM.main.setModuleFlag("IssixModule", "Is_Player_Forced_Today", 0)
 	GM.main.setModuleFlag("IssixModule", "Todays_Bred_Slave", RNG.pick(['azazel', 'pc', 'hiisi']))
+	breedSlaveIfNpc()
 	if GM.main.getModuleFlag("IssixModule", "Helped_Lamia_With_Drawings_Today") != null:
 		GM.main.setModuleFlag("IssixModule", "Helped_Lamia_With_Drawings_Today", false)
 	GM.main.setModuleFlag("IssixModule", "Pet_Time_Interaction_Today", 0)
 	if GM.main.getDays()-GM.main.getModuleFlag("IssixModule", "Last_Walk", GM.main.getDays()) == APPROX_WALK_DELAY:
 		GM.main.setModuleFlag("IssixModule", "Last_Walk", GM.main.getDays())
 	GM.main.setModuleFlag("IssixModule", "Eaten_Today", false)
+	if GM.main.getModuleFlag("IssixModule", "PC_Enslavement_Role", 0) > 0:  # Slavery module
+		tickDay()

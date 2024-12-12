@@ -92,7 +92,7 @@ func _run():
 	# if state == "soulless":
 	# 	playAnimation(StageScene.HangingDuo, "idle", {pc="pc", npc="issix", bodyState={naked=true}, npcBodyState={naked=true}})
 
-
+	# Also, is it just me or the slave collar (aka old collar) makes currently no sense in game other than artificially adding price onto enslavement process? You can't even put it on the slave which makes sense considering they are already wearing an inmate collar which you shouldn't be able to take off. I'd love the bulky slave collar to be on player's neck but yeah
 	if state == "normalroute":
 		playAnimation(StageScene.SexMissionary, "tease", {pc="issix", npc="pc", bodyState={naked=true, hard=true}, npcBodyState={naked=true, hard=true}})
 		setModuleFlag("IssixModule", "PC_Enslavement_Noncon", false)

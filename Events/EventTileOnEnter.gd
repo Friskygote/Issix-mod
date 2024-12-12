@@ -10,7 +10,7 @@ func registerTriggers(es):
 func run(_triggerID, _args):
 	#if(doEventCheck("IssixBusy") != null):
 	#	return false
-	
+	Console.printLine("test5")
 	if(GM.main.isVeryLate()):  # Add something in the nightime it's very late?
 		saynn("You see an empty chair in the corner with three blankets laying around.")
 		return false
@@ -32,16 +32,20 @@ func run(_triggerID, _args):
 		
 	var player_enslaved = getModuleFlag("IssixModule", "PC_Enslavement_Role", 0)
 	if player_enslaved > 0:
-		saynn("You see your Master sitting on his chair in the corner, around him there is Azazel, Hiisi and Lamia.")
-		addButton("Master", "Talk to Master Issix", "talk")
-		addButton("Pets", "Look at Master's pets", "pets")
-		match player_enslaved:
-			1.0:  # WHY ARE NUMBER FLAGS FLOATS ASDJASODHASUDHASIDHBASHDASHDOASDJASD kill me
-				addButton("Pet tasks", "Get a read on today's pet tasks", "slavery")
-			2.0:
-				addButton("Prostitution", "Open prostitution info", "slavery")
-			_:
-				saynn(player_enslaved)
+		if getModuleFlag("IssixModule", "Unwelcome_At_Corner", false) != true:
+			saynn("You see your Master sitting on his chair in the corner, around him there is Azazel, Hiisi and Lamia.")
+			addButton("Master", "Talk to Master Issix", "talk")
+			addButton("Pets", "Look at Master's pets", "pets")
+			match player_enslaved:
+				1.0:  # WHY ARE NUMBER FLAGS FLOATS ASDJASODHASUDHASIDHBASHDASHDOASDJASD kill me
+					addButton("Pet tasks", "Get a read on today's pet tasks", "slavery")
+				2.0:
+					addButton("Prostitution", "Open prostitution info", "slavery")
+				_:
+					saynn(player_enslaved)
+		else:
+			addDisabledButton("Master", "He doesn't want to speak to you today")
+			addDisabledButton("Pets", "They don't want to speak to you today")
 	else:
 		saynn("You see Issix sitting on a chair in a corner, around him there are three leashed slaves.")
 		addButton("Issix", "Talk to Issix", "talk")
