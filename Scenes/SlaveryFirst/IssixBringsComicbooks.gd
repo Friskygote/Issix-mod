@@ -1,15 +1,11 @@
 extends SceneBase
 
-var attitude = null
-var timedifference = 0
-
 func _init():
 	sceneID = "IssixBringsComicbooks"
 
 func _run():
 	if(state == ""):
 		playAnimation(StageScene.Duo, "kneel", {npc="issix", npcAction="stand"})
-		IssixModule.addSceneToWatched(sceneID)
 		saynn("When you approach the corner today you can see all of pets engaged in intense reading of something, each one of them holding a small booklet with colorful characters on the covers.")
 		saynn("[say=pc]What's up? What are you reading there?[/say]")
 		saynn("[say=azazel]Comic books. we have a few super hero, some horror and some drama ones.[/say]")
@@ -73,7 +69,9 @@ func _react(_action: String, _args):
 		setModuleFlag("IssixModule", "Comic_Book_Unlocked", true)
 
 	if(_action == "endthescene"):
-		setModuleFlag("IssixModule", "Progression_Day_Next", GM.main.getDays()+4)
+		IssixModule.addSceneToWatched(sceneID)
+		setModuleFlag("IssixModule", "Progression_Day_Next", GM.main.getDays()+3)
+		increaseModuleFlag("IssixModule", "Progression_Points", 1)
 		endScene()
 		return
 

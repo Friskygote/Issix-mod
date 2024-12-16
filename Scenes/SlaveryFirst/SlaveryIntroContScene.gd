@@ -11,12 +11,12 @@ func _run():
 		if(OPTIONS.isContentEnabled(ContentType.Watersports)):
 			increaseModuleFlag("IssixModule", "Progression_Points")
 			if GM.pc.getFluids().hasFluidTypeWithCharID("Piss", "issix"):
-				setModuleFlag("IssixModule", "Progression_Day_Next", GM.main.getDays()+1)
+				setModuleFlag("IssixModule", "Progression_Day_Next", GM.main.getDays()+2)
 				saynn("[say=issix]My my. My piss slut came back and {pc.he} is still smelling like myself. Good job.[/say]")
 				saynn("He leans down and pets your head. You yip in appreciation.")  # TODO Yip/meow/bark
 				saynn("[say=issix]Since you are such a good pet, today I'd like to train you a little. Are you ready?[/say]")
 			else:
-				setModuleFlag("IssixModule", "Progression_Day_Next", GM.main.getDays()+4)
+				setModuleFlag("IssixModule", "Progression_Day_Next", GM.main.getDays()+5)
 				saynn("[say=issix]You don't smell like me, what happened? Someone woke you up with a water bucket on your head? That's not great. It was your first order as my pet and you blew it. I'm incredibly disappointed.[/say]")
 				saynn("A look of disappointment is on Masters's face. He expected you to still have his mark from yesterday.")
 				saynn("[say=issix]I'm not going to punish you, but I'm also not going to reward you either.[/say]")
@@ -25,7 +25,7 @@ func _run():
 				saynn("You obediently lie on your back, unsure what to expect. Master takes your blanket and without further comment starts relieving himself above you. His hot piss hitting your belly. He doesn't drench you in piss like the last time. Rather just leaving enough for anyone nearby to smell him on you.")
 				saynn("[say=issix]I expect you to stay here one hour, I'm not going to give you a reward.[/say]")
 		else:
-			setModuleFlag("IssixModule", "Progression_Day_Next", GM.main.getDays()+2)
+			setModuleFlag("IssixModule", "Progression_Day_Next", GM.main.getDays()+3)
 			saynn("[say=issix]I'm glad to see you. Are you ready for your first day of training?[/say]")
 		addButton("Yes", "You are ready for the training", "training1")
 

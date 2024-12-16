@@ -1,6 +1,7 @@
 extends SceneBase
 
 var artwork = null
+var pc_pose = null
 var arts_reviewed = 0
 var arts_correct = 0
 
@@ -75,10 +76,13 @@ var odd_lamia_art = [
 func _init():
 	sceneID = "PetsTalkScene"
 
+func _initScene(_args = []):
+	pc_pose = "stand" if getModuleFlag("IssixModule", "PC_Enslavement_Role", 0) == 0 else "kneel"
+
 func _run():
 
 	if(state == ""):
-		playAnimation(StageScene.Solo, "stand", {pc="pc", bodyState={naked=false, hard=false}, npcBodyState={naked=false, hard=false}})
+		playAnimation(StageScene.Solo, pc_pose, {pc="pc", bodyState={naked=false, hard=false}, npcBodyState={naked=false, hard=false}})
 		setLocationName("Issix's Corner")
 		saynn("In front of you - three slaves belonging to Issix.")
 		addCharacter("azazel")
@@ -90,7 +94,7 @@ func _run():
 		addButton("Leave", "Be on your way", "endthescene")
 		
 	if(state == "azazelmain"):
-		playAnimation(StageScene.Duo, "kneel", {pc="azazel", npc="pc", bodyState={naked=false, hard=false}})
+		playAnimation(StageScene.Duo, "kneel", {pc="azazel", npcAction=pc_pose, npc="pc", bodyState={naked=false, hard=false}})
 		clearCharacter()
 		addCharacter("azazel")
 		addButton("Talk", "Talk to Azazel", "azazeltalk")
@@ -102,7 +106,7 @@ func _run():
 			addButton("Give Catnip", "Give Azazel the catnip", "catnip")
 		else:
 			if getModuleFlag("IssixModule", "PC_Enslavement_Role", 0) == 0:
-				saynn("You approach Azazel, he recognizes sudden attention given to him, he goes on his fours doing some kitty back streching before kneeling towards you expectandly. You notice he took a quick peek at his master beforehand.")
+				saynn("You approach Azazel, he recognizes sudden attention given to him, he goes on his fours doing some kitty back streching before kneeling towards you expectantly. You notice he took a quick peek at his master beforehand.")
 			else:
 				pass  # TODO
 		addButton("Back", "Take a step back", "")
@@ -110,7 +114,7 @@ func _run():
 	if state == "hiisimain":
 		clearCharacter()
 		addCharacter("hiisi")
-		playAnimation(StageScene.Duo, "kneel", {pc="hiisi", npc="pc", bodyState={naked=false, hard=false}, npcBodyState={naked=false, hard=false}})
+		playAnimation(StageScene.Duo, "kneel", {pc="hiisi", npc="pc", npcAction=pc_pose, bodyState={naked=false, hard=false}, npcBodyState={naked=false, hard=false}})
 		if getModuleFlag("IssixModule", "PC_Enslavement_Role", 0) == 0:
 			saynn("You approach Hiisi, he acknowledges your presence but other than that doesn't give you much attention, continuing to lay on his front looking at his master with his muzzle being supported by own arms.")
 			addButton("Talk", "Talk to Hiisi", "hiisitalk")
@@ -133,6 +137,15 @@ func _run():
 		else:
 			addButton("Name", "Ask Hiisi about his name", "hiisiname")
 		addButton("Back", "Do something else", "hiisimain")
+
+	if state == "hiisiappearance":
+		saynn("You approach a kneeling Hiisi, in many ways his fur coloring reminds you of huskies but... Backwards? The black coloring visible on his face and bottom of his canine tail, the tail so bushy and monochromatic that it reminds you of a skunk. The inside of his ears dark gray as well, along with the tip, with the pleasant light gray outline.\nWholly brighter palette on the back and his legs.")
+		saynn("His hair, with exception of one blue colored stripe at the front is ginger, or some close color - a little bit simple, short maybe a bit messy.")
+		saynn("He is a pretty masculine individual, in comparison to other pets, his muscles are rather well defined, only exacerbated by the fact that his body structure is closer to being slim rather than regular or even chubby.")
+		saynn("His face holds a rather busy look, he is focused on a task which is... Observation of his Master as well as other pets.")
+		saynn("You can definitely tell that in his pants lies a penis, not because it's big or anything, but simply because a bulge is visible in his sitting posture.")
+		addButton("Back", "You've stared at the canine long enough", "hiisitalk")
+
 
 	if state == "hiisiname":
 		saynn("[say=pc]Hey Hiisi, can you tell me something more about your name? It feels kind of odd.[/say]")
@@ -243,7 +256,7 @@ func _run():
 	if(state == "lamiamain"):
 		clearCharacter()
 		addCharacter("lamia")
-		playAnimation(StageScene.Duo, "kneel", {pc="lamia", npc="pc", bodyState={naked=false, hard=false}})
+		playAnimation(StageScene.Duo, "kneel", {pc="lamia", npc="pc", npcAction=pc_pose, bodyState={naked=false, hard=false}})
 		if getModuleFlag("IssixModule", "PC_Enslavement_Role", 0) == 0:
 			saynn("You approach Lamia")
 			var lamia_mood = getModuleFlag("IssixModule", "Lamia_Times_Helped", 0)
@@ -556,13 +569,16 @@ func _react(_action: String, _args):
 	if _action == "hiisireassure":
 		increaseModuleFlag("IssixModule", "Hiisi_Affection", 5)
 		setModuleFlag("IssixModule", "Hiisi_Name_Helped", true)
+		processTime(10*60)
 
 	if _action == "hiisiadvice":
 		increaseModuleFlag("IssixModule", "Hiisi_Affection", -5)
 		setModuleFlag("IssixModule", "Hiisi_Name_Helped", true)
+		processTime(5*60)
 
 	if _action == "hiisisilence":
 		setModuleFlag("IssixModule", "Hiisi_Name_Helped", true)
+		processTime(8*60)
 
 	if _action == "hiisihypnono":
 		markHiisiRewardAsAquired()

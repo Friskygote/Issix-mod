@@ -60,7 +60,9 @@ func getFlags():
 		"Comic_Books": flag(FlagType.Number),
 		"Comic_Book_Unlocked": flag(FlagType.Bool),
 		"Strikes_For_Disobedience": flag(FlagType.Number),
-		"Unwelcome_At_Corner": flag(FlagType.Bool)
+		"Unwelcome_At_Corner": flag(FlagType.Bool),
+		"Had_Sex_With_Issix": flag(FlagType.Bool),
+		"Litter_Guessing_Game": flag(FlagType.Dict)
 		#"Gym_Bullies_Left_Alone": flag(FlagType.Bool)  Currently cannot change the behavior of this :(
 		}
 		
@@ -117,7 +119,9 @@ func _init():
 	]
 	
 	items = [
-		 "res://Modules/IssixModule/Items/CatnipItem.gd", "res://Modules/IssixModule/Items/ClosetMap.gd", "res://Modules/IssixModule/Items/CookieItem.gd" # I just felt like this game needs more variety in items, even if by themselves they don't do much
+		 "res://Modules/IssixModule/Items/CatnipItem.gd",
+		 "res://Modules/IssixModule/Items/ClosetMap.gd",
+		 "res://Modules/IssixModule/Items/CookieItem.gd" # I just felt like this game needs more variety in items, even if by themselves they don't do much
 	]
 	
 	quests = [
@@ -163,24 +167,33 @@ static func getPlayerPetName():
 
 func breedSlaveIfNpc():
 	## Function to process breeding by Master on randomly selected TODO maybe do that during the day as an event?
-	var current_slave = GM.main.getModuleFlag("IssixModule", "Todays_Bred_Slave")
-	if current_slave == "pc" or (GM.main.getDays() % 3 != 0):
+	if not (int(GM.main.getDays()) % 2 != 0):  # Breed only every second day?
+		GM.main.setModuleFlag("IssixModule", "Todays_Bred_Slave", "thischardoesntexist")
+		return
+	var available_slaves = ['azazel', 'pc', 'hiisi']
+	available_slaves.erase(GM.main.getModuleFlag("IssixModule", "Todays_Bred_Slave", "pc"))  # Don't repeat same slave every day'
+	var current_slave = RNG.pick(available_slaves)
+	GM.main.setModuleFlag("IssixModule", "Todays_Bred_Slave", current_slave)
+	if current_slave == "pc":
 		return  # This will be handled by separate event
 	current_slave = GM.main.getCharacter(current_slave)
+	GlobalRegistry.getCharacter("issix").prepareForSexAsDom()
 	if RNG.chance(5):
 		current_slave.cummedInMouthBy("issix")
 	if current_slave.hasVagina():  # azazel
-		current_slave.cummedInVaginaBy("issix")
+		current_slave.cummedInVaginaBy("issix", FluidSource.Penis, 1.8)
+		print("Azazel cummed in")
 		if RNG.chance(40):
-			current_slave.cummedInAnusBy("issix")
+			current_slave.cummedInAnusBy("issix", FluidSource.Penis, 1.2)
 	else:  # hiisi
+		print("Hiisi cummed in")
 		current_slave.cummedInAnusBy("issix")
 
 func tickDay():
 	addIssixMood(RNG.randi_range(-7, 7))
-	if GM.main.getDays() - GM.getModuleFlag("IssixModule", "Last_Day_Visited_Master", GM.main.getDays()) > 1:  # TODO detect player in soft-lock (medical/etc)
+	if GM.main.getDays() - GM.main.getModuleFlag("IssixModule", "Last_Day_Visited_Master", GM.main.getDays()) > 1:  # TODO detect player in soft-lock (medical/etc)
 		addIssixMood(-10)
-	if GM.main.getDays() % 7 == 0:
+	if int(GM.main.getDays()) % 7 == 0:
 		GM.main.increaseModuleFlag("IssixModule", "Comic_Books", RNG.randi_range(5, 8))
 
 func resetFlagsOnNewDay():  # I apologize for abusing this hook, but startNewDay does not have ANY other hooks I can use and SleepInCell as a trigger is not covering all cases of days passing by
@@ -188,8 +201,8 @@ func resetFlagsOnNewDay():  # I apologize for abusing this hook, but startNewDay
 	GM.main.setModuleFlag("IssixModule", "Activated_Cabinets", {})
 	GM.main.setModuleFlag("IssixModule", "Quest_Wait_Another_Day", false)
 	GM.main.setModuleFlag("IssixModule", "Unwelcome_At_Corner", false)
+	GM.main.setModuleFlag("IssixModule", "Had_Sex_With_Issix", false)
 	GM.main.setModuleFlag("IssixModule", "Is_Player_Forced_Today", 0)
-	GM.main.setModuleFlag("IssixModule", "Todays_Bred_Slave", RNG.pick(['azazel', 'pc', 'hiisi']))
 	breedSlaveIfNpc()
 	if GM.main.getModuleFlag("IssixModule", "Helped_Lamia_With_Drawings_Today") != null:
 		GM.main.setModuleFlag("IssixModule", "Helped_Lamia_With_Drawings_Today", false)

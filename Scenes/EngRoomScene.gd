@@ -189,9 +189,6 @@ func _react(_action: String, _args):
 		return
 		
 	if(_action == "cabinetloot"):
-		if getModuleFlag("IssixModule", "Activated_Cabinets", {}).size() > 10:
-			# TODO Do a force encounter with an engineer
-			pass
 		current_loot = generateLoot(_args[0])
 		current_cabinet = _args[0]
 		if typeof(current_loot) == TYPE_INT:

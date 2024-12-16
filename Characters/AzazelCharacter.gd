@@ -126,13 +126,17 @@ func createBodyparts():
 	giveBodypartUnlessSame(tail)
 	giveBodypartUnlessSame(GlobalRegistry.createBodypart("plantilegs"))
 	skillsHolder.addPerk(Perk.FertilityBroodmother)
-
+	skillsHolder.addPerk(Perk.FertilityBetterOvulation)
+	skillsHolder.addPerk(Perk.FertilityBetterOvulationV2)
+	skillsHolder.addPerk(Perk.FertilityBetterOvulationV3)
+	skillsHolder.addPerk(Perk.FertilityDesireToBreed)
+	skillsHolder.addPerk(Perk.FertilitySubmissiveAndBreedable)
 
 func onGivingBirth(_impregnatedEggCells: Array, _newkids: Array):
 	.onGivingBirth(_impregnatedEggCells, _newkids)
 
 func getBirthWaitTime():
-	return 60*60*24*2
+	return 60*60*24*3
 
 func getDefaultEquipment():
 	return ["inmatecollar", "inmateuniformSexDeviant"]

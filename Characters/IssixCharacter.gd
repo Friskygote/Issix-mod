@@ -42,7 +42,7 @@ func _init():
 		Fetish.VaginalSexGiving : FetishInterest.Hates,
 		Fetish.VaginalSexReceiving : FetishInterest.Loves,
 		Fetish.OralSexReceiving : FetishInterest.Likes,
-		Fetish.OralSexGiving : FetishInterest.Likes,
+		Fetish.OralSexGiving : FetishInterest.Neutral,
 		Fetish.Sadism : FetishInterest.ReallyDislikes,
 		Fetish.Masochism : FetishInterest.Hates,
 		Fetish.UnconsciousSex : FetishInterest.Loves,
@@ -98,6 +98,16 @@ func interestVerbalReaction(interest):
 		return "You are much better fit as a common breeder"
 	if(interest == InterestTopic.Blindfolds):
 		return "Overconfident much?"
+	if(interest == InterestTopic.BigCock):
+		return "Pretty big equipment you got there, have you tried using it?"
+	if(interest == InterestTopic.SmallCock):
+		return "Aww, so small. Don't worry, I think it's pretty cute, and as far as reproduction goes, it's pretty telling what your role in it is."
+	if(interest == InterestTopic.HasVaginaAndCock):
+		return "Oh wow, your biology blessed you with two? How versatile! Which one you prefer more? Breeder or a stud?"
+	if(interest == InterestTopic.Bodywritings):
+		return "I like it when sluts have advertisement all over themselves. Really encourages me to grab that marker."
+	if(interest == InterestTopic.LactatingBreasts):
+		return "You produce? Do you think I can have some of that milk for myself?"
 	
 func _getName():
 	return "Issix"

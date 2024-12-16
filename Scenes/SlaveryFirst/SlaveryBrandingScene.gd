@@ -208,6 +208,7 @@ func _react(_action: String, _args):
 	processTime(2*60)
 
 	if _action == "afterbrandingwakeup":
+		GM.pc.setLocation("hall_ne_corner")
 		timedifference = GM.main.getTimeCap() - GM.main.timeOfDay
 		processTime(timedifference)
 		increaseModuleFlag("IssixModule", "Progression_Points")

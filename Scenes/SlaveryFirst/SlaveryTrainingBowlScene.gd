@@ -6,8 +6,6 @@ func _init():
 func _run():
 	if(state == ""):
 		playAnimation(StageScene.Duo, "kneel", {npc="issix", npcAction="stand"})
-		IssixModule.addSceneToWatched(sceneID)
-		setModuleFlag("IssixModule", "Taught_To_Use_Bowl", true)
 		saynn("[say=issix]Are you hungry perhaps today, pet?[/say]")
 		saynn("He looks at you with his smile you know so well at this point.")
 		# warning-ignore:integer_division
@@ -76,6 +74,8 @@ func _react(_action: String, _args):
 	if(_action == "endthescene"):
 		increaseModuleFlag("IssixModule", "PC_Training_Level")
 		increaseModuleFlag("IssixModule", "Progression_Points")
+		IssixModule.addSceneToWatched(sceneID)
+		setModuleFlag("IssixModule", "Taught_To_Use_Bowl", true)
 		endScene()
 		return
 

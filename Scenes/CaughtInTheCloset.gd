@@ -5,7 +5,6 @@ extends SceneBase
 var npcID = ""
 var sawBefore = false
 var npcVariation = ""
-var foundIllegalItems = false
 
 func _init():
 	sceneID = "ClosetCaughtOfflimitsScene"
@@ -218,7 +217,6 @@ func saveData():
 	data["npcID"] = npcID
 	data["sawBefore"] = sawBefore
 	data["npcVariation"] = npcVariation
-	data["foundIllegalItems"] = foundIllegalItems
 
 	return data
 
@@ -228,4 +226,3 @@ func loadData(data):
 	npcID = SAVE.loadVar(data, "npcID", "")
 	sawBefore = SAVE.loadVar(data, "sawBefore", false)
 	npcVariation = SAVE.loadVar(data, "npcVariation", "")
-	foundIllegalItems = SAVE.loadVar(data, "foundIllegalItems", false)
