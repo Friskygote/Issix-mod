@@ -295,7 +295,6 @@ func _run():
 		#setState("azazelmain")
 		
 	if(state == "azazeltalk"):
-		GM.main.setModuleFlag("IssixModule", "Azazel_Catnip_talked", true)
 		var affection = getModuleFlag("IssixModule", "Azazel_Affection_given", 0)
 		addButton("Prison", "Ask how did he end up in prison?", "azazelprison")
 		addButton("Hobby", "Ask what hobbies does he have", "azazelhobby")

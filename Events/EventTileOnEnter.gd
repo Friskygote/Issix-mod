@@ -10,7 +10,6 @@ func registerTriggers(es):
 func run(_triggerID, _args):
 	#if(doEventCheck("IssixBusy") != null):
 	#	return false
-	Console.printLine("test5")
 	if(GM.main.isVeryLate()):  # Add something in the nightime it's very late?
 		saynn("You see an empty chair in the corner with three blankets laying around.")
 		return false

@@ -10,8 +10,7 @@ func getFlags():
 		"Score_Explored": flag(FlagType.Number),
 		"Quest_Status": flag(FlagType.Number),
 		"Quest_Rejected_By_Issix": flag(FlagType.Number),
-		"Azazel_Catnip_talked": flag(FlagType.Bool),
-		"Azazel_Catnip_found": flag(FlagType.Bool),
+		"Azazel_Catnip_noticed": flag(FlagType.Bool),
 		"Azazel_Catnip_taken_today": flag(FlagType.Bool),
 		"Azazel_Affection_given": flag(FlagType.Number),
 		"Lamia_Times_Helped": flag(FlagType.Number),
@@ -62,7 +61,9 @@ func getFlags():
 		"Strikes_For_Disobedience": flag(FlagType.Number),
 		"Unwelcome_At_Corner": flag(FlagType.Bool),
 		"Had_Sex_With_Issix": flag(FlagType.Bool),
-		"Litter_Guessing_Game": flag(FlagType.Dict)
+		"Litter_Guessing_Game": flag(FlagType.Dict),
+		"Have_Received_Headpats_Lamia": flag(FlagType.Bool),
+		"Received_Headpats_From_Lamia": flag(FlagType.Number)
 		#"Gym_Bullies_Left_Alone": flag(FlagType.Bool)  Currently cannot change the behavior of this :(
 		}
 		
@@ -155,6 +156,9 @@ static func getWalkDelay():
 static func getPlayerRole():
 	return "pet" if GM.main.getModuleFlag("IssixModule", "PC_Enslavement_Role", 1) == 1 else "prostitute"
 
+static func playerToFuck():
+	return not (int(GM.main.getDays()) % 2 != 0) and GM.main.getModuleFlag("IssixModule", "Todays_Bred_Slave", "") == "pc"
+
 static func getPlayerPetName():
 	if Species.Canine in GM.pc.getSpecies():
 		return "puppy"
@@ -189,14 +193,49 @@ func breedSlaveIfNpc():
 		print("Hiisi cummed in")
 		current_slave.cummedInAnusBy("issix")
 
+func calculateDailyScore() -> int:
+	## For calculating player's daily activities at the end of the day
+	var score = 0
+	if playerToFuck():
+		if GM.main.getModuleFlag("IssixModule", "Had_Sex_With_Issix", false) == false:
+			score -= 5
+		else:
+			score += 5
+	if GM.main.getModuleFlag("IssixModule", "PC_Enslavement_Role", 0) == 1:
+		var time_forced = GM.main.getModuleFlag("IssixModule", "Is_Player_Forced_Today", 0)
+		var time_served = GM.main.getModuleFlag("IssixModule", "Pet_Time_Interaction_Today", 0)
+		if time_forced > 0:
+			if time_served >= time_forced:
+				score += 1
+			else:
+				score -= 7
+		else:
+			if time_served >= 60*60:
+				score += 1
+			else:
+				score -= 5
+	return score
+
 func tickDay():
 	addIssixMood(RNG.randi_range(-7, 7))
-	if GM.main.getDays() - GM.main.getModuleFlag("IssixModule", "Last_Day_Visited_Master", GM.main.getDays()) > 1:  # TODO detect player in soft-lock (medical/etc)
+	if GM.pc.getLocation() != "medical_paddedcell_player":
+		pass  # TODO Bust out scene
+	elif (GM.main.getDays() - GM.main.getModuleFlag("IssixModule", "Last_Day_Visited_Master", GM.main.getDays()) > 1):
 		addIssixMood(-10)
+	addIssixMood(calculateDailyScore())
 	if int(GM.main.getDays()) % 7 == 0:
 		GM.main.increaseModuleFlag("IssixModule", "Comic_Books", RNG.randi_range(5, 8))
+	if int(GM.main.getDays()) % 30 == 0 and GM.main.getModuleFlag("IssixModule", "Strikes_For_Disobedience", 0) > 0:  # every 30 days remove one strike
+		GM.main.increaseModuleFlag("IssixModule", "Strikes_For_Disobedience", -1)
+	if GM.main.getDays()-GM.main.getModuleFlag("IssixModule", "Last_Walk", GM.main.getDays()) == APPROX_WALK_DELAY:
+		GM.main.setModuleFlag("IssixModule", "Last_Walk", GM.main.getDays())
+
 
 func resetFlagsOnNewDay():  # I apologize for abusing this hook, but startNewDay does not have ANY other hooks I can use and SleepInCell as a trigger is not covering all cases of days passing by
+	if GM.main.getModuleFlag("IssixModule", "PC_Enslavement_Role", 0) > 0:  # Slavery module
+		tickDay()
+		if GM.main.getModuleFlag("IssixModule", "Have_Received_Headpats_Lamia") != null:
+			GM.main.setModuleFlag("IssixModule", "Have_Received_Headpats_Lamia", false)
 	GM.main.setModuleFlag("IssixModule", "Azazel_Catnip_taken_today", false)
 	GM.main.setModuleFlag("IssixModule", "Activated_Cabinets", {})
 	GM.main.setModuleFlag("IssixModule", "Quest_Wait_Another_Day", false)
@@ -207,8 +246,4 @@ func resetFlagsOnNewDay():  # I apologize for abusing this hook, but startNewDay
 	if GM.main.getModuleFlag("IssixModule", "Helped_Lamia_With_Drawings_Today") != null:
 		GM.main.setModuleFlag("IssixModule", "Helped_Lamia_With_Drawings_Today", false)
 	GM.main.setModuleFlag("IssixModule", "Pet_Time_Interaction_Today", 0)
-	if GM.main.getDays()-GM.main.getModuleFlag("IssixModule", "Last_Walk", GM.main.getDays()) == APPROX_WALK_DELAY:
-		GM.main.setModuleFlag("IssixModule", "Last_Walk", GM.main.getDays())
 	GM.main.setModuleFlag("IssixModule", "Eaten_Today", false)
-	if GM.main.getModuleFlag("IssixModule", "PC_Enslavement_Role", 0) > 0:  # Slavery module
-		tickDay()

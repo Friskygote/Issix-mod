@@ -9,7 +9,7 @@ var empty_loots = [
 	"You pull out a shelf and find a single piece of paper inside. It has only one sentence on it, in large font that fills entire page saying „OH, DID U GET THE BROOM CLOSET ENDING? THEB ROOM CLOSET ENDING WAS MY FAVRITE!1 XD”. The absolute lack of context and randomness of this message fill you with concern. Engineers must have a very strange sense of humor."
 ]
 var cabinet_random = RandomNumberGenerator.new()
-var current_loot = null  # TODO will not survive save/load 
+var current_loot = null
 var current_cabinet = null
 
 func _init():
@@ -132,7 +132,6 @@ func _run():
 			addMessage("You took "+str(damage_taken)+" damage.")
 		addButton("Back", "Look at cabinets", "cabinets")
 			
-		
 	if state=="cabinetevent3":
 		processTime(3*60)
 		saynn("You chose to open cabinet number "+("number "+str(current_cabinet) if current_cabinet != 42 else "with a number you can't read")+"...")
@@ -210,6 +209,20 @@ func _react(_action: String, _args):
 		return
 	
 	setState(_action)
+
+func saveData():
+	var data = .saveData()
+
+	data["current_loot"] = current_loot
+	data["current_cabinet"] = current_cabinet
+
+	return data
+
+func loadData(data):
+	.loadData(data)
+
+	current_loot = SAVE.loadVar(data, "current_loot", null)
+	current_cabinet = SAVE.loadVar(data, "current_cabinet", null)
 
 func _react_scene_end(_tag, _result):
 	if(_tag == "caughtbyeng"):

@@ -34,6 +34,8 @@ func _run():
 				saynn("To pay Master for sluttying around yesterday: " + str(GM.main.getModuleFlag("IssixModule", "Prostituation_fee_yesterday", 0) + GM.main.getModuleFlag("IssixModule", "Prostituation_flat_fee", 0)))
 			_:
 				pass
+		if IssixModule.playerToFuck() and getModuleFlag("IssixModule", "Had_Sex_With_Issix", false) != true:
+			saynn("[color=#B03838]Master expects you to be available for fucking today.[/color]")
 		setModuleFlag("IssixModule", "Last_Day_Visited_Master", GM.main.getDays())
 		addButton("Master", "Talk with your master about something", "issixpetmenu")
 		addButton("Azazel", "Actions in relation to Azazel", "azazelpetmenu")
@@ -47,7 +49,7 @@ func _run():
 		if GM.pc.getStamina() > 100:  # TODO Add some other event as precondition for this being available?
 			addButton("Play", "Play with other pets.", "haremplay")
 		else:
-			addDisabledButton("Play", "You are too tired to play with other pets.")
+			addDisabledButton("Play", "You are too tired to play with other pets (minimum 100 stamina)")
 		if GM.main.getDays()-last_walk == IssixModule.getWalkDelay():  # TODO Walks
 			if GM.main.getTime() < 54000:
 				addDisabledButton("Walk", "Walks are unimplemented at the moment, possibly in future releases!")
@@ -94,7 +96,7 @@ func _run():
 				addDisabledButton("Learn", "You already know everything about bearing children")
 			if GlobalRegistry.getCharacter("azazel").isHeavilyPregnant() and canPromptLitterDialogue():
 				addButton("Guess litter", "Ask Azazel about his pregnancy", "azazelguesslitter")
-		addDisabledButton("Sex", "Ask for sex with Azazel")  # , "azazelsexrequest"
+		addDisabledButton("Sex", "Ask for sex with Azazel (WIP)")  # , "azazelsexrequest"
 		addButton("Back", "Go back", "")
 
 	if state == "azazelguesslitterfirst":
@@ -210,6 +212,7 @@ func _run():
 
 
 	if state == "hiisipetmenu":
+		playAnimation(StageScene.Duo, "kneel", {pc="hiisi", npcAction="kneel", npc="pc", bodyState={naked=false, hard=false}})
 		addCharacter("hiisi")
 		if GM.pc.getSkillLevel(Skill.Combat) < 16:
 			addDisabledButton("Learn", "Learn something from Hiisi (WIP)")  # , "hiisilearncombat"
@@ -220,10 +223,38 @@ func _run():
 		addButton("Back", "Go back", "")
 
 	if state == "lamiapetmenu":
+		playAnimation(StageScene.Duo, "kneel", {pc="lamia", npcAction="kneel", npc="pc", bodyState={naked=false, hard=false}})
 		addCharacter("lamia")
 		#addButton("Read", "Read comic books (WIP)", "")
-		addButton("Pets", "Ask for pets", "lamiapetrequest")
+		if GM.main.getModuleFlag("IssixModule", "Have_Received_Headpats_Lamia", false) == false:
+			addButton("Pets", "Ask for pets", "lamiapetrequest")
+		else:
+			addDisabledButton("Pets", "You've asked for headpats today already!")
 		addButton("Back", "Go back", "")
+
+	if state == "lamiapetrequestfirst":
+		saynn("A fox breed is consumed by snacking on food in their pet bowl.")
+		if GM.pc.getPersonality().getStat(PersonalityStat.Coward) > 0.3:
+			saynn("[say=pc]Hey Lamia, I wondered if...[/say]")
+			saynn("You realize how awkward you feel asking Lamia this. It feels silly, you feel vulnerable and exposed doing so. Lamia stares at your face, which you are trying to unconsciously conceal from the fox breed. He stares at you some more, confused.")
+			saynn("[say=pc]I were wondering if you could... Ummm...[/say]")
+			saynn("You still feel incredibly embarrassed, making it difficult for you to finish the question. Finally, Lamia takes his paw and pushes it under yours, taking your into his own, doing the same with the second. This calms you down a little, you finally look at face of Lamia. It's a smile, such a honest and comforting smile. You didn't know that someone can have such an effect on you, to dispel any worries, to comfort you so much, and yet the fox does just that, without saying a single word.")
+			saynn("[say=pc]Wow... Thank you. I wanted to ask if you could maybe pet me? It still feels si-[/say]")
+			saynn("Not letting you finish your sentence, Lamia lets go of your paw and places it on top of your head giving you a few very gentle pats. You close your eyes and just let yourself be pet, realizing that it might look silly from outside perspective, but quickly losing those thoughts as they are replaced by fuzzy feelings. Fox may be mute, but somehow you start to understand that communication with words isn't always needed, that some emotions can be expressed with mere body language that often is more expressive than a thousand words. Feeling of fulfillment and comfort fills you, easing pain and filling you with happiness.")
+			saynn("[say=pc]You are the best Lamia, thank you so much, that's just what I needed![/say]")
+			saynn("He nods in understanding, they don't say anything but somehow it feels as if they communicated to you „any time, friend”. At least that's what you think you saw in their body language, or can you read their body language? That's a strange feeling.")
+		else:
+			saynn("[say=pc]Hey Lamia, I were wondering if you could pet my head a few times? I've been feeling do-[/say]")
+			saynn("Fox needing no explanation or encouragement, simply puts his paw on your head and starts petting you. For a moment you even feel embarrassed a little by the treatment but then, you did ask right? You look at their face, very candid and expressively full of love for other creatures. It strikes you as such a rare experience in your life. To ask someone to do something so small and yet so meaningful, happy, joyful... As they ruffle your fur, and behind your ears you can feel a rush of endorphines in your body, as well as appreciation for such simple act of care you've been given.")
+			saynn("[say=pc]Thank you, Lamia. That was wonderful, feel free to ask me anytime I can reciprocate your wonderful headpats.[/say]")
+			saynn("They nod to you in understanding")
+		addButton("Finish", "Finish this interaction", "lamiapetmenu")
+
+	if state == "lamiapetrequestanother":
+		saynn("[say=pc]Hey Lamia![/say]")
+		saynn("You don't have to say anything and Lamia begins to reach their paw above your head, you let them do this. No future words are exchanged as the fox gives you pats and ruffles your hair a little. This small ritual gave you powers to push through the day reinvigorated.")
+
+		addButton("Finish", "Finish this interaction", "lamiapetmenu")
 
 	if state == "issixwalkquestion":
 		var last_walk = getModuleFlag("IssixModule", "Last_Walk", 0)
@@ -258,6 +289,7 @@ func _run():
 		addButton("Back", "Go back", "")
 
 	if state == "readabook":
+		saynn("You read one of the comic books, 20 minutes pass.")  # TODO Expand on this
 		addButton("Back", "Go back", "")
 
 
@@ -344,6 +376,17 @@ func _react(_action: String, _args):
 		getCharacter("issix").prepareForSexAsDom()
 		GlobalRegistry.getCharacter("issix").addPain(-50)
 		runScene("GenericSexScene", ["issix", "pc"], "subbysexissix")
+
+	if _action == "lamiapetrequest":
+		GM.pc.addPain(-10)
+		GM.pc.addStamina(5)
+		processTime(4*60)
+		GM.main.increaseModuleFlag("IssixModule", "Received_Headpats_From_Lamia")
+		if GM.main.getModuleFlag("IssixModule", "Have_Received_Headpats_Lamia") == null:
+			_action = "lamiapetrequestfirst"
+		else:
+			_action = "lamiapetrequestanother"
+		GM.main.setModuleFlag("IssixModule", "Have_Received_Headpats_Lamia", true)
 
 	if _action == "littercountresult":
 		if(getTextboxData("litter_count") == ""):

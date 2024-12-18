@@ -226,10 +226,10 @@ func _run():
 		processTime(2*60)
 		saynn("There is no reaction coming from Issix on your answer. He gestures you to go on. A new question appears.")
 		saynn("„How do parasites make you feel?”")
-		addButton("Disgusted", "Parasites are disgusting", "q10answer", [1])
-		addButton("Scared", "They fill you with fear", "q10answer", [2])
-		addButton("Neutral", "They are creatures, the only thing that makes them parasites is the way they obtain their food", "q10answer", [3])
-		addButton("Horny", "You like parasites... In very specific way", "q10answer", [4])
+		addButton("Disgusted", "Parasites are disgusting (disables future parasite content)", "q10answer", [1])
+		addButton("Scared", "They fill you with fear (disables future parasite content)", "q10answer", [2])
+		addButton("Neutral", "They are creatures, the only thing that makes them parasites is the way they obtain their food (enables references to future parasite content without direct involvement)", "q10answer", [3])
+		addButton("Horny", "You like parasites... In very specific way (enables future parasite related content)", "q10answer", [4])
 		
 	if(state == "q10answer"):
 		if(answer < 3):

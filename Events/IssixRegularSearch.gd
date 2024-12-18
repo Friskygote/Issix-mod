@@ -1,7 +1,7 @@
 extends EventBase
 
 func _init():
-	id = "IssixEvent"
+	id = "IssixSearchEvent"
 
 func registerTriggers(es):
 	es.addTrigger(self, Trigger.EnteringRoom, "hall_mainentrance")

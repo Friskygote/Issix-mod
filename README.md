@@ -11,8 +11,8 @@ The mod and contents in it is - surprise surprise - a work of fiction. Author do
  - Azazel - a kind feline breeding bitch
  - Hiisi - a troubled pup - guardian angel of the harem (after Issix)
  - Lamia - a mute and sexually absent fox
-- One quest that leads to your enslavement by Issix (currently only implemented voluntary enslavement as a pet, this is a sweet type of enslavement), there are a bunch of fun elements in it, like figuring out an ASCII map or filling a questionnaire with a possible little twist
-- Each pet has their own mechanic that increases their trust/affection towards the player
+- One quest that leads to your enslavement by Issix (currently only implemented voluntary enslavement as a pet, this is an overall rather "nice" type of enslavement), there are a bunch of fun elements in it, like figuring out an ASCII map or filling a questionnaire
+- Each (ok, only Azazel and Lamia) pet has their own mechanic that increases their trust/affection towards the player
 - Finally, voluntary enslavement, if you eventually get enslaved it may make your game a bit more difficult
 - Some branches of choices and situations.
 - Hopefully at least around an hour of additional gameplay? Haven't tested yet

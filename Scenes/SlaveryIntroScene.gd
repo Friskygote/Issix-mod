@@ -177,7 +177,7 @@ func _run():
 		saynn("[say=pc]Yes..,[/say]")
 		saynn("[say=issix]Yes?[/say]")
 		saynn("[say=pc]Yes Master Issix.[/say]")
-		saynn("[say=issix]Good puppy.[/say]")  # TODO puppy/kitten need to find a way to put those.
+		saynn("[say=issix]Good "+IssixModule.getPlayerPetName()+".[/say]")
 		saynn("He takes his foot out of your belly.")
 		if(OPTIONS.isContentEnabled(ContentType.Watersports)):
 			saynn("[say=issix]For today there is one more thing for me to do. Azazel, can you tell my new pet what it is?[/say]")
