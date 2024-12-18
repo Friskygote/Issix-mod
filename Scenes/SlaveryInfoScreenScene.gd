@@ -5,6 +5,8 @@ var pet_time_start = null
 var reply_litter = null
 var azazel_teased_motherhood = false
 var azazel = null
+var AVERAGE_WALK_DELAY = 9
+
 
 func _init():
 	sceneID = "SlaveryInfoScreen"
@@ -23,7 +25,7 @@ func _run():
 		if pet_time_start == null:
 			pet_time_start = GM.main.getTime()
 		addMessage("WARNING: A lot of the content in here is a placeholder. It will change, it will break, it will cause calamities. Treat it as a sneek peek into the (potential) future.")
-		saynn("Your slave role: "+IssixModule.getPlayerRole())
+		saynn("Your slave role: "+("pet" if GM.main.getModuleFlag("IssixModule", "PC_Enslavement_Role", 1) == 1 else "prostitute"))
 		saynn("Your training: "+trainingCheck())
 		saynn("Master's mood: "+getMood())
 		saynn("Issix's slave for "+str(getDays())+" days")
@@ -34,7 +36,7 @@ func _run():
 				saynn("To pay Master for sluttying around yesterday: " + str(GM.main.getModuleFlag("IssixModule", "Prostituation_fee_yesterday", 0) + GM.main.getModuleFlag("IssixModule", "Prostituation_flat_fee", 0)))
 			_:
 				pass
-		if IssixModule.playerToFuck() and getModuleFlag("IssixModule", "Had_Sex_With_Issix", false) != true:
+		if playerToFuck() and getModuleFlag("IssixModule", "Had_Sex_With_Issix", false) != true:
 			saynn("[color=#B03838]Master expects you to be available for fucking today.[/color]")
 		setModuleFlag("IssixModule", "Last_Day_Visited_Master", GM.main.getDays())
 		addButton("Master", "Talk with your master about something", "issixpetmenu")
@@ -50,7 +52,7 @@ func _run():
 			addButton("Play", "Play with other pets.", "haremplay")
 		else:
 			addDisabledButton("Play", "You are too tired to play with other pets (minimum 100 stamina)")
-		if GM.main.getDays()-last_walk == IssixModule.getWalkDelay():  # TODO Walks
+		if GM.main.getDays()-last_walk == AVERAGE_WALK_DELAY:  # TODO Walks
 			if GM.main.getTime() < 54000:
 				addDisabledButton("Walk", "Walks are unimplemented at the moment, possibly in future releases!")
 			else:
@@ -134,7 +136,7 @@ func _run():
 			saynn("His paw carreses your tummy full of your own litter.")
 			saynn("[say=azazel]Isn't it a great joy to be a mother? "+("Oh don't give me that look, a male can be a great mother for their children as well! Just look at me. " if GM.pc.getGender() == Gender.Male else "")+"Mmmm. You are a great mother as well, cutie.[/say]")
 		else:
-			saynn("[say=azazel]Aren't you curious yourself, what it means to bear litter? Wouldn't you want to leave a mark in this wretched galaxy? To have more of little {pc.name}'s running around? Becoming adventurers, slaves, masters... Hah. Don't get me wrong, personally I don't think I care about my own legacy, but our Master does, I think. I enjoy being his little breeding kitten, maybe you'd like being his breeding "+IssixModule.getPlayerPetName()+" too? Think about it.[/say]")
+			saynn("[say=azazel]Aren't you curious yourself, what it means to bear litter? Wouldn't you want to leave a mark in this wretched galaxy? To have more of little {pc.name}'s running around? Becoming adventurers, slaves, masters... Hah. Don't get me wrong, personally I don't think I care about my own legacy, but our Master does, I think. I enjoy being his little breeding kitten, maybe you'd like being his breeding "+getPlayerPetName()+" too? Think about it.[/say]")
 			saynn("He gives you a smile.")
 		saynn("After he says that you leave the trance you were in, that was odd...")
 		saynn("[say=azazel]So what do you say? Are you in?[/say]")
@@ -261,7 +263,7 @@ func _run():
 		if last_walk + 5 > GM.main.getDays():
 			saynn("[say=issix]We've just been on a walk pretty recently, so you'll have to be a little bit more patient my pet.[/say]")
 		else:
-			saynn("[say=issix]Hmm, soonish, probably in around "+ str(IssixModule.getWalkDelay()-(GM.main.getDays()-last_walk)) + " days. Are you excited for the next walk?[/say]")
+			saynn("[say=issix]Hmm, soonish, probably in around "+ str(AVERAGE_WALK_DELAY-(GM.main.getDays()-last_walk)) + " days. Are you excited for the next walk?[/say]")
 		addButton("Back", "Go back", "issixpetmenu")
 
 	if state == "issixsexrequest":
@@ -273,7 +275,7 @@ func _run():
 
 		saynn("[say=pc]Umm, Master? Could we have sex today?[/say]")
 		if float(GM.pc.getLust()) / GM.pc.lustThreshold() > 0.7:
-			saynn("[say=issix]Aww, my "+IssixModule.getPlayerPetName() +" is pent up? How cute.[/say]")
+			saynn("[say=issix]Aww, my "+getPlayerPetName() +" is pent up? How cute.[/say]")
 		else:
 			saynn("[say=issix]Sex? Hmmm...[/say]")
 
@@ -292,7 +294,15 @@ func _run():
 		saynn("You read one of the comic books, 20 minutes pass.")  # TODO Expand on this
 		addButton("Back", "Go back", "")
 
-
+static func getPlayerPetName():
+	if Species.Canine in GM.pc.getSpecies():
+		return "puppy"
+	elif Species.Feline in GM.pc.getSpecies():
+		return "kitty"
+	elif Species.Equine in GM.pc.getSpecies():
+		return "pony"
+	else:
+		return "pet"
 
 func getTimeSpent():
 	return getModuleFlag("IssixModule", "Pet_Time_Interaction_Today", 0)+(GM.main.getTime()-pet_time_start)
@@ -345,6 +355,10 @@ func getMood():
 	else:
 		return "[color=green]excellent[/color]"
 
+
+static func playerToFuck():
+	return not (int(GM.main.getDays()) % 2 != 0) and GM.main.getModuleFlag("IssixModule", "Todays_Bred_Slave", "") == "pc"
+
 func getDays():
 	var days_enslaved = getModuleFlag("IssixModule", "Misc_Slavery_Info", {})["day_enslaved"]
 	return GM.main.getDays() - days_enslaved
@@ -361,6 +375,9 @@ func trainingCheck():
 		return "good"
 	else:
 		return "very good"
+
+static func addIssixMood(mood: int):
+	GM.main.setModuleFlag("IssixModule", "Issix_Mood", clamp(GM.main.getModuleFlag("IssixModule", "Issix_Mood", 50)+mood, 0, 100))
 
 func registerOffspringGuess():
 	var past_guesses: Dictionary = getModuleFlag("IssixModule", "Litter_Guessing_Game", {"guesses_off": [], "last_guess": GM.CS.getChildrenAmountOf("azazel")})
@@ -411,7 +428,7 @@ func _react(_action: String, _args):
 	if _action == "after_sex_issix":
 		setModuleFlag("IssixModule", "Had_Sex_With_Issix", true)
 		processTime(20*60)
-		IssixModule.addIssixMood(5)
+		addIssixMood(5)
 
 	if _action == "readabook":
 		processTime(20*60)

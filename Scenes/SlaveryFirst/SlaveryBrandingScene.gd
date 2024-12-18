@@ -9,7 +9,6 @@ func _init():
 func _run():
 	if(state == ""):
 		playAnimation(StageScene.Duo, "kneel", {npc="issix", npcAction="stand"})
-		IssixModule.addSceneToWatched(sceneID)
 		saynn("[say=issix]It is the day pet. Today we are marking you with a mark that cannot be washed away. It will be burned into your body forever. You are getting my brand.[/say]")
 		saynn("He looks at you, judging for your reaction")
 		addButton("Eager", "You are eager to get your Master's brand on your body", "brandtalk", [1])
@@ -248,6 +247,9 @@ func _react(_action: String, _args):
 
 	if(_action == "endthescene"):
 		setModuleFlag("IssixModule", "Progression_Day_Next", GM.main.getDays()+4)
+		var scenes = GM.main.getModuleFlag("IssixModule", "Misc_Slavery_Info", {"scenes_seen": []})
+		scenes["scenes_seen"].append(sceneID)
+		GM.main.setModuleFlag("IssixModule", "Misc_Slavery_Info", scenes.duplicate(true))
 		endScene()
 		return
 

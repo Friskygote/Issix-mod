@@ -59,7 +59,9 @@ func _run():
 func _react(_action: String, _args):
 
 	if _action == "training1":
-		IssixModule.addSceneToWatched(sceneID)
+		var scenes = GM.main.getModuleFlag("IssixModule", "Misc_Slavery_Info", {"scenes_seen": []})
+		scenes["scenes_seen"].append(sceneID)
+		GM.main.setModuleFlag("IssixModule", "Misc_Slavery_Info", scenes.duplicate(true))
 		if(OPTIONS.isContentEnabled(ContentType.Watersports)):
 			if GM.pc.getFluids().hasFluidTypeWithCharID("Piss", "issix") == false:
 				GM.pc.cummedOnBy("issix", FluidSource.Pissing, 0.4)

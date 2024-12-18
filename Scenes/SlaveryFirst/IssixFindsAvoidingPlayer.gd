@@ -42,7 +42,7 @@ func _run():
 		saynn("Your Master stands stunned by your proclamation.")
 		saynn("[say=issix]What did you just say?[/say]")
 		saynn("[say=pc]I no longer want to be your pet.[/say]")
-		saynn("[say=issix]I don't think you understand your position, pet. You are not in a position to decide on that anymore, you've made your decision a while ago, you don't just get to change it because your feel like it, such decision belongs to your Master. Now, be a good "+IssixModule.getPlayerPetName()+" and come with me.[/say]")
+		saynn("[say=issix]I don't think you understand your position, pet. You are not in a position to decide on that anymore, you've made your decision a while ago, you don't just get to change it because your feel like it, such decision belongs to your Master. Now, be a good "+getPlayerPetName()+" and come with me.[/say]")
 		addButton("Continue", "Follow Issix to the corner", "walkcorner")
 
 	if state == "leave":
@@ -133,13 +133,21 @@ func _run():
 		saynn("Feeling in pain, you don't have anything else to answer other than.")
 		saynn("[say=pc]I'm sorry, Master, I won't do this again.[/say]")
 		saynn("[say=issix]Do you really mean it? Or is that another lie? Look at me, LOOK![/say]")
-		saynn("He grabs you by your neck, tilts your face to meet his gaze, his face angry, furious even, staring deep into you, just like when he was judging you when you wished to become his "+ IssixModule.getPlayerPetName() + ".")
+		saynn("He grabs you by your neck, tilts your face to meet his gaze, his face angry, furious even, staring deep into you, just like when he was judging you when you wished to become his "+ getPlayerPetName() + ".")
 		saynn("[say=issix]Don't make me assert control over you again.[/say]")
 		saynn("He releases your body from heavy grip.")
 		saynn("[say=issix]I think you suffered enough of humiliation for today. Do whatever you want, but I expect you tomorrow in the corner, as usual.[/say]")
 		addButton("Leave", "Leave", "endthescene")
 
-
+static func getPlayerPetName():
+	if Species.Canine in GM.pc.getSpecies():
+		return "puppy"
+	elif Species.Feline in GM.pc.getSpecies():
+		return "kitty"
+	elif Species.Equine in GM.pc.getSpecies():
+		return "pony"
+	else:
+		return "pet"
 
 func _react(_action: String, _args):
 	processTime(2*60)

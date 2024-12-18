@@ -69,7 +69,9 @@ func _react(_action: String, _args):
 		setModuleFlag("IssixModule", "Comic_Book_Unlocked", true)
 
 	if(_action == "endthescene"):
-		IssixModule.addSceneToWatched(sceneID)
+		var scenes = GM.main.getModuleFlag("IssixModule", "Misc_Slavery_Info", {"scenes_seen": []})
+		scenes["scenes_seen"].append(sceneID)
+		GM.main.setModuleFlag("IssixModule", "Misc_Slavery_Info", scenes.duplicate(true))
 		setModuleFlag("IssixModule", "Progression_Day_Next", GM.main.getDays()+3)
 		increaseModuleFlag("IssixModule", "Progression_Points", 1)
 		endScene()

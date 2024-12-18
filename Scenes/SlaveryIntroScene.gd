@@ -177,7 +177,7 @@ func _run():
 		saynn("[say=pc]Yes..,[/say]")
 		saynn("[say=issix]Yes?[/say]")
 		saynn("[say=pc]Yes Master Issix.[/say]")
-		saynn("[say=issix]Good "+IssixModule.getPlayerPetName()+".[/say]")
+		saynn("[say=issix]Good "+getPlayerPetName()+".[/say]")
 		saynn("He takes his foot out of your belly.")
 		if(OPTIONS.isContentEnabled(ContentType.Watersports)):
 			saynn("[say=issix]For today there is one more thing for me to do. Azazel, can you tell my new pet what it is?[/say]")
@@ -228,6 +228,16 @@ func _run():
 		saynn("[say=issix]I must apologize. I had certain expectations that were not met, however I realize I were in no position to make demands of you. You have made your decision and as I said, I have to respect it. Thank you for letting me know what is your final decision. I'll be here if you ever want to donate restraints. Have a good day, {pc.name}.[/say]")
 		saynn("His voice still raspy, but composed. His dominant persona doesn't handle well „no” as an answer, however you aren't his pet, at least today. And now, you never will. That was your decision, however.")
 		addButton("Continue", "End the conversation", "endthescene")
+
+static func getPlayerPetName():
+	if Species.Canine in GM.pc.getSpecies():
+		return "puppy"
+	elif Species.Feline in GM.pc.getSpecies():
+		return "kitty"
+	elif Species.Equine in GM.pc.getSpecies():
+		return "pony"
+	else:
+		return "pet"
 
 func _react(_action: String, _args):
 	# if _action == "walktocell":
