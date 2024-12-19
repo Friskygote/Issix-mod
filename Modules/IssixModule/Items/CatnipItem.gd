@@ -7,18 +7,15 @@ func getVisibleName():
 	return "Catnip"
 	
 func getDescription():
-	return "An enticing plant for most of felines. Used as harmfull drug, unless in large quantities. Can have effects on a feline if consumed."
-
-func isFeline(character:BaseCharacter):
-	return "feline" in character.getSpecies()
+	return "An enticing plant for most of felines. Used as harmful drug, unless in large quantities. Can have effects on a feline if consumed."
 
 func canUseInCombat():
-	return isFeline(GM.pc)
+	return true
 
-func useInCombat(_attacker:Character, _receiver):
-	if(isFeline(_attacker)):
+func useInCombat(_attacker, _receiver):
+	if "feline" in _attacker.getSpecies():
 		if(!(_attacker.isPlayer() and GM.main.getFlag("HypnokinkModule.SoftOptIn") == false)):
-			_attacker.addEffect(StatusEffect.UnderHypnosis)
+			_attacker.addEffect(StatusEffect.Suggestible, [5])
 		_attacker.addLust(10)
 		removeXOrDestroy(1)
 		return _attacker.getName() + " ate a catnip plant! That feels... Wahhaa."
@@ -27,16 +24,13 @@ func useInCombat(_attacker:Character, _receiver):
 		return _attacker.getName() + " ate a catnip plant! It didn't have any effect."
 
 func getPossibleActions():
-	if(isFeline(GM.pc)):  # We really shouldn't assume the item is being used by a player character, but sadly game does not give us context for the item user :(
-		return [
-			{
-				"name": "Eat one!",
-				"scene": "UseItemLikeInCombatScene",
-				"description": "Eat the catnip",
-			},
-		]
-	else:
-		return []
+	return [
+		{
+			"name": "Eat one!",
+			"scene": "UseItemLikeInCombatScene",
+			"description": "Eat the catnip",
+		},
+	]
 
 func getPrice():
 	return 0

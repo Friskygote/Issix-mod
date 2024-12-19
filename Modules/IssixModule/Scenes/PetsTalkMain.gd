@@ -100,9 +100,14 @@ func _run():
 		addButton("Talk", "Talk to Azazel", "azazeltalk")
 		addButton("Appearance", "Look at Azazel", "azazelappearance")
 		if(GM.pc.getInventory().hasItemID("CatnipPlant")):
-			saynn("Before you even have the time to approach Azazel, you see his head hovering over his body, his little nose working very hard to track down the source of the curious smell. He looks around with interest, until he sees you approaching.\nHe observes you with interest as you come close.")
-			saynn("[say=azazel]Meow! You really smell of a catnip, do you have catnip? Do you??[/say]")
-			saynn("{azazel.name} becomes really excited, as exemplified by his tail stretching high as if it was a broom stick. His body constantly sways.")
+			var catnip = GM.main.getModuleFlag("IssixModule", "Azazel_Catnip_given_today", 0)
+			if catnip > 5:
+				saynn("{azazel.Name}'s tail swishes left and right, his head tracks you like a predator its pray, with his giant black pupils staring you down. His ass is unable to be steady, as he constantly moves from one position to another, his paws almost dancing on the blanket.")
+				saynn("[say=azazel]Catnip? Catnip! CAAAATNIP CATNIP CATNIP CATNIP CATNIP CATNIP CATNIP!!! Gib, catnip! Caaaaatnip! GIB![/say]")
+			else:
+				saynn("Before you even have the time to approach Azazel, you see his head hovering over his body, his little nose working very hard to track down the source of the curious smell. He looks around with interest, until he sees you approaching.\nHe observes you with interest as you come close.")
+				saynn("[say=azazel]Meow! You really smell of a catnip, do you have catnip? Do you??[/say]")
+				saynn("{azazel.Name} becomes really excited, as exemplified by his tail stretching high as if it was a broom stick. His body constantly sways.")
 			addButton("Give Catnip", "Give Azazel the catnip", "catnip")
 		else:
 			if getModuleFlag("IssixModule", "PC_Enslavement_Role", 0) == 0:
@@ -291,12 +296,23 @@ func _run():
 		saynn("He becomes a little embarassed. Looks down at the catnip plant on his blanket. Picks it up with his paw and consumes it.")
 		saynn("[say=azazel]Twank yuu {pc.name}. It was really nice![/say]")
 		processTime(1 * 60)
+		addMessage("You have given away one of the catnip plants you were holding.")
 		addButton("Back", "End catnip therapy session", "azazelmain")
 		#setState("azazelmain")
 		
 	if(state == "azazeltalk"):
+		var catnip = GM.main.getModuleFlag("IssixModule", "Azazel_Catnip_given_today", 0)
+		if catnip > 2:
+			saynn("You notice that Azazel's pupils are abnormally large and his body movement erratic. You start to wonder if the catnip you have given to the cat had any effect?")
+		elif catnip > 5:
+			saynn("Azazel is squirming as if his bladder was full and he needed to pee. His pupils are black, giant circles. His face expression ecstatic, too ecstatic, maniac even. That catnip must have done much more than you anticipated...")
+
+		if(GM.pc.getInventory().hasItemID("CatnipPlant")):
+			saynn("You try to talk to Azazel, however he cannot focus with the smell around, if you want to talk with Azazel it's likely wise to do something with the catnip you have on you.")
+			addButton("Back", "Cat is not focused on talking with catnip in proximity", "azazelmain")
+			return
 		var affection = getModuleFlag("IssixModule", "Azazel_Affection_given", 0)
-		addButton("Prison", "Ask how did he end up in prison?", "azazelprison")
+		addButton("Life", "Ask Azazel what his day-to-day life looks like nowadays", "azazellife")
 		addButton("Hobby", "Ask what hobbies does he have", "azazelhobby")
 		if affection > 2:
 			addButton("Issix", "Ask what he thinks of his master?", "azazelmaster")
@@ -307,26 +323,43 @@ func _run():
 		else:
 			addDisabledButton("Breeder", "You don't have good enough relationship with Azazel to ask about his position as breeding bitch")
 		if affection > 10:
-			addButton("Fetishes", "He mentioned his fetishes, perhaps he could elaborate?", "azazelfetishes")
+			addDisabledButton("Fetishes", "He mentioned his fetishes, perhaps he could elaborate? (WIP)")
 		else:
 			addDisabledButton("Breeder", "You don't have good enough relationship with Azazel to ask about his fetishes")
 		if affection > 18:
-			addButton("Pussy", "Azazel has a pussy and yet he is rather masculine", "azazelintersex")
+			addDisabledButton("Pussy", "Azazel has a pussy and yet he is rather masculine (WIP)")
 		else:
 			addDisabledButton("Pussy", "You don't have good enough relationship with Azazel to ask about his genitalia")
+		if affection > 22:
+			addButton("Prison", "Ask how did he end up in prison?", "azazelprison")
+		else:
+			addDisabledButton("Prison", "You don't have good enough relationship with Azazel to ask about his past")
 		if(GM.pc.getInventory().hasItemID("CatnipPlant")):
 			pass
 		else:
 			pass
 		addButton("Back", "Do something else", "azazelmain")
 		
+	if state == "azazellife":
+		saynn("[say=pc]I were wondering, how your life looks like day-to-day? I see you here all the time, don't you work for credits somewhere?[/say]")
+		saynn("[say=azazel]We don't really work for credits. Master takes care of everything for us. Of course, we still have our needs so we go to toilet whenever we need to, however the three of us prefer to stay at Master's side. It's not a hard requirement though.[/say]")
+		saynn("[say=pc]Don't you get bored?[/say]")
+		saynn("[say=azazel]Sometimes? I mean, Master does his best to keep us occupied, but obviously sitting in here all day can get boring, every pet deals it in their own way. Personally I like finding little ways to pull pranks on inmates, they all unaware going through the halls while I'm trickling some water onto them from above, the look on their face is always funny to see, they have no idea![/say]")
+		saynn("[say=pc]How do you even do that from above?[/say]")
+		saynn("[say=azazel]I have my own ways.[/say]")
+		saynn("He strikes a very proud and impish pose.")
+		saynn("[say=azazel]Lamia somehow can be occupied by drawing at all time, I don't know how he does it. Okey, maybe that's not ALL times, but they are pretty dedicated. As to Hiisi, he watches. He loves observing, others, us, Master, things. He may be pretty silent type but deep down he cares about us all, I think that's why he watches.[/say]")
+		saynn("[say=pc]What do you mean by that?[/say]")
+		saynn("[say=azazel]Oh, nothing in particular. He just is pretty observant.[/say]")
+		addButton("Back", "Ask something else", "azazeltalk")
+
+
 	if(state == "azazelappearance"):
 		if(OPTIONS.isContentEnabled(ContentType.Watersports)):
 			saynn("When approaching there are two distinct smells coming from Azazel - his own pheromones advertising his fertility to everyone around, as well another strong smell of his master. Azazel has been marked, in more ways than one.")
 		else:
 			saynn("When approaching there is one distinct smell coming from Azazel - his own pheromones advertising his fertility to everyone around.")
-		saynn("You take a closer look at {azazel.name}. He is a very thin and fairly short feline, judging from him sitting he is around " + Util.cmToString(150) + " tall, with no visible muscles, likely not very strong. Overall his body is still mostly masculine, though here and there there are feminine features like his face or shoulders.\nHis fur is in majority dark grey, though his belly and face are of ligher shade of gray. A small set of horns protrudes from his head. On his backside there is a medium sized feline tail.\n\nOne significant detail is that he does not possess a penis, in its place there is a {azazel.pussyStretch} vagina, above which you can see a womb tattoo seemingly glowing a bit in shade of red.")  # TODO Makes no sense player can see that at this point, Azazel is clothed
-		saynn("On his lower back words ”PROPERTY OF ISSIX” branded onto the skin - a mark of his master.")
+		saynn("You take a closer look at {azazel.name}. He is a very thin and fairly short feline, judging from him sitting he is around " + Util.cmToString(150) + " tall, with no visible muscles, likely not very strong. Overall his body is still mostly masculine, though here and there there are feminine features like his face or shoulders.\nHis fur is in majority dark grey, though his face is of ligher shade of gray. A small set of horns protrudes from his head. On his backside there is a medium sized feline tail.")  # TODO Makes no sense player can see that at this point, Azazel is clothed
 		addButton("Back", "Do something else", "azazelmain")
 
 	if state == "azazelprison":
@@ -342,7 +375,7 @@ func _run():
 		saynn("[say=azazel]When I first arrived here I were so lost. Still very confused by this series of events, felt betrayed, hurt. Eventually I've met Master, they saw something in me and they guided me through my trauma. I were really happy to become his pet. And honestly? It's not so bad, I have food, shelter and Master who takes care of me. And my heats.[/say]")
 		saynn("He says the last one, showing you his tongue at you in a grin")
 		saynn("[say=azazel]So... Yeah... That's how I ended up here. Not a happy story, but I doubt anyone's is. Ironically, I think I'm better here, and I can still engage in sex without any stupid license.[/say]")
-		addButton("Back", "Do something else", "azazelmain")
+		addButton("Back", "Do something else", "azazeltalk")
 
 	if state == "azazelhobby":
 		saynn("[say=pc]What hobbies do you have Azazel?[/say]")
@@ -359,7 +392,7 @@ func _run():
 		saynn("[say=azazel]Maybe... I need to sleep on it. I think. Thanks.[/say]")
 		saynn("[say=pc]Of course, kitty.[/say]")
 		saynn("He smiles at you, the conversation has ended.")
-		addButton("Back", "End this conversation", "azazelmain")
+		addButton("Back", "End this conversation", "azazeltalk")
 		
 	if state == "azazelmaster":
 		saynn("[say=pc]So what do you think of your Master?[/say]")
@@ -368,17 +401,17 @@ func _run():
 		saynn("[say=azazel]Not at all! He is a very understanding Master. He cares about us and does his best to keep us happy. What he asks of us is very little, I know how it sounds... But I speak from the bottom of my heart when I say it! He is a good Master.[/say]")
 		saynn("[say=pc]Is that so? Hmm. How did you meet him?[/say]")
 		saynn("He thinks for a second")
-		saynn("[say=azazel]Well, I remember getting in here, being „processed” with the collar and all and basically pushed into new life. My first few days were spent trying to be quiet as a mouse *laughs*, everyone felt intimidating, and I've seen inmates getting harassed and used against their will. This seems to be the culture of this place, restraints are like free candy. There were one or two incidents I had with some bullies, I were assulted and used. One day Master Issix saw me hiding, he approached me and talked to me a bit, about why am I hiding, what am I doing in here and if someone is after me. From then I visited him daily, he... Grew on me. And one day he gave me a proposition to become his pet. At first I were hesitant, as anyone would be, but at the same time, he let himself be a very sweet person to me, and he never assulted me. So I accepted, and became his first sl- *he coughts* pet.[/say]")
+		saynn("[say=azazel]Well, I remember getting in here, being „processed” with the collar and all and basically pushed into new life. My first few days were spent trying to be quiet as a mouse *laughs*, everyone felt intimidating, and I've seen inmates getting harassed and used against their will. This seems to be the culture of this place, restraints are like free candy. There were one or two incidents I had with some bullies, I were assaulted and used. One day Master Issix saw me hiding, he approached me and talked to me a bit, about why am I hiding, what am I doing in here and if someone is after me. From then I visited him daily, he... Grew on me. And one day he gave me a proposition to become his pet. At first I were hesitant, as anyone would be, but at the same time, he let himself be a very sweet person to me, and he never assaulted me. So I accepted, and became his first sl- *he coughs* pet.[/say]")
 		saynn("He smiles at you.")
 		saynn("[say=azazel]I think he needed me as much as I needed him. So... Yeah. That's about it.[/say]")
-		addButton("Back", "End this conversation", "azazelmain")
+		addButton("Back", "End this conversation", "azazeltalk")
 
 	if state == "azazelbreeding":
 		saynn("[say=pc]Are you okey with your position as a breeder... Breeding bitch in the harem?[/say]")
 		saynn("[say=azazel]Of course! Truth is, I'm the only one who can bear children out of us three... So of course I have huge responsibility. Master says that I'd be a good mother, haha. Can't test that theory in here, but oh well, I don't know. I don't really know why does Master want us to keep breeding, maybe he has something from it? He can't keep them either. Maybe that's just what he likes. Anyways, I don't mind. At this point I'm pretty good at making him litter, and I think he is proud of me too.[/say]")
-		saynn("[say=oc]Doesn't it get tiring?[/say]")
+		saynn("[say=pc]Doesn't it get tiring?[/say]")
 		saynn("[say=azazel]Sometimes? I guess. I have those wants and needs when I'm pregnant, but Master always tries his best to keep me happy either way. And besides, if I'm not bred I tend to get really annoying, haha. Yeah...[/say]")
-		addButton("Back", "End this conversation", "azazelmain")
+		addButton("Back", "End this conversation", "azazeltalk")
 
 	if state == "lamiahelp":
 		playAnimation(StageScene.Duo, "kneel", {pc="lamia", npc="pc", npcAction="kneel", bodyState={naked=false, hard=false}})
@@ -470,20 +503,20 @@ func _run():
 
 	if state == "lamiatalk":
 		var lamia_affection = getModuleFlag("IssixModule", "Lamia_Times_Helped", 0)
-		addButton("Try drawing", "You can try and draw something with lamia", "lamiadraw")  # TODO
+		addDisabledButton("Try drawing", "You can try and draw something with Lamia (WIP)")  # TODO
 		addButton("Mute", "Ask if he's been mute since they were born")
 		if lamia_affection > 2:
-			addButton("Explicit", "You've noticed Lamia doesn't draw any explicit things, perhaps worth asking about it?", "lamiaexplicit")
+			addDisabledButton("Explicit", "You've noticed Lamia doesn't draw any explicit things, perhaps worth asking about it?")
 		if lamia_affection > 6:
-			addButton("Prison", "Ask Lamia how they ended up in the prison", "lamiaprison")
+			addDisabledButton("Prison", "Ask Lamia how they ended up in the prison")
 		else:
 			addDisabledButton("Prison", "You don't feel like there is enough connection between you two to ask him that")
 		if lamia_affection > 11:
-			addButton("Favorite", "Ask Lamia what is their favorite thing to draw", "lamiafavorite")
+			addDisabledButton("Favorite", "Ask Lamia what is their favorite thing to draw")
 		else:
 			addDisabledButton("Favorite", "You don't feel like there is enough connection between you two to ask him that")
 		if lamia_affection > 17:
-			addButton("Draw", "Ask Lamia to draw something for you", "lamiadrawforme")
+			addDisabledButton("Draw", "Ask Lamia to draw something for you")
 		else:
 			addDisabledButton("Draw", "You don't feel like there is enough connection between you two to ask him to draw for you something")
 		addButton("Back", "Do something else", "lamiamain")
@@ -614,6 +647,9 @@ func _react(_action: String, _args):
 		GM.pc.getInventory().removeXOfOrDestroy("CatnipPlant", 1)
 		GM.main.getCharacter("azazel").addLust(10)
 		GM.main.increaseModuleFlag("IssixModule", "Azazel_Affection_given")
+		GM.main.increaseModuleFlag("IssixModule", "Azazel_Catnip_given_today")
+		if GM.main.getModuleFlag("IssixModule", "Azazel_Catnip_given_today", 0) > 5:
+			GlobalRegistry.getCharacter("azazel").addEffect("CatnipOverdose")
 	
 	if _action == "hiisienergy":
 		markHiisiRewardAsAquired()

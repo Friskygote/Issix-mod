@@ -6,6 +6,11 @@ var empty_loots = [
 	"After putting your paw deep within the shelf you start feeling very unpleasant coldness coming from the tips of your fingers. Oof! You immediately pull out your paw.",
 	"The entire filling cabinet starts vibrating after opening this shelf. It does not bode well, you immediately close this shelf. The vibration stops. That was odd.",
 	"When opening the shelf you start hearing voice outside the closet, considering how well the doors are masking the sounds from the hallway they must be really close, perhaps they want to use the closet?\nIn panic you try to find some place to hide to no avail, there is not much space to begin with. You stand terrified until voice goes quiet. After sigh of relief you check the opened shelf, however there isn't anything in there other than various replacement parts to electronic devices.",
+	"Only a bunch of screws on the bottom of this shelf.",
+	"The shelf opens and you notice strands of fur flying around, apparently this one is entirely filled with brown fur? Odd...",
+	"Inside the shelf you find many neatly organized markers and office related items. Nothing of interest to you, though.",
+	"Old school door hinges can be found in this particular shelve.",
+	"Pulling this shelve causes a bit of noise, many metal processing units inside are all shuffling around.",
 	"You pull out a shelf and find a single piece of paper inside. It has only one sentence on it, in large font that fills entire page saying „OH, DID U GET THE BROOM CLOSET ENDING? THEB ROOM CLOSET ENDING WAS MY FAVRITE!1 XD”. The absolute lack of context and randomness of this message fill you with concern. Engineers must have a very strange sense of humor."
 ]
 var cabinet_random = RandomNumberGenerator.new()

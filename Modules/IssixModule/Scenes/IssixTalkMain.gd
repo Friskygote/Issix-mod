@@ -37,7 +37,7 @@ func _run():
 		addButton("Leave", "Be on your way", "endthescene")
 		
 	if(state == "appearance"):
-		saynn("Before you, on his ”throne” stands an intimidating figure - a demon-dragon hybrid. His piercing black eyes look distinct from any other inmate. His bright red fur uncommon for a dragon or even inmates, though his color pallette does fit a demon - his fur has three main colors, bright red, dark red and black.\n\nHe can certainly be called muscular, his arms and legs are on the beefier side, not extremely so, but one wouldn't want to pick a fight with him.\nEven though intimidating, his face... Shows kindness and calm.\n\nWhat makes him much different from everyone else is the... Harem? He holds a bundle of 3 leashes attached to his wrist, at the end of each is a creature laying or sitting on a blanket.")
+		saynn("Before you, on his ”throne” sits an intimidating figure - a demon-dragon hybrid. His piercing black eyes look distinct from any other inmate. His bright red fur uncommon for a dragon or even inmates, though his color pallette does fit a demon - his fur has three main colors, bright red, dark red and black.\n\nHe can certainly be called muscular, his arms and legs are on the beefier side, not extremely so, but one wouldn't want to pick a fight with him.\nEven though intimidating, his face... Shows kindness and calm.\n\nWhat makes him much different from everyone else is the... Harem? He holds a bundle of 3 leashes attached to his wrist, at the end of each is a creature laying or sitting on a blanket.")
 		addButton("Back", "Go back", "")
 		
 	if(state == "talk"):
@@ -169,10 +169,15 @@ func _run():
 		saynn("[say=issix]Oh? You think I'm a brute taking strays from the corridors of this prison against their will and making them my own?[/say]")
 		saynn("He sips the drink from his glass. As he tries to read your very soul through your eyes.")
 		if GM.main.getPCSlaveAmount() > 0:  # Judgement wooho
-			saynn("[say=issix]Perhaps that's something you'd do. Perhaps you think that taking someone as your own is just a matter of violence and power. Perhaps you think that someone's will is yours to take on your command just like that, just because they walk this prison.[/say]")
+			saynn("[say=issix]Perhaps that's something you'd do. Perhaps you think that taking someone as your own is just a matter of violence and power. Perhaps you think that someone's will is yours to take, on your command, just like that, just because they walk this prison.[/say]")
 			saynn("He recoils, you see a sliver of regret in his eyes.")
 			saynn("[say=issix]No, fuck that. That's amateur hour. This is exactly what just another brute in this prison would think.[/say]")
-			saynn("[say=ussux]There is more to making someone a pet than simple violence. I don't [/say]")
+			saynn("[say=issix]There is more to making someone a pet than brute force. There are other slavers in here who only care about shiny income and nothing else, they think a life is its worth in credits and that's all they see. They don't see the person behind eyes, they see money.[/say]")
+			saynn("[say=pc]So what do you see in your pets?[/say]")
+			saynn("[say=issix]Living, conscious beings, capable of love and hate, students yearning to learn about how life works, to find their destiny.[/say]")
+			saynn("[say=pc]Sounds like load of bollocks.[/say]")
+			saynn("[say=issix]To you, sure. Wouldn't expect you to understand anyways.[/say]")
+			addButton("Back", "He gestures he is done talking on this topic", "talk")
 		elif getModuleFlag("RahiModule", "rahiMile7Enslaved") == true:
 			saynn("[say=issix]Perhaps not. Perhaps I misjudged you. Though, it is strange of you to ask me this question this way, considering you yourself look like someone who would enslave someone else with their own permission, giving themselves to you willingly. Am I mistaken?[/say]")
 			saynn("His grin is very telling, he knows more than you tell him")
@@ -282,8 +287,8 @@ func _run():
 		playAnimation(StageScene.Duo, "stand", {npc="issix", npcAction="sit"})
 		saynn("He smiles briefly.")
 		saynn("[say=issix]Very well.[/say]")
-		saynn("He puts his paws on sides of your head and starts scratching you behind your ears. Immediately you feel... Comfortable. Loved. Protected. You closed your eyes in bliss. And then he... Stops, the feeling of his paws is filled with void. You feel empty, unfulfilled. You open your eyes and meet his eyes staring at you again from the above. He looks at you expectendly. You aren't sure what to do, you don't want to fail your Master, but... His black eyes speak to you, yes. They want you to open your mouth. You don't even realize when your mouth opens. You didn't do that by yourself, did you?")
-		saynn("He takes your tongue in between his paw fingers gently, pulls it out a little. He opens his mouth and he spits. Spit lands right on your tongue, with incredible precision right in the middle. He does it again, using the fact your mouth is still open. It lands deeper inside your mount. He pulls his paw fingers from your tongue and uses his two fingers to pressure your chin from below, giving you a signal to close your mouth.")
+		saynn("He puts his paws on sides of your head and starts scratching you behind your ears. Immediately you feel... Comfortable. Loved. Protected. You closed your eyes in bliss. And then he... Stops, the feeling of his paws is filled with void. You feel empty, unfulfilled. You open your eyes and meet his eyes staring at you again from the above. He looks at you expectantly. You aren't sure what to do, you don't want to fail your Master, but... His black eyes speak to you, yes. They want you to open your mouth. You don't even realize when your mouth opens. You didn't do that by yourself, did you?")
+		saynn("He takes your tongue in between his paw fingers gently, pulls it out a little. He opens his mouth and he spits. Spit lands right on your tongue, with incredible precision right in the middle. He does it again, using the fact your mouth is still open. It lands deeper inside your mouth. He pulls his paw fingers from your tongue and uses his two fingers to pressure your chin from below, giving you a signal to close your mouth.")
 		saynn("You comply. There is nothing other than his eyes staring deep at you, his will is your will. His spit doesn't feel particularly different from yours, perhaps you can pick up some flavor or two, but it's more dignified flavor than one of cum that you are so used to. You keep the spit inside your mouth for a bit, tasting it, feeling it, connecting with its owner. And you swallow it, with a visible gulp.")
 		saynn("Issix smiles. He ruffles your " + ("hair" if GM.pc.hasHair() else "ears") + " with his paws.")
 		saynn("[say=issix]Good pet.\nNow, to be MY pet you'll have to prove yourself further. Besides the fact I want my pets to be all famous in this little heaven of ours, I want to make sure they follow my orders. For you my dear, I have a few little tasks, nothing you can't do, I'm sure, but it will be the proof I need you can become MY pet.[/say]")

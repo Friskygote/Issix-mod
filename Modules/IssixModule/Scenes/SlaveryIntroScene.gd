@@ -7,6 +7,7 @@ func _init():
 func _run():
 	if(state == ""):  # TODO Involve Lamia, Azazel and Hiisi
 		playAnimation(StageScene.Duo, "kneel", {npc="issix", npcAction="stand"})
+		addCharacter("issix")
 		saynn("[say=pc]Master Issix, can we talk about me becoming your pet?[/say]")
 		saynn("He grins as you say that. His black void eyes once again stare deep down into you, they drill you to the very core. You kneel before your new Master, knowing that mere minutes separate you from losing whatever freedom you have left in this place.")
 		saynn("Issix stands, walks around you, his eyes studying again every part of your body. He salivates, you can feel it. You are his morsel, pet to be.")
@@ -121,7 +122,9 @@ func _run():
 
 	if state == "normalroute2":
 		playAnimation(StageScene.SexMissionary, "sex", {pc="issix", npc="pc", bodyState={naked=true, hard=true}, npcBodyState={naked=true, hard=true}})
-		saynn("His paw gently ruffles the fur on your chest. All of this beautiful body, mine now. He is delighted by your body. His paws going on the sides of your {pc.thick} body. After he is content, he lays on you, pinning you to the blanket below. His warm reeking with manly musk - alpha musk grinding into your belly. His face so close to yours.")  # TODO Fur?
+		saynn("His paw gently ruffles the fur on your chest.")
+		saynn("[say=issix]All of this beautiful body, mine now.[/say]")
+		saynn("He is delighted by your body. His paws going on the sides of your {pc.thick} body. After he is content, he lays on you, pinning you to the blanket below. His warm reeking with manly musk - alpha musk grinding into your belly. His face so close to yours.")  # TODO Fur?
 		if GM.pc.isInHeat():
 			saynn("[say=issix]I feel your body yearns for me. You're a bitch in heat. You want me to take care of that little problem, do you? You want me to breed you. Is this why you came to me today? Do you need to be bred so much that you are willing to become my pet? No matter. What done is done. You'll be crying for my children in no time.[/say]")
 		else:
@@ -136,7 +139,7 @@ func _run():
 			saynn("Issix raises one of his paws with a leash in the air, pulling your head higher while he gives you another deep kiss. At the same time, his second paw explores your backdoor. He puts one finger in, using your anal juices, stretching it for his grand entrance, spiraling you further into orgasmic joy.")
 
 		saynn("[say=issix]Mmm. A new pet to break in for the first time.[/say]")
-		saynn("He teases your hole with his relatively large penis, rubbing it. His bod making contact with your fur in every place, your mind losing itself in orgasmic bliss. He whispers sweet promises of what he will do to you in your ear.")
+		saynn("He teases your hole with his relatively large penis, rubbing it. His body making contact with your fur in every place, your mind losing itself in orgasmic bliss. He whispers sweet promises of what he will do to you in your ear.")
 		saynn("[say=issix]I hope you are ready, I'm not waiting for you.[/say]")
 		saynn("Deep inside you already want him to claim you, his prolonged teasing and preparations, while giving you immense amount of pleasure, deny you the grand finale, the climax of it all. You beg for him to enter you.")
 		saynn("[say=issix]Good pet, you learned how to beg so quickly. This deserves a little reward.[/say]")
@@ -174,7 +177,7 @@ func _run():
 		playAnimation(StageScene.Duo, "kneel", {npc="issix", npcAction="stand", bodyState={leashedBy="issix"}})
 		saynn("He stands up, still holding his end of leash connected to a collar on your neck. He puts his foot on your belly to further ingrain in your mind that he has control over you now.")
 		saynn("[say=issix]That was good. I expect of you to allow me to breed you just like this when I feel like it. Understood?[/say]")
-		saynn("[say=pc]Yes..,[/say]")
+		saynn("[say=pc]Yes...[/say]")
 		saynn("[say=issix]Yes?[/say]")
 		saynn("[say=pc]Yes Master Issix.[/say]")
 		saynn("[say=issix]Good "+getPlayerPetName()+".[/say]")
@@ -183,7 +186,7 @@ func _run():
 			saynn("[say=issix]For today there is one more thing for me to do. Azazel, can you tell my new pet what it is?[/say]")
 			saynn("[say=azazel]Master wants... To leave his mark on you, the other kind of mark.[/say]")
 			saynn("Issix grins as he slightly tugs on your leash.")
-			saynn("[say=issix]Very convenient timing, because I were just about to go to toilet before you showed up. Let me just...[/say]")
+			saynn("[say=issix]Very convenient timing, because I were just about to go to the toilet before you showed up. Let me just...[/say]")
 			saynn("He takes out the blanket from under your back in a swift manner. A cold, hard floor makes contact with your floor. Those blankets have a very important function after all. Your Master stands above you, his feet on both sides of your body, his penis directed at your head, he is about to pee.")
 			addButton("Open mouth", "Open your mouth and close your eyes in anticipation of the golden shower", "pissnormalmouth")
 			addButton("Stay closed", "Don't open your mouth in anticipation of the golden shower", "pissnormal")
@@ -193,7 +196,10 @@ func _run():
 
 	if state == "pissnormalmouth":
 		saynn("You open your mouth, close your eyes, showing you don't mind your Master's nectar in your mouth. You want to taste it, to feel it at deeper level. To be marked in as many ways as you can. Seeing this Issix chuckles and you feel impact of his fluid assulting your face. It falls on various parts of your face, sometimes inside, mostly around. The sweet and bitter taste hits you like a train, the aroma of your master in your nose becomes truthfully pungent. You gulp down his piss.")
-		saynn("[say=issix]Didn't think you have that in you, a natural piss slut. What a treat.[/say]")
+		if getModuleFlag("IssixModule", "QuestionnaireQ5", null) == "watersports":
+			saynn("[say=issix]I can see you weren't lying and you have some experience in your „favorite” activity. Wonder how many liters of piss have you consumed so far.[/say]")
+		else:
+			saynn("[say=issix]Didn't think you have that in you, a natural piss slut. What a treat.[/say]")
 		saynn("His stream moves towards your lower part of the body, for a brief moment hitting your neck but then staying on chest, arms, your not so private anymore parts as well as your legs. His objective very clear - to cover as much of your body as possible, to mark you - no, to drench you in his smell. As his stream from his hose drains and he stops pissing, while you feel there are still one or two dry spots on your body, the rest is wet with your Master's piss. You reek of your Master stronger than any other of his pets. Is that introductory treatment? Why are you so special? You ask yourself, your questions answered shortly after.")
 		saynn("[say=issix]Don't be surprised. I like to mark my new pets GOOD, I want you to get used to my smell. And this is the best way I can think of. I expect you to come back tomorrow reeking of day old piss, my piss, do you understand? I don't want you to shower until we meet again.[/say]")
 		saynn("This is your order, coming from your Master. Do not shower, take in his smell and sleep with it.")
@@ -266,9 +272,11 @@ func _react(_action: String, _args):
 		if(itemRef == null):
 			return
 		itemRef.useInSex(GM.pc)
+		GM.pc.addLust(40)
 
 	if _action == "normalroute3":
 		GM.pc.addStamina(-40)
+		GM.pc.addLust(40)
 
 	if _action == "normalroute4":
 		GM.pc.addStamina(-40)  # A little bit of difference in how it usually works in BDCC, Issix is a demon, he will get his fill in many ways, including life force vampirism during sex (kinda like incubus though he isn't one)
@@ -283,11 +291,11 @@ func _react(_action: String, _args):
 
 	if _action == "pissnormalmouth":
 		GM.pc.cummedInMouthBy("issix", FluidSource.Pissing, 0.7)
-		GM.pc.cummedOnBy("issix", FluidSource.Pissing, 1.5)
+		GM.pc.cummedOnBy("issix", FluidSource.Pissing, 2.5)
 		#GM.pc.coverBodyWithFluid()
 		
 	if _action == "pissnormal":
-		GM.pc.cummedOnBy("issix", FluidSource.Pissing, 1.5)
+		GM.pc.cummedOnBy("issix", FluidSource.Pissing, 2.5)
 
 	if(_action == "endthescene"):
 		endScene()

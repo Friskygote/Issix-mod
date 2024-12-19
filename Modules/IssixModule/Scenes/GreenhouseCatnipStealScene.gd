@@ -14,14 +14,14 @@ func _run():
 
 			saynn("What do you wanna do?")
 
-			addButton("Take catnip", "Sneak in, grab one and get out", "catnip")
+			addButton("Take catnip", "Sneak in, grab one and get out", "catnip", [GlobalRegistry.createItem("CatnipPlant")])
 			addButton("Don't steal", "Too dangerous", "endthescene")
 			
 		else:
 			saynn("While staring at plethora of different plants, you recognize one in particular - white flowers and specific smell. Catnip!")
 			saynn("You find and cut one of many catnip at the bottom of the stem. Time to leave.")
 
-			addButton("Continue", "Try to escape without being seen", "caughtcheck")
+			addButton("Continue", "Try to escape without being seen", "caughtcheck", [GlobalRegistry.createItem("CatnipPlant")])
 
 	if state == "catnip":
 		saynn("While staring at plethora of different plants, you recognize one in particular - white flowers and specific smell. Catnip!")
@@ -35,11 +35,12 @@ func _run():
 
 
 func _react(_action: String, _args):
+	if _args:
+		GM.pc.getInventory().addItem(_args[0])
+		addMessage("You stole catnip plant.")
+
 	if(_action == "catnip"):
 		GM.main.setModuleFlag("IssixModule", "Azazel_Catnip_noticed", true)
-		
-		GM.pc.getInventory().addItem(GlobalRegistry.createItem("CatnipPlant"))
-		addMessage("You stole catnip plant.")
 	
 	if(_action == "caughtcheck"):
 		GM.main.setModuleFlag("IssixModule", "Azazel_Catnip_taken_today", true)

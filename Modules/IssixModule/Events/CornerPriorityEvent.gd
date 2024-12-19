@@ -24,7 +24,7 @@ func checkRequirements(requirements: Dictionary):
 
 func shouldBeShownForcedEvent():
 	var scenes_seen = getModuleFlag("IssixModule", "Misc_Slavery_Info", {"scenes_seen": []})
-	var current_progression_points = GM.main.getModuleFlag("IssixModule", "Progression_Points", 1)
+	var current_progression_points = GM.main.getModuleFlag("IssixModule", "Progression_Points", 0)
 	if GM.main.getDays() >= GM.main.getModuleFlag("IssixModule", "Progression_Day_Next", 0) and GM.main.getModuleFlag("IssixModule", "Unwelcome_At_Corner", false) != true:
 		registered_special_scenes.sort_custom(CustomSorter, "sort_by_progressionpoints")
 		for scene in registered_special_scenes:

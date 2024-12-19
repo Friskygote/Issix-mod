@@ -1,6 +1,7 @@
 extends SceneBase
 
 var answer = null
+var did_yoga = false
 var strapon_selected = null
 var rock_paper_scissors = {1: 3, 2: 1, 3: 2}
 var rock_paper_scissors_translation = {1: "Rock", 2: "Paper", 3: "Scissors"}
@@ -26,13 +27,13 @@ func _run():
 	if(state == "walkstart"):
 		playAnimation(StageScene.Duo, "kneel", {npc="issix", npcAction="stand", bodyState={leashedBy="issix"}})
 		GM.pc.getInventory().forceEquipStoreOtherUnlessRestraint(GlobalRegistry.createItem("basketmuzzle"))
-		saynn("[say=issix]Wondeful, here is how this is going to go. I'm going on a little walk with my three pets in here, we are going to certain, very quiet place. I'm going to clip this leash to your collar and you are going to follow like a good pet.[/say]")
+		saynn("[say=issix]Wonderful, here is how this is going to go. I'm going on a little walk with my three pets in here, we are going to certain, very quiet place. I'm going to clip this leash to your collar and you are going to follow like a good pet.[/say]")
 		saynn("Not the first time you've been leashed, but this time it would be special, you'll be led by Master Issix along with his other pets.")
 		saynn("[say=issix]However, I want you to remember - this is a test. Depending on how you perform, you may or may not become my pet. But even if not, I hope it still proves to be a fun experience for you.")
 		saynn("[say=issix]Now come closer and show me your pretty neck.[/say]")
 		saynn("You come a little closer, your head is basically in Issix's crotch, until you look at his face. He smiles, puts his fingers under your chin and lifts your head further, holding the end of a leash up to your collar, finally clicking it in place.")
 		saynn("[say=issix]You look almost perfect, I think I'm missing one more thing, just this time.[/say]")
-		saynn("He pulls out basket muzzle from behind, you allow him to cover your face with it. His paw reaches behind and fastens the backet muzzle onto your head until it sits securely in place.")
+		saynn("He pulls out basket muzzle from behind, you allow him to cover your face with it. His paw reaches behind and fastens the basket muzzle onto your head until it sits securely in place.")
 		saynn("[say=issix]Perfect, how do you feel?[/say]")
 		addButton("Good", "Say you feel good", "walkies", [true])
 		addButton("Uncomfortable", "Say you feel uncomfortable", "walkies", [false])
@@ -60,7 +61,7 @@ func _run():
 		playAnimation(StageScene.Duo, "stand", {pc="nova", npc="issix", npcAction="stand"})
 		saynn("[say=nova]Got yourself a new pet Issix?[/say]")
 		saynn("[say=issix]Not exactly, let's just say {pc.he} is on a... Probation.[/say]")
-		saynn("Issix chuckles, clearly happy wiith his joke.")
+		saynn("Issix chuckles, clearly happy with his joke.")
 		if getModuleFlag("NovaModule", "Nova_GotHumiliatedByPC", false):
 			saynn("[say=nova]Watch out for this one, this one is feisty one.[/say]")
 			saynn("[say=issix]Oh, speaking from experience?[/say]")
@@ -88,8 +89,8 @@ func _run():
 		addCharacter("azazel")
 		addCharacter("hiisi")
 		addCharacter("lamia")
-		saynn("Eventually, you reach your destination, a quiet place near a small lake. On the east high above you you can see greenhouses. A very faint sound of water hitting water can be heard coming from the waterfall. \n\nIssix places a large blanket near the lake and invites his pets (including you) on it. Surprisingly to you he comes to each one of you, unclips the leashes, puts them in side pocket of his bag which he leaves near the blanket and comes closer to the lake, wetting his feet. All done without a word, in relative silence only broken by humming of the station along with sound of waterfall in proximity. Three pets around you lose their top clothes, it would be a bit difficult with your basket muzzle.")
-		saynn("You look at other pets, trying to understand what you should do. \"Pasture\" is the word Issix used to describe this place, is it not? It seems like Azazel lays on his back, looking up in the skylight, at countless stars in the distance. Hiisi seemingly lost in thought watching his Master relaxing just up close, with his feet in the lake while Lamia, taking his stacks of paper from Master's bag keeeps practicing drawing.")
+		saynn("Eventually, you reach your destination, a quiet place near a small lake. On the east high above you you can see greenhouses. A very faint sound of water hitting water can be heard coming from the waterfall. \n\nIssix places a large blanket near the lake and invites his pets (including you) on it. Surprisingly, he comes to each one of you, unclips the leashes, puts them in side pocket of his bag which he leaves near the blanket and comes closer to the lake, wetting his feet. All done without a word, in relative silence only broken by humming of the station along with sound of waterfall in proximity. Three pets around you lose their top clothes, it would be a bit difficult with your basket muzzle.")
+		saynn("You look at other pets, trying to understand what you should do. \"Pasture\" is the word Issix used to describe this place, is it not? It seems like Azazel lays on his back, looking up in the skylight, at countless stars in the distance. Hiisi seemingly lost in thought watching his Master relaxing just up close, with his feet in the lake while Lamia, taking his stacks of paper from Master's bag keeps practicing drawing.")
 		addButton("Azazel", "Talk to Azazel", "azazel")
 		addButton("Hiisi", "Talk to Hiisi", "hiisi")
 		addButton("Lamia", "Talk to Lamia", "lamia")
@@ -98,7 +99,7 @@ func _run():
 	if state == "walkies4":
 		playAnimation(StageScene.Solo, "kneel")
 		#saynn("Eventually, you reach your destination, a quiet place near a small lake. On the east high above you you can see greenhouses. A very fait sounds of water hitting water can be heard coming from the waterfall. Issix places a large blanket near the lake and invites his pets (including you) on it. Surprisingly he comes to each one of you, unclips the leashes, puts them in side pocket of his bag which he leaves near the blanket and comes closer to the lake, wetting his feet. All done without a word, in relative silence only broken by humming of the station along with sound of waterfall in proximity.")
-		saynn("You look at other pets, trying to understand what you should do. \"Pasture\" is the word Issix used to describe this place, is it not? It seems like Azazel lays on their back, looking up in the skylight, at countless stars in the distance. Hiisi seemingly lost in thought watching his Master relaxing just up close, with his feet in the lake while Lamia, taking his stacks of paper from Master's bag keeeps practicing drawing.")
+		saynn("You look at other pets, trying to understand what you should do. \"Pasture\" is the word Issix used to describe this place, is it not? It seems like Azazel lays on their back, looking up in the skylight, at countless stars in the distance. Hiisi seemingly lost in thought watching his Master relaxing just up close, with his feet in the lake while Lamia, taking his stacks of paper from Master's bag keeps practicing drawing.")
 		addButton("Azazel", "Talk to Azazel", "azazel")
 		addButton("Hiisi", "Talk to Hiisi", "hiisi")
 		addButton("Lamia", "Talk to Lamia", "lamia")
@@ -106,8 +107,11 @@ func _run():
 		
 	if state == "azazel":
 		processTime(1*60)
-		playAnimation(StageScene.Duo, "kneel", {npc="azazel", npcAction="kneel"})   # TODO We need laying down!
+		playAnimation(StageScene.Duo, "kneel", {npc="azazel", npcAction="kneel", npcBodyState={naked=true, hard=false}})   # TODO We need laying down!
 		saynn("Azazel looks at the stars, his face content.")
+		if getModuleFlag("IssixModule", "Saw_Azazel_Naked", false) == false:
+			saynn("You realize it's the first time you see Azazel naked. Which means that his {azazel.pussyStretch} vagina is now fully visible to you. Above it you can see a womb tattoo seemingly glowing a bit in shade of red as well as multiple of nipples on his chest.")
+			saynn("On his lower back words ”PROPERTY OF ISSIX” branded onto the skin - a mark of his master.")
 		addButton("What now?", "Ask what the group usually does coming here", "azazelwhathere")
 		if getModuleFlag("IssixModule", "Azazel_Sky_Response") == null:
 			addButton("Stars", "Ask Azazel what does he see in the sky", "azazelsky")
@@ -121,9 +125,9 @@ func _run():
 		saynn("[say=pc]What do you see up there?[/say]")
 		saynn("[say=azazel]Possibilities. Stars, around which there are planets. Trillions of different creatures living across the galaxies. All with their own memories, lives, worries, cherished family members, friends, connections, stories to tell... Meow.[/say]")
 		saynn("You lay beside Azazel, looking at stars above, he continues.")
-		saynn("[say=azazel]We live for a fraction of time in the general timeline, we have so little time to tell our own stories before they are gone, and then there are also people who can shorten our lifespan because of simple hatered or economic reasons. How many stories are untold? How many people forgotten? Why do we even matter in grand scheme of things all of this considered?[/say]")
+		saynn("[say=azazel]We live for a fraction of time in the general timeline, we have so little time to tell our own stories before they are gone, and then there are also people who can shorten our lifespan because of simple hatred or economic reasons. How many stories are untold? How many people forgotten? Why do we even matter in grand scheme of things all of this considered?[/say]")
 		saynn("You prepare to respond, but before you can start speaking he continues")
-		saynn("[say=azazel]I like to imagine, I really like to imagine, that somewhere out there there is a planet with creatures who don't have existencial worries, who's lives are filled with pleasures, where they can be who they are without being judged, humiliated or killed. I like to think that they pass down stories through generations, maybe write them down and each new generation has access to them, drawing wisdom and not repeating mistakes of the past. They don't have to worry about AlphaCorp, Syndicate and whatever else is out there, not about groups hunting them down for who they are. They live in a moment, they lie on the blanket and look above, at the stars, holding paw of their partner, imagining the worlds full of happy people like them out there.[/say]")
+		saynn("[say=azazel]I like to imagine, I really like to imagine, that somewhere out there there is a planet with creatures who don't have existential worries, who's lives are filled with pleasures, where they can be who they are without being judged, humiliated or killed. I like to think that they pass down stories through generations, maybe write them down and each new generation has access to them, drawing wisdom and not repeating mistakes of the past. They don't have to worry about AlphaCorp, Syndicate and whatever else is out there, not about groups hunting them down for who they are. They live in a moment, they lie on the blanket and look above, at the stars, holding paw of their partner, imagining the worlds full of happy people like them out there.[/say]")
 		saynn("You listen to Azazel's monologue in curiosity, deciding not to interrupt or add anything, you just lie beside him, thinking along him of such a planet full of happy creatures. After a while, he speaks again.")
 		saynn("[say=azazel]Do you think such a planet exists?[/say]")
 		addButton("Hopeful", "You do think such a planet exists", "azazelskyresponse", [true])
@@ -158,11 +162,11 @@ func _run():
 		addButton("Back", "Your job is done here", "walkies4")
 		
 	if state == "hiisi":
-		playAnimation(StageScene.Duo, "kneel", {npc="hiisi", npcAction="kneel"})
+		playAnimation(StageScene.Duo, "kneel", {npc="hiisi", npcAction="kneel", npcBodyState={naked=true, hard=false}})
 		saynn("Hiisi sits with his hands hugging legs, staring at his Master, and a lake in silence.")
 		addButton("Master", "Ask why is he staring at his Master", "hiisimaster")
 		if getModuleFlag("IssixModule", "Hissi_RPS_data") == null:
-			addButton("Distraction", "Hiisi seems nervious, maybe he'd be up for some temporary distraction?", "hiisirpc")
+			addButton("Distraction", "Hiisi seems nervous, maybe he'd be up for some temporary distraction?", "hiisirpc")
 		else:
 			addDisabledButton("Distraction", "You've distracted Hiisi enough already")
 		addButton("Back", "End the conversation", "walkies4")
@@ -170,7 +174,7 @@ func _run():
 	if state == "hiisimaster":
 		processTime(5*60)
 		saynn("[say=pc]Is there something wrong with Master?[/say]")
-		saynn("[say=pc]Oh, {pc.name}? I don't know.[/say]")
+		saynn("[say=hiisi]Oh, {pc.name}? I don't know.[/say]")
 		saynn("He says without looking at you, continuing to look at his Master")
 		saynn("[say=hiisi]Usually when Master is down he is irritated and sometimes even aggressive. He isn't this time, he just feels off. I asked him about this before but he hasn't given me an answer.[/say]")
 		saynn("[say=pc]Do you have any theories?[/say]")
@@ -251,7 +255,7 @@ func _run():
 				addDisabledButton("Sub Hiisi", "Say you'd like Hiisi to take charge")  # TODO, "hiisidomsex"
 			2:
 				saynn("[say=hiisi]Let's do it![/say]")
-				saynn("He exlaims, excited")
+				saynn("He exclaims, excited")
 				addButton("Hug", "Hug the doggo", "hiisihug")
 			3:
 				saynn("[say=hiisi]Please ask me once when we are back in our corner, I should have one energy drink by then[/say]")
@@ -311,7 +315,7 @@ func _run():
 		playAnimation(StageScene.SexAllFours, "sex", {pc="pc", npc="hiisi", bodyState={naked=true, hard=true}, npcBodyState={naked=true, hard=true}})
 		saynn("[say=pc]Heere we go, ahh.[/say]")
 		saynn("[say=hiisi]Mmmphhh.[/say]")
-		saynn("Hiisi lets another yelp as you push your {pc.strapon} into Hiisi's backdoor. "+("Your stapon" if strapon_selected else "Your penis")+" slid with little issues, and the slickness of the hole increased as you continued to ram Hiisi's backside. It was clear that Hiisi didn't want to make too much noise, which has made his pleasure moans even more cute.")
+		saynn("Hiisi lets another yelp as you push your {pc.strapon} into Hiisi's backdoor. "+("Your strapon" if strapon_selected else "Your penis")+" slid with little issues, and the slickness of the hole increased as you continued to ram Hiisi's backside. It was clear that Hiisi didn't want to make too much noise, which has made his pleasure moans even more cute.")
 		saynn("[say=pc]How are you doing cutie? Should I go faster? Slower?[/say]")
 		saynn("[say=hiisi]Mhhhmm. You are fine.[/say]")
 		saynn("Barely comprehensible speech of canine could be heard coming from his muzzle on the other side, pleasure melting away ability to speak well. You slightly quicken the pace being close to orgasm.")
@@ -327,11 +331,11 @@ func _run():
 
 	if state == "hiisisubanal4":
 		playAnimation(StageScene.SexAllFours, "teaseflop", {pc="pc", npc="hiisi", pcCum=true, npcCum=true, bodyState={naked=true, hard=true}, npcBodyState={naked=true, hard=true}})  # TODO
-		saynn("Eventually you feel like you are really close to orgasm and pull out of Hiisi's hole, painting it white just half a second after your tip leaves. Similarly, Hiisi leaves plenty of his own jizz on the blanket below. You both moan in ecstasy drawing looks from pets around and Master Issix. Those aren't looks of judgement, but rather just curiosity.")
+		saynn("Eventually you feel like you are really close to orgasm and pull out of Hiisi's hole, painting it white just half a second after your tip leaves. Similarly, Hiisi leaves plenty of his own jizz on the blanket below. You both moan in ecstasy drawing looks from pets around and Master Issix. Those aren't looks of judgment, but rather just curiosity.")
 		saynn("[say=hiisi]T-thanks. Was okey.[/say]")
 		saynn("Very restrained words of thanks from Hiisi. But you still take them.")
 		saynn("[say=pc]Same. Was fun![/say]")
-		saynn("After a little required cleanup, Hiisi trying to clean up cumstains both from the blanket as well as excessive cum from his ass, you can consider your session truthfully over.")
+		saynn("After a little required cleanup, Hiisi trying to clean up cum stains both from the blanket as well as excessive cum from his ass, you can consider your session truthfully over.")
 		addButton("Finish", "Your little session with Hiisi is over now, time to go back to other stuff", "hiisi")
 
 	if state == "hiisidomsex":
@@ -344,7 +348,7 @@ func _run():
 		saynn("He seems somewhat relieved he has won. With a smile on his face he says")
 		saynn("[say=hiisi]So, regarding my reward. Could you perhaps get one of the Hypnovisors and come to the corner tomorrow? I'd like to test something.[/say]")
 		saynn("[say=pc]Uhhh, hypnovisors?[/say]")
-		saynn("[say=hiisi]Yeah, I've seen them around. They seem to be extremaly rare in here, but at least one inmate I saw had one. I'm just curious...[/say]")
+		saynn("[say=hiisi]Yeah, I've seen them around. They seem to be extremely rare in here, but at least one inmate I saw had one. I'm just curious...[/say]")
 		saynn("[say=pc]I mean, sure, but are you sure about it? They can make you very vulnerable for a few hours.[/say]")
 		saynn("[say=hiisi]Well.. I was hoping to mess around with them for a second and use them on you actually...[/say]")
 		saynn("[say=pc]On me? I'm really not sure about that.[/say]")
@@ -355,17 +359,20 @@ func _run():
 		addButton("Back", "You agreed to Hiisi's Hypnovisor session, the conversation ended here", "hiisi")
 		
 	if state == "lamia":
-		playAnimation(StageScene.Duo, "kneel", {npc="lamia", npcAction="kneel"})  # TODO We need laying down!
+		playAnimation(StageScene.Duo, "kneel", {npc="lamia", npcAction="kneel", npcBodyState={naked=true, hard=false}})  # TODO We need laying down!
 		saynn("Lamia lays on his belly, holds one of the colorful pencils from his drawing kit and draws. Next to him a stack of empty paper sheets as well as a visibly smaller but still impressive stack of filled out papers")
 		if getModuleFlag("IssixModule", "Lamia_Is_Hungry") == null:
 			addButton("Drawings", "Look at the drawings", "lamiadrawings")
 		else:
 			addDisabledButton("Drawings", "You've already asked about the drawings")
-		addButton("Do something", "Perhaps you two could do something else?", "lamiaexercise")
+		if did_yoga == false:
+			addButton("Do something", "Perhaps you two could do something else?", "lamiaexercise")
+		else:
+			addDisabledButton("Do something", "You've done some exercises with Lamia already")
 		addButton("Back", "End the conversation", "walkies4")
 		
 	if state == "lamiaexercise":
-		playAnimation(StageScene.Yoga, "warrior", {pc="lamia", bodyState={naked=true, hard=false}})
+		playAnimation(StageScene.Yoga, "warrior", {pc="lamia", bodyState={naked=true, hard=false}, npcBodyState={naked=true, hard=false}})
 		saynn("[say=pc]Would you like to do something? Just to pass the time.[/say]")
 		saynn("Lamia thinks for a second, he comes to some kind of conclusion, judging from the way they've stood up and invited you with their paw to do the same, which you promptly do.")
 
@@ -381,7 +388,7 @@ func _run():
 		addButton("Continue", "Continue exercising with Lamia", "lamiaexercise2")
 
 	if state == "lamiaexercise2":
-		playAnimation(StageScene.Yoga, "bridge", {pc="lamia", bodyState={naked=true, hard=false}})
+		playAnimation(StageScene.Yoga, "bridge", {pc="lamia", bodyState={naked=true, hard=false}, npcBodyState={naked=true, hard=false}})
 
 		saynn("[say=pc]Okey, what's next?[/say]")
 		saynn("Lamia flops on the blanket, and by flops it means they just freefalled that one as if it was nothing, they protected their head, though it still looked painful. Next they raised their torso along with their butt supported by their legs pushing the butt up and down, up and down. Hard not to stare at Lamia's very own... Equipment. But with the exercise shown, you quickly follow not to look like a pervert.")
@@ -528,7 +535,7 @@ func _run():
 		saynn("[say=issix]A bag of „marshmallows” huh? Where did you get it from? Give it to me.[/say]")
 		saynn("You explain it fell of the pocket of one of the jogging inmates. He opens the bag and takes a sniff.")
 		saynn("[say=issix]Hmm. That's not an ordinary bag of marshmallows, I've seen things such as those before in this prison. They are a little „extra” you'd say. Pretty sure I know who your jogging inmate was.[/say]")
-		saynn("He laugs, taking one of the „marshmallows” out of the bag before putting it into his mouth.")
+		saynn("He laughs, taking one of the „marshmallows” out of the bag before putting it into his mouth.")
 		saynn("[say=issix]Yeah, it's a fun one. Feel free to share them with other pets, they aren't bad, just a little packed, who knows, maybe it will brighten the mood.[/say]")
 		saynn("He gives you back the opened bag, before turning around and continuing his feet wetting activity. You come back to the blanket.")
 		saynn("[say=pc]Master Issix said those are fine, they aren't regular marshmallows as they seem to be with something in them, but they are fine. Who wants one?[/say]")
@@ -635,7 +642,17 @@ func _run():
 		saynn("[say=issix]It's a lesson for the future. I'm glad you took my rejection just fine. Try to focus on needs of others, even in such grim place as this one there are creatures hurting, you always have the power to help them in your own way, don't waste it.[/say]")
 		addButton("Leave", "You've been rejected, nothing more to do here", "endthescene")
 
+func saveData():
+	var data = .saveData()
 
+	data["did_yoga"] = did_yoga
+
+	return data
+
+func loadData(data):
+	.loadData(data)
+
+	did_yoga = SAVE.loadVar(data, "did_yoga", null)
 	
 func pet_handle_flag_response(response):  # true + true doesn't exist in GDScript :(
 	if response == null or response == false:
@@ -732,6 +749,7 @@ func _react(_action: String, _args):
 	if _action == "lamiaexercise":
 		GM.pc.addStamina(-40)
 		processTime(10*60)
+		did_yoga = true
 
 	if _action == "lamiaexercise2":
 		processTime(10*60)
@@ -771,6 +789,7 @@ func _react(_action: String, _args):
 		GM.pc.getInventory().removeXOfOrDestroy("Cookie", 1)
 	
 	if(_action == "endthescene"):
+		setModuleFlag("IssixModule", "Saw_Azazel_Naked", true)
 		endScene()
 		return
 		

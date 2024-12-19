@@ -10,7 +10,7 @@ func _run():
 	if(state == ""):
 		playAnimation(StageScene.Duo, "sit", {npc="issix", npcAction="sit"})
 		if(GM.main.getModuleFlag("IssixModule", "Quest_Status") == 4):
-			saynn("[say=issix]Alrighty, pet in training. It's the first time I do this, but I'm going to give you a bunch of questions and I expect you to answer them truthfully. Don't dwell too long on them, trust your instinct.\nBlah blah blah, there are no wrong answers something something. You get the drill right? You must have filled a similar one in the past. Tablet will only present you with questions, you answer to me.[/say]")
+			saynn("[say=issix]Alrighty, pet in training. It's the first time I do this, but I'm going to give you a bunch of questions and I expect you to answer them truthfully. Don't dwell on them for too long, trust your instinct.\nBlah blah blah, there are no wrong answers something something. You get the drill right? You must have filled a similar one in the past. Tablet will only present you with questions, you answer to me.[/say]")
 			saynn("[say=issix]Also, this will take a bit, here, have a seat.[/say]")
 			saynn("He pulls a folding chair from behind his and unfolds it in front of himself, you sit and he passes a tablet to you. On it a giant button titled ”Start”.")
 			addButton("Start", "Start the questionnaire", "q1")
@@ -102,7 +102,7 @@ func _run():
 			var body_part = body_parts[bp]
 			if body_parts[bp] == null or bp in [BodypartSlot.Body, BodypartSlot.Hair]:
 				continue
-			addButton(body_part.getName().capitalize(), "Your "+body_part.getName()+" feels like the most appropriate answer here", "q3answer", [body_part.id])
+			addButton(body_part.getName().capitalize().rstrip("1234567890"), "Your "+body_part.getName().rstrip("1234567890 ")+" feels like the most appropriate answer here", "q3answer", [body_part.id])
 			
 	if(state == "q3answer"):
 		processTime(5*60)
@@ -292,7 +292,10 @@ func _run():
 		processTime(3*60)
 		saynn("[say=issix]What do we have here... Body parts. Ah yes. It bears no any significance, but thought the answer would be fun.[/say]")
 		answer = getModuleFlag("IssixModule", "QuestionnaireQ3")
-		saynn("[say=issix]You said that the body part you are most interested in is... "+answer+"[/say]")
+		var bodypart = GlobalRegistry.getBodypartRef(answer)
+		if bodypart == null:
+			bodypart = GM.pc.getBodypart(BodypartSlot.Anus)
+		saynn("[say=issix]You said that the body part you are most interested in is... "+bodypart.getName().capitalize().rstrip("1234567890 ")+"[/say]")
 		saynn("[say=issix]If you are wondering what I'm going to do with this information, I will say - time will tell.[/say]")  # no, really, I have no fucking idea lol
 		answer = getModuleFlag("IssixModule", "QuestionnaireQ4")
 		var wants_to = getModuleFlag("IssixModule", "QuestionnaireQ9")

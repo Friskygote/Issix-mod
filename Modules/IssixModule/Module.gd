@@ -34,11 +34,13 @@ func getFlags():
 		"QuestionnaireQ11": flag(FlagType.Bool),
 		"Lamia_Is_Hungry": flag(FlagType.Bool),
 		"Azazel_Sky_Response": flag(FlagType.Bool),
+		"Azazel_Catnip_given_today": flag(FlagType.Number),
 		"Received_Portrait_From_Lamia": flag(FlagType.Bool),
 		"Placed_Portrait_In_Cell": flag(FlagType.Bool),
 		"Hissi_RPS_data": flag(FlagType.Dict),
 		"Hiisi_Name_Helped": flag(FlagType.Bool),
 		"Shared_Marshmallows": flag(FlagType.Bool),
+		"Saw_Azazel_Naked": flag(FlagType.Bool),
 
 		# Slavery related
 		"PC_Enslavement_Role": flag(FlagType.Number),
@@ -242,6 +244,7 @@ func resetFlagsOnNewDay():  # I apologize for abusing this hook, but startNewDay
 	GM.main.setModuleFlag("IssixModule", "Unwelcome_At_Corner", false)
 	GM.main.setModuleFlag("IssixModule", "Had_Sex_With_Issix", false)
 	GM.main.setModuleFlag("IssixModule", "Is_Player_Forced_Today", 0)
+	GM.main.setModuleFlag("IssixModule", "Azazel_Catnip_given_today", 0)
 	breedSlaveIfNpc()
 	if GM.main.getModuleFlag("IssixModule", "Helped_Lamia_With_Drawings_Today") != null:
 		GM.main.setModuleFlag("IssixModule", "Helped_Lamia_With_Drawings_Today", false)
