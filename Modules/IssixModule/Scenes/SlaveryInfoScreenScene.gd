@@ -49,7 +49,7 @@ func _run():
 			else:
 				addDisabledButton("Eat", "You've already eaten today")
 		if GM.pc.getStamina() > 100:  # TODO Add some other event as precondition for this being available?
-			addButton("Play", "Play with other pets.", "haremplay")
+			addDisabledButton("Play", "Play with other pets (WIP)")
 		else:
 			addDisabledButton("Play", "You are too tired to play with other pets (minimum 100 stamina)")
 		if GM.main.getDays()-last_walk == AVERAGE_WALK_DELAY:  # TODO Walks

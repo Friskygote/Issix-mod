@@ -41,6 +41,8 @@ func getFlags():
 		"Hiisi_Name_Helped": flag(FlagType.Bool),
 		"Shared_Marshmallows": flag(FlagType.Bool),
 		"Saw_Azazel_Naked": flag(FlagType.Bool),
+		"Lamia_Chosen_Drawing": flag(FlagType.Text),
+		"PC_Saw_Artwork_At_Lamias": flag(FlagType.Bool),
 
 		# Slavery related
 		"PC_Enslavement_Role": flag(FlagType.Number),
@@ -84,7 +86,8 @@ func _init():
 		"res://Modules/IssixModule/Events/PlayerCellModifierEvent.gd",
 		"res://Modules/IssixModule/Events/CornerPriorityEvent.gd",
 		"res://Modules/IssixModule/Events/SlaveryIntroEvent.gd",
-		"res://Modules/IssixModule/Events/IssixRegularSearch.gd"
+		"res://Modules/IssixModule/Events/IssixRegularSearch.gd",
+		"res://Modules/IssixModule/Events/LamiaCellEvent.gd"
 		#"res://Modules/IssixModule/Events/Overwrites/BullyGangEvent.gd"  Cannot overwrite module that loads after
 		]
 		

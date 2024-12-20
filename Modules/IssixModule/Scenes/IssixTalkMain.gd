@@ -234,8 +234,20 @@ func _run():
 					saynn("You figure it's a rhetorical question and keep quiet as he moves to your other body parts.")
 			saynn("He continues to explore your {pc.thick} {pc.masc} body, continuing wandering with his paws further down.")
 			if GM.pc.getInventory().hasSlotEquipped(InventorySlot.UnderwearBottom) or GM.pc.getInventory().hasSlotEquipped(InventorySlot.Body):
+				saynn("[say=issix]I'd rather see you without the clothes, but for today perhaps it's not a priority.[/say]")
+				saynn("His hand gently and sensually explores your belly, ass and reproductive equipment.")
+				if GM.pc.hasVagina() and GM.pc.getGender() == Gender.Male:
+					saynn("[say=issix]A pussy huh? Well, don't worry, you wouldn't be the only male breeding bitch in here.[/say]")
+					saynn("He laughs")
+				elif GM.pc.hasVagina():
+					saynn("[say=issix]A pussy huh? Tasty.")
+				elif GM.pc.hasPenis():
+					saynn("[say=issix]A penis huh? Wouldn't get much use out of it, but entirely acceptable.[/say]")
+				else:
+					saynn("[say=issix]Nothing there? That's okey by me, everyone comes with at least one hole.[/say]")
+			else:
 				if GM.pc.hasVagina() or GM.pc.hasPenis():
-					saynn("[say=issix]You like having your babymaker visible to everyone, [pulse color=#00FFAA height=0.0 freq=1.0]slut[/pulse]?[/say]")
+					saynn("[say=issix]You like having your babymaker on display, [pulse color=#00FFAA height=0.0 freq=1.0]slut[/pulse]?[/say]")
 				else:
 					saynn("[say=issix]Nothing there? That's okey by me, everyone comes with at least one hole.[/say]")
 				if GM.pc.hasReachableVagina():

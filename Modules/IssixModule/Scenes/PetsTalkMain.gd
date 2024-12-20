@@ -277,7 +277,7 @@ func _run():
 			pass  # TODO
 		addButton("Talk", "Talk to Lamia", "lamiatalk")
 		addButton("Appearance", "Look at Lamia", "lamiaappearance")
-		if false:  # TODO Get this behind some flag after talking to them
+		if getModuleFlag("IssixModule", "Lamia_Times_Helped", 0) > 0:
 			match getModuleFlag("IssixModule", "Helped_Lamia_With_Drawings_Today"):
 				null:
 					addButton("Help", "You see a big stack of drawings and some drawers, it seems Lamia categorizes their drawings, ask if you could help?", "lamiahelp")
@@ -430,13 +430,13 @@ func _run():
 			saynn("[say=pc]Nature maybe? Animals and flowers?[/say]")
 			saynn("Lamia nods excited.")
 			saynn("[say=pc]I'm getting good at this![/say]")
-			saynn("You look at the 3rd box. A green one. This is a rectangle which has a lot of colors on it. As if someone just wanted a colorful rectangle. You look at the artwork at the top of the green box and understand what's this about. It has a very detailed environment, with landscapes you'd never imagine exist in real life. But so beautiful too. It looks to be some sort of sandy area with large sandstone arch in the middle. There is a small but dry dree on the right.")
+			saynn("You look at the third box. A green one. This is a rectangle which has a lot of colors on it. As if someone just wanted a colorful rectangle. You look at the artwork at the top of the green box and understand what's this about. It has a very detailed environment, with landscapes you'd never imagine exist in real life. But so beautiful too. It looks to be some sort of sandy area with large sandstone arch in the middle. There is a small but dry dree on the right.")
 			saynn("[say=pc]Backgrounds! Right?[/say]")
-			saynn("Lamia gives you thumbs up, they are shaking in excitement, one more and they may just have the energy to shoot out of this station. You laugh, and look at 4th box - purple one. This one is strange, there is just an arrow pointing at it from a circle? And square next to it.")
+			saynn("Lamia gives you thumbs up, they are shaking in excitement, one more and they may just have the energy to shoot out of this station. You laugh, and look at fourth box - purple one. This one is strange, there is just an arrow pointing at it from a circle? And square next to it.")
 			saynn("[say=pc]Figures maybe?[/say]")
 			saynn("Lamia moves their head from side to side. Are you close?")
 			saynn("[say=pc]Hmm. Geometrical shapes? Lines?[/say]")
-			saynn("They shake their head, that's not it. They again draw first three boxes and cross them out, they point at 4th box.")
+			saynn("They shake their head, that's not it. They again draw first three boxes and cross them out, they point at fourth box.")
 			saynn("[say=pc]Umm, whatever doesn't go in the first three goes in the last one?[/say]")
 			saynn("Lamia vigorously nods their head, that's it.")
 			saynn("[say=pc]Ahhhhhhh. I seeeee...[/say]")
@@ -503,23 +503,98 @@ func _run():
 
 	if state == "lamiatalk":
 		var lamia_affection = getModuleFlag("IssixModule", "Lamia_Times_Helped", 0)
-		addDisabledButton("Try drawing", "You can try and draw something with Lamia (WIP)")  # TODO
-		addButton("Mute", "Ask if he's been mute since they were born")
+		if lamia_affection < 1:
+			addButton("Try drawing", "You can try and draw something with Lamia", "lamiatrydrawing")
+		else:
+			addDisabledButton("Try drawing", "You've already drawn something with Lamia, perhaps there'll be another chance in the future")
+		addButton("Mute", "Ask if he's been mute since they were born", "lamiamute")
 		if lamia_affection > 2:
-			addDisabledButton("Explicit", "You've noticed Lamia doesn't draw any explicit things, perhaps worth asking about it?")
+			addButton("Explicit", "You've noticed Lamia doesn't draw any explicit things, perhaps worth asking about it?", "lamiaexplicit")
+
 		if lamia_affection > 6:
 			addDisabledButton("Prison", "Ask Lamia how they ended up in the prison")
 		else:
 			addDisabledButton("Prison", "You don't feel like there is enough connection between you two to ask him that")
+
 		if lamia_affection > 11:
 			addDisabledButton("Favorite", "Ask Lamia what is their favorite thing to draw")
 		else:
 			addDisabledButton("Favorite", "You don't feel like there is enough connection between you two to ask him that")
+
 		if lamia_affection > 17:
 			addDisabledButton("Draw", "Ask Lamia to draw something for you")
 		else:
 			addDisabledButton("Draw", "You don't feel like there is enough connection between you two to ask him to draw for you something")
 		addButton("Back", "Do something else", "lamiamain")
+
+	if state == "lamiatrydrawing":
+		saynn("[say=pc]Hey Lamia, I were wondering, you've been drawing a lot of things, do you think I could try something on my own?[/say]")
+		saynn("Lamia's eyes light up like candles, he doesn't waste a moment to grab a sheet of paper, a nearby brush and a solid piece of texture as a pad under the paper and practically shove those items into your paws. You kneel and start to lay down on your belly, your {pc.feet} are technically on Hiisi's blanket while the rest of your body is on Lamia's, you hope this won't bother the canine.")
+		saynn("[say=pc]Uh, I think I'd prefer a regular pen, I'm afraid I'll mess it up if I use a brush.[/say]")
+		saynn("Lamia laughs and finds a pen in their assortment of different equipment they have.")
+		saynn("[say=pc]Thank you.[/say]")
+		saynn("Lamia stares you down with excitement, seems like they enjoy this situation. Now to just decide on what to draw...")
+		addButton("Simple", "Try do draw something from your life before the prison", "lamiatrydrawingbeforeprison")
+		addButton("Lamia", "Try to draw your fox friend", "lamiatrydrawinglamia")
+		addButton("Explicit", "Try to draw something lewd", "lamiatrydrawinglewd")
+
+	if state == "lamiatrydrawingbeforeprison":
+		saynn("You decide to do something more or less simple. Taking into account your artistic skills, this sounds like the best choice for your drawing. Simplistic in artstyle, simplistic in idea. And so you start. A memory in mind, your pen hits the paper and your paw orchestrates its movement on the paper.")
+		saynn("What you draw is a scene of your place of living from memory - a block of flats, a couple of trees and lampposts, from the place you remember so well. A couple of canine figures, very simply drawn walking along the path nearby. Excited Lamia is watching your every line with interest, until you imagine they realize they might be too distracting to you and they come back to drawing on their own.")
+		saynn("Drawing simple affords you more time to focus on the small details you are particularly interested in, in this way a canine figure starts taking more defined shape in memory of your good friend you've had since childhood. And some windows in block of flats gain a detail or two behind.")
+		saynn("At some point you reach a conclusion that your work here is done. It's far from being a piece of art that Lamia could have drawn, but you figure that surprising it's better than what a kid would draw, making it good enough in your book.")
+		saynn("You show Lamia your work, they look at your artwork intensely, their face expression as if they've been trying to solve a mathematical paradox. Finally, they move and gesture making moves with a pen next to your artwork, you realize they are asking if they could draw something on it. Strange question, but you agree.")
+		saynn("[say=pc]You want to draw something on it? I guess, sure, go ahead.[/say]")
+		saynn("They draw a few details, here and there, to your surprise the way they draw still has the same simplistic vibe you were going with, those changes could have been made by yourself, Lamia clearly cares about your work and gives it respect it... Deserves? It's kind of silly, considering a rather low-effort drawing.")
+		saynn("Finally, happy with changes they made they present your artwork, slightly modified in a few places, though all of them an improvement. Intriguingly to you, some of those improvements feel insanely spot on, a bush below the block appeared, reminding you that yes - you do recollect there being one! A bench near one of the drawn paths appeared, a detail that escaped your mind as it was built rather recently before you arrived in this place. You stare in awe at the modified drawing, before exclaiming.")
+		saynn("[say=pc]How? Just- how? Like, did you know? I don't think you liv- no, I would have remembered. That's insane, tell me, have you seen this place? Have you lived there?[/say]")
+		saynn("Of course, they can't tell you. They give you a silly smile, and a boop on your nose. They don't seem to want to give you a straight answer, instead just staring back at you as you look at the artwork some more.")
+		saynn("[say=pc]I really don't understand how could you know. But... Uhh.. Thank you! It's awesome![/say]")
+		addButton("Keep it", "Ask Lamia if you can keep it", "lamiatrydrawingbeforeprisonkeep")
+		addButton("Back", "Let Lamia keep the artwork", "lamiatalk")
+
+	if state == "lamiatrydrawingbeforeprisonkeep":
+		saynn("[say=pc]Umm, can I keep it? I think I'd like to have some kind of memory of my place if that's alright with you.[/say]")
+		saynn("They happily nod. It's yours to have. You can put it up in your cell if you want.")
+		addButton("Back", "Let Lamia keep the artwork", "lamiatalk")
+
+	if state == "lamiatrydrawinglamia":
+		saynn("You decide to try and draw Lamia. Which sounds like a great idea at first, until you realize that your only experience with drawing was drawing on a flat screen as a kid. Turns out that drawing on paper is a very different beast. Nevertheless, it would be awkward to abandon the task now. You look at Lamia intensely, as they stare back at you, at least until they blush embarrassed realizing that their watchful gaze may be distracting to you, they turn to their own sheet of paper and start brushing it all over. Very likely they've already realized what, or rather who you are trying to draw, considering the repeated looks, but doesn't seem like they mind.")
+		saynn("Drawing with a pen soon turns out to be a particularly difficult task, on flat screen as a kid you had ability to undo whenever a line went wrong, here? Not so much. What is drawn stays. So you try to make the most of it. Try. It's a good word for what you are doing. With each stroke of pen the drawing becomes more defined until after a while you are finally done.")
+		if GM.pc.getPersonality().getStat(PersonalityStat.Coward) > 0.4:
+			saynn("You feel uncomfortable showing your work to Lamia, it isn't good, the proportions are messed up, the face looks more like a wolf than a fox, amount of retries on drawing Lamia's paw turned it into something looking more like a black goo blorb than actual paw and compared to his skills „isn't good” would be an understatement of the century.")
+			saynn("Lamia, figuring out you've finished, looked away from their work and looked at yours, the fox is out of the bag for sure now.")
+		else:
+			saynn("Your artwork isn't really good, you know that, the proportions are messed up, the face looks more like a wolf than a fox and amount of retries on drawing Lamia's paw turned it into something looking more like a black goo blorb than actual paw. But you made it by yourself and it makes you proud. All happy with yourself you show it to Lamia.")
+			saynn("[say=pc]I'm done, look! It's you![/say]")
+		saynn("You expected a laugh, you expected a thank you nod, but what followed was something completely different. Lamia - holding your artwork in their paws started tearing up, not the artwork, but tears. They continued to look at it for a solid minute before squeezing the poor paper in embrace as if it was someone very close to them.")
+
+		saynn("You felt moved by Lamia, as they were by your little creation, apparently. After realizing squeezing a piece of paper with artwork may damage it they freaked out a little and tried to unfold it to the best of their ability, its still pretty fine, even if a little folded in few places. Lamia hugs you and thanks you. Your artwork moved them and it seems like they will hold onto it.")
+		addButton("Back", "One deed done, onto another!", "lamiatalk")
+
+	if state == "lamiatrydrawinglewd":
+		saynn("After a moment of through you reach a decision on drawing something lewd. How could you pass such an opportunity? You quickly realize two things - your only experience with drawing was drawing on a flat screen as a kid. Turns out that drawing on paper is a very different beast. And drawing with a pen means no taking anything back. What gets on a paper stays there, and you don't think this is one of those washable pens either. But you quickly get to the rythm of drawing.")
+		saynn("Your subjects? Not wanting to draw anyone without their consent you decide to just run your imagination wild and draw two anthropomorphic creatures - one kitty and another one well built and muscular wolf. The cat arching his back, while on fours taking the mounting wolf a top of them. To make it even more cliché the wolf is pounding the kitty in the ass raw.")
+		saynn("Though with your skills it's a little bit difficult to say where the kitty starts and ends. The most important part - the impressive knot half-stuck inside the dark kitty is an element proudly displayed on your debauched work. Eventually you feel pretty done with it. Critics would rightly point out that your display of skill leaves a lot to be desired, but at the same time, why would you care. The one in power is the one with the pen, and it's their decision what and how to draw. You proudly show Lamia your finished work.")
+		saynn("Lamia barely holds out the laughter, you hear a few audible chirps, but you get your approval, as Lamia shows you thumbs up. It seems they aren't a harsh critic, and are more overjoyed because they have a partner at drawing. Lamia takes you drawing, scribbles something on the other side of the sheet of paper and puts it on the stash of many more arts they've drawn. Your work has joined the truthfully great, that's a reason to be proud of!")
+		addButton("Back", "Mending the world one lewd artwork at the time you've finished in here", "lamiatalk")
+
+	if state == "lamiamute":
+		saynn("[say=pc]So, I wondered, I assume you've been mute since you were born, is that correct?[/say]")
+		saynn("Lamia nods, it's true.")
+		saynn("[say=pc]I see, and how do you feel with it? I think your Master mentioned that you aren't particularly bothered by it. I guess you are used to being mute?[/say]")
+		saynn("Lamia nods once again and starts to write. When they are done the paper they hand to you reads: „Why talk when you can draw?”. You feel like there is more behind that sentence but it sums up their feelings about their disability pretty well.")
+		saynn("[say=pc]I suppose it makes for some unique interactions with others. Making art is not easy, but expressing yourself with it probably feels special to you right?[/say]")
+		saynn("They continue nodding.")
+		addButton("Admirable", "Say that you find it pretty admirable how they are able to turn their disability into something they are happy with", "lamiamuteadmirable")
+		addButton("Back", "End the conversation here", "lamiatalk")
+
+	if state == "lamiamuteadmirable":
+		saynn("[say=pc]I have to say, I find it pretty admirable you are able to find joy in what you do, to turn your disability into something you can work with, and smile while at it.[/say]")
+		saynn("You can see them starting to blush")  # I don't care furry anthros shouldn't really have a concept of "blushing", shush you realist!
+		saynn("[say=pc]I don't know if I'd be able to find myself in this world like you do, that's some very inspiring stuff. Keep it up Lamia.[/say]")
+		saynn("You boop on their nose with your finger, to which Lamia responds with adorable „Yip!” sound, as if his nose was a button. That was super cute.")
+		addButton("Back", "End the conversation here", "lamiatalk")
 
 	if state == "lamiaappearance":
 		saynn("Lamia is very visibly a fox breed, their fur has very vivid and unusual orange/red pallette. Red mostly visible on their arms, tip of their tail and a little bit on their legs. To contrast that, their hair is painted in shades of blue. They are wearing a general block inmate uniform.")
@@ -532,8 +607,8 @@ func _run():
 		saynn("[say=pc]Wow, that's pretty good, but I guess you kinda don't care much for those? Sex and all just doesn't do it for you, huh?[/say]")
 		saynn("They nod in agreement.")
 		saynn("[say=pc]I con respect that. You are a great artist, and you should draw whatever the fuck you want, that's the way to go.[/say]")
-		saynn("You give them headpats.")
-		addButton("Back", "Finish this conversation", "lamiamain")
+		saynn("They smile, you reward them with headpats.")
+		addButton("Back", "Finish this conversation", "lamiatalk")
 
 
 func generate_artwork_desc(descriptors: Array):
@@ -616,6 +691,25 @@ func _react(_action: String, _args):
 		markHiisiRewardAsAquired()
 		setModuleFlag("IssixModule", "Hiisi_Put_Sabotaged_Headvisors", false)
 		increaseModuleFlag("IssixModule", "Hiisi_Affection", -3)
+
+	if _action == "lamiatrydrawingbeforeprisonkeep":
+		setModuleFlag("IssixModule", "Lamia_Chosen_Drawing", "simplepc")
+		setModuleFlag("IssixModule", "PC_Saw_Artwork_At_Lamias", false)
+
+	if _action == "lamiatrydrawingbeforeprison":
+		processTime(40*60)
+		increaseModuleFlag("IssixModule", "Lamia_Times_Helped")
+		setModuleFlag("IssixModule", "Lamia_Chosen_Drawing", "simple")
+
+	if _action == "lamiatrydrawinglamia":
+		processTime(40*60)
+		increaseModuleFlag("IssixModule", "Lamia_Times_Helped")
+		setModuleFlag("IssixModule", "Lamia_Chosen_Drawing", "lamia")
+
+	if _action == "lamiatrydrawinglewd":
+		processTime(40*60)
+		increaseModuleFlag("IssixModule", "Lamia_Times_Helped")
+		setModuleFlag("IssixModule", "Lamia_Chosen_Drawing", "lewd")
 
 	if _action == "hiisihypnoyes":
 		markHiisiRewardAsAquired()

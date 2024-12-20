@@ -18,7 +18,7 @@ func _initScene(_args = []):
 		teleportwhenskipped = _args[4]
 	if (_args.size() > 5):
 		pose = _args[5]
-	
+
 	path = GM.world.calculatePath(startLocation, endLocation)
 	if(path.size() <= 0):
 		endScene()
@@ -29,28 +29,28 @@ func _init():
 func _run():
 	if(state == ""):
 		addCharacter(whoLeashingID)
-		
+
 	if(state == "" || state == "leashed"):
-		if state == "leashed":
+		if(state == "leashed"):
 			playAnimation(StageScene.Duo, pose, {npc=whoLeashingID, npcAction="walk", flipNPC=true, bodyState={leashedBy=whoLeashingID}})
 		if(path.size() > 0):
 			aimCameraAndSetLocName(path[0])
-		
+
 		var _roomInfo = GM.world.getRoomByID(path[0])
-		
+
 		if(_roomInfo == null):
 			saynn("You're being walked on a leash by {leasher.name}")
 		else:
 			saynn("You're being walked on a leash by {leasher.name}")
-			
+
 			if(GM.pc.isBlindfolded() && !GM.pc.canHandleBlindness()):
 				saynn(_roomInfo.getBlindDescription())
 			else:
 				saynn(_roomInfo.getDescription())
-				
+
 		if(randomChat.size() > 0 && RNG.chance(min(30, randomChat.size() * 10))):
 			saynn("[say=leasher]"+RNG.pick(randomChat)+"[/say]")
-		
+
 		if (teleportwhenskipped):
 			addButton("Skip", "Skip the walk", "skipwalk")
 		else:
@@ -62,59 +62,61 @@ func _run():
 	if (state == "skipwalk"):
 		aimCamera(endLocation)
 		GM.pc.setLocation(endLocation)
-		
+
 		endScene()
 
 func _react(_action: String, _args):
 	if(_action == "endthescene"):
 		endScene()
 		return
-	
+
 	if(_action == "follow"):
 		if(path.size() == 0):
 			endScene()
 			return
-		
+
 		var nextLoc = path[0]
 		path.remove(0)
-		
+
 		if(!GM.world.hasRoomID(nextLoc)):
 			endScene()
 			return
-		
+
 		GM.pc.setLocation(nextLoc)
 		if(path.size() == 0):
 			endScene()
 			return
 		setState("leashed")
 		return
-	
+
 	setState(_action)
 
 func saveData():
 	var data = .saveData()
-	
+
 	data["startLocation"] = startLocation
 	data["endLocation"] = endLocation
 	data["path"] = path
 	data["whoLeashingID"] = whoLeashingID
 	data["randomChat"] = randomChat
 	data["teleportwhenskipped"] = teleportwhenskipped
+	data["pose"] = pose
 
 	return data
-	
+
 func loadData(data):
 	.loadData(data)
-	
+
 	startLocation = SAVE.loadVar(data, "startLocation", "")
 	endLocation = SAVE.loadVar(data, "endLocation", "")
 	path = SAVE.loadVar(data, "path", [])
 	whoLeashingID = SAVE.loadVar(data, "whoLeashingID", "")
 	randomChat = SAVE.loadVar(data, "randomChat", [])
 	teleportwhenskipped = SAVE.loadVar(data, "teleportwhenskipped", true)
+	pose = SAVE.loadVar(data, "pose", "walk")
 
 func resolveCustomCharacterName(_charID):
 	if(_charID == "leasher" && whoLeashingID != ""):
 		return whoLeashingID
-	
+
 	return null
