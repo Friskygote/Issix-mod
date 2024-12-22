@@ -343,8 +343,6 @@ func _run():
 		addButton("Leave", "Nod and leave embarassed", "endthescene")
 	
 	if(state == "quest1turn"):
-		GM.main.setModuleFlag("IssixModule", "Quest_Status", 4)
-		GM.main.setModuleFlag("IssixModule", "Quest_Wait_Another_Day", true)
 		saynn("[say=pc]Is... This what you wanted?[/say]")
 		saynn("You said with uncertainty in your voice, presenting Issix with a packet of gumball.\nIssix looks at you elated, he claps his paws.")
 		saynn("[say=issix]Yes, YES. This is exactly what I needed, morsel.[/say]")
@@ -371,6 +369,11 @@ func calculateHaremScore():
 func _react(_action: String, _args):
 	if _action in ["questresponseno", "questresponseyes"]:
 		GM.pc.getInventory().addItem(GlobalRegistry.createItem("IssixsMap"))
+
+	if _action == "quest1turn":
+		GM.main.setModuleFlag("IssixModule", "Quest_Status", 4)
+		GM.main.setModuleFlag("IssixModule", "Quest_Wait_Another_Day", true)
+		#GM.pc.getInventory().removeFirstOf("IssixsMap")  - might be useful for later?
 
 	if(_action == "endthescene"):
 		endScene()

@@ -164,6 +164,8 @@ func _run():
 
 	if state == "afterbrandingwakeup":
 		aimCamera("hall_ne_corner")
+		clearCharacter()
+		addCharacter("issix")
 		saynn("Your eyes open, first thing that you feel is disorientation, you can see the blurry legs of red dragon in front of you, things slowly getting sharper, you are on your left side? You grumble moving your head a little to look around, you see your Master nearby who also starts looking at you seeing your woke up.")
 		saynn("[say=issix]Hello there, what a timing, how are you feeling?[/say]")
 		saynn("[say=pc]Ummm.. I don't know. Confused? Where are the others?[/say]")

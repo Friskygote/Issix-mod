@@ -12,7 +12,7 @@ func _run():
 		if (GM.pc.getStamina() / GM.pc.getMaxStamina()) < 0.8:
 			saynn("[say=issix]You do seem to be a little beaten up, that's great, because today I expect you to re-learn how you are supposed to eat.[/say]")
 		else:
-			saynn("[say=issix]Doesn't seem like you need much food, but no matter. Today I'll teach you how I expect you to eat from now on.[/say]")
+			saynn("[say=issix]Doesn't seem like you are hungry, but no matter. Today I'll teach you how I expect you to eat from now on.[/say]")
 		saynn("[say=issix]I'm sure you are used to eating food given to you on a plate. This is how anthros eat. But as you must have noticed - my pets don't eat like this. So from now on I'd want you to learn how to eat like a pet. From a bowl.[/say]")
 		saynn("He grabs a bowl. It looks like a very standard pet bowl, with the lowered ridge. On one side of it your name displayed. At the bottom of the empty bowl there is a pawprint symbol.")
 		saynn("[say=issix]Hope you like it. This one is yours.[/say]")

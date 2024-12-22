@@ -357,7 +357,7 @@ func getMood():
 
 
 static func playerToFuck():
-	return not (int(GM.main.getDays()) % 2 != 0) and GM.main.getModuleFlag("IssixModule", "Todays_Bred_Slave", "") == "pc"
+	return (int(GM.main.getDays()) % 2 == 1) and GM.main.getModuleFlag("IssixModule", "Todays_Bred_Slave", "") == "pc"
 
 func getDays():
 	var days_enslaved = getModuleFlag("IssixModule", "Misc_Slavery_Info", {})["day_enslaved"]

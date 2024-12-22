@@ -4,6 +4,7 @@ var artwork = null
 var pc_pose = null
 var arts_reviewed = 0
 var arts_correct = 0
+var hiisi_help_type = []
 
 var pick_up_lamia_art = [
 	"You pick up another art from the stash",
@@ -18,7 +19,9 @@ var humanoids_lamia_art = [
 	"a dragon person sitting inside the elevator, reading newspapers in her paws",
 	"portrait of a snake person with particularly long fangs sticking out from their maw",
 	"an anthro zebra dancing on a strip pole",
-	"multiple versions of legs belonging to a bovine anthro, likely drawn for practice"
+	"multiple versions of legs belonging to a bovine anthro, likely drawn for practice",
+	"anthropomorphic deer cuddling with a giant plush of a shark",
+	"three dark figures in black robes, with their faces hidden inside long hoods looming above a ritualistic slab made out of stone where an anthropomorphic feline lies unconscious"
 	]
 
 var animal_flora_lamia_art = [
@@ -72,6 +75,8 @@ var odd_lamia_art = [
 	"a worm that seems to have a very slippery texture, on one of the ends there is a simple „tail” with spike like ending, while the other seems to be a hollowed circle with numerous tiny teeth around it",
 	"at first what seems like a tube of some sorts, though later you notice that this tube ends with a hole on one end, around the „hole” a bunch of yellowish protrusions extending from the fleshy tube"
 	]
+
+var crossword_puzzles = [["Sex in 11 letters", "intercourse"], ["Subfamily of goats and sheep", "caprinae"], []]
 
 func _init():
 	sceneID = "PetsTalkScene"
@@ -141,7 +146,42 @@ func _run():
 			addDisabledButton("Name", "You already asked Hiisi about his name")
 		else:
 			addButton("Name", "Ask Hiisi about his name", "hiisiname")
+		if getModuleFlag("IssixModule", "Hiisi_Helped_Today", false) == false:
+			addButton("Help", "Ask if you can help the canine in something", "hiisihelp")
+		else:
+			addDisabledButton("Help", "You've helped Hiisi today already")
 		addButton("Back", "Do something else", "hiisimain")
+
+	if state == "hiisihelp":
+		saynn("[say=pc]Hey Hiisi, anything you'd like help with? I'd be happy to do something for you![/say]")
+		if hiisi_help_type == 1:
+			saynn("[say=hiisi]Actually, yeah, I'd have something for you, this little padlock recently got stuck and I've been trying to open it without much luck, perhaps you'd be able to do something about it?[/say]")
+			saynn("You look at the padlock, it connects two pieces of chain together, and even though its in unlocked position, the metal shackle is stuck inside the body. For a moment you try sheer brute force, though you imagine Hiisi already tried it considering his musculature. Your next strategy involves jigging the shackle in all direction, after a while the strategy proves successful and you manage to open the padlock.")
+			saynn("[say=pc]Here you go, needed some jiggling.[/say]")
+			saynn("[say=hiisi]Wow, I'm surprised you did it, I've been trying to open it for past hour and couldn't do it. Thanks {pc.name}![/say]")
+			addButton("Back", "You've helped the canine today, padlock open with two chains escaping their shackles", "hiisitalk")
+		elif hiisi_help_type == 2:
+			saynn("[say=hiisi]Oh, sorry, not today. I don't think I have anything for you to help me with.[/say]")
+			saynn("[say=pc]Oh, I see. In that case... Could I give you a hug?[/say]")
+			saynn("Hiisi gives you a reluctant nod with a little bit embarrassed face expression. You embrace Hiisi in a hug, his tail moves behind swiftly as you do.")
+			saynn("[say=hiisi]Thank you, that's very nice of you.[/say]")
+			addButton("Back", "You've helped the canine today, in one of many ways", "hiisitalk")
+		elif hiisi_help_type == 3:
+			saynn("[say=hiisi]Hmm. Actually, yeah, if you are willing to... I've been trying to solve a bunch of riddles lately and stumbled upon question that I'm not exactly sure how to answer, perhaps you could know. It reads as follows: "+ hiisi_help_type[1][0]+". Any idea what could it be?[/say]")
+			addButton(hiisi_help_type[1][1], "Answer this", "hiisihelpresponse")
+		elif hiisi_help_type == 4:
+			saynn("[say=hiisi]Yeah, I do need help with something. Give me a second...[/say]")
+			saynn("He fetches a plastic cylinder from the nearby bag along with a lid that has a small metallic looking pipe coming out of it.")
+			saynn("[say=hiisi]Can you please hold this one like that? It's difficult to pit it together without second person.[/say]")
+			saynn("He grabs the cylinder and shows you how to hold it before passing it onto you. You replicate how he held it as he grabs another few parts and starts putting them on.")
+			saynn("[say=pc]Hmm, couldn't you ask Azazel or Lamia about this?[/say]")
+			saynn("[say=hiisi]I could, but you came just in time so I figured you could be the one helping me today.[/say]")
+			saynn("Fe finishes and pulls the assembled thing from your paws.")
+			saynn("[say=pc]What is it anyways?[/say]")
+			saynn("[say=hiisi]Some kind of a dispenser, I don't know. found the parts somewhere, could be useful.[/say]")
+			saynn("He puts the assembled dispenser back into the bag and thanks you for your help.")
+			addButton("Back", "You've helped the canine today, by helping them assemble a dispenser of some sorts", "hiisitalk")
+
 
 	if state == "hiisiappearance":
 		saynn("You approach a kneeling Hiisi, in many ways his fur coloring reminds you of huskies but... Backwards? The black coloring visible on his face and bottom of his canine tail, the tail so bushy and monochromatic that it reminds you of a skunk. The inside of his ears dark gray as well, along with the tip, with the pleasant light gray outline.\nWholly brighter palette on the back and his legs.")
@@ -654,6 +694,24 @@ func verify_response(response: int):
 		return response == 3
 	return response == 4
 
+func saveData():
+	var data = .saveData()
+
+	data["artwork"] = artwork
+	data["arts_reviewed"] = arts_reviewed
+	data["arts_correct"] = arts_correct
+	data["hiisi_help_type"] = hiisi_help_type
+
+	return data
+
+func loadData(data):
+	.loadData(data)
+
+	artwork = SAVE.loadVar(data, "artwork", null)
+	arts_reviewed = SAVE.loadVar(arts_reviewed, "arts_reviewed", null)
+	arts_correct = SAVE.loadVar(arts_correct, "arts_correct", null)
+	hiisi_help_type = SAVE.loadVar(hiisi_help_type, "hiisi_help_type", null)
+
 func markHiisiRewardAsAquired():
 	var HiisiRPS = getModuleFlag("IssixModule", "Hissi_RPS_data", {})
 	HiisiRPS["reward_acquired"] = true
@@ -682,6 +740,13 @@ func _react(_action: String, _args):
 		increaseModuleFlag("IssixModule", "Hiisi_Affection", -5)
 		setModuleFlag("IssixModule", "Hiisi_Name_Helped", true)
 		processTime(5*60)
+
+	if _action == "hiisihelp":
+		increaseModuleFlag("IssixModule", "Hiisi_Affection", 1)
+		setModuleFlag("IssixModule", "Hiisi_Helped_Today", true)
+		hiisi_help_type = [RNG.randi_range(1,4)]
+		if hiisi_help_type[0] == 3:
+			hiisi_help_type.append()
 
 	if _action == "hiisisilence":
 		setModuleFlag("IssixModule", "Hiisi_Name_Helped", true)
@@ -731,7 +796,7 @@ func _react(_action: String, _args):
 
 	if _action == "artminigame":
 		# 1 - humanoids and items, 2 - feral animals and flora, 3 - backgrounds, 4 - others/electronic devices
-		var art_rand = RNG.pickWeighted([[1], [2], [3], [4], [1, 2], [1, 3], [2, 3], [1, 2, 3]], [15, 15, 15, 5, 15, 15, 5, 4])
+		var art_rand = RNG.pickWeighted([[1], [2], [3], [4], [1, 2], [1, 3], [2, 3], [1, 2, 3]], [15, 15, 15, 5, 10, 10, 5, 4])
 		artwork = [art_rand.duplicate(), generate_artwork_desc(art_rand), RNG.randi_range(1,151) == 50]  # Here Frisk learned about how Godot variables lifespan ends with the end of _react leaving a very empty array after this function ends. Gave me quite a lot of confusion, but was fun to debug I suppose, Python would track the reference to a variable, Godot doesn't, sad.
 
 	if _action == "artminigameae":  # Don't reroll new artwork

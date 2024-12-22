@@ -43,6 +43,8 @@ func getFlags():
 		"Saw_Azazel_Naked": flag(FlagType.Bool),
 		"Lamia_Chosen_Drawing": flag(FlagType.Text),
 		"PC_Saw_Artwork_At_Lamias": flag(FlagType.Bool),
+		"Hiisi_Crossword_IDs_Used": flag(FlagType.Dict),
+		"Hiisi_Helped_Today": flag(FlagType.Bool),
 
 		# Slavery related
 		"PC_Enslavement_Role": flag(FlagType.Number),
@@ -162,7 +164,7 @@ static func getPlayerRole():
 	return "pet" if GM.main.getModuleFlag("IssixModule", "PC_Enslavement_Role", 1) == 1 else "prostitute"
 
 static func playerToFuck():
-	return not (int(GM.main.getDays()) % 2 != 0) and GM.main.getModuleFlag("IssixModule", "Todays_Bred_Slave", "") == "pc"
+	return (int(GM.main.getDays()) % 2 == 1) and GM.main.getModuleFlag("IssixModule", "Todays_Bred_Slave", "") == "pc"  # every uneven day
 
 static func getPlayerPetName():
 	if Species.Canine in GM.pc.getSpecies():
@@ -176,7 +178,7 @@ static func getPlayerPetName():
 
 func breedSlaveIfNpc():
 	## Function to process breeding by Master on randomly selected TODO maybe do that during the day as an event?
-	if not (int(GM.main.getDays()) % 2 != 0):  # Breed only every second day?
+	if (int(GM.main.getDays()) % 2 == 0):  # Breed only every second day?
 		GM.main.setModuleFlag("IssixModule", "Todays_Bred_Slave", "thischardoesntexist")
 		return
 	var available_slaves = ['azazel', 'pc', 'hiisi']
@@ -201,7 +203,7 @@ func breedSlaveIfNpc():
 func calculateDailyScore() -> int:
 	## For calculating player's daily activities at the end of the day
 	var score = 0
-	if playerToFuck():
+	if playerToFuck():  # TODO Need to check when this hook is run because likely wrong day
 		if GM.main.getModuleFlag("IssixModule", "Had_Sex_With_Issix", false) == false:
 			score -= 5
 		else:
