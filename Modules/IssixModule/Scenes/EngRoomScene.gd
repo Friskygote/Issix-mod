@@ -78,6 +78,7 @@ func _run():
 	if state=="lookaround":
 		saynn(GM.world.getRoomByID("eng_closet").getDescription())
 		addButton("Cabinets", "Try to search cabinets", "cabinets")
+		addButton("Computer", "There is a computer in the corner, you could try and interact with it", "computer")
 		addButton("Leave", "Try to leave the room", "leave")
 		
 	if state=="cabinets":
@@ -193,12 +194,14 @@ func _react(_action: String, _args):
 		return
 		
 	if(_action == "cabinetloot"):
+		processTime(60)
 		current_loot = generateLoot(_args[0])
 		current_cabinet = _args[0]
 		if typeof(current_loot) == TYPE_INT:
 			_action = "cabinetevent"+str(current_loot)
 			
 	if _action == "cabinets":
+		processTime(30)
 		var activated_cabinets = getModuleFlag("IssixModule", "Activated_Cabinets", {})
 		if activated_cabinets.size() > 9:
 			if RNG.chance(50):
@@ -212,6 +215,9 @@ func _react(_action: String, _args):
 	if(_action == "strugglemenu"):
 		runScene("StrugglingScene")
 		return
+
+	if _action == "computer":
+		runScene("ComputerSimScene", ["ClosetComputer"], "computerexplore")
 	
 	setState(_action)
 
@@ -235,3 +241,15 @@ func _react_scene_end(_tag, _result):
 			endScene()
 		else:
 			setState("cabinets")
+
+	if(_tag == "computerexplore"):
+		if(_result is Array):
+			if(_result[0] == true):
+				processTime(3*60)
+				# addMessage("You got 50 credits! But there is something else too..")
+				# addItemToSavedItems(GlobalRegistry.createItem("HorsecockDildo"))
+				# GM.pc.addCredits(50)
+				# addExperienceToPlayer(100)
+				setState("lookaround")
+				return
+		endScene()

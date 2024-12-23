@@ -69,12 +69,12 @@ func _run():
 	if state == "issixthreat":
 		saynn("[say=pc]I'm under Master Issix's care, please don't hurt me.[/say]")
 		if GM.pc.getFluids().hasFluidTypeWithCharID("Piss", "issix"):
-			saynn("[say=gymbully]Are you? That would explain why you are reeking of him. Are you a good little "+IssixModule.getPlayerPetName()+" for your Master Esshiks? Ohhh, how cute. Why aren't you on a leash then huh, fuck pet?[/say]")
+			saynn("[say=gymbully]Are you? That would explain why you are reeking of him. Are you a good little "+getPlayerPetName()+" for your Master Esshiks? Ohhh, how cute. Why aren't you on a leash then huh, fuck pet?[/say]")
 		else:
-			saynn("[say=gymbully]Are you? That would explain why you look like a breeding bitch. Are you a good little "+IssixModule.getPlayerPetName()+" for your Master Esshiks? Ohhh, how cute. Why aren't you on a leash then huh, fuck pet?[/say]")
+			saynn("[say=gymbully]Are you? That would explain why you look like a breeding bitch. Are you a good little "+getPlayerPetName()+" for your Master Esshiks? Ohhh, how cute. Why aren't you on a leash then huh, fuck pet?[/say]")
 		saynn("Sounds of laughter fills the place, all three of inmates having fun at your expense.")
 		saynn("[say=gymbully]Do you think your Master would mind if we borrowed you for a few minutes and had fun with you?[/say]")
-		saynn("The main bully looks at the other two for a seond, all of them are rather satisfied with themselves.")
+		saynn("The main bully looks at the other two for a second, all of them are rather satisfied with themselves.")
 		saynn("[say=gymbully]Whatever. You just look like one of his bitches, and I don't plan to mess around with the big man himself again, 5 credits ain't worth it. See ya later, slave.[/say]")
 		addButton("Continue", "That... Worked better than expected", "endthescene")
 
@@ -141,6 +141,16 @@ func _react(_action: String, _args):
 		return
 
 	setState(_action)
+
+static func getPlayerPetName():
+	if Species.Canine in GM.pc.getSpecies():
+		return "puppy"
+	elif Species.Feline in GM.pc.getSpecies():
+		return "kitty"
+	elif Species.Equine in GM.pc.getSpecies():
+		return "pony"
+	else:
+		return "pet"
 
 func saveData():
 	var data = .saveData()

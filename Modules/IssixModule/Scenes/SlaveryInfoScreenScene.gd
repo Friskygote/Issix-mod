@@ -6,7 +6,7 @@ var reply_litter = null
 var azazel_teased_motherhood = false
 var azazel = null
 var AVERAGE_WALK_DELAY = 9
-
+var milk_result = []
 
 func _init():
 	sceneID = "SlaveryInfoScreen"
@@ -32,6 +32,9 @@ func _run():
 		match GM.main.getModuleFlag("IssixModule", "PC_Enslavement_Role", 1):
 			1.0:
 				saynn("Amount of time spent in Master's harem today: "+str(getTimeSpentReadable()))
+				var forced = GM.main.getModuleFlag("IssixModule", "Is_Player_Forced_Today", 0)
+				if forced > 0:
+					saynn("You are expected to spend "+Util.getTimeStringHumanReadable(forced)+" in the harem today.")
 			2.0:
 				saynn("To pay Master for sluttying around yesterday: " + str(GM.main.getModuleFlag("IssixModule", "Prostituation_fee_yesterday", 0) + GM.main.getModuleFlag("IssixModule", "Prostituation_flat_fee", 0)))
 			_:
@@ -67,6 +70,9 @@ func _run():
 		addCharacter("issix")
 		saynn("[say=issix]"+getMoodMessage()+"[/say]")
 		saynn("Is there anything you want to do with Master?")
+		if GM.pc.hasBreastsFullOfMilk():
+			saynn("[say=issix]{pc.Name}, wouldn't you want to unburden your heavy chest a little?[/say]")
+			addButton("Milking", "Ask Issix about milking", "issixmilkingq")
 		if getModuleFlag("IssixModule", "Had_Sex_With_Issix", false) == false:
 			addButton("Sex", "Ask for sex with Master", "issixsexrequest")
 		else:
@@ -75,6 +81,61 @@ func _run():
 		addDisabledButton("Tasks", "Ask for extra tasks (WIP)")  # , "issixtaskquestion"
 		addDisabledButton("Options", "Ask your Master to change how he treats you (WIP)")  #, "issixoptions" Pet etiquette, make player communicate via animalistic sounds, unlocks optional training
 		addButton("Back", "Go back", "")
+
+	if state == "issixmilkingfirst":
+		saynn("[say=pc]Master, you mentioned something about unburdening my chest?[/say]")
+		saynn("[say=issix]Yes, pet. I can see your nipples leaking, you must be full. If you want, I could help you out. What do you say about it, do you want to be a little cow for me today? I can even give you something extra if you are a good little pet for me and give me your milk.[/say]")
+		addButton("Moo", "Moo at your Master", "issixmilking")
+		addButton("Not today", "You do not feel like getting milked right now", "issixpetmenu")
+
+	if state == "issixmilkingrepeat":
+		saynn("[say=pc]Master, I'd like you to milk me today.[/say]")
+		saynn("Master smiles at you and gestures you to come closer")
+		saynn("[say=issix]Of course my little cow, come here, let me take care of you.[/say]")
+		addButton("Moo", "Get milked by your Master", "issixmilking")
+
+	if state == "issixmilking":
+		playAnimation(StageScene.Duo, "sit", {npc="issix", bodyState={exposedChest=true, leashedBy="issix"}, npcAction="sit"})
+		saynn("[say=pc]Mooo.[/say]")
+		saynn("Your Master stands and sits you down on his chair.")
+		if !GM.pc.isFullyNaked():
+			saynn("[say=issix]First we will need to make you lose your clothes, don't you think? Little cows don't need any of that silly fabrics.[/say]")
+			saynn("Your Master eagerly removes the clothing covering your round orbs containing plenty of fluid your body meant for your children.")
+
+		saynn("Issix looks at your {pc.breasts} and starts massaging them with his paws, some {pc.milk} trickles out on his arm, he licks it.")
+
+		if GM.pc.hasBigBreasts():
+			saynn("[say=issix]You have such big {pc.milk} producers, can't wait to see just how much I can get out of them.[/say]")
+		else:
+			saynn("[say=issix]Modest size, but always cute to milk. If I were here for profit only I probably would skip the milking, but my precious pet cow deserves more than that, don't you?[/say]")
+			saynn("You respond with a little embarrassed moo.")
+		var term_for_breasts = ("udders" if GM.pc.hasBigBreasts() else "perky breasts")
+		saynn("Master grabs a bucket from under his chair, kneels with one of his legs and puts the bucket on your legs. He holds the bucket with his elbow while each of his paws lands on your {pc.breasts}.")
+		saynn("[say=issix]Hmm, perhaps that's not the best position for me, and I also think to complete your look we need one more thing.[/say]")
+
+		saynn("Your Master stands before producing another folded chair from a stash of stuff behind you. He also picks up a leash from his bag and attaches its clasp to your collar.")
+
+		saynn("[say=issix]That's better look for you, animals should be leashed. Now, my sweet little cow, relax and let me take care of you, okey?[/say]")
+		saynn("You nod to your Master, excited. He starts to tug on your "+term_for_breasts+" as you feel {pc.milk} escape your body into the bucket below, this feeling accompanied by a range of other pleasurable feelings.")
+
+		saynn("You look at your Master's face as he continues to gather your sweet {pc.milk}, though your look is blank - empty, just as your mind at that moment. You feel pleasure escaping from your "+term_for_breasts+" into every part of your body. Rhythmic squeezes currently fueling your existence. You live in a moment, letting your Master drain you, milk you like a feral animal. Your dumb stare is accompanied by open mouth with string of saliva dropping from your lips onto your body, if someone were to ask you a question, it likely wouldn't even register in your mind. Perhaps your Master milks you not only of {pc.milk} but also your mind? You wouldn't mind that though, would you?")
+		saynn("[say=issix]What a happy little cow you are! Don't worry, seems like we are nearing the end.[/say]")
+		saynn("You smile dumbly at your Master, not understanding his words. Cows don't think complex thoughts, they are to support their calves, or - like in your case - let their Master relieve them of burden. At some point you no longer register the waves of pleasure from your chest, and you hear snaps near your right ear. The blur in your eyes starts to sharpen out and you see happy face of your Master staring back at you, a bucket no longer on your legs.")
+		saynn("[say=issix]You there? Hello? Theeere you are. Enjoyed being a little cow?[/say]")
+		saynn("He scratches you behind your ears.")
+		saynn("[say=issix]Lets see...[/say]")
+		addButton("Continue", "Production review", "issixmilkingresult")
+
+	if state == "issixmilkingresult":
+		saynn("[say=issix]Today you've produced " +str(round(milk_result[0])) +" ml for me today. It makes it "+str(round(milk_result[1]))+" ml in total.[/say]")
+
+		if GM.pc.getSkillLevel(Skill.Milking) < 20 or milk_result[1] < 50000 or milk_result[0] < 600:
+			saynn("[say=issix]Perhaps you'd want to stay like you were when milking huh? Maybe some day, if you choose to be my little cow instead of "+getPlayerPetName()+" we could think about it okey? But you need to be a goood healthy cow producing lots and lots of milk for your Master alright? "+("You even look the part already! *gently pokes your horns*" if GM.pc.hasHorns() else "")+" Gooood cow.[/say]")
+			saynn("He pets your head")
+
+		else:  # TODO I'll wait with this path for TF changes to land in main, perhaps player could become a female cow for Master?
+			addDisabledButton("Cow cow!", "Become a cow for your Master (transformation, WIP (likely very distant future if ever))")
+		addButton("Continue", "Come back to your senses", "issixpetmenu")
 
 	if state == "haremeat":
 		saynn("You approach your bowl on the edge of your blanket, full of the gelatinous mass your Master fills it with and start munching its contents like a real pet would, without using tools or paws.")
@@ -405,6 +466,23 @@ func _react(_action: String, _args):
 			_action = "lamiapetrequestanother"
 		GM.main.setModuleFlag("IssixModule", "Have_Received_Headpats_Lamia", true)
 
+	if _action == "issixmilkingq":
+		if GM.main.getModuleFlag("IssixModule", "Total_Fluids_Milked", 0) == 0:
+			_action = "issixmilkingfirst"
+		else:
+			_action = "issixmilkingrepeat"
+
+	if _action == "issixmilking":
+		processTime(10*60)
+
+	if _action == "issixmilkingresult":
+		var this_milking = GM.pc.milk()
+		var total_milk_obtained = getModuleFlag("IssixModule", "Total_Fluids_Milked", {"Milk": 0.0})  # Currently only fluid implemented in base game
+		total_milk_obtained["Milk"] = total_milk_obtained["Milk"] + this_milking
+		setModuleFlag("IssixModule", "Total_Fluids_Milked", total_milk_obtained)
+		milk_result = [this_milking, total_milk_obtained["Milk"]]
+		setModuleFlag("IssixModule", "Has_Been_Milked_Today", true)
+
 	if _action == "littercountresult":
 		if(getTextboxData("litter_count") == ""):
 			return
@@ -478,6 +556,7 @@ func _react_scene_end(_tag, _result):
 func saveData():
 	var data = .saveData()
 
+	data["milk_result"] = milk_result
 	data["replyLitter"] = reply_litter
 	data["petTimeStart"] = pet_time_start
 	data["azazelTease"] = azazel_teased_motherhood
@@ -490,3 +569,4 @@ func loadData(data):
 	pet_time_start = SAVE.loadVar(data, "petTimeStart", null)
 	azazel_teased_motherhood = SAVE.loadVar(data, "azazelTease", false)
 	reply_litter = SAVE.loadVar(data, "reply_litter", 0)
+	milk_result = SAVE.loadVar(data, "milk_result", [])

@@ -43,7 +43,7 @@ func getFlags():
 		"Saw_Azazel_Naked": flag(FlagType.Bool),
 		"Lamia_Chosen_Drawing": flag(FlagType.Text),
 		"PC_Saw_Artwork_At_Lamias": flag(FlagType.Bool),
-		"Hiisi_Crossword_IDs_Used": flag(FlagType.Dict),
+		"Hiisi_Crossword_Used": flag(FlagType.Number),
 		"Hiisi_Helped_Today": flag(FlagType.Bool),
 
 		# Slavery related
@@ -69,7 +69,10 @@ func getFlags():
 		"Had_Sex_With_Issix": flag(FlagType.Bool),
 		"Litter_Guessing_Game": flag(FlagType.Dict),
 		"Have_Received_Headpats_Lamia": flag(FlagType.Bool),
-		"Received_Headpats_From_Lamia": flag(FlagType.Number)
+		"Received_Headpats_From_Lamia": flag(FlagType.Number),
+		"Total_Fluids_Milked": flag(FlagType.Dict),
+		"Has_Been_Milked_Today": flag(FlagType.Bool),
+		"Submission": flag(FlagType.Number)
 		#"Gym_Bullies_Left_Alone": flag(FlagType.Bool)  Currently cannot change the behavior of this :(
 		}
 		
@@ -90,7 +93,6 @@ func _init():
 		"res://Modules/IssixModule/Events/SlaveryIntroEvent.gd",
 		"res://Modules/IssixModule/Events/IssixRegularSearch.gd",
 		"res://Modules/IssixModule/Events/LamiaCellEvent.gd"
-		#"res://Modules/IssixModule/Events/Overwrites/BullyGangEvent.gd"  Cannot overwrite module that loads after
 		]
 		
 	scenes = [
@@ -111,7 +113,6 @@ func _init():
 		"res://Modules/IssixModule/Scenes/SlaveryIntroScene.gd",
 		"res://Modules/IssixModule/Scenes/SlaveryInfoScreenScene.gd",
 		"res://Modules/IssixModule/Scenes/SlaveryFirst/IssixBringsComicbooks.gd",
-		#"res://Modules/IssixModule/Scenes/Overwrites/BullyGangScene.gd"
 		"res://Modules/IssixModule/Scenes/SlaveryFirst/IssixFindsAvoidingPlayer.gd"
 		]
 		
@@ -136,6 +137,10 @@ func _init():
 		"res://Modules/IssixModule/IssixPetQuest.gd"
 	]
 
+	computers = [
+		"res://Modules/IssixModule/Scenes/ClosetComputer.gd"
+	]
+
 	GlobalRegistry.registerLustTopicFolder("res://Modules/IssixModule/InterestTopics/")
 	GlobalRegistry.registerSkinsFolder("res://Modules/IssixModule/Skins/")
 	GlobalRegistry.registerStatusEffectFolder("res://Modules/IssixModule/StatusEffects/")
@@ -144,10 +149,9 @@ func _init():
 	GlobalRegistry.registerSpeechModifiersFolder("res://Modules/IssixModule/SpeechModifiers/")
 	GlobalRegistry.registerAttackFolder("res://Modules/IssixModule/Attacks/", true)
 
-# External
-# "res://Scenes/ParadedOnALeashScene.gd"
-# "res://Game/World/Floors/Closet.gd"
-# "res://Game/World/Floors/Closet.tscn"
+func postInit():
+	GlobalRegistry.registerScene("res://Modules/IssixModule/Scenes/Overwrites/BullyGangScene.gd", "Rahi")  # Still consider it mostly Rahi's creation'
+	GlobalRegistry.registerEvent("res://Modules/IssixModule/Events/Overwrites/BullyGangEvent.gd")
 
 static func addSceneToWatched(scene: String):
 	var scenes = GM.main.getModuleFlag("IssixModule", "Misc_Slavery_Info", {"scenes_seen": []})
@@ -255,3 +259,4 @@ func resetFlagsOnNewDay():  # I apologize for abusing this hook, but startNewDay
 		GM.main.setModuleFlag("IssixModule", "Helped_Lamia_With_Drawings_Today", false)
 	GM.main.setModuleFlag("IssixModule", "Pet_Time_Interaction_Today", 0)
 	GM.main.setModuleFlag("IssixModule", "Eaten_Today", false)
+	GM.main.setModuleFlag("IssixModule", "Has_Been_Milked_Today", true)

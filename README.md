@@ -23,6 +23,8 @@ In tags: M/player, M/M (implied), petplay, slave, watersports, parasite
 ## Mod's audience
 Mod is directed pretty much exclusively at players who are submissive. In game there are already a bunch of ways the player can effectively submit to other creatures - recentlishly added hypnokink is a great example of that, Tavi's questline also has a route/revolves around player submitting to Tavi as their pet. Those things are wonderful and I love them, but in-game slave system is definitely directed at dominant players. This mod tries to address that by adding a character that can enslave **the player**. It features degradation, pet-play content, watersports (for those who switch it on), branding. In addition - worth noting that the entire harem of pets is male.
 
+What you **shouldn't expect** from the mod at the moment is for it to be heavy on non-con or roughness. While the "non-con" is one of the ideas I have, it is planned to be implemented at later time if I have enough motivation.
+
 ## Slavery
 I think there is a reason why there are dozens of harem-management games where player becomes harem's owner and manages slave instead of being one. I think in large part there isn't much of a way to make the player be a slave and keep the gameplay entertaining. If becoming a slave means less choice - the game may become boring. In this mod I'm trying my best to still feel like player is enslaved while at the same time let them continue playing the game with full functionality. This is not an easy task to do, but probably better than eternity of being stuck in one time playing card game with another pet.
 
