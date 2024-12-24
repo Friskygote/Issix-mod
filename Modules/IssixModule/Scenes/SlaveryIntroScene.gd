@@ -30,7 +30,7 @@ func _run():
 		saynn("[say=issix]That's most wonderful to hear. You've had multiple opportunities to reject becoming my pet and yet you persisted. Good.[/say]")
 		saynn("[say=issix]From this time onward, you'll always refer to me as Master or Master Issix. As my pet, I consider your body belongs to me now.[/say]")
 		saynn("[say=issix]Tell me now, what role would you like to accept as defacto my slave? A pet or a prostitute?[/say]")
-		addMessage("You gained 100 experience for completing „Becoming something lesser” quest")
+		addMessage("You gained 500 experience for completing „Becoming something lesser” quest")
 		addButton("Pet", "Tell Issix you'd rather become his pet, just like his other 3 pets", "petrole")
 		addDisabledButton("Prostitute", "This option is not yet available in the mod, it is planned in the future however")  # TODO 1.1
 
@@ -260,7 +260,7 @@ func _react(_action: String, _args):
 	# 	GM.pc.getInventory().forceEquipStoreOther(cuff)
 
 	if _action == "acceptslavery":
-		GM.pc.addExperience(100)
+		GM.pc.addExperience(500)
 		setModuleFlag("IssixModule", "Misc_Slavery_Info", {"day_enslaved": GM.main.getDays(), "scenes_seen": []})
 		setModuleFlag("IssixModule", "Progression_Points", 1)
 		setModuleFlag("IssixModule", "Progression_Day_Next", GM.main.getDays()+1)

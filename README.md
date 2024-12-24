@@ -6,16 +6,18 @@ A mod for Broken Dreams Correctional Center. Introduces Issix and his harem of s
 ## Disclaimer
 The mod and contents in it is - surprise surprise - a work of fiction. Author does not support, condone, advocate for, endorse, stand up for non-consensual activities, relationships or violence.
 
-# Existing content (assuming I don't get lazy before 1.0)
+# Existing content
 - Issix - a dragon-demon hybrid, he owns 3 pets, all of them have some story that you can uncover (and which may be expanded in the future)
  - Azazel - a kind feline breeding bitch
  - Hiisi - a troubled pup - guardian angel of the harem (after Issix)
  - Lamia - a mute and sexually absent fox
 - One quest that leads to your enslavement by Issix (currently only implemented voluntary enslavement as a pet, this is an overall rather "nice" type of enslavement), there are a bunch of fun elements in it, like figuring out an ASCII map or filling a questionnaire
-- Each (ok, only Azazel and Lamia) pet has their own mechanic that increases their trust/affection towards the player
+- Each pet has their own mechanic that increases their trust/affection towards the player
 - Finally, voluntary enslavement, if you eventually get enslaved it may make your game a bit more difficult
 - Some branches of choices and situations.
 - Hopefully at least around an hour of additional gameplay? Haven't tested yet
+
+What isn't there is basically a lot of post-enslavement content. This is major focus of current work on the mod for it to grow to 1.0 release.
 
 In tags: M/player, M/M (implied), petplay, slave, watersports, parasite
 
@@ -23,7 +25,7 @@ In tags: M/player, M/M (implied), petplay, slave, watersports, parasite
 ## Mod's audience
 Mod is directed pretty much exclusively at players who are submissive. In game there are already a bunch of ways the player can effectively submit to other creatures - recentlishly added hypnokink is a great example of that, Tavi's questline also has a route/revolves around player submitting to Tavi as their pet. Those things are wonderful and I love them, but in-game slave system is definitely directed at dominant players. This mod tries to address that by adding a character that can enslave **the player**. It features degradation, pet-play content, watersports (for those who switch it on), branding. In addition - worth noting that the entire harem of pets is male.
 
-What you **shouldn't expect** from the mod at the moment is for it to be heavy on non-con or roughness. While the "non-con" is one of the ideas I have, it is planned to be implemented at later time if I have enough motivation.
+What you **shouldn't expect** from the mod at the moment is for it to be heavy on non-con or roughness. While the "non-con non-con" (instead of current voluntary non-con) is one of the ideas I have, it is planned to be implemented at later time if I have enough motivation. It should feature both a way to get enslaved by Issix forcefully as well as be an option when advancing slavery in Issix's harem so anyone can get some non-con action. In fact, current content for many could even be seen as not slavery related enough with it being so easy on player, I'm open to feedback.
 
 ## Slavery
 I think there is a reason why there are dozens of harem-management games where player becomes harem's owner and manages slave instead of being one. I think in large part there isn't much of a way to make the player be a slave and keep the gameplay entertaining. If becoming a slave means less choice - the game may become boring. In this mod I'm trying my best to still feel like player is enslaved while at the same time let them continue playing the game with full functionality. This is not an easy task to do, but probably better than eternity of being stuck in one time playing card game with another pet.
@@ -40,6 +42,8 @@ Here is a list of planned content:
 - Making use of existing system to improve affection with pets
   - Including ability to make love with Hiisi and Azazel
 
+I'm currently undecided whether to prioritize alternative route of enslavement/improvement of existing content/prostitute role or non-con role. If you have good arguments for any, feel free to let me know!
+  
 ## Technical stuff
 The goal is to create a mod with as little of overwriting the core modules to preserve compatibility and not have a dance every time base game gets an update. This means that we'll try to use as many of mechanics that already exist in the game as possible. Granted, while I'm a coder, I'm unsure I can properly implement complex system in Godot, so I might need some help with that.
 

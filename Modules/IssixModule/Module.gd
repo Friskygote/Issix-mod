@@ -150,6 +150,7 @@ func _init():
 	GlobalRegistry.registerAttackFolder("res://Modules/IssixModule/Attacks/", true)
 
 func postInit():
+	# Overwrite scenes for dealing with bullies, they need to be initiated in here due to module initialization order overwriting our modules
 	GlobalRegistry.registerScene("res://Modules/IssixModule/Scenes/Overwrites/BullyGangScene.gd", "Rahi")  # Still consider it mostly Rahi's creation'
 	GlobalRegistry.registerEvent("res://Modules/IssixModule/Events/Overwrites/BullyGangEvent.gd")
 

@@ -78,6 +78,7 @@ var odd_lamia_art = [
 
 var crossword_puzzles = [["Sex in 11 letters", "Intercourse"], ["Subfamily of goats and sheep", "Caprinae"], ["Lacking the authority or capacity to act", "Powerless"], ["Male heir to the throne", "Prince"], ["Fantasy art of bringing creatures from death to living", "Necromancy"]]
 # OWNERSHIP
+
 func _init():
 	sceneID = "PetsTalkScene"
 

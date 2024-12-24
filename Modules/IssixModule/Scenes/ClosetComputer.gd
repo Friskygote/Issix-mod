@@ -2,13 +2,30 @@ extends ComputerBase
 
 var connectedTo = ""
 var loggedAsAdmin = false
+var records = {"533": "ID: 533\nfirstname: Issix\nlastname: [corrupt]Solomon[/corrupt]\n\nnotes: Issix, or rather [b]Gaap[/b] as his real real name goes, is a special case in BDCC, staff is NOT to take any punitive action in regards to this individual without first consulting with the director. He has not been convicted of any illegal activities, but rather has been introduced to prison based on order o[corrupt]f general Sonno[/corrupt]fer. \nOfficially - he is an inmate, unofficially he is is untouchable. Let him do whatever the fuck he wants, unless you don't value your own life. Incarcerated in [corrupt]4292 32 11[/corrupt].",\
+"655": "ID: 655\nfirstname: Azazel\nlastname: Dreemurr\nPast inhabitant of planet [b]Pueri Meritorii[/b], sentenced for sex work with untreated STD. Original sentence was 10 years, it has been extended to indefinite due to circumstances in the prison.\nNOTE: THIS INMATE IS OWNED BY INMATE 533, PLEASE REFER TO MENTIONED INMATE ABOUT ALL MATTERS PERTAINING TO THIS INMATE",\
+""}
 
 func _init():
 	id = "ClosetComputer"
 
 func reactToCommand(_command:String, _args:Array, _commandStringRaw:String):
 	if (connectedTo == "inmates.db"):
-		pass
+		if _command == "help":
+			if _args.size() == 3:
+				if _args[0].to_upper() == "SELECT":
+					if _args[1].to_lower() == "inmates":
+						var record = records.get(_args[2])
+						if record == null:
+							return "No record with primary key of `"+_args[1]+"` has been found!"
+						return printRecord(record)
+					else:
+						return "Table `"+_args[1]+"` couldn't be found!"
+				else:
+					return "`sqleasy` supports only read operations using SELECT."
+			else:
+				return "sqleasy makes SQL easy for you! Instead of knowing all this useless syntax, you only need to know the table name, ID from the primary key and SELECT!\n\nSyntax: SELECT <table name> <ID>\n\nIt will show you all columns corresponding to a record with given ID!\n©Lain (YOU ARE USING UNLICENSED COPY, PLEASE ACTIVATE YOUR VERSION WITH LICENSE!)"
+
 
 	if(connectedTo == "127.0.223"):  # TODO Finish computer UwU
 		if(_command == "help"):
@@ -23,15 +40,15 @@ func reactToCommand(_command:String, _args:Array, _commandStringRaw:String):
 					return "This command outputs the contents of your harddrive"
 				elif(tolearn == "cat"):
 					return "This command outputs file's contents into the console.\nSyntax 'cat <FILE INDEX>' where file index is a [b]number[/b] that can be obtained by using the ls command"
-				elif(tolearn == "sqlopen"):
-					return "This command opens a database file for simple operations\nSyntax 'sqlopen <FILE INDEX>' where file index is a [b]number[/b] that can be obtained by using the ls command"
+				elif(tolearn == "sqleasy"):
+					return "This command opens a database file for simple operations\nSyntax 'sqleasy <FILE INDEX>' where file index is a [b]number[/b] that can be obtained by using the ls command"
 				return "No help found for that command"
 			learnCommand("disconnect")
 			learnCommand("login")
 			learnCommand("ls")
 			learnCommand("cat")
-			learnCommand("sqlopen")
-			return "Available commands:\ndisconnect\nlogin\nls\ncat\nsqlopen"
+			learnCommand("sqleasy")
+			return "Available commands:\ndisconnect\nlogin\nls\ncat\nsqleasy"
 
 		if(_command == "disconnect"):
 			if(_args.size() == 0):
@@ -41,16 +58,19 @@ func reactToCommand(_command:String, _args:Array, _commandStringRaw:String):
 			else:
 				return "'disconnect' command expects 0 arguments"
 
-		if(_command == "sqlopen"):
+		if(_command == "sqleasy"):
 			if(_args.size() == 1):
 				var fileIndex = _args[0]
 				if(fileIndex in ["1", "inmates.db"]):
-					connectedTo = "inmates.db"
-					return "Opening inmates.db... Opened successfully."
+					if loggedAsAdmin:
+						connectedTo = "inmates.db"
+						return "Opening inmates.db... Opened successfully."
+					else:
+						return "sqleasy: inmates.db: Permission denied"
 				else:
 					return "Error. File with such index wasn't found"
 			else:
-				return "'sqlopen' command expects 1 argument"
+				return "'sqleasy' command expects 1 argument"
 
 		if(_command == "login"):
 			if(loggedAsAdmin):
@@ -74,7 +94,7 @@ func reactToCommand(_command:String, _args:Array, _commandStringRaw:String):
 				var fileIndex = _args[0]
 				if(fileIndex in ["1", "inmates.db"]):
 					if loggedAsAdmin:
-						return "�v�KtablefilesfilesCREATE TABLE inmates (\nid INTEGER NOT NULL, \nfirst_name TEXT, \nlast_name TEXT, \ndescription TEXT, \nPRIMARY KEY (id)\n#��������������������������{uoic]WQKE?93-'!     smga[UOIC=71+% [corrupt]garbaaaageeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee[/corrupt]\n"
+						return "�v�KtablefilesfilesCREATE TABLE inmates (\nid INTEGER NOT NULL, \nfirst_name TEXT, \nlast_name TEXT, \nnotes TEXT, \nPRIMARY KEY (id)\n#��������������������������{uoic]WQKE?93-'!     smga[UOIC=71+% [corrupt]garbaaaageeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee[/corrupt]\n"
 					else:
 						return "cat: inmates.db: Permission denied"
 				else:
@@ -153,6 +173,10 @@ func reactToCommand(_command:String, _args:Array, _commandStringRaw:String):
 
 		learnCommand("help")
 		return "Error, unknown command. Use 'help' to list all available commands"
+
+
+def printRecord(record:String) -> String:
+	return ""
 
 func saveData():
 	var data = .saveData()

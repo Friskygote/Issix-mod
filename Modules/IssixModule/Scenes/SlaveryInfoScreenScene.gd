@@ -62,7 +62,7 @@ func _run():
 				addDisabledButton("Walk", "Too late for a walk")
 		addButton("Pass", "Pass the time (placeholder button for now, supposed to be actions with pets/master later)", "passtime")
 		if getModuleFlag("IssixModule", "Comic_Book_Unlocked", false) == true and getModuleFlag("IssixModule", "Comic_Books", 0) > 0:
-			addButton("Comic", "Read one of "+ str(getModuleFlag("IssixModule", "Comic_Books", 0)) +" comic books", "readabook")
+			addButtonWithChecks("Comic", "Read one of "+ str(getModuleFlag("IssixModule", "Comic_Books", 0)) +" comic books", "readabook", [], [ButtonChecks.NotBlindfolded])
 		if not (GM.main.getModuleFlag("IssixModule", "Is_Player_Forced_Today", 0) > (getTimeSpent())) or GM.main.isVeryLate():
 			addButton("Leave", "Leave", "endthescene")
 
@@ -503,11 +503,6 @@ func _react(_action: String, _args):
 		GM.pc.addLust(100)
 		azazel_teased_motherhood = true
 
-	if _action == "after_sex_issix":
-		setModuleFlag("IssixModule", "Had_Sex_With_Issix", true)
-		processTime(20*60)
-		addIssixMood(5)
-
 	if _action == "readabook":
 		processTime(20*60)
 		increaseModuleFlag("IssixModule", "Comic_Books", -1)
@@ -547,9 +542,11 @@ func onTextBoxEnterPressed(_new_text:String):
 	GM.main.pickOption("littercountresult", [])
 
 
-
 func _react_scene_end(_tag, _result):
 	if _tag == "subbysexissix":
+		setModuleFlag("IssixModule", "Had_Sex_With_Issix", true)
+		processTime(20*60)
+		addIssixMood(5)
 		setState("after_sex_issix")
 
 
@@ -566,7 +563,7 @@ func saveData():
 func loadData(data):
 	.loadData(data)
 
+	milk_result = SAVE.loadVar(data, "milk_result", [])
 	pet_time_start = SAVE.loadVar(data, "petTimeStart", null)
 	azazel_teased_motherhood = SAVE.loadVar(data, "azazelTease", false)
 	reply_litter = SAVE.loadVar(data, "reply_litter", 0)
-	milk_result = SAVE.loadVar(data, "milk_result", [])
