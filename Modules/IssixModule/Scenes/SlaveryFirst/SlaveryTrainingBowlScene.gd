@@ -74,6 +74,7 @@ func _react(_action: String, _args):
 	if(_action == "endthescene"):
 		increaseModuleFlag("IssixModule", "PC_Training_Level")
 		increaseModuleFlag("IssixModule", "Progression_Points")
+		GM.pc.getSkillsHolder().addPerk("BowlTraining")
 		var scenes = GM.main.getModuleFlag("IssixModule", "Misc_Slavery_Info", {"scenes_seen": []})
 		scenes["scenes_seen"].append(sceneID)
 		GM.main.setModuleFlag("IssixModule", "Misc_Slavery_Info", scenes.duplicate(true))

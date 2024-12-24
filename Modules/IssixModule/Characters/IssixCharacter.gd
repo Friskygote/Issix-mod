@@ -92,6 +92,7 @@ func _init():
 		InterestTopic.TightPussy: Interest.Likes,
 		InterestTopic.BigCock: Interest.Hates,
 	}
+
 	
 func interestVerbalReaction(interest):
 	if(interest == InterestTopic.Pregnant):
@@ -148,6 +149,20 @@ func createBodyparts():
 	tail.tailScale = 1
 	giveBodypartUnlessSame(tail)
 	giveBodypartUnlessSame(GlobalRegistry.createBodypart("hoofs"))
+	skillsHolder.addPerk(Perk.BreedCumVolume)
+	skillsHolder.addPerk(Perk.BreedCumVolumeV2)
+	skillsHolder.addPerk(Perk.BreedCumProduction)
+	skillsHolder.addPerk(Perk.BreedCumProductionV2)
+	skillsHolder.addPerk(Perk.BreedCumProductionV3)
+	skillsHolder.addPerk(Perk.BreedStud)
+	skillsHolder.addPerk(Perk.BreedRapidConception)
+	skillsHolder.addPerk(Perk.BreedCockSlap)
+	skillsHolder.addPerk(Perk.BreedBreedersBliss)
+	skillsHolder.addPerk(Perk.CombatBetterGetUp)
+	skillsHolder.addPerk(Perk.CombatDoubleDown)
+	skillsHolder.addPerk(Perk.CombatFullStaminaBonus)
+	skillsHolder.addPerk(Perk.CombatScratching)
+	skillsHolder.addPerk(Perk.CombatShove)
 
 
 func onGivingBirth(_impregnatedEggCells: Array, _newkids: Array):

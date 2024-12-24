@@ -118,7 +118,10 @@ func createBodyparts():
 	tail.tailScale = 1
 	giveBodypartUnlessSame(tail)
 	giveBodypartUnlessSame(GlobalRegistry.createBodypart("digilegs"))
-
+	skillsHolder.addPerk(Perk.CombatBetterGetUp)
+	skillsHolder.addPerk(Perk.CombatDoubleDown)
+	skillsHolder.addPerk(Perk.CombatShove)
+	skillsHolder.addPerk(Perk.HypnosisFastAsleep)
 
 func onGivingBirth(_impregnatedEggCells: Array, _newkids: Array):
 	.onGivingBirth(_impregnatedEggCells, _newkids)

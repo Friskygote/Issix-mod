@@ -131,6 +131,16 @@ func createBodyparts():
 	skillsHolder.addPerk(Perk.FertilityBetterOvulationV3)
 	skillsHolder.addPerk(Perk.FertilityDesireToBreed)
 	skillsHolder.addPerk(Perk.FertilitySubmissiveAndBreedable)
+	skillsHolder.addPerk(Perk.NakedDodging)
+	skillsHolder.addPerk(Perk.NakedDodgingV2)
+	skillsHolder.addPerk(Perk.NakedDodgingV3)
+	skillsHolder.addPerk(Perk.NakedExtraStamina)
+	skillsHolder.addPerk(Perk.NakedExtraStaminaV2)
+	skillsHolder.addPerk(Perk.NakedMagicHips)
+	skillsHolder.addPerk(Perk.NakedNoShame)
+	skillsHolder.addPerk(Perk.NakedStunningLips)
+	skillsHolder.addPerk(Perk.MilkSquirt)
+	skillsHolder.addPerk(Perk.MilkFasterProduction)
 
 func onGivingBirth(_impregnatedEggCells: Array, _newkids: Array):
 	.onGivingBirth(_impregnatedEggCells, _newkids)
@@ -139,4 +149,4 @@ func getBirthWaitTime():
 	return 60*60*24*3
 
 func getDefaultEquipment():
-	return ["inmatecollar", "inmateuniformSexDeviant"]
+	return ["inmatecollar", "inmateuniformSexDeviant", "plainPanties"]

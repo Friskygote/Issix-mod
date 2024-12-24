@@ -68,6 +68,7 @@ func _react(_action: String, _args):
 				setModuleFlag("IssixModule", "Progression_Day_Next", GM.main.getDays()+5)
 			else:
 				setModuleFlag("IssixModule", "Progression_Day_Next", GM.main.getDays()+2)
+		GM.pc.getSkillsHolder().addPerk("PetWalkies")
 
 	if _action == "walkies2":
 		processTime(4*60)

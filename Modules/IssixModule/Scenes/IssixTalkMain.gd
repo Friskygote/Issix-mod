@@ -195,6 +195,7 @@ func _run():
 		
 	if(state == "join"):
 		var score = calculateHaremScore()
+		#var pets = [getModuleFlag("IssixModule", "Azazel_Affection_given", 0), getModuleFlag("IssixModule", "Lamia_Times_Helped", 0), getModuleFlag("IssixModule", "Hiisi_Affection", 0)]
 		var score_explored = GM.main.getModuleFlag("IssixModule", "Score_Explored")
 		saynn("[say=pc]"+RNG.pick(["What would you say about me becoming one of your pets?", "Do you think I would fit in with your harem?", "I'd like to become one of your pets, is this possible?"])+"[/say]")
 		if(GM.pc.getPersonality().getStat(PersonalityStat.Subby) < 0):

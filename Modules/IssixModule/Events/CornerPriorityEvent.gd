@@ -15,8 +15,13 @@ class CustomSorter:
 func checkRequirements(requirements: Dictionary):
 	for key in requirements.keys():
 		if requirements[key] is int or requirements[key] is float:
-			if getModuleFlag("IssixModule", key, 0) < requirements[key]:
-				return false
+			if key.begins_with("-"):  # If we want to eliminate cases where the requirement value is LOWER than player's score
+				key = key.trim_prefix("-")
+				if getModuleFlag("IssixModule", key, 0) >= requirements[key]:
+					return false
+			else:  # If we want to eliminate cases where the requirement value is HIGHER than player's score
+				if getModuleFlag("IssixModule", key, 0) < requirements[key]:
+					return false
 		elif requirements[key] is String:
 			if getModuleFlag("IssixModule", key, 0) != requirements[key]:
 				return false

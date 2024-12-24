@@ -2,9 +2,9 @@ extends ComputerBase
 
 var connectedTo = ""
 var loggedAsAdmin = false
-var records = {"533": "ID: 533\nfirstname: Issix\nlastname: [corrupt]Solomon[/corrupt]\n\nnotes: Issix, or rather [b]Gaap[/b] as his real real name goes, is a special case in BDCC, staff is NOT to take any punitive action in regards to this individual without first consulting with the director. He has not been convicted of any illegal activities, but rather has been introduced to prison based on order o[corrupt]f general Sonno[/corrupt]fer. \nOfficially - he is an inmate, unofficially he is is untouchable. Let him do whatever the fuck he wants, unless you don't value your own life. Incarcerated in [corrupt]4292 32 11[/corrupt].",\
-"655": "ID: 655\nfirstname: Azazel\nlastname: Dreemurr\nPast inhabitant of planet [b]Pueri Meritorii[/b], sentenced for sex work with untreated STD. Original sentence was 10 years, it has been extended to indefinite due to circumstances in the prison.\nNOTE: THIS INMATE IS OWNED BY INMATE 533, PLEASE REFER TO MENTIONED INMATE ABOUT ALL MATTERS PERTAINING TO THIS INMATE",\
-""}
+var records = {"533": "ID: 533\nfirstname: Issix\nlastname: [corrupt]Solomon[/corrupt]\nitype: 1\n\nnotes: Issix, or rather [b]Gaap[/b] as his real real name goes, is a special case in BDCC, staff is NOT to take any punitive action in regards to this individual without first consulting with the director. He has not been convicted of any illegal activities, but rather has been introduced to prison based on order o[corrupt]f general Sonno[/corrupt]fer. \nOfficially - he is an inmate, unofficially he is is untouchable. Let him do whatever the fuck he wants, unless you don't value your own life. Incarcerated in [corrupt]4292 32 11[/corrupt].",\
+"655": "ID: 655\nfirstname: Azazel\nlastname: Dreemurr\nitype: 3\nPast inhabitant of planet [b]Pueri Meritorii[/b], sentenced for sex work with untreated STD. Original sentence was 10 years, it has been extended to indefinite due to circumstances in the prison.\nNOTE: THIS INMATE IS OWNED BY INMATE 533, PLEASE REFER TO MENTIONED INMATE ABOUT ALL MATTERS PERTAINING TO THIS INMATE",\
+"": ""}
 
 func _init():
 	id = "ClosetComputer"
@@ -15,7 +15,7 @@ func reactToCommand(_command:String, _args:Array, _commandStringRaw:String):
 			if _args.size() == 3:
 				if _args[0].to_upper() == "SELECT":
 					if _args[1].to_lower() == "inmates":
-						var record = records.get(_args[2])
+						var record = records.get(_args[2]) if _args[2] != GM.pc.getInmateNumber() else preparePCRecord()
 						if record == null:
 							return "No record with primary key of `"+_args[1]+"` has been found!"
 						return printRecord(record)
@@ -24,7 +24,11 @@ func reactToCommand(_command:String, _args:Array, _commandStringRaw:String):
 				else:
 					return "`sqleasy` supports only read operations using SELECT."
 			else:
-				return "sqleasy makes SQL easy for you! Instead of knowing all this useless syntax, you only need to know the table name, ID from the primary key and SELECT!\n\nSyntax: SELECT <table name> <ID>\n\nIt will show you all columns corresponding to a record with given ID!\n©Lain (YOU ARE USING UNLICENSED COPY, PLEASE ACTIVATE YOUR VERSION WITH LICENSE!)"
+				return "sqleasy makes SQL easy for you! Instead of knowing all this useless syntax, you only need to know the table name, ID from the primary key and SELECT!\n\nSyntax: SELECT <table name> <ID>         show record\nquit            close the database\n\nIt will show you all columns corresponding to a record with given ID!\n©Lain (YOU ARE USING UNLICENSED COPY, PLEASE ACTIVATE YOUR VERSION WITH LICENSE!)"
+
+		if _command in ["quit", "disconnect", "q", "exit"]:
+			connectedTo = "127.0.223"
+			return "Closing database... Success"
 
 
 	if(connectedTo == "127.0.223"):  # TODO Finish computer UwU
@@ -94,7 +98,7 @@ func reactToCommand(_command:String, _args:Array, _commandStringRaw:String):
 				var fileIndex = _args[0]
 				if(fileIndex in ["1", "inmates.db"]):
 					if loggedAsAdmin:
-						return "�v�KtablefilesfilesCREATE TABLE inmates (\nid INTEGER NOT NULL, \nfirst_name TEXT, \nlast_name TEXT, \nnotes TEXT, \nPRIMARY KEY (id)\n#��������������������������{uoic]WQKE?93-'!     smga[UOIC=71+% [corrupt]garbaaaageeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee[/corrupt]\n"
+						return "�v�KtablefilesfilesCREATE TABLE inmates (\nid INTEGER NOT NULL, \nfirst_name TEXT, \nlast_name TEXT, \nitype INTEGER, \nnotes TEXT, \nPRIMARY KEY (id)\n#��������������������������{uoic]WQKE?93-'!     smga[UOIC=71+% [corrupt]garbaaaageeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee[/corrupt]\n"
 					else:
 						return "cat: inmates.db: Permission denied"
 				else:
@@ -175,8 +179,15 @@ func reactToCommand(_command:String, _args:Array, _commandStringRaw:String):
 		return "Error, unknown command. Use 'help' to list all available commands"
 
 
-def printRecord(record:String) -> String:
-	return ""
+func preparePCRecord() -> String:
+	var player_crimes = {Flag.Crime_Type.Innocent: "pleaded innocent, got sentenced with no evidence (typical for our courts)", Flag.Crime_Type.Theft: "sentenced for theft of property", Flag.Crime_Type.Murder: "sentenced for murder", Flag.Crime_Type.Prostitution: "sentenced for providing sexual services without a license"}
+	var output = "ID: "+GM.pc.getInmateNumber()+"\nfirstname: "+GM.pc.getName()+"\nlastname: [corrupt]noidea[/corrupt]\nitype: "+str(InmateType.getAll().find(GM.pc.inmateType)+1)
+	output += "\n\nnotes: [corrupt]Past inhabitant of planet -------------- [/corrupt], sentenced for "+player_crimes.get(GM.main.getFlag("Player_Crime_Type"))+". Indefinite sentence."
+	output += "\n"  # note escapades with tavi
+	return output
+
+func printRecord(record:String) -> String:
+	return record
 
 func saveData():
 	var data = .saveData()

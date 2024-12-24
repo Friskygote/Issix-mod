@@ -72,7 +72,8 @@ func getFlags():
 		"Received_Headpats_From_Lamia": flag(FlagType.Number),
 		"Total_Fluids_Milked": flag(FlagType.Dict),
 		"Has_Been_Milked_Today": flag(FlagType.Bool),
-		"Submission": flag(FlagType.Number)
+		"Submission": flag(FlagType.Number),
+		"Trained_With_Hiisi_Combat": flag(FlagType.Bool)
 		#"Gym_Bullies_Left_Alone": flag(FlagType.Bool)  Currently cannot change the behavior of this :(
 		}
 		
@@ -140,7 +141,18 @@ func _init():
 	computers = [
 		"res://Modules/IssixModule/Scenes/ClosetComputer.gd"
 	]
-
+	skills = [
+		"res://Modules/IssixModule/Skills/Pet.gd"
+	]
+	perks = [
+		"res://Modules/IssixModule/Skills/Perks/BowlTraining.gd",
+		"res://Modules/IssixModule/Skills/Perks/FollowCommands.gd",
+		"res://Modules/IssixModule/Skills/Perks/PavlovsDog.gd",
+		"res://Modules/IssixModule/Skills/Perks/PetName.gd",
+		"res://Modules/IssixModule/Skills/Perks/PetSpeech.gd",
+		"res://Modules/IssixModule/Skills/Perks/PetWalk.gd"
+	]
+	
 	GlobalRegistry.registerLustTopicFolder("res://Modules/IssixModule/InterestTopics/")
 	GlobalRegistry.registerSkinsFolder("res://Modules/IssixModule/Skins/")
 	GlobalRegistry.registerStatusEffectFolder("res://Modules/IssixModule/StatusEffects/")
@@ -169,7 +181,7 @@ static func getPlayerRole():
 	return "pet" if GM.main.getModuleFlag("IssixModule", "PC_Enslavement_Role", 1) == 1 else "prostitute"
 
 static func playerToFuck():
-	return (int(GM.main.getDays()) % 2 == 1) and GM.main.getModuleFlag("IssixModule", "Todays_Bred_Slave", "") == "pc"  # every uneven day
+	return (int(GM.main.getDays()-1) % 2 == 1) and GM.main.getModuleFlag("IssixModule", "Todays_Bred_Slave", "") == "pc"  # every uneven day
 
 static func getPlayerPetName():
 	if Species.Canine in GM.pc.getSpecies():
@@ -230,7 +242,7 @@ func calculateDailyScore() -> int:
 
 func tickDay():
 	addIssixMood(RNG.randi_range(-7, 7))
-	if GM.pc.getLocation() != "medical_paddedcell_player":
+	if GM.pc.getLocation() == "medical_paddedcell_player":
 		pass  # TODO Bust out scene
 	elif (GM.main.getDays() - GM.main.getModuleFlag("IssixModule", "Last_Day_Visited_Master", GM.main.getDays()) > 1):
 		addIssixMood(-10)
@@ -239,8 +251,8 @@ func tickDay():
 		GM.main.increaseModuleFlag("IssixModule", "Comic_Books", RNG.randi_range(5, 8))
 	if int(GM.main.getDays()) % 30 == 0 and GM.main.getModuleFlag("IssixModule", "Strikes_For_Disobedience", 0) > 0:  # every 30 days remove one strike
 		GM.main.increaseModuleFlag("IssixModule", "Strikes_For_Disobedience", -1)
-	if GM.main.getDays()-GM.main.getModuleFlag("IssixModule", "Last_Walk", GM.main.getDays()) == APPROX_WALK_DELAY:
-		GM.main.setModuleFlag("IssixModule", "Last_Walk", GM.main.getDays())
+	if GM.main.getDays()-1-GM.main.getModuleFlag("IssixModule", "Last_Walk", GM.main.getDays()) == APPROX_WALK_DELAY:
+		GM.main.setModuleFlag("IssixModule", "Last_Walk", GM.main.getDays()-1)
 
 
 func resetFlagsOnNewDay():  # I apologize for abusing this hook, but startNewDay does not have ANY other hooks I can use and SleepInCell as a trigger is not covering all cases of days passing by
@@ -261,3 +273,5 @@ func resetFlagsOnNewDay():  # I apologize for abusing this hook, but startNewDay
 	GM.main.setModuleFlag("IssixModule", "Pet_Time_Interaction_Today", 0)
 	GM.main.setModuleFlag("IssixModule", "Eaten_Today", false)
 	GM.main.setModuleFlag("IssixModule", "Has_Been_Milked_Today", true)
+	if GM.main.getModuleFlag("IssixModule", "Trained_With_Hiisi_Combat") != null:
+		GM.main.setModuleFlag("IssixModule", "Trained_With_Hiisi_Combat", false)

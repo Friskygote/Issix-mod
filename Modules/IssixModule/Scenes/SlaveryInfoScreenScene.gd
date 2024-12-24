@@ -68,7 +68,7 @@ func _run():
 
 	if state == "issixpetmenu":
 		addCharacter("issix")
-		saynn("[say=issix]"+getMoodMessage()+"[/say]")
+		saynn("[say=issix]"+getSituationalMessage() + " " + getMoodMessage()+"[/say]")
 		saynn("Is there anything you want to do with Master?")
 		if GM.pc.hasBreastsFullOfMilk():
 			saynn("[say=issix]{pc.Name}, wouldn't you want to unburden your heavy chest a little?[/say]")
@@ -135,6 +135,9 @@ func _run():
 
 		else:  # TODO I'll wait with this path for TF changes to land in main, perhaps player could become a female cow for Master?
 			addDisabledButton("Cow cow!", "Become a cow for your Master (transformation, WIP (likely very distant future if ever))")
+			if milk_result[2] > 0:
+				saynn("[say=issix]You know, since your milk already brings me some profit I don't mind giving you a small share, perhaps my pet would want to get something for himself huh? Do you? Aww. Of course you do. Have this.[/say]")
+
 		addButton("Continue", "Come back to your senses", "issixpetmenu")
 
 	if state == "haremeat":
@@ -273,17 +276,126 @@ func _run():
 		var _ok = textBox.connect("text_entered", self, "onTextBoxEnterPressed")
 		addButton("Confirm", "Guess this number", "littercountresult")
 
-
 	if state == "hiisipetmenu":
 		playAnimation(StageScene.Duo, "kneel", {pc="hiisi", npcAction="kneel", npc="pc", bodyState={naked=false, hard=false}})
 		addCharacter("hiisi")
-		if GM.pc.getSkillLevel(Skill.Combat) < 16:
-			addDisabledButton("Learn", "Learn something from Hiisi (WIP)")  # , "hiisilearncombat"
+		if GM.pc.getSkillLevel(Skill.Combat) < 16:  # Just thought about it, it just may be the only way to skill this up in pacifist way to do skill checks on combat, that's awesome
+			if getModuleFlag("IssixModule", "Trained_With_Hiisi_Combat", false) != true:
+				addButtonWithChecks("Learn", "Learn something from Hiisi (requires Energy Drink)", "hiisilearncombat", [], [[ButtonChecks.HasItemID, "EnergyDrink"], [ButtonChecks.HasStamina]])
+			else:
+				addDisabledButton("Learn", "You've trained with Hiisi today already, both you and he need a break")
 		else:
 			addDisabledButton("Learn", "There isn't anything more you can learn from Hiisi about combat")
 
 		addDisabledButton("Sex", "Ask for sex with Hiisi (WIP)")  # , "hiisisexrequest"
 		addButton("Back", "Go back", "")
+
+
+	if state == "hiisilearncombatfirst":
+		playAnimation(StageScene.Yoga, "warrior", {pc="hiisi", bodyState={naked=true}})
+		saynn("Figuring Hiisi might need an encouragement to teach you something, you prepare an energy drink to further convince the canine to teach you combat.")
+		saynn("[say=pc]Hey Hissi, I were wondering, you seem to know how to fight, any chance you could perhaps teach me something?[/say]")
+		saynn("Hiisi looks at you, surprised a little.")
+		saynn("[say=hiisi]Teach? Combat... I'm not so sure, I don't think I'm a good teacher material.[/say]")
+		saynn("[say=pc]I think you'd do great Hiisi.[/say]")
+		saynn("[say=hiisi]I don't think it's a great idea.[/say]")
+		saynn("[say=pc]Can I convince you with this then?[/say]")
+		saynn("You show an energy drink to Hiisi.")
+		saynn("[say=hiisi]Oh. Hmm... Alright, I can teach you, but I expect the same for every lesson, alright?[/say]")
+		saynn("[say=pc]Deal.[/say]")
+		saynn("[say=hiisi]Cool.[/say]")
+		if GM.pc.hasEffect(StatusEffect.Yoga) or GM.pc.hasEffect(StatusEffect.WorkOutLight) or GM.pc.hasEffect(StatusEffect.WorkOut):
+			saynn("Canine begins stretching, he also loses his clothes, makes sense. You do some light stretching but you recently stretched a fair bit so you are ahead in this regard")
+		else:
+			saynn("Canine begins stretching, he also loses his clothes, makes sense. He gesticulates you should start exercising as well, which you promptly start doing. You do some pull-ups, squats, planks... Eventually you feel pretty good about your form for today's training.")
+		saynn("[say=hiisi]Oh, forgot to ask, how advanced are you in combat?[/say]")
+		var combat_level = GM.pc.getSkillLevel(Skill.Combat)
+		if combat_level < 3:
+			saynn("[say=pc]Absolute novice, I didn't have much combat experience.[/say]")
+			saynn("[say=hiisi]I see... I guess we will start with basics then and go from there.[/say]")
+		elif combat_level < 7:
+			saynn("[say=pc]I have some experience. Fought here and there.[/say]")
+			saynn("[say=hiisi]Hmm... Your posture seems right so I assume you already know the basics, we will focus on other things then[/say]")
+		elif combat_level < 12:
+			saynn("[say=pc]I think I'm pretty good actually, thought I'm sure there is still plenty I can learn from you.[/say]")
+			saynn("[say=hiisi]Judging from your posture alone, it does seem like you know your shit. Can you show how you punch?[/say]")
+			saynn("You do attempt punch and freeze your arm.")
+			saynn("[say=hiisi]Yeah, that's good. There are small details you'll have to perfect but that's about it.[/say]")
+		else:
+			saynn("[say=pc]I fight regularly, so I have plenty of experience, I'm really looking for someone I can spar with and you seem pretty capable yourself.[/say]")
+			saynn("[say=hiisi]I didn't really agree to be a sparring partner, but I'm sure there is still something to perfect with your form so lets proceed.[/say]")
+		addButton("Training", "Start training under watchful eye of Hiisi", "hiisilearncombattraining")
+
+	if state == "hiisilearncombatrepeat":
+		saynn("[say=pc]Student {pc.name} arrived for training![/say]")
+		saynn("You smile at Hiisi while doing a salute. Hiisi attempts to hide his blush.")
+		saynn("[say=hiisi]You don't have to do thaaaat. Anyways, do you have the goods?[/say]")
+		saynn("You pass the energy drink to Hiisi, he catches it and puts near his blanket.")
+		saynn("[say=pc]Don't overdose on those![/say]")
+		saynn("[say=hiisi]Yeah, sure, sure. Let's start.[/say]")
+		addButton("Training", "Start training under watchful eye of Hiisi", "hiisilearncombattraining")
+
+	if state == "hiisilearncombattraining1":
+		playAnimation(StageScene.Solo, "stand", {pc="hiisi", bodyState={naked=true}})
+		saynn("[say=hiisi]Since you are still a baby as far as combat goes, first you need to understand the basics of posture.[/say]")
+
+		saynn("He stands with his two legs having a sizable gap in-between, marginally bended knees, his back straight and paws curled into fists in front of him. You attempt to replicate his posture.")
+
+		saynn("[say=hiisi]Extend your arm here a little, yes, like that. More space in between your legs, you don't want someone to just push you and lose your balance, that leg is there to keep you steady. Face the opponent, like this, yes. Good. Keep your back straight, can be a little curved if that's better for you, every species have a little different balance but basis for stance is the same for each and every of them.[/say]")
+		saynn("He gives you tips on posture here and there, you start to understand more and more about combat. After 25 minutes of training you feel like you can't take much more of advice for today, it's been a productive session.")
+		saynn("[say=pc]Thank you Hiisi, I think I learned a bunch from you.[/say]")
+		saynn("[say=hiisi]No problem, and remember about energy drink![/say]")
+		saynn("[say=pc]Yeah, yeah, sure.[/say]")
+		addButton("End", "End training for today", "hiisipetmenu")
+
+	if state == "hiisilearncombattraining2":
+		playAnimation(StageScene.Solo, "punch", {pc="hiisi", bodyState={naked=true}})
+		saynn("[say=hiisi]You know a little about training already, how about we add a few things to that knowledge?[/say]")
+
+		saynn("He stands with his two legs having a sizable gap in-between, marginally bended knees, his back straight and paws curled into fists in front of him. He punches the air a few times with fists of his right paw, you observe the quick moves. He switches to punching with left fist a few times.")
+
+		saynn("[say=hiisi]What matters is you and your opponent. Observation is very important part of fight, you react to what your opponent does. It must be like a reflex for you. Those who don't have reflexes can't predict how their opponent is going to behave, that's why it needs training, best in real sparring.[/say]")
+		saynn("You replicate the punches he thrown, sort of, at the very least you try your best. Hiisi corrects you fairly often, pointing out your countless mistakes, making reflexes a thing can be hard when you still have to think about your posture. 25 minutes pass and you decide that's enough of punching air for today.")
+		saynn("[say=pc]That was enlightening, thanks Hiisi![/say]")
+		saynn("[say=hiisi]Sure, see you later![/say]")
+		saynn("[say=pc]Yup.[/say]")
+		addButton("End", "End training for today", "hiisipetmenu")
+
+	if state == "hiisilearncombattraining3":
+		playAnimation(StageScene.Solo, "kick", {pc="hiisi", bodyState={naked=true}})
+		saynn("[say=hiisi]Combat is surely not something new to you anymore. But lets take it to the next level.[/say]")
+
+		saynn("He stands with his two legs having a sizable gap in-between, marginally bended knees, his back straight and paws curled into fists in front of him. He throws punches but he also involves his legs in the mixture. It occurs to you that it's a bit funny seeing him fight with invisible opponent.")
+
+		saynn("[say=hiisi]To fight, you must involve your entire body, not just arms, not just legs but entire body.[/say]")
+		if GM.pc.hasHorns():
+			saynn("[say=pc]Can I utilize horns?[/say]")
+			saynn("He looks at you bewildered, before his face is replaced with heavy thinking.")
+			saynn("[say=hiisi]That's... Yeah, that's something you can definitely do. It's good that you are thinking about your ENTIRE body. Horns are sturdy and can do plenty damage if used in appropriate moment.[/say]")
+
+		saynn("He continues to give you guidance as he shows a few moves he knows. He teaches you how to react to different body cues coming from your opponent. Punching air gets tiring pretty quick and you decide to rest for today.")
+		saynn("[say=pc]I feel like I'm getting better at this, thank you Hiisi![/say]")
+		saynn("[say=hiisi]Of course, I feel like I might actually not be too bad as a teacher.[/say]")
+		saynn("[say=pc]You are great! Seriously, I learn so much from you.[/say]")
+		saynn("Canine blushes and waves you off")
+		addButton("End", "End training for today", "hiisipetmenu")
+
+	if state == "hiisilearncombattraining4":
+		playAnimation(StageScene.Solo, "dodge", {pc="hiisi", bodyState={naked=true}})
+		saynn("[say=hiisi]There is little more I can teach you, but I can try. Master is a lot more skilled in combat than I'm, maybe he could help?[/say]")
+
+		saynn("He stands with his two legs having a sizable gap in-between, marginally bended knees, his back straight and paws curled into fists in front of him. He throws punches but he also involves his legs in the mixture. You can feel tense energy in the air, he gives it all and his technique is pretty refined, you can feel he doesn't do anything „simple” and doesn't try to make it easy to digest for you, this is high level.")
+
+		saynn("[say=hiisi]All of the techniques you already learned must be perfected to work together, body posture, reflexes, proper technique on punches and kicks. You observe your opponent and choose the best course of action, rely on intuition, it's faster than reason.[/say]")
+
+		saynn("You repeat the process over and over, you stand alongside Hiisi and try to synchronize your body with his, you imagine your opponent in front of you and try to beat them. Hiisi laughs.")
+		saynn("[say=hiisi]That's pretty good, good. I'm pretty proud of you, combat is no stranger to you anymore.[/say]")
+		saynn("[say=pc]Yeah! I feel plenty powerful, like... I could take down so many bullies![/say]")
+		saynn("[say=hiisi]*chuckle* Don't get ahead of yourself. You need not to underestimate the opponent, the one who does - loses. Treat each and every opponent as someone who knows their shit so they don't knock you down when you fall to your pride. You are not Master.[/say]")
+		saynn("[say=pc]What do you mean by that? I mean, Master sure looks well-built and I'm sure he can defend himself, but is he this good?[/say]")
+		saynn("[say=hiisi]I truthfully believe that if he wanted he could take down all guards with his bare fists. He is Master not only in name but in combat as well.[/say]")
+		saynn("It makes you wonder just how good your Master must be to hear such praise from someone like Hiisi about him,")
+		addButton("End", "End training for today", "hiisipetmenu")
 
 	if state == "lamiapetmenu":
 		playAnimation(StageScene.Duo, "kneel", {pc="lamia", npcAction="kneel", npc="pc", bodyState={naked=false, hard=false}})
@@ -293,7 +405,16 @@ func _run():
 			addButton("Pets", "Ask for pets", "lamiapetrequest")
 		else:
 			addDisabledButton("Pets", "You've asked for headpats today already!")
+		if GM.pc.getInventory().hasRemovableRestraintsNoLockedSmartlocks():
+			addButton("Get help", "Get Lamia's help with bondage gear that is on you", "lamiahelpbondage")
+		else:
+			addDisabledButton("Get help", "You are currently not bound by anything that Lamia could help you with")
 		addButton("Back", "Go back", "")
+
+	if state == "lamiahelpbondage":
+		saynn("[say=pc]Hey, Lamia, uhhh, could you help getting me out of those?[/say]")
+		saynn("Lamia gives you a look and nods, they come up to you and start helping you out of your various bondage gear you have on yourself.\nFinally you are no longer burdened by all that bondage gear on your body. Lamia smiles at you and gives you a pat before returning to their usual activity.")
+		addButton("Back", "Continue", "lamiapetmenu")
 
 	if state == "lamiapetrequestfirst":
 		saynn("A fox breed is consumed by snacking on food in their pet bowl.")
@@ -382,6 +503,30 @@ func getTimeSpentReadable():
 		return "[color=red]0 minutes[/color]"
 	return "[color="+("green" if isTimeOkey() else "red")+"]"+ Util.getTimeStringHumanReadable(getTimeSpent()) + "[/color]"
 
+func getSituationalMessage():
+	var responses = []
+	if GM.pc.isWearingHypnovisor():
+		responses.append("Making sure you stay obedient for your Master with that thing? That's cute. I like it.")
+	if GM.pc.isHeavilyPregnant():
+		responses.append("Almost ready for kits? Wonder how many of them are mine.")
+	if GM.pc.isCoveredInPiss():
+		responses.append("Love to see you smelling of urine.")
+	if GM.pc.isInHeat():
+		responses.append("I can smell your love juices from here, is my pet in heat? Aww. You need a good fuck don't you?")
+	if GM.pc.isWearingPortalPanties() and GM.pc.isFullyNaked():
+		responses.append("Personally not a fan of those new technologies, what's fun about fucking someone when you can't feel them wriggle in your arms?")
+	if GM.pc.isMuzzled():
+		responses.append("All bark no bite haha. I love when my pets come to me with equipment befitting their role in life.")
+	if GM.pc.hasBoundLegs() and GM.pc.hasBlockedHands() and GM.pc.hasBoundArms() and GM.pc.isBlindfolded() and GM.pc.isOralBlocked() and GM.pc.getInventory().hasItemIDEquipped("ropeharness"):
+		responses.append("*whistles* You look like a rope bunny to me, in this place it screams „I consent to everything”, quite dangerous if you ask me, but fuck, if you like it maybe you don't mind being a rape bait for everyone in this facility.")
+	if GM.pc.hasBoundLegs():
+		responses.append("Do you enjoy struggling with walking so much? I hope you do.")
+	if GM.pc.hasBlockedHands():
+		responses.append("Fuck yes. It gotta be one of my favorite things when my pet's paws are reduced to absolutely useless mittens. I think this look befits you, in fact, I think you should wear them permanently.")
+	if GM.pc.getInventory().hasItemIDEquipped("GasMask"):
+		responses.append("Where the hell have you found that thing? A fucking gas mask? Damn. Did not expect that.")
+	return ""
+
 func getMoodMessage():
 	var issix_mood = getModuleFlag("IssixModule", "Issix_Mood", 50)
 	if issix_mood < 10:
@@ -415,7 +560,6 @@ func getMood():
 		return "really good"
 	else:
 		return "[color=green]excellent[/color]"
-
 
 static func playerToFuck():
 	return (int(GM.main.getDays()) % 2 == 1) and GM.main.getModuleFlag("IssixModule", "Todays_Bred_Slave", "") == "pc"
@@ -477,10 +621,15 @@ func _react(_action: String, _args):
 
 	if _action == "issixmilkingresult":
 		var this_milking = GM.pc.milk()
+		var credits = 0
 		var total_milk_obtained = getModuleFlag("IssixModule", "Total_Fluids_Milked", {"Milk": 0.0})  # Currently only fluid implemented in base game
 		total_milk_obtained["Milk"] = total_milk_obtained["Milk"] + this_milking
 		setModuleFlag("IssixModule", "Total_Fluids_Milked", total_milk_obtained)
-		milk_result = [this_milking, total_milk_obtained["Milk"]]
+		if this_milking > 500 and total_milk_obtained["Milk"] > 3000:
+			credits = clamp(int(floor(sqrt(this_milking / 100.0) / 1.3)) - 15, 0.0, 300.0)
+			if credits > 0:
+				addMessage("Your Master passes to you "+str(credits)+" credits.")
+		milk_result = [this_milking, total_milk_obtained["Milk"], credits]
 		setModuleFlag("IssixModule", "Has_Been_Milked_Today", true)
 
 	if _action == "littercountresult":
@@ -497,6 +646,34 @@ func _react(_action: String, _args):
 			return
 		if not reply_litter > 100:
 			registerOffspringGuess()
+
+	if _action == "hiisilearncombat":
+		if GM.main.getModuleFlag("IssixModule", "Trained_With_Hiisi_Combat") == null:
+			_action = "hiisilearncombatfirst"
+		else:
+			_action = "hiisilearncombatrepeat"
+		GM.pc.getInventory().removeXOfOrDestroy("EnergyDrink", 1)
+		addMessage("You've given away 1 energy drink.")
+
+	if _action == "hiisilearncombattraining":
+		processTime(25*60)
+		var skill = GM.pc.getSkillsHolder().getSkill(Skill.Combat)
+		var exp_calc = 25
+		if skill != null:
+			exp_calc = int(skill.getRequiredExperience(skill.getLevel()+1)/4)
+		GM.pc.addSkillExperience(Skill.Combat, exp_calc)  # Needs <4 trainings per level, to not be too OP
+		addMessage("You've gained "+str(exp_calc)+"XP in Combat thanks to training with Hiisi.")
+		GM.main.setModuleFlag("IssixModule", "Trained_With_Hiisi_Combat", true)
+		GM.pc.addStamina(-80)
+		var combat_level = GM.pc.getSkillLevel(Skill.Combat)
+		if combat_level < 3:
+			_action = "hiisilearncombattraining1"
+		elif combat_level < 7:
+			_action = "hiisilearncombattraining2"
+		elif combat_level < 12:
+			_action = "hiisilearncombattraining3"
+		else:
+			_action = "hiisilearncombattraining4"
 
 	if _action == "azazelguesslitterstare":
 		GM.pc.addEffect(StatusEffect.Suggestible, [20])
@@ -524,6 +701,17 @@ func _react(_action: String, _args):
 				_action = "azazelguesslitterlast"
 			_:
 				_action = "azazelguesslitterfun"
+
+	if _action == "lamiahelpbondage":
+		var bondage = GM.pc.getInventory().getEquppedRemovableRestraintsNoLockedSmartlocks()
+		processTime(bondage.size()*60)
+		for item in bondage:
+			if RNG.chance(99):
+				GM.pc.getInventory().unequipItem(item)
+				addMessage(item.getVisibleName()+ " has been taken off you and added back to your inventory")
+			else:
+				GM.pc.getInventory().removeEquippedItem(item)
+				addMessage(item.getVisibleName()+ " has been taken off but has been damaged beyond repair, Lamia discards the item into the trash bin")
 
 	if _action == "passtime":
 		processTime(15*60)
