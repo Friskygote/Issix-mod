@@ -45,6 +45,7 @@ func getFlags():
 		"PC_Saw_Artwork_At_Lamias": flag(FlagType.Bool),
 		"Hiisi_Crossword_Used": flag(FlagType.Number),
 		"Hiisi_Helped_Today": flag(FlagType.Bool),
+		"Azazel_Corruption_Scene": flag(FlagType.Number),
 
 		# Slavery related
 		"PC_Enslavement_Role": flag(FlagType.Number),
@@ -73,7 +74,9 @@ func getFlags():
 		"Total_Fluids_Milked": flag(FlagType.Dict),
 		"Has_Been_Milked_Today": flag(FlagType.Bool),
 		"Submission": flag(FlagType.Number),
-		"Trained_With_Hiisi_Combat": flag(FlagType.Bool)
+		"Trained_With_Hiisi_Combat": flag(FlagType.Bool),
+		"PC_Pet_Didnt_Fullfill_Daily": flag(FlagType.Bool),
+		"PC_Pet_Didnt_Mate": flag(FlagType.Bool),
 		#"Gym_Bullies_Left_Alone": flag(FlagType.Bool)  Currently cannot change the behavior of this :(
 		}
 		
@@ -93,7 +96,8 @@ func _init():
 		"res://Modules/IssixModule/Events/CornerPriorityEvent.gd",
 		"res://Modules/IssixModule/Events/SlaveryIntroEvent.gd",
 		"res://Modules/IssixModule/Events/IssixRegularSearch.gd",
-		"res://Modules/IssixModule/Events/LamiaCellEvent.gd"
+		"res://Modules/IssixModule/Events/LamiaCellEvent.gd",
+		"res://Modules/IssixModule/Events/TalkNovaEvent.gd"
 		]
 		
 	scenes = [
@@ -114,7 +118,8 @@ func _init():
 		"res://Modules/IssixModule/Scenes/SlaveryIntroScene.gd",
 		"res://Modules/IssixModule/Scenes/SlaveryInfoScreenScene.gd",
 		"res://Modules/IssixModule/Scenes/SlaveryFirst/IssixBringsComicbooks.gd",
-		"res://Modules/IssixModule/Scenes/SlaveryFirst/IssixFindsAvoidingPlayer.gd"
+		"res://Modules/IssixModule/Scenes/SlaveryFirst/IssixFindsAvoidingPlayer.gd",
+		"res://Modules/IssixModule/Scenes/IssixNovaTalkScene.gd"
 		]
 		
 	characters = [
@@ -152,19 +157,24 @@ func _init():
 		"res://Modules/IssixModule/Skills/Perks/PetSpeech.gd",
 		"res://Modules/IssixModule/Skills/Perks/PetWalk.gd"
 	]
-	
+	statusEffects = [
+		"res://Modules/IssixModule/StatusEffects/BrandingPain.gd",
+		"res://Modules/IssixModule/StatusEffects/CatnipOverdose.gd"
+	]
+	speechModifiers = [
+		"res://Modules/IssixModule/SpeechModifiers/CatnipSpeech.gd",
+		"res://Modules/IssixModule/SpeechModifiers/LamiaMute.gd"
+	]
 	GlobalRegistry.registerLustTopicFolder("res://Modules/IssixModule/InterestTopics/")
 	GlobalRegistry.registerSkinsFolder("res://Modules/IssixModule/Skins/")
-	GlobalRegistry.registerStatusEffectFolder("res://Modules/IssixModule/StatusEffects/")
-	GlobalRegistry.sortRegisteredStatusEffectsByPriority()
 	GlobalRegistry.registerMapFloorFolder("res://Modules/IssixModule/Floors/")
-	GlobalRegistry.registerSpeechModifiersFolder("res://Modules/IssixModule/SpeechModifiers/")
 	GlobalRegistry.registerAttackFolder("res://Modules/IssixModule/Attacks/", true)
 
 func postInit():
 	# Overwrite scenes for dealing with bullies, they need to be initiated in here due to module initialization order overwriting our modules
 	GlobalRegistry.registerScene("res://Modules/IssixModule/Scenes/Overwrites/BullyGangScene.gd", "Rahi")  # Still consider it mostly Rahi's creation'
 	GlobalRegistry.registerEvent("res://Modules/IssixModule/Events/Overwrites/BullyGangEvent.gd")
+	#GM.ES.registerEventTrigger("OpeningSlaveryScreen", EventTriggerLocation.new())  # TODO Find a way to do that
 
 static func addSceneToWatched(scene: String):
 	var scenes = GM.main.getModuleFlag("IssixModule", "Misc_Slavery_Info", {"scenes_seen": []})
@@ -223,6 +233,7 @@ func calculateDailyScore() -> int:
 	if playerToFuck():  # TODO Need to check when this hook is run because likely wrong day
 		if GM.main.getModuleFlag("IssixModule", "Had_Sex_With_Issix", false) == false:
 			score -= 5
+			GM.main.setModuleFlag("IssixModule", "PC_Pet_Didnt_Mate", true)
 		else:
 			score += 5
 	if GM.main.getModuleFlag("IssixModule", "PC_Enslavement_Role", 0) == 1:
@@ -233,11 +244,13 @@ func calculateDailyScore() -> int:
 				score += 1
 			else:
 				score -= 7
+				GM.main.setModuleFlag("IssixModule", "PC_Pet_Didnt_Fullfill_Daily", true)
 		else:
 			if time_served >= 60*60:
 				score += 1
 			else:
 				score -= 5
+				GM.main.setModuleFlag("IssixModule", "PC_Pet_Didnt_Fullfill_Daily", true)
 	return score
 
 func tickDay():

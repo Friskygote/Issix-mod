@@ -164,6 +164,9 @@ func createBodyparts():
 	skillsHolder.addPerk(Perk.CombatScratching)
 	skillsHolder.addPerk(Perk.CombatShove)
 
+func getLootTable(_battleName):
+	return InmateLoot.new()
+
 
 func onGivingBirth(_impregnatedEggCells: Array, _newkids: Array):
 	.onGivingBirth(_impregnatedEggCells, _newkids)

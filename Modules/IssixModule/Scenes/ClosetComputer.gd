@@ -3,8 +3,8 @@ extends ComputerBase
 var connectedTo = ""
 var loggedAsAdmin = false
 var records = {"533": "ID: 533\nfirstname: Issix\nlastname: [corrupt]Solomon[/corrupt]\nitype: 1\n\nnotes: Issix, or rather [b]Gaap[/b] as his real real name goes, is a special case in BDCC, staff is NOT to take any punitive action in regards to this individual without first consulting with the director. He has not been convicted of any illegal activities, but rather has been introduced to prison based on order o[corrupt]f general Sonno[/corrupt]fer. \nOfficially - he is an inmate, unofficially he is is untouchable. Let him do whatever the fuck he wants, unless you don't value your own life. Incarcerated in [corrupt]4292 32 11[/corrupt].",\
-"655": "ID: 655\nfirstname: Azazel\nlastname: Dreemurr\nitype: 3\nPast inhabitant of planet [b]Pueri Meritorii[/b], sentenced for sex work with untreated STD. Original sentence was 10 years, it has been extended to indefinite due to circumstances in the prison.\nNOTE: THIS INMATE IS OWNED BY INMATE 533, PLEASE REFER TO MENTIONED INMATE ABOUT ALL MATTERS PERTAINING TO THIS INMATE",\
-"": ""}
+"655": "ID: 655\nfirstname: Frisk\nlastname: Dreemurr\nitype: 3\nPast inhabitant of planet [b]Pueri Meritorii[/b], sentenced for sex work with untreated STD. Original sentence was 10 years, it has been extended to indefinite due to circumstances in the prison.\n\nNOTE: THIS INMATE IS OWNED BY INMATE 533, PLEASE REFER TO MENTIONED INMATE ABOUT ALL MATTERS PERTAINING TO THIS INMATE",\
+"964": "ID: 964\nfirstname: "}
 
 func _init():
 	id = "ClosetComputer"
@@ -180,10 +180,16 @@ func reactToCommand(_command:String, _args:Array, _commandStringRaw:String):
 
 
 func preparePCRecord() -> String:
+	var is_slave = GM.main.getModuleFlag("IssixModule", "PC_Enslavement_Role", 0) > 0
 	var player_crimes = {Flag.Crime_Type.Innocent: "pleaded innocent, got sentenced with no evidence (typical for our courts)", Flag.Crime_Type.Theft: "sentenced for theft of property", Flag.Crime_Type.Murder: "sentenced for murder", Flag.Crime_Type.Prostitution: "sentenced for providing sexual services without a license"}
 	var output = "ID: "+GM.pc.getInmateNumber()+"\nfirstname: "+GM.pc.getName()+"\nlastname: [corrupt]noidea[/corrupt]\nitype: "+str(InmateType.getAll().find(GM.pc.inmateType)+1)
-	output += "\n\nnotes: [corrupt]Past inhabitant of planet -------------- [/corrupt], sentenced for "+player_crimes.get(GM.main.getFlag("Player_Crime_Type"))+". Indefinite sentence."
-	output += "\n"  # note escapades with tavi
+	output += "\n\nnotes: [corrupt]Past inhabitant of planet -------------- [/corrupt], sentenced for "+player_crimes.get(GM.main.getFlag("Player_Crime_Type"))+". Indefinite sentence" + (", requires permission of inmate 533 for release." if is_slave else ".")
+	if GM.main.getModuleFlag("TaviModule", "Ch5BigSceneStarted", false):
+		output += "\nAttempted to escape the facility [color=red]TWICE(!!!!)[/color] using violence, recommended close watch and maximum caution. Any suspicious activity, especially when {pc.he} {pc.is} in close proximity to inmate Tavi has to be reported to captain."  # note escapades with tavi
+	elif GM.main.getModuleFlag("TaviModule", "Ch3TurnedOffPower", false) or GM.main.getModuleFlag("TaviModule", "Ch3SpikedPower", false):
+		output += "\nAttempted to escape the facility using violence, recommended close watch and maximum caution. Any suspicious activity, especially when {pc.he} {pc.is} in close proximity to inmate Tavi has to be reported to captain."
+	if is_slave:
+		output += "\n\nNOTE: THIS INMATE IS OWNED BY INMATE 533, PLEASE REFER TO MENTIONED INMATE ABOUT ALL MATTERS PERTAINING TO THIS INMATE"
 	return output
 
 func printRecord(record:String) -> String:

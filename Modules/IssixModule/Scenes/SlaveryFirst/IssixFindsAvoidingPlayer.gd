@@ -42,7 +42,7 @@ func _run():
 		saynn("Your Master stands stunned by your proclamation.")
 		saynn("[say=issix]What did you just say?[/say]")
 		saynn("[say=pc]I no longer want to be your pet.[/say]")
-		saynn("[say=issix]I don't think you understand your position, pet. You are not in a position to decide on that anymore, you've made your decision a while ago, you don't just get to change it because your feel like it, such decision belongs to your Master. Now, be a good "+getPlayerPetName()+" and come with me.[/say]")
+		saynn("[say=issix]I don't think you understand your position, pet. You are not in a position to decide on that anymore, you've made your decision a while ago, you don't just get to change it because your feel like it, such decision belongs to your Master. Now, be a good "+GlobalRegistry.getModule("IssixModule").getPlayerPetName()+" and come with me.[/say]")
 		addButton("Continue", "Follow Issix to the corner", "walkcorner")
 
 	if state == "leave":
@@ -95,7 +95,7 @@ func _run():
 		addButton("Continue", "Oh shit, what now", "contsurrender")
 
 	if state == "contsurrender":
-		playAnimation(StageScene.PuppyPinned, "pinned", {pc="pc", npc="issix", bodyState={leashedBy="issix"}, npcBodyState={naked=false, hard=false}})
+		playAnimation(StageScene.PuppyPinned, "pinned", {pc="issix", npc="pc", bodyState={leashedBy="issix"}, npcBodyState={naked=false, hard=false}})
 		saynn("With your lack of mobility and you can't do much at this point, other than accept everything that is happening to you. And so you do, trying to stand on your fours, struggling. Having to adapt to completely new balance and way of „standing”. Your Master continues to add further bondage gear onto you. A ball gag is first pushed into your mouth, then bondage mittens finishing your helpless look.")
 		saynn("[say=issix]Think that's it, I think you look great now. In AlphaCorp that's how the leg footrest looks like in high-level corporate offices. Not a fan of footrest though, I prefer my feet on the ground, that said, the circumstances are pretty extraordinary here.[/say]")
 		saynn("He puts his foot on your head and applies force making you collapse your front „legs” with your muzzle touching the ground.")
@@ -133,21 +133,11 @@ func _run():
 		saynn("Feeling in pain, you don't have anything else to answer other than.")
 		saynn("[say=pc]I'm sorry, Master, I won't do this again.[/say]")
 		saynn("[say=issix]Do you really mean it? Or is that another lie? Look at me, LOOK![/say]")
-		saynn("He grabs you by your neck, tilts your face to meet his gaze, his face angry, furious even, staring deep into you, just like when he was judging you when you wished to become his "+ getPlayerPetName() + ".")
+		saynn("He grabs you by your neck, tilts your face to meet his gaze, his face angry, furious even, staring deep into you, just like when he was judging you when you wished to become his "+ GlobalRegistry.getModule("IssixModule").getPlayerPetName() + ".")
 		saynn("[say=issix]Don't make me assert control over you again.[/say]")
 		saynn("He releases your body from heavy grip.")
 		saynn("[say=issix]I think you suffered enough of humiliation for today. Do whatever you want, but I expect you tomorrow in the corner, as usual.[/say]")
 		addButton("Leave", "Leave", "endthescene")
-
-static func getPlayerPetName():
-	if Species.Canine in GM.pc.getSpecies():
-		return "puppy"
-	elif Species.Feline in GM.pc.getSpecies():
-		return "kitty"
-	elif Species.Equine in GM.pc.getSpecies():
-		return "pony"
-	else:
-		return "pet"
 
 func _react(_action: String, _args):
 	processTime(2*60)
@@ -187,6 +177,7 @@ func _react(_action: String, _args):
 		runScene("SlaveryInfoScreen", [], "finishslaveryinfo")
 
 	if(_action == "endthescene"):
+		GM.main.setModuleFlag("IssixModule", "Last_Day_Visited_Master", GM.main.getDays())
 		endScene()
 		return
 

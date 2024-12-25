@@ -56,7 +56,8 @@ func _run():
 			saynn("You approach the demon."+(" He grins, seeing you kneel." if GM.main.getModuleFlag("IssixModule", "Quest_Status") > 5 else ""))
 			saynn(RNG.pick(random_issix_activities_talk))
 			addButton("Prison", "How did he end up in prison?", "prison")
-			addButton("Pets", "Have they really willingly gave to him?", "pets2")
+			if GM.main.getModuleFlag("IssixModule", "PC_Enslavement_Role", 0) == 0:
+				addButton("Pets", "Have they really willingly gave to him?", "pets2")
 			addButton("Guards", "Are prison guards giving him trouble?", "guards")
 			if GM.main.getModuleFlag("IssixModule", "Quest_Status") == 1 and GM.main.getModuleFlag("IssixModule", "Quest_Bonked") == true:
 				addButton("Exercise", "Ask Issix for explanation about your incident with the wall", "quest1bonk")

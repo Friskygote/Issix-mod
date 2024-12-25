@@ -40,7 +40,7 @@ func _run():
 			_:
 				pass
 		if playerToFuck() and getModuleFlag("IssixModule", "Had_Sex_With_Issix", false) != true:
-			saynn("[color=#B03838]Master expects you to be available for fucking today.[/color]")
+			saynn("[color=#983030]Master expects you to be available for fucking today.[/color]")
 		setModuleFlag("IssixModule", "Last_Day_Visited_Master", GM.main.getDays())
 		addButton("Master", "Talk with your master about something", "issixpetmenu")
 		addButton("Azazel", "Actions in relation to Azazel", "azazelpetmenu")
@@ -65,6 +65,7 @@ func _run():
 			addButtonWithChecks("Comic", "Read one of "+ str(getModuleFlag("IssixModule", "Comic_Books", 0)) +" comic books", "readabook", [], [ButtonChecks.NotBlindfolded])
 		if not (GM.main.getModuleFlag("IssixModule", "Is_Player_Forced_Today", 0) > (getTimeSpent())) or GM.main.isVeryLate():
 			addButton("Leave", "Leave", "endthescene")
+		GM.ES.triggerRun("OpeningSlaveryScreen")
 
 	if state == "issixpetmenu":
 		addCharacter("issix")
@@ -130,7 +131,7 @@ func _run():
 		saynn("[say=issix]Today you've produced " +str(round(milk_result[0])) +" ml for me today. It makes it "+str(round(milk_result[1]))+" ml in total.[/say]")
 
 		if GM.pc.getSkillLevel(Skill.Milking) < 20 or milk_result[1] < 50000 or milk_result[0] < 600:
-			saynn("[say=issix]Perhaps you'd want to stay like you were when milking huh? Maybe some day, if you choose to be my little cow instead of "+getPlayerPetName()+" we could think about it okey? But you need to be a goood healthy cow producing lots and lots of milk for your Master alright? "+("You even look the part already! *gently pokes your horns*" if GM.pc.hasHorns() else "")+" Gooood cow.[/say]")
+			saynn("[say=issix]Perhaps you'd want to stay like you were when milking huh? Maybe some day, if you choose to be my little cow instead of "+GlobalRegistry.getModule("IssixModule").getPlayerPetName()+" we could think about it okey? But you need to be a goood healthy cow producing lots and lots of milk for your Master alright? "+("You even look the part already! *gently pokes your horns*" if GM.pc.hasHorns() else "")+" Gooood cow.[/say]")
 			saynn("He pets your head")
 
 		else:  # TODO I'll wait with this path for TF changes to land in main, perhaps player could become a female cow for Master?
@@ -200,7 +201,7 @@ func _run():
 			saynn("His paw carreses your tummy full of your own litter.")
 			saynn("[say=azazel]Isn't it a great joy to be a mother? "+("Oh don't give me that look, a male can be a great mother for their children as well! Just look at me. " if GM.pc.getGender() == Gender.Male else "")+"Mmmm. You are a great mother as well, cutie.[/say]")
 		else:
-			saynn("[say=azazel]Aren't you curious yourself, what it means to bear litter? Wouldn't you want to leave a mark in this wretched galaxy? To have more of little {pc.name}'s running around? Becoming adventurers, slaves, masters... Hah. Don't get me wrong, personally I don't think I care about my own legacy, but our Master does, I think. I enjoy being his little breeding kitten, maybe you'd like being his breeding "+getPlayerPetName()+" too? Think about it.[/say]")
+			saynn("[say=azazel]Aren't you curious yourself, what it means to bear litter? Wouldn't you want to leave a mark in this wretched galaxy? To have more of little {pc.name}'s running around? Becoming adventurers, slaves, masters... Hah. Don't get me wrong, personally I don't think I care about my own legacy, but our Master does, I think. I enjoy being his little breeding kitten, maybe you'd like being his breeding "+GlobalRegistry.getModule("IssixModule").getPlayerPetName()+" too? Think about it.[/say]")
 			saynn("He gives you a smile.")
 		saynn("After he says that you leave the trance you were in, that was odd...")
 		saynn("[say=azazel]So what do you say? Are you in?[/say]")
@@ -457,7 +458,7 @@ func _run():
 
 		saynn("[say=pc]Umm, Master? Could we have sex today?[/say]")
 		if float(GM.pc.getLust()) / GM.pc.lustThreshold() > 0.7:
-			saynn("[say=issix]Aww, my "+getPlayerPetName() +" is pent up? How cute.[/say]")
+			saynn("[say=issix]Aww, my "+GlobalRegistry.getModule("IssixModule").getPlayerPetName() +" is pent up? How cute.[/say]")
 		else:
 			saynn("[say=issix]Sex? Hmmm...[/say]")
 
@@ -475,16 +476,6 @@ func _run():
 	if state == "readabook":
 		saynn("You read one of the comic books, 20 minutes pass.")  # TODO Expand on this
 		addButton("Back", "Go back", "")
-
-static func getPlayerPetName():
-	if Species.Canine in GM.pc.getSpecies():
-		return "puppy"
-	elif Species.Feline in GM.pc.getSpecies():
-		return "kitty"
-	elif Species.Equine in GM.pc.getSpecies():
-		return "pony"
-	else:
-		return "pet"
 
 func getTimeSpent():
 	return getModuleFlag("IssixModule", "Pet_Time_Interaction_Today", 0)+(GM.main.getTime()-pet_time_start)

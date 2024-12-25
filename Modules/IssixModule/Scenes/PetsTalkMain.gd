@@ -5,6 +5,7 @@ var pc_pose = null
 var arts_reviewed = 0
 var arts_correct = 0
 var hiisi_help_type = []
+var azazel = null
 
 var pick_up_lamia_art = [
 	"You pick up another art from the stash",
@@ -81,6 +82,7 @@ var crossword_puzzles = [["Sex in 11 letters", "Intercourse"], ["Subfamily of go
 
 func _init():
 	sceneID = "PetsTalkScene"
+	azazel = GlobalRegistry.getCharacter("azazel")
 
 func _initScene(_args = []):
 	pc_pose = "stand" if getModuleFlag("IssixModule", "PC_Enslavement_Role", 0) == 0 else "kneel"
@@ -119,7 +121,10 @@ func _run():
 			if getModuleFlag("IssixModule", "PC_Enslavement_Role", 0) == 0:
 				saynn("You approach Azazel, he recognizes sudden attention given to him, he goes on his fours doing some kitty back stretching before kneeling towards you expectantly. You notice he took a quick peek at his master beforehand.")
 			else:
-				pass  # TODO
+				saynn("You approach Azazel, he recognizes sudden attention given to him, he goes on his fours doing some kitty back stretching before kneeling towards you expectantly. He puts his paw on you.")
+			saynn("You look at Azazel's place. A regular square red blanket laying on the floor. On it in addition to a living, breathing pet - a few packages of wet and dry wipes, a medium sized feline dildo, a medium sized plushie of a pink colored anthropomorphic fox, and on the side of blanket closest to Azazel's Master - an empty pet bowl. This space gives you pretty messy vibes, with things seemingly in random places, plush laying on its side and the blanket itself smelling strongly of feline's needy sex.")
+			if azazel.isCoveredInCum() or azazel.hasEffect(StatusEffect.HasCumInsideVagina):
+				saynn("You can see splotches of undeniably cum on the blanket, likely from a recent fuck.")
 		addButton("Back", "Take a step back", "")
 
 	if state == "hiisimain":
@@ -134,6 +139,7 @@ func _run():
 			saynn("You approach Hiisi, he rolls to the side facing you.")
 			addButton("Talk", "Talk to Hiisi", "hiisitalk")
 			addButton("Appearance", "Look at Hiisi", "hiisiappearance")
+		saynn("You look at Hiisi's blanket. It's a regular red square blanket with nothing on it except the pup and bowl on the end of it closest to canine's Master. It's really neat and clean, either recently cleaned up or a great care is put into keeping it intact.")
 		addButton("Back", "Take a step back", "")
 		
 	if state == "hiisitalk":
@@ -319,19 +325,17 @@ func _run():
 		clearCharacter()
 		addCharacter("lamia")
 		playAnimation(StageScene.Duo, "kneel", {pc="lamia", npc="pc", npcAction=pc_pose, bodyState={naked=false, hard=false}})
-		if getModuleFlag("IssixModule", "PC_Enslavement_Role", 0) == 0:
-			saynn("You approach Lamia")
-			var lamia_mood = getModuleFlag("IssixModule", "Lamia_Times_Helped", 0)
-			if lamia_mood < -5:
-				saynn("He notices you and gives you a neural look of face, awaiting your further interactions.")
-			elif lamia_mood < 5:
-				saynn("He notices you and smiles.")
-			elif lamia_mood < 15:
-				saynn("He notices you, gives you a warm smile and invites you onto his blanket.")
-			else:
-				saynn("He notices you and immediately his fox tail swishes right and left, his face expression very happy to see you he invites you onto his blanket.")
+		saynn("You approach Lamia")
+		var lamia_mood = getModuleFlag("IssixModule", "Lamia_Times_Helped", 0)
+		if lamia_mood < -5:
+			saynn("He notices you and gives you a neural look of face, awaiting your further interactions.")
+		elif lamia_mood < 5:
+			saynn("He notices you and smiles.")
+		elif lamia_mood < 15:
+			saynn("He notices you, gives you a warm smile and invites you onto his blanket.")
 		else:
-			pass  # TODO
+			saynn("He notices you and immediately his fox tail swishes right and left, his face expression very happy to see you he invites you onto his blanket.")
+		saynn("When you look at Lamia's blanket, you think of creative person. On blanket there are organizers, pens, brushes, pieces of paper, a bowl and a small trashcan filled to the brim with folded into spherical balls paper. In a way everything seems organized, the organizers are in one place, the drawing tools in other and yet even positioning of the trashcan makes sense. Other than that, the blanket seems fairly clean.")
 		addButton("Talk", "Talk to Lamia", "lamiatalk")
 		addButton("Appearance", "Look at Lamia", "lamiaappearance")
 		if getModuleFlag("IssixModule", "Lamia_Times_Helped", 0) > 0:
