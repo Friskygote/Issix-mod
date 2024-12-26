@@ -5,7 +5,7 @@ func _init():
 
 func _run():
 	if(state == ""):
-
+		addCharacter("azazel")
 		saynn("As you walk in the hallway you spot a certain familiar feline a few steps in front of you. It's Azazel, he stands against the wall with his entire body fully naked, right leg on the floor while left one bent and is in contact with the wall. Looking at you, he winks.")
 		saynn("[say=azazel]Heeeey there {pc.name}, sweetie! How are you doing?[/say]")
 		saynn("[say=pc]Pretty fine, what are you doing here? Shouldn't you be with your Master?[/say]")
@@ -32,7 +32,7 @@ func _run():
 		saynn("[say=azazel]Wouldn't you want to have scratches behind your ear every morning? To have food in your bowl? To be cared for in this bleak world? To fulfill your Master's wishes and be rewarded?[/say]")
 		saynn("He said, continuing a surprised tone.")
 		addButton("Yes", "Say that this does sound good...", "hot")
-		addButton("No", "Say that this is delusional to like it (disables future Azazel's corruption scene)", "nothot")
+		addButton("No", "Say that this is delusional to like it (disables future Azazel's corruption scenes)", "nothot")
 
 	if state == "hot":
 		saynn("[say=pc]I would love that, actually...[/say]")

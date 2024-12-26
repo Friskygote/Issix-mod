@@ -32,7 +32,7 @@ func getIconColor():
 
 func combine(_args = []):
 	if(_args.size() > 0):
-		turns = max(_args[0], turns)
+		turns = _args[0]+turns
 
 func getBuffs():
 	return [

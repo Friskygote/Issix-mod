@@ -85,6 +85,9 @@ func _init():
 		InterestTopic.BigCock: Interest.Hates,
 	}
 	
+func updateBodyparts():
+	addEffect(StatusEffect.TaviWombMark)  # Not Tavi though womb mark was in Azazel's character design before I realized we have this effect lol
+
 func interestVerbalReaction(interest):
 	if(interest == InterestTopic.Pregnant):
 		return "Oh, do you have litter in there? Cuuute, meoowwww!"
@@ -149,4 +152,4 @@ func getBirthWaitTime():
 	return 60*60*24*3
 
 func getDefaultEquipment():
-	return ["inmatecollar", "inmateuniformSexDeviant", "plainPanties"]
+	return ["inmatecollarbell", "inmateuniformSexDeviant", "plainPanties"]
