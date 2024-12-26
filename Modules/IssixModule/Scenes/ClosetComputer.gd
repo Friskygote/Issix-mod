@@ -3,7 +3,7 @@ extends ComputerBase
 var connectedTo = ""
 var loggedAsAdmin = false
 var records = {"533": "ID: 533\nfirstname: Issix\nlastname: [corrupt]Solomon[/corrupt]\nitype: 1\n\nnotes: Issix, or rather [b]Gaap[/b] as his real real name goes, is a special case in BDCC, staff is NOT to take any punitive action in regards to this individual without first consulting with the director. He has not been convicted of any illegal activities, but rather has been introduced to prison based on order o[corrupt]f general Sonno[/corrupt]fer. \nOfficially - he is an inmate, unofficially he is is untouchable. Let him do whatever the fuck he wants, unless you don't value your own life. Incarcerated in [corrupt]4292 32 11[/corrupt].",\
-"655": "ID: 655\nfirstname: Frisk\nlastname: Dreemurr\nitype: 3\nPast inhabitant of planet [b]Pueri Meritorii[/b], sentenced for sex work with untreated STD. Original sentence was 10 years, it has been extended to indefinite due to circumstances in the prison.\n\nNOTE: THIS INMATE IS OWNED BY INMATE 533, PLEASE REFER TO MENTIONED INMATE ABOUT ALL MATTERS PERTAINING TO THIS INMATE",\
+"655": "ID: 655\nfirstname: Frisk\nlastname: Dreemurr\nitype: 3\nPast inhabitant of planet [b]Pueri Meritorii[/b], sentenced for sex work with untreated STD. Original sentence was 10 years, it has been extended to indefinite due to circumstances in the prison. He doesn't hold any prospects of becoming an agent, behavioral data shows all he is good for is being a weak, obedient sex toy.\n\nNOTE: THIS INMATE IS OWNED BY INMATE 533, PLEASE REFER TO MENTIONED INMATE ABOUT ALL MATTERS PERTAINING TO THIS INMATE",\
 "964": "ID: 964\nfirstname: "}
 
 func _init():

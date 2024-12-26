@@ -40,7 +40,7 @@ func _run():
 			_:
 				pass
 		if playerToFuck() and getModuleFlag("IssixModule", "Had_Sex_With_Issix", false) != true:
-			saynn("[color=#983030]Master expects you to be available for fucking today.[/color]")
+			saynn("[color=#983030][b]Master expects you to be available for fucking today.[/b][/color]")
 		setModuleFlag("IssixModule", "Last_Day_Visited_Master", GM.main.getDays())
 		addButton("Master", "Talk with your master about something", "issixpetmenu")
 		addButton("Azazel", "Actions in relation to Azazel", "azazelpetmenu")

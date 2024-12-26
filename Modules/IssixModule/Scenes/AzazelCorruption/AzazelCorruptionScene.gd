@@ -31,7 +31,7 @@ func _run():
 		saynn("He looks at you with really surprised look, as if you've said something so illogically outrageous that he is unable to even comprehend such an answer.")
 		saynn("[say=azazel]Wouldn't you want to have scratches behind your ear every morning? To have food in your bowl? To be cared for in this bleak world? To fulfill your Master's wishes and be rewarded?[/say]")
 		saynn("He said, continuing a surprised tone.")
-		addButton("Yes", "Say that this does sound good...", "hot")
+		addButton("Yes", "Say that this does sound good... (enables future Azazel corruption scenes which contain dubious consent actions)", "hot")
 		addButton("No", "Say that this is delusional to like it (disables future Azazel's corruption scenes)", "nothot")
 
 	if state == "hot":
@@ -40,7 +40,7 @@ func _run():
 		saynn("[say=azazel]Thought so.[/say]")
 		saynn("He says, lustfully")
 		saynn("[say=azazel]I have to go, think about it all [pulse color=#ac1eff height=0.0 freq=1.0]"+GlobalRegistry.getModule("IssixModule").getPlayerPetName()+"[/pulse], think about it.[/say]")
-		saynn("He leaves, as you try to steady your mind from countless thoughts assulting it, of submission and obedience to a Master like Issix. After a moment you can move again.")
+		saynn("He leaves, as you try to steady your mind from countless thoughts assaulting it, of submission and obedience to a Master like Issix. After a moment you can move again.")
 		addButton("Leave", "Take your leave", "endthescene")
 
 	if state == "nothot":
@@ -49,6 +49,13 @@ func _run():
 		saynn("[say=azazel]I see... Okey then, sorry for wasting your time.[/say]")
 		saynn("He starts walking really slowly towards his Master's corner, his arms limpy, as if he was incredibly tired, even though a moment ago he felt full of energy. Oh well.")
 		addButton("Leave", "Take your leave", "endthescene")
+
+
+func getDevCommentary():
+	return ""
+
+func hasDevCommentary():
+	return false
 
 
 func _react(_action: String, _args):

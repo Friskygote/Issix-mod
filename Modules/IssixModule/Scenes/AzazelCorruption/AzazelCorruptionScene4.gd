@@ -1,0 +1,2 @@
+# Currently only a plan for one:
+# Very similar to one of Tavi's scenes I believe, where Azazel gives player some drugs after which player is transported into dream world where they marry Issix by him officially collaring him with heavy slave collar like some kind of BDSM wedding (I hope i don't make that community angry, I've never been part of one), also considering the setting do the demonic shenanigans too something something

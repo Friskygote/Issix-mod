@@ -57,6 +57,9 @@ func _run():
 			saynn(RNG.pick(random_issix_activities_talk))
 			addButton("Prison", "How did he end up in prison?", "prison")
 			if GM.main.getModuleFlag("IssixModule", "PC_Enslavement_Role", 0) == 0:
+				if GM.pc.getFluids().hasFluidTypeWithCharID("Piss", "issix") or GM.pc.getFluids().hasFluidTypeWithCharID("Cum", "issix"):
+					saynn("That's so odd, why do you smell like me {pc.name}?")
+
 				addButton("Pets", "Have they really willingly gave to him?", "pets2")
 			addButton("Guards", "Are prison guards giving him trouble?", "guards")
 			if GM.main.getModuleFlag("IssixModule", "Quest_Status") == 1 and GM.main.getModuleFlag("IssixModule", "Quest_Bonked") == true:
@@ -365,8 +368,11 @@ func _run():
 func calculateHaremScore():
 	var score = 0
 	score += GM.pc.getPersonality().getStat("Subby")*10  # -10 - 10
-	score += GM.pc.getReputation().getRepLevel(RepStat.Whore)*10  # 0 - 90
-	return int(score) # -10 - 100
+	score += clamp(GM.pc.getReputation().getRepLevel(RepStat.Whore), 0, 6)*10 # 0 - 60
+	score += clamp(GM.main.getModuleFlag("IssixModule", "Azazel_Affection_given", 0), 0, 8) # 0 - 8
+	score += clamp(GM.main.getModuleFlag("IssixModule", "Lamia_Times_Helped", 0), 0, 10) # 0 - 10
+	score += clamp(GM.main.getModuleFlag("IssixModule", "Hiisi_Affection", 0), 0, 12) # 0 - 12
+	return int(score) # -10 - 100, 90 required to start the quest
 
 func _react(_action: String, _args):
 	if _action in ["questresponseno", "questresponseyes"]:

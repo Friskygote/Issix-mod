@@ -46,6 +46,8 @@ func getFlags():
 		"Hiisi_Crossword_Used": flag(FlagType.Number),
 		"Hiisi_Helped_Today": flag(FlagType.Bool),
 		"Azazel_Corruption_Scene": flag(FlagType.Number),
+		"Azazel_Had_Corruption_Scene_Today": flag(FlagType.Bool),
+		"Azazel_Agreed_Kiss": flag(FlagType.Bool),
 
 		# Slavery related
 		"PC_Enslavement_Role": flag(FlagType.Number),
@@ -97,7 +99,8 @@ func _init():
 		"res://Modules/IssixModule/Events/SlaveryIntroEvent.gd",
 		"res://Modules/IssixModule/Events/IssixRegularSearch.gd",
 		"res://Modules/IssixModule/Events/LamiaCellEvent.gd",
-		"res://Modules/IssixModule/Events/TalkNovaEvent.gd"
+		"res://Modules/IssixModule/Events/TalkNovaEvent.gd",
+		"res://Modules/IssixModule/Events/AzazelsCorruptionEvent.gd",
 		]
 		
 	scenes = [
@@ -119,7 +122,10 @@ func _init():
 		"res://Modules/IssixModule/Scenes/SlaveryInfoScreenScene.gd",
 		"res://Modules/IssixModule/Scenes/SlaveryFirst/IssixBringsComicbooks.gd",
 		"res://Modules/IssixModule/Scenes/SlaveryFirst/IssixFindsAvoidingPlayer.gd",
-		"res://Modules/IssixModule/Scenes/IssixNovaTalkScene.gd"
+		"res://Modules/IssixModule/Scenes/IssixNovaTalkScene.gd",
+		"res://Modules/IssixModule/Scenes/AzazelCorruption/AzazelCorruptionScene.gd",
+		"res://Modules/IssixModule/Scenes/AzazelCorruption/AzazelCorruptionScene2.gd",
+		"res://Modules/IssixModule/Scenes/AzazelCorruption/AzazelCorruptionScene3.gd",
 		]
 		
 	characters = [
@@ -134,6 +140,7 @@ func _init():
 	]
 	
 	items = [
+		 "res://Modules/IssixModule/Items/BellCollar.gd",
 		 "res://Modules/IssixModule/Items/CatnipItem.gd",
 		 "res://Modules/IssixModule/Items/ClosetMap.gd",
 		 "res://Modules/IssixModule/Items/CookieItem.gd" # I just felt like this game needs more variety in items, even if by themselves they don't do much
@@ -155,7 +162,8 @@ func _init():
 		"res://Modules/IssixModule/Skills/Perks/PavlovsDog.gd",
 		"res://Modules/IssixModule/Skills/Perks/PetName.gd",
 		"res://Modules/IssixModule/Skills/Perks/PetSpeech.gd",
-		"res://Modules/IssixModule/Skills/Perks/PetWalk.gd"
+		"res://Modules/IssixModule/Skills/Perks/PetWalk.gd",
+		"res://Modules/IssixModule/Skills/Perks/Relocated.gd",
 	]
 	statusEffects = [
 		"res://Modules/IssixModule/StatusEffects/BrandingPain.gd",
@@ -288,3 +296,4 @@ func resetFlagsOnNewDay():  # I apologize for abusing this hook, but startNewDay
 	GM.main.setModuleFlag("IssixModule", "Has_Been_Milked_Today", true)
 	if GM.main.getModuleFlag("IssixModule", "Trained_With_Hiisi_Combat") != null:
 		GM.main.setModuleFlag("IssixModule", "Trained_With_Hiisi_Combat", false)
+	GM.main.setModuleFlag("IssixModule", "Azazel_Had_Corruption_Scene_Today", false)

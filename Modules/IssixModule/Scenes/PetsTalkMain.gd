@@ -375,6 +375,8 @@ func _run():
 		var affection = getModuleFlag("IssixModule", "Azazel_Affection_given", 0)
 		addButton("Life", "Ask Azazel what his day-to-day life looks like nowadays", "azazellife")
 		addButton("Hobby", "Ask what hobbies does he have", "azazelhobby")
+		if GM.main.getModuleFlag("IssixModule", "Quest_Status", 0) < 1:
+			addButton("Issix's pet", "Ask Azazel if he knows what you could do to get his Master's approval to join the harem", "azazeljoinharem")
 		if affection > 2:
 			addButton("Issix", "Ask what he thinks of his master?", "azazelmaster")
 		else:
@@ -395,6 +397,7 @@ func _run():
 			addButton("Prison", "Ask how did he end up in prison?", "azazelprison")
 		else:
 			addDisabledButton("Prison", "You don't have good enough relationship with Azazel to ask about his past")
+		# TODO Saw_Azazel_Naked womb tattoo?
 		if(GM.pc.getInventory().hasItemID("CatnipPlant")):
 			pass
 		else:
@@ -414,6 +417,41 @@ func _run():
 		saynn("[say=azazel]Oh, nothing in particular. He just is pretty observant.[/say]")
 		addButton("Back", "Ask something else", "azazeltalk")
 
+	if state == "azazeljoinharem":
+		var said_something = false
+		saynn("[say=pc]Hey Azazel, I were wondering if you could have any tips for me if I wanted to join you, Lamia and Hiisi as one of Master Issix's pets.[/say]")
+		if GM.main.getModuleFlag("IssixModule", "Azazel_Affection_given", 0) > 3:
+			saynn("As Azazel hears you his eyes go wide and his tail goes into overdrive.")
+			saynn("[say=azazel]You'd want to do this?! FUCK YEAH![/say]")
+			saynn("He exclaims, realizing his excitement is a bit... Much, which makes him attempt to control it.")
+			saynn("[say=azazel]Sorry.. I just think that would be awesome, and I'd love to help you out! Master Issix will take really good care of you if you join, he is understanding, caring and strong. Okey, let's think...[/say]")
+		else:
+			saynn("Azazel hears you out and nods in understanding.")
+			saynn("[say=azazel]Yeah, I absolutely could help you, I'm sure our Master wouldn't mind another pet, and the more pets the more fun fur us all.[/say]")
+			saynn("He looks deep in thought for a moment before giving you advice...")
+
+		if GM.pc.getPersonality().getStat("Subby") < 0.4:
+			saynn("[say=azazel]First and foremost you should work on your body language and attitude. When someone asks you to do something you do it for them. You cannot have controlling authority in yourself, your purpose is to serve others, Master doesn't want someone who would be too defiant.[/say]")
+			said_something = true
+		if GM.main.getModuleFlag("IssixModule", "Azazel_Affection_given", 0) < 8:
+			if GM.main.getModuleFlag("IssixModule", "Azazel_Affection_given", 0) == 0:
+				saynn("[say=azazel]Master cares about what we think too, and I could help you out, if you help me too! I think they call it „I'll scratch your back if you scratch mine”? As to what could you do... Hmm... Perhaps look around prison, perhaps you could find something I'd like?[/say]")
+			else:
+				saynn("[say=azazel]Well, if you still have access to that sweet sweet catnip of yours, I'd love to get more of it, it's so intoxicating and fun! Gives such warm feelings. Have you tried it yourself?[/say]")
+			said_something = true
+		elif GM.main.getModuleFlag("IssixModule", "Lamia_Times_Helped", 0) < 10:
+			saynn("[say=azazel]I'm sure if you'd help Lamia they would put in good word for you! Perhaps you could help them draw? I don't know.[/say]")
+			said_something = true
+		elif GM.main.getModuleFlag("IssixModule", "Hiisi_Affection", 0) < 12:
+			saynn("[say=azazel]Hiisi is our guardian angel, after Master, of course. He does all different kind of stuff tinkers with things and so on. Perhaps he needs some help too? I'm sure if you helped him a little bit he would maybe be happy to share some thoughts about you with Master.[/say]")
+			said_something = true
+		if GM.pc.getReputation().getRepLevel(RepStat.Whore) < 6:
+			saynn("[say=azazel]You could try getting some reputation around in here, though it might need you to submit to some inmates before you make a name for yourself. Master will of course train you once he agrees to take you as a pet, but if he doesn't see in you someone he wants it's kinda useless, you know?[/say]")
+			said_something = true
+		if not said_something:
+			saynn("[say=azazel]Honestly, I think you already would make an excellent pet for Master, have you tried speaking with him? I'm sure he'd love to have you as his pet![/say]")
+
+		addButton("Thank", "Thank feline for helpful tips", "azazeltalk")
 
 	if(state == "azazelappearance"):
 		if(OPTIONS.isContentEnabled(ContentType.Watersports)):
@@ -430,9 +468,9 @@ func _run():
 		saynn("[say=azazel]One of the group's members wanted to meet me one day, they wanted to... Procure my services. Turns out it was all just a plot, they got close to me and I didn't really see anything wrong with that, I shared a lot of personal details with them - my life, financial situation even fetishes, they felt really honest and... Caring. Eventually they tore down their mask and said they have all kind of dirt on me. That's where the hell broke loose, their group were on my back for a while, stalking, harassing me. Eventually one of my clients infected me with something transmitted sexually, I think it was the group who sent me that client and...[/say]")
 		saynn("Azazel's voice starts to break down.")
 		saynn("[say=azazel]They reported me, I had my license taken and now I'm in here.[/say]")
-		saynn("You both sit in awkward silence while Azazel recovers.")
+		saynn("You both sit in awkward silence while Azazel recovers, he reaches for his pink colored fox plush and squeezes it.")
 		saynn("[say=azazel]I will never understand groups as that one. There are more of those all over the galaxy, I know that. They ruin the lives of so many of us.. Workers. What have we done to wrong them? Nothing, we just sell our time and bodies to give others and ourselves some temporary pleasures in this grim world we live in.[/say]")
-		saynn("He sighs, it seems to have calmed him down")
+		saynn("He sighs, it seems he has calmed down")
 		saynn("[say=azazel]When I first arrived here I were so lost. Still very confused by this series of events, felt betrayed, hurt. Eventually I've met Master, they saw something in me and they guided me through my trauma. I were really happy to become his pet. And honestly? It's not so bad, I have food, shelter and Master who takes care of me. And my heats.[/say]")
 		saynn("He says the last one, showing you his tongue at you in a grin")
 		saynn("[say=azazel]So... Yeah... That's how I ended up here. Not a happy story, but I doubt anyone's is. Ironically, I think I'm better here, and I can still engage in sex without any stupid license.[/say]")
