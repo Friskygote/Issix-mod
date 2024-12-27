@@ -10,7 +10,7 @@ func _init():
 func _run():
 	if(state == ""):
 		saynn("You can choose to put artwork on the wall of your cell if you'd like to.")
-		if (getModuleFlag("IssixModule", "Lamia_Chosen_Drawing", "simplepc") and getModuleFlag("IssixModule", "PC_Saw_Artwork_At_Lamias", false) == false):
+		if (getModuleFlag("IssixModule", "Lamia_Chosen_Drawing") == "simplepc" and getModuleFlag("IssixModule", "PC_Saw_Artwork_At_Lamias", null) == false):
 			addButton("Put artwork", "Put your simplistic artwork enchanted by Lamia on your wall", "putsimple")
 		if getModuleFlag("IssixModule", "Received_Portrait_From_Lamia", false):
 			addButton("Put artwork", "Put the portrait on your wall", "putportrait")

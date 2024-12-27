@@ -5,7 +5,6 @@ var pc_pose = null
 var arts_reviewed = 0
 var arts_correct = 0
 var hiisi_help_type = []
-var azazel = null
 
 var pick_up_lamia_art = [
 	"You pick up another art from the stash",
@@ -82,7 +81,6 @@ var crossword_puzzles = [["Sex in 11 letters", "Intercourse"], ["Subfamily of go
 
 func _init():
 	sceneID = "PetsTalkScene"
-	azazel = GlobalRegistry.getCharacter("azazel")
 
 func _initScene(_args = []):
 	pc_pose = "stand" if getModuleFlag("IssixModule", "PC_Enslavement_Role", 0) == 0 else "kneel"
@@ -104,6 +102,7 @@ func _run():
 	if(state == "azazelmain"):
 		playAnimation(StageScene.Duo, "kneel", {pc="azazel", npcAction=pc_pose, npc="pc", bodyState={naked=false, hard=false}})
 		clearCharacter()
+		var azazel = GlobalRegistry.getCharacter("azazel")
 		addCharacter("azazel")
 		addButton("Talk", "Talk to Azazel", "azazeltalk")
 		addButton("Appearance", "Look at Azazel", "azazelappearance")
@@ -566,6 +565,9 @@ func _run():
 	if state == "artminigame":
 		if arts_reviewed:
 			saynn("You've rated "+str(arts_reviewed)+"/10 artworks.")
+		if artwork == null:
+			saynn("PROGRAMMING ERROR: artwork is null")
+			addButton("Escape", "Mission Failed, We'll Get Em' Next Time", "lamiamain")
 		if artwork[2] == true:
 			saynn(RNG.pick(pick_up_lamia_art)+". The new artwork features "+RNG.pick(odd_lamia_art)+". Although after short moment the artwork is swiftly taken from you by Lamia who feels unusually flustered about you seeing it. He flips it upside down so the drawings are not visible to anyone anymore and puts it into the last box like this. Embarrassed he picks up another artwork from the pile and hands it to you. The new artwork features "+artwork[1]+".")
 		else:
@@ -767,9 +769,9 @@ func loadData(data):
 	.loadData(data)
 
 	artwork = SAVE.loadVar(data, "artwork", null)
-	arts_reviewed = SAVE.loadVar(arts_reviewed, "arts_reviewed", null)
-	arts_correct = SAVE.loadVar(arts_correct, "arts_correct", null)
-	hiisi_help_type = SAVE.loadVar(hiisi_help_type, "hiisi_help_type", null)
+	arts_reviewed = SAVE.loadVar(arts_reviewed, "arts_reviewed", 0)
+	arts_correct = SAVE.loadVar(arts_correct, "arts_correct", 0)
+	hiisi_help_type = SAVE.loadVar(hiisi_help_type, "hiisi_help_type", [])
 
 func markHiisiRewardAsAquired():
 	var HiisiRPS = getModuleFlag("IssixModule", "Hissi_RPS_data", {})

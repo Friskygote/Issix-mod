@@ -218,6 +218,7 @@ func _react(_action: String, _args):
 
 	if _action == "computer":
 		runScene("ComputerSimScene", ["ClosetComputer"], "computerexplore")
+		return
 	
 	setState(_action)
 
@@ -246,10 +247,5 @@ func _react_scene_end(_tag, _result):
 		if(_result is Array):
 			if(_result[0] == true):
 				processTime(3*60)
-				# addMessage("You got 50 credits! But there is something else too..")
-				# addItemToSavedItems(GlobalRegistry.createItem("HorsecockDildo"))
-				# GM.pc.addCredits(50)
-				# addExperienceToPlayer(100)
-				setState("lookaround")
-				return
-		endScene()
+		setState("lookaround")
+		return

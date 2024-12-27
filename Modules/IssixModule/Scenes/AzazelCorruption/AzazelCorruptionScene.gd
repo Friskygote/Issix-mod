@@ -22,7 +22,7 @@ func _run():
 		saynn("His paw reaches your chin as he puts two fingers to massage it while he licks his lips. He puts another paw on your {pc.thick} chest, doing round circles with his paw.")
 		saynn("[say=azazel]You know... I'm sure there is a still some space in my Master's corner, and I'd really really want to see you there, with a leash connected to your collar. I think you'd love it too, I think deep down you too would want to be a nice [pulse color=#ac1eff height=0.0 freq=1.0]"+GlobalRegistry.getModule("IssixModule").getPlayerPetName()+"[/pulse] for your Master. Call it an expert opinion.[/say]")
 		saynn("You gulp, the way the feline said it made you flinch, and not in a bad way, it's a scary concept to be owned by someone else so directly. You are already a slave in this prison, but to give yourself so willingly? To a man wanting to assert power over others? That's...")
-		addButton("Hot", "Admit to yourself that this thought makes your knees weak", "hot")
+		addButton("Hot", "Admit to yourself that this thought makes your knees weak (CW: musk, drug use in future scenes)", "hot")
 		addButton("Absurd", "You do not find this idea hot at all (disables future Azazel's corruption scenes)", "nothot")
 
 	if state == "walkno":
@@ -31,7 +31,7 @@ func _run():
 		saynn("He looks at you with really surprised look, as if you've said something so illogically outrageous that he is unable to even comprehend such an answer.")
 		saynn("[say=azazel]Wouldn't you want to have scratches behind your ear every morning? To have food in your bowl? To be cared for in this bleak world? To fulfill your Master's wishes and be rewarded?[/say]")
 		saynn("He said, continuing a surprised tone.")
-		addButton("Yes", "Say that this does sound good... (enables future Azazel corruption scenes which contain dubious consent actions)", "hot")
+		addButton("Yes", "Say that this does sound good... (enables future Azazel corruption scenes which contain dubious consent actions CW: musk, drug use)", "hot")
 		addButton("No", "Say that this is delusional to like it (disables future Azazel's corruption scenes)", "nothot")
 
 	if state == "hot":

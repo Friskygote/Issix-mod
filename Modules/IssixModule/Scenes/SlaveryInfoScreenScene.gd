@@ -30,12 +30,12 @@ func _run():
 		saynn("Master's mood: "+getMood())
 		saynn("Issix's slave for "+str(getDays())+" days")
 		match GM.main.getModuleFlag("IssixModule", "PC_Enslavement_Role", 1):
-			1.0:
+			1.0, 1:
 				saynn("Amount of time spent in Master's harem today: "+str(getTimeSpentReadable()))
 				var forced = GM.main.getModuleFlag("IssixModule", "Is_Player_Forced_Today", 0)
 				if forced > 0:
 					saynn("You are expected to spend "+Util.getTimeStringHumanReadable(forced)+" in the harem today.")
-			2.0:
+			2.0, 2:
 				saynn("To pay Master for sluttying around yesterday: " + str(GM.main.getModuleFlag("IssixModule", "Prostituation_fee_yesterday", 0) + GM.main.getModuleFlag("IssixModule", "Prostituation_flat_fee", 0)))
 			_:
 				pass

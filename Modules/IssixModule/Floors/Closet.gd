@@ -8,5 +8,5 @@ func _on_Closet_onEnter(room):
 
 func _on_Closet_onReact(_room, key):
 	if(key == "leave"):
-		GM.pc.setLocation("med_lobbynw")
+		GM.pc.setLocation("eng_corridor6")
 		GM.main.reRun()
