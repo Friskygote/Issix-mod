@@ -297,3 +297,4 @@ func resetFlagsOnNewDay():  # I apologize for abusing this hook, but startNewDay
 	if GM.main.getModuleFlag("IssixModule", "Trained_With_Hiisi_Combat") != null:
 		GM.main.setModuleFlag("IssixModule", "Trained_With_Hiisi_Combat", false)
 	GM.main.setModuleFlag("IssixModule", "Azazel_Had_Corruption_Scene_Today", false)
+	GM.main.setModuleFlag("IssixModule", "Hiisi_Helped_Today", false)

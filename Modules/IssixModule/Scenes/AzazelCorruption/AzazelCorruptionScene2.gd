@@ -151,7 +151,8 @@ func _react(_action: String, _args):
 		else:
 			GM.pc.addLust(20)
 		GM.pc.addIntoxication(0.3)
-		GM.pc.getInventory().equipItem(player_restraint)
+		if player_restraint != null:
+			GM.pc.getInventory().equipItem(player_restraint)
 
 	if _action == "agreekiss":
 		var pc_inv = GM.pc.getInventory()
