@@ -78,7 +78,7 @@ func _run():
 	if state=="lookaround":
 		saynn(GM.world.getRoomByID("eng_closet").getDescription())
 		addButton("Cabinets", "Try to search cabinets", "cabinets")
-		addButton("Computer", "There is a computer in the corner, you could try and interact with it", "computer")
+		#addButton("Computer", "There is a computer in the corner, you could try and interact with it", "computer")
 		addButton("Leave", "Try to leave the room", "leave")
 		
 	if state=="cabinets":
