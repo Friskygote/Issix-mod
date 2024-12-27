@@ -11,7 +11,7 @@ func run(_triggerID, _args):
 		if "feline" in GM.pc.getSpecies():
 			saynn("You approach greenhouses, each one looks like a huge long tent with lots of artificial lights inside. Your sensitive nose catches a whiff of a peculiar smell coming from one of the greenhouses, something very primal to your very instincts...")
 			addButton("Investigate", "Find the source of smell", "greenhouse")
-		elif RNG.chance(50):
+		else:
 			saynn("While minding your business you notice a sign which depicts a crossed out feline. This strikes you as very odd, why would felines be banned from what appears to be a single greenhouse?")
 			addButton("Investigate", "Try to find out what's up?", "greenhouse")
 	else:

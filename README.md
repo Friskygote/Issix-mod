@@ -60,7 +60,7 @@ I also license the mod on the same license base game is licensed on, it's a nod 
 So many reasons. 
 - I wanted to try myself at modding. 
 - I wanted to make some content for subby players like myself. 
-- I wanted to see if content I write can still have effect on myself (I doubt lol).
+- I wanted to see if content I write can still have effect on myself (I doubt lol, (EDIT: knowing the material successfully makes me immune to horny)).
 - I wanted to express my own sexuality in a way.
 - I want the mod to be a little statement and action behind my words of supporting sex-positivity by contributing something sexual and being public about it (like on my website, also, this is not to say that the mod is for myself, even though in part it is)
 - I wanted to make a statement. I'm writing this mod in times where certain awful people gain power over incredibly powerful state in the world, their policies represent oppression against creatures. So in part, this mod is part of my advocacy for sex-positivity as well as acceptance of LGBT+ creatures, and therefore a political statement.
