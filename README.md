@@ -7,6 +7,7 @@ A mod for Broken Dreams Correctional Center. Introduces Issix and his harem of s
 The mod and contents in it is - surprise surprise - a work of fiction. Author does not support, condone, advocate for, endorse, stand up for non-consensual activities, relationships or violence.
 
 # Existing content
+**This mod currently makes assumptions about a player - mainly that they are playing an anthropomorphic animal character, if this makes you uncomfortable, you are discouraged from playing it. It might be alleviated in the future**
 - Issix - a dragon-demon hybrid, he owns 3 pets, all of them have some story that you can uncover (and which may be expanded in the future)
  - Azazel - a kind feline breeding bitch
  - Hiisi - a troubled pup - guardian angel of the harem (after Issix)
