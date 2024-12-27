@@ -19,7 +19,7 @@ The mod and contents in it is - surprise surprise - a work of fiction. Author do
 
 What isn't there is basically a lot of post-enslavement content. This is major focus of current work on the mod for it to grow to 1.0 release.
 
-In tags: M/player, M/M (implied), petplay, slave, watersports, parasite
+In tags: M/player, M/M (implied), petplay, slave, corruption (of PC), watersports, parasite
 
 # Goals
 ## Mod's audience
