@@ -1,9 +1,10 @@
 extends SceneBase
 
-var artwork = null
+var artwork = null  # array[array[int numbers of chosen artwork combos], str[description], bool[whether odd art overwrite is active], array[previous art ids, chosen art ids]]
 var pc_pose = null
 var arts_reviewed = 0
 var arts_correct = 0
+var in_training_mode = false
 var hiisi_help_type = []
 
 var pick_up_lamia_art = [
@@ -560,11 +561,29 @@ func _run():
 		saynn("With that, Lamia gives you the piece of paper he drew explanations on. This seems to be all... You look at it for the last time and think you are ready to go.")
 		saynn("[say=pc]Alright, can you watch me when I try for the first time?[/say]")
 		saynn("Lamia nods, very happy with himself.")
-		addButton("Help out", "Start sorting through the artwork stash.", "artminigame")
+		addButton("Help out", "Start sorting through the artwork stash.", "artminigametraining")
+
+	if state == "artminigametraining":
+		saynn("You are in artwork sorting [b]training mode[/b]. Lamia will watch you closely as you put the artwork but won't judge your skills. If you make a mistake you will learn about it. Feel free to experiment, when you are ready, use the Enough button.")
+		if artwork[3] != null:
+			var boxes = {1: "[color=blue]blue box[/color]", 2: "[color=red]red box[/color]", 3: "[color=green]green box[/color]", 4: "[color=purple]purple box[/color]"}
+			saynn("Lamia picks up the last art you've sorted and moves it into "+boxes[artwork[3]] + ". You must have made a mistake with the last one.")
+
+		if artwork[2] == true:
+			saynn(RNG.pick(pick_up_lamia_art)+". The new artwork features "+RNG.pick(odd_lamia_art)+".")
+			saynn("Although after short moment the artwork is swiftly taken from you by Lamia who feels unusually flustered about you seeing it. He flips it upside down so the drawings are not visible to anyone anymore and puts it into the last box like this. Embarrassed he picks up another artwork from the pile and hands it to you. The new artwork features "+artwork[1]+".")
+		else:
+			saynn(RNG.pick(pick_up_lamia_art)+". The new artwork features "+artwork[1]+".")
+		addButton("Blue box", "Put the artwork on top of others in the blue box", "blueboxlamia1")
+		addButton("Red box", "Put the artwork on top of others in the red box", "redboxlamia2")
+		addButton("Green box", "Put the artwork on top of others in the green box", "greenboxlamia3")
+		addButton("Purple box", "Put the artwork on top of others in the purple box", "purpleboxlamia4")
+		addButton("Explanation", "Try to remember the rules of categorizing Lamia's artwork", "lamiaartexplanation")
+		addButton("Enough", "That's enough of training, start sorting without Lamia's assistance", "artminigametrainingend")
 
 	if state == "artminigame":
 		if arts_reviewed:
-			saynn("You've rated "+str(arts_reviewed)+"/10 artworks.")
+			saynn("You've categorized "+str(arts_reviewed)+"/8 artworks.")
 		if artwork == null:
 			saynn("PROGRAMMING ERROR: artwork is null")
 			addButton("Escape", "Mission Failed, We'll Get Em' Next Time", "lamiamain")
@@ -604,10 +623,10 @@ func _run():
 
 	if state == "lamiatalk":
 		var lamia_affection = getModuleFlag("IssixModule", "Lamia_Times_Helped", 0)
-		if lamia_affection < 1:
+		if getModuleFlag("IssixModule", "Lamia_Chosen_Drawing") == null:
 			addButton("Try drawing", "You can try and draw something with Lamia", "lamiatrydrawing")
 		else:
-			addDisabledButton("Try drawing", "You've already drawn something with Lamia, perhaps there'll be another chance in the future")
+			addDisabledButton("Try drawing", "You've already drawn something with Lamia, perhaps there will be another chance in the future")
 		addButton("Mute", "Ask if he's been mute since they were born", "lamiamute")
 		if lamia_affection > 2:
 			addButton("Explicit", "You've noticed Lamia doesn't draw any explicit things, perhaps worth asking about it?", "lamiaexplicit")
@@ -741,19 +760,18 @@ func generate_artwork_desc(descriptors: Array):
 					result = result + RNG.pick(other_lamia_art)
 		return result
 
-
-func verify_response(response: int):
+func get_appropriate_box():
 	if artwork[0] == [1, 2, 3]:
-		return response == 3
+		return 3
 	elif artwork[0] == [1, 2]:
-		return response == 1
+		return 1
 	elif 1 in artwork[0]:
-		return response == 1
+		return 1
 	elif 2 in artwork[0]:
-		return response == 2
+		return 2
 	elif artwork[0] == [3]:
-		return response == 3
-	return response == 4
+		return 3
+	return 4
 
 func saveData():
 	var data = .saveData()
@@ -762,6 +780,7 @@ func saveData():
 	data["arts_reviewed"] = arts_reviewed
 	data["arts_correct"] = arts_correct
 	data["hiisi_help_type"] = hiisi_help_type
+	data["lamia_game_training"] = in_training_mode
 
 	return data
 
@@ -769,9 +788,10 @@ func loadData(data):
 	.loadData(data)
 
 	artwork = SAVE.loadVar(data, "artwork", null)
-	arts_reviewed = SAVE.loadVar(arts_reviewed, "arts_reviewed", 0)
-	arts_correct = SAVE.loadVar(arts_correct, "arts_correct", 0)
-	hiisi_help_type = SAVE.loadVar(hiisi_help_type, "hiisi_help_type", [])
+	arts_reviewed = SAVE.loadVar(data, "arts_reviewed", 0)
+	arts_correct = SAVE.loadVar(data, "arts_correct", 0)
+	hiisi_help_type = SAVE.loadVar(data, "hiisi_help_type", [])
+	in_training_mode = SAVE.loadVar(data, "lamia_game_training", false)
 
 func markHiisiRewardAsAquired():
 	var HiisiRPS = getModuleFlag("IssixModule", "Hissi_RPS_data", {})
@@ -779,23 +799,35 @@ func markHiisiRewardAsAquired():
 	setModuleFlag("IssixModule", "Hissi_RPS_data", HiisiRPS)
 
 func _react(_action: String, _args):
+	var chosen_number = null
 	if _action in ["blueboxlamia1", "redboxlamia2", "greenboxlamia3", "purpleboxlamia4"]:
-		if verify_response(int(_action[-1])):
-			arts_correct += 1
-		arts_reviewed += 1
-		if arts_reviewed >= 10:
-			if arts_correct > 7:
-				_action = "artminigamegoodend"
-			else:
-				_action = "artminigamebadend"
-			GM.main.setModuleFlag("IssixModule", "Helped_Lamia_With_Drawings_Today", true)
+		chosen_number = int(_action[-1])
+		if in_training_mode:
+			_action = "artminigametraining"
 		else:
-			_action = "artminigame"
+			if chosen_number == get_appropriate_box():
+				arts_correct += 1
+			arts_reviewed += 1
+			if arts_reviewed >= 8:
+				if arts_correct > 5:
+					_action = "artminigamegoodend"
+				else:
+					_action = "artminigamebadend"
+				GM.main.setModuleFlag("IssixModule", "Helped_Lamia_With_Drawings_Today", true)
+			else:
+				_action = "artminigame"
 
 	if _action == "hiisireassure":
 		increaseModuleFlag("IssixModule", "Hiisi_Affection", 5)
 		setModuleFlag("IssixModule", "Hiisi_Name_Helped", true)
 		processTime(10*60)
+
+	if _action == "artminigametrainingend":
+		in_training_mode = false
+		_action = "artminigame"
+
+	if _action == "lamiaexplanationcont":
+		in_training_mode = true
 
 	if _action == "hiisiadvice":
 		increaseModuleFlag("IssixModule", "Hiisi_Affection", -5)
@@ -866,14 +898,18 @@ func _react(_action: String, _args):
 	if _action == "artminigamebadend":
 		increaseModuleFlag("IssixModule", "Lamia_Times_Helped", -1)
 
-	if _action == "artminigame":
+	if _action in ["artminigametraining", "artminigame"]:
 		processTime(1*60)
 		# 1 - humanoids and items, 2 - feral animals and flora, 3 - backgrounds, 4 - others/electronic devices
 		var art_rand = RNG.pickWeighted([[1], [2], [3], [4], [1, 2], [1, 3], [2, 3], [1, 2, 3]], [15, 15, 15, 5, 10, 10, 5, 4])
-		artwork = [art_rand.duplicate(), generate_artwork_desc(art_rand), RNG.randi_range(1,151) == 50]  # Here Frisk learned about how Godot variables lifespan ends with the end of _react leaving a very empty array after this function ends. Gave me quite a lot of confusion, but was fun to debug I suppose, Python would track the reference to a variable, Godot doesn't, sad.
+		artwork = [art_rand.duplicate(), generate_artwork_desc(art_rand), RNG.randi_range(1,151) == 50, get_appropriate_box() if artwork != null and get_appropriate_box() != chosen_number else null]
+		# Here Frisk learned about how Godot variables lifespan ends with the end of _react leaving a very empty array after this function ends. Gave me quite a lot of confusion, but was fun to debug I suppose, Python would track the reference to a variable, Godot doesn't, sad.
 
 	if _action == "artminigameae":  # Don't reroll new artwork
-		_action = "artminigame"
+		if in_training_mode:
+			_action = "artminigametraining"
+		else:
+			_action = "artminigame"
 
 	if(_action == "catnip"):
 		GM.pc.getInventory().removeXOfOrDestroy("CatnipPlant", 1)
