@@ -149,10 +149,10 @@ func _run():
 				addButton("Drink", "Ask Hiisi about energy drink that you've won through the game of Rock Paper Scissors", "hiisienergy")
 			if HiisiRPS["winh"] > 2 and HiisiRPS["reward_acquired"] == false:
 				addButtonWithChecks("Hypnovisor", "Ask Hiisi to fulfill his request with hypnovisors", "hiisihypnovisors", [], [[ButtonChecks.HasItemWithTag, ItemTag.Hypnovisor]])
-		if not getModuleFlag("IssixModule", "Hiisi_Name_Helped", false):
-			addDisabledButton("Name", "You already asked Hiisi about his name")
-		else:
+		if getModuleFlag("IssixModule", "Hiisi_Name_Helped", false) != true:
 			addButton("Name", "Ask Hiisi about his name", "hiisiname")
+		else:
+			addDisabledButton("Name", "You already asked Hiisi about his name")
 		if getModuleFlag("IssixModule", "Hiisi_Helped_Today", false) == false:
 			addButton("Help", "Ask if you can help the canine in something", "hiisihelp")
 		else:
@@ -338,7 +338,7 @@ func _run():
 		saynn("When you look at Lamia's blanket, you think of creative person. On blanket there are organizers, pens, brushes, pieces of paper, a bowl and a small trashcan filled to the brim with folded into spherical balls paper. In a way everything seems organized, the organizers are in one place, the drawing tools in other and yet even positioning of the trashcan makes sense. Other than that, the blanket seems fairly clean.")
 		addButton("Talk", "Talk to Lamia", "lamiatalk")
 		addButton("Appearance", "Look at Lamia", "lamiaappearance")
-		if getModuleFlag("IssixModule", "Lamia_Times_Helped", 0) > 0:
+		if getModuleFlag("IssixModule", "Lamia_Times_Helped") != null:
 			match getModuleFlag("IssixModule", "Helped_Lamia_With_Drawings_Today"):
 				null:
 					addButton("Help", "You see a big stack of drawings and some drawers, it seems Lamia categorizes their drawings, ask if you could help?", "lamiahelp")
@@ -440,7 +440,7 @@ func _run():
 				saynn("[say=azazel]Well, if you still have access to that sweet sweet catnip of yours, I'd love to get more of it, it's so intoxicating and fun! Gives such warm feelings. Have you tried it yourself?[/say]")
 			said_something = true
 		elif GM.main.getModuleFlag("IssixModule", "Lamia_Times_Helped", 0) < 10:
-			saynn("[say=azazel]I'm sure if you'd help Lamia they would put in good word for you! Perhaps you could help them draw? I don't know.[/say]")
+			saynn("[say=azazel]I'm sure if you'd help Lamia they would put in good word for you! Or well... You know what I mean. Perhaps you could help them draw? I don't know.[/say]")
 			said_something = true
 		elif GM.main.getModuleFlag("IssixModule", "Hiisi_Affection", 0) < 12:
 			saynn("[say=azazel]Hiisi is our guardian angel, after Master, of course. He does all different kind of stuff tinkers with things and so on. Perhaps he needs some help too? I'm sure if you helped him a little bit he would maybe be happy to share some thoughts about you with Master.[/say]")
@@ -632,12 +632,12 @@ func _run():
 			addButton("Explicit", "You've noticed Lamia doesn't draw any explicit things, perhaps worth asking about it?", "lamiaexplicit")
 
 		if lamia_affection > 6:
-			addDisabledButton("Prison", "Ask Lamia how they ended up in the prison")
+			addButton("Prison", "Ask Lamia how they ended up in the prison", "lamiaprison")
 		else:
 			addDisabledButton("Prison", "You don't feel like there is enough connection between you two to ask him that")
 
 		if lamia_affection > 11:
-			addDisabledButton("Favorite", "Ask Lamia what is their favorite thing to draw")
+			addDisabledButton("Favorite", "Ask Lamia what their favorite thing to draw is")
 		else:
 			addDisabledButton("Favorite", "You don't feel like there is enough connection between you two to ask him that")
 
@@ -646,6 +646,32 @@ func _run():
 		else:
 			addDisabledButton("Draw", "You don't feel like there is enough connection between you two to ask him to draw for you something")
 		addButton("Back", "Do something else", "lamiamain")
+
+	if state == "lamiaprison":
+		saynn("[say=pc]A mute fox in general inmate uniform, do you feel comfortable sharing how did it came to be?[/say]")
+		saynn("Fox looks at you and sighs. You realize perhaps this wasn't the right question to ask, but then he starts searching for something in their bag and pulls out a small stack of paper held together by a stapler. They look at the first page holding the entire stack in their paws before passing it to you. There is no cover or anything, it's just a bunch of papers with drawings on them, from brief look it seems like it all reads like a comic.")
+		saynn("First page features a younger looking version of Lamia with a backpack on their back, next panels that span at least 3 pages show them walking through countless beautiful and detailed environments. There is a forest with weird looking trees spanning higher than any you've ever seen yourself, there is a jungle like place where Lamia sits alone next to a makeshift campfire, there are canyons with colorful rocks all around, huts on what you can only imagine are mountains and large open bodies of water including a stunning depiction of Lamia inside underwater glass tunnel with scary and beautiful looking ocean fauna. By sheer chance you notice a small piece of paper where the stapler stapled the pages, seems like there are at least two pages missing, ignoring that little detail you ask.")
+		saynn("[say=pc]Holy fuck, those are just drawings but they look stunning, are those real places? On your planet?[/say]")
+		saynn("Lamia nods")
+		saynn("[say=pc]Woooahh.[/say]")
+		saynn("All of those panels seem to have a theme of travel, you imagine Lamia traveled a lot, which seems like an interesting life to live. Finally, on 10th page Lamia arrives to what looks like a giant man made wall, it spans far and wide beyond what comic panel can depict, and there is seemingly one depicted entrance that has a man made solid road leading to it. Armed guards in it. Next few panels depict how meeting of Lamia and AlphaCorp guards went, Lamia, seemingly wanting to pass the giant wall was stopped by the armed guards, they put forward their paw as if expecting something, Lamia shakes their head and promptly gets told fo fuck off by the guard.")
+		saynn("Next panel shows Lamia near another campfire next to an enormous wall. He must have stayed there for a while. You realize that the wall was likely impossible to overcome by regular means considering Lama chose to encamp near the earlier depicted entrance. A few panels show the fox boy observing the border check from a distance. On 8th page, during the night they've been sneaking around near the entrance, 2 guards seemingly asleep, one awoke but staring at the computer terminal. Lamia, as if ninja are sneaking through the gate, multiple panels show them literally crawling or thinning out to avoid detection. There is a panel showing their happy face on the other side of the wall, a wall entrance in a background - achieving their goal, where the next full page panel shows them laying on the ground unconscious with a projectile on their back. Last page of the saga shows transportation inside a spacecraft with them in cuffs. You can guess the rest.")
+		saynn("[say=pc]That's... Wow. So, that was your planet, right? There was AlphaCorp there and they were like, guarding an entrance in a wall to the other side.[/say]")
+		saynn("Lamia confirms.")
+		saynn("[say=pc]And there was no way around it?[/say]")
+		saynn("He confirms again.")
+		saynn("[say=pc]That must have sucked. What the guards wanted, money? IDs?[/say]")
+		saynn("They signal that the guards wanted both.")
+		saynn("[say=pc]Ughhh...[/say]")
+		saynn("You pass the stack of papers back to Lamia and they put it back into their bag.")
+		saynn("[say=pc]So, you had neither right? No money, no identification...[/say]")
+		saynn("They nod.")
+		saynn("[say=pc]Guess why you wandered like that is a story for another day?[/say]")
+		saynn("They yawn, seems so.")
+		saynn("[say=pc]Alright, thank you for sharing this, I'll take my leave now.[/say]")
+		saynn("They have you off.")
+		addButton("Finish", "Lamia shared their story with you, now its time to leave", "lamiatalk")
+
 
 	if state == "lamiatrydrawing":
 		saynn("[say=pc]Hey Lamia, I were wondering, you've been drawing a lot of things, do you think I could try something on my own?[/say]")
@@ -726,7 +752,7 @@ func _run():
 		saynn("Lamia shrugs, he starts drawing. At first a koala eating a bamboo shows up, a happy face drawn above it. Then he draws canine member and canine pussy with a stick figure doing shrug with their arms. What strikes you as odd is that even though Lamia doesn't seem to draw explicit scenes, their genitalia art is drawn with plenty of detail and effort.")
 		saynn("[say=pc]Wow, that's pretty good, but I guess you kinda don't care much for those? Sex and all just doesn't do it for you, huh?[/say]")
 		saynn("They nod in agreement.")
-		saynn("[say=pc]I con respect that. You are a great artist, and you should draw whatever the fuck you want, that's the way to go.[/say]")
+		saynn("[say=pc]I can respect that. You are a great artist, and you should draw whatever the fuck you want, that's the way to go.[/say]")
 		saynn("They smile, you reward them with headpats.")
 		addButton("Back", "Finish this conversation", "lamiatalk")
 

@@ -48,6 +48,11 @@ func getFlags():
 		"Azazel_Corruption_Scene": flag(FlagType.Number),
 		"Azazel_Had_Corruption_Scene_Today": flag(FlagType.Bool),
 		"Azazel_Agreed_Kiss": flag(FlagType.Bool),
+		"Hiisi_Encounter_scene": flag(FlagType.Number),
+		"Hiisi_Had_Encounter_Scene_Today": flag(FlagType.Bool),
+		"Issix_Donation_Meter": flag(FlagType.Number),
+		"Issix_Used_Donations": flag(FlagType.Number),
+		"Got_Luck_Token_Before": flag(FlagType.Bool),
 
 		# Slavery related
 		"PC_Enslavement_Role": flag(FlagType.Number),
@@ -100,7 +105,7 @@ func _init():
 		"res://Modules/IssixModule/Events/IssixRegularSearch.gd",
 		"res://Modules/IssixModule/Events/LamiaCellEvent.gd",
 		"res://Modules/IssixModule/Events/TalkNovaEvent.gd",
-		"res://Modules/IssixModule/Events/AzazelsCorruptionEvent.gd",
+		"res://Modules/IssixModule/Events/PetWanderEvent.gd",
 		]
 		
 	scenes = [
@@ -126,6 +131,8 @@ func _init():
 		"res://Modules/IssixModule/Scenes/AzazelCorruption/AzazelCorruptionScene.gd",
 		"res://Modules/IssixModule/Scenes/AzazelCorruption/AzazelCorruptionScene2.gd",
 		"res://Modules/IssixModule/Scenes/AzazelCorruption/AzazelCorruptionScene3.gd",
+		"res://Modules/IssixModule/Scenes/HiisiScenes/HiisiWanderScene.gd",
+		"res://Modules/IssixModule/Scenes/IssixDonationScene.gd",
 		]
 		
 	characters = [
@@ -143,7 +150,8 @@ func _init():
 		 "res://Modules/IssixModule/Items/BellCollar.gd",
 		 "res://Modules/IssixModule/Items/CatnipItem.gd",
 		 "res://Modules/IssixModule/Items/ClosetMap.gd",
-		 "res://Modules/IssixModule/Items/CookieItem.gd" # I just felt like this game needs more variety in items, even if by themselves they don't do much
+		 "res://Modules/IssixModule/Items/CookieItem.gd", # I just felt like this game needs more variety in items, even if by themselves they don't do much
+		 "res://Modules/IssixModule/Items/LuckToken.gd"
 	]
 	
 	quests = [
@@ -213,9 +221,9 @@ static func getPlayerPetName():
 
 func breedSlaveIfNpc():
 	## Function to process breeding by Master on randomly selected TODO maybe do that during the day as an event?
-	if (int(GM.main.getDays()) % 2 == 0):  # Breed only every second day?
-		GM.main.setModuleFlag("IssixModule", "Todays_Bred_Slave", "thischardoesntexist")
-		return
+	# if (int(GM.main.getDays()) % 2 == 0):  # Breed only every second day?
+	# 	GM.main.setModuleFlag("IssixModule", "Todays_Bred_Slave", "thischardoesntexist")
+	# 	return
 	var available_slaves = ['azazel', 'pc', 'hiisi']
 	available_slaves.erase(GM.main.getModuleFlag("IssixModule", "Todays_Bred_Slave", "pc"))  # Don't repeat same slave every day'
 	var current_slave = RNG.pick(available_slaves)
@@ -224,13 +232,13 @@ func breedSlaveIfNpc():
 		return  # This will be handled by separate event
 	current_slave = GM.main.getCharacter(current_slave)
 	GlobalRegistry.getCharacter("issix").prepareForSexAsDom()
-	if RNG.chance(5):
-		current_slave.cummedInMouthBy("issix")
 	if current_slave.hasVagina():  # azazel
 		current_slave.cummedInVaginaBy("issix", FluidSource.Penis, 1.8)
 		print("Azazel cummed in")
 		if RNG.chance(40):
 			current_slave.cummedInAnusBy("issix", FluidSource.Penis, 1.2)
+	if RNG.chance(5):
+		current_slave.cummedInMouthBy("issix")
 	else:  # hiisi
 		print("Hiisi cummed in")
 		current_slave.cummedInAnusBy("issix")
@@ -298,3 +306,4 @@ func resetFlagsOnNewDay():  # I apologize for abusing this hook, but startNewDay
 		GM.main.setModuleFlag("IssixModule", "Trained_With_Hiisi_Combat", false)
 	GM.main.setModuleFlag("IssixModule", "Azazel_Had_Corruption_Scene_Today", false)
 	GM.main.setModuleFlag("IssixModule", "Hiisi_Helped_Today", false)
+	GM.main.setModuleFlag("IssixModule", "Hiisi_Had_Encounter_Scene_Today", false)

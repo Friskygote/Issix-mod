@@ -33,6 +33,7 @@ func _run():
 		else:
 			saynn("While exploring the station a in the corner of a platform sits a demon-dragon Issix with three leashed creatures.")
 			addButton("Talk", "Talk to Issix", "talk")
+			addButton("Donate", "Donate loose BDSM gear you have to Issix", "issixdonate")
 			addButton("Appearance", "Take a closer look at Issix", "appearance")
 		addButton("Leave", "Be on your way", "endthescene")
 		
@@ -111,8 +112,9 @@ func _run():
 		saynn("He holds his paw up to you, not fazed by the fact that you are still separated by an awkwardly long distance from the demon-dragon.\nNot wanting to be rude, you lean forwards while making extra sure you will not trample upon laying inmate or fall forwards by yourself. Eventually your " + ("hand" if len(GM.pc.getSpecies()) == 1 and GM.pc.getSpecies()[0] == "human" else "paw") + " meets his and you are able to do shake them.")  # ok, I have no idea what's the difference between buff arms and anthro arms, they seem the same, and technically neither have paws, too bad I'm the one writing dialogue though
 		saynn("[say=issix]What leads you to me? I don't suppose you are here to admire me like the three here.[/say]")
 		saynn("He lets out a laugh")
-		saynn("[say=issix]Anyways, I own this little corner including those three wonderful leashed pets beside me. You do NOT touch my pets without permission. Normally I wouldn't think this has to be mentioned, but for some reasons inmates think otherwise, those who do - don't keep this thought for long.[/say]")
-		saynn("[say=issix]That's probably everything you need to know about me. \nAlso, considering we didn't start on the wrong foot, you have my permission to speak with my pets. \nNow, please find some other business to attend to, unless you need something else of me?[/say]")
+		saynn("[say=issix]Anyways, I own this little corner including those three wonderful leashed pets beside me. Since you do seem fairly new here, I want to make something very clear to you - you do NOT touch my pets without their permission. Normally I wouldn't think this has to be mentioned, but for some reasons inmates think otherwise, those who do - don't keep this thought for long. I don't mind if you talk with them, if they allow you, you can even touch them, but you do not hurt or fuck my property, if you fancy any of them you can come to me and nicely ask for permission, but they are mine. Understood?[/say]")
+		saynn("[say=pc]Understood.[/say]")
+		saynn("[say=issix]As long as you follow this rule, you'll not have to worry about humble me. Now, is there any reason you came to me?[/say]")
 		addButton("Heaven?", "Did you hear that correctly?", "heaven")
 		addButton("You", "Learn more about Issix", "issixdetails")
 		addButton("Pets", "Who are the pets?", "pets")
@@ -150,7 +152,7 @@ func _run():
 			saynn("After a short moment you stand back up and look at pet on your right.")
 		saynn("[say=issix]This one here is Hiisi. He is my latest, which doesn't mean I love him any different. This puppy rather keeps to himself, you may have difficulties getting him to open to you, if you'd ever want to do that. He's.. A troubled one, to say the least, but look at him, isn't he the pristine puppy boy? He loves his belly rubs and stays out of the trouble! ... Well, mostly. Anyways, despite his troubled past, he agreed to join me and became my pup! Hiisi cmon, welcome our guest, give {pc.him} a sniff![/say]")
 		saynn("[say=hiisi]{pc.name} isn't it? Umm... Hi.[/say]")
-		saynn("{hiisi.name} licks your leg, leaving a bit of saliva on your fur.")  # TODO Fur/skin
+		saynn("{hiisi.Name} licks your leg, leaving a bit of saliva on your fur.")  # TODO Fur/skin
 		saynn("[say=issix]I apologize for my pets, they aren't used to longer conversations with strangers. They've been through a lot and... *sigh* Anyways, Lamia! Lamia is a fox breed, he doesn't speak. He communicates with drawings. He is getting pretty good at them. He also doesn't seem to mind being mute, quite to the opposite, he seems excited that his... Speech is in form of images.[/say]")
 		saynn("You can see Lamia drawing something, Issix gives you a signal to just wait a second. After a minute, Lamia presents you with a drawing, smiling.")
 		saynn("The drawing shows a pretty good representation of yourself, on fours, while leashed by a figure that you can only infer to be Issix. There is Lamia, Azazel and Hiisi hanging around there as well besides you. Issix laughs when he sees the drawing.")
@@ -288,7 +290,8 @@ func _run():
 			saynn("[say=issix]I gotta say, I did hear of a certain {pc.name} around doing some whoring, but that's about it. You must understand, my pets must have prior experience and right spirit that I can exploit. You seem like a small fish. So no, my apologies but I'm simply not interested in you at the moment.[/say]")
 			GM.main.setModuleFlag("IssixModule", "Score_Explored", score)
 		elif(score_explored > 1):
-			saynn("[say=issix]Hmm. you still look mostly the same, still unworthy.[/say]")
+			saynn("[say=issix]You still look the same as the last time you came to me, do not waste my time. If you are really serious about becoming my pet you'll know what to do.[/say]")
+			saynn("(May be a good idea to ask Issix's pets for advice)")
 		else:
 			saynn("[say=issix]Look, you are lovely and all that, but I don't think you have what it takes to join my other pets. I require absolute obedience and sexual experience. Once you submit to me there is no going back, you become MY treasured pet forever. Those three? They know their place, they are ready to be mated whenever I feel like doing so. They obey my every single command. I just don't see that in you, sorry.[/say]")
 		addButton("Back", "Maybe another time then...", "talk")
@@ -382,6 +385,10 @@ func _react(_action: String, _args):
 		GM.main.setModuleFlag("IssixModule", "Quest_Status", 4)
 		GM.main.setModuleFlag("IssixModule", "Quest_Wait_Another_Day", true)
 		#GM.pc.getInventory().removeFirstOf("IssixsMap")  - might be useful for later?
+
+	if _action == "issixdonate":
+		runScene("IssixDonationScreen")
+		_action = ""
 
 	if(_action == "endthescene"):
 		endScene()

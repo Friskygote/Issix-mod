@@ -4,7 +4,6 @@ var rng_per_day = null
 var pet_time_start = null
 var reply_litter = null
 var azazel_teased_motherhood = false
-var azazel = null
 var AVERAGE_WALK_DELAY = 9
 var milk_result = []
 
@@ -14,7 +13,6 @@ func _init():
 func _initScene(_args = []):
 	rng_per_day = RandomNumberGenerator.new()
 	rng_per_day.seed = GM.main.getDays()
-	azazel = GlobalRegistry.getCharacter("azazel")
 	reply_litter = 0
 
 func _run():
@@ -209,6 +207,7 @@ func _run():
 		addButton("Reject", "You don't want to play if you don't know what's at stake", "azazelguesslitterreject")
 
 	if state == "littercountresult":
+		var azazel = GlobalRegistry.getCharacter("azazel")
 		if reply_litter == 0:
 			saynn("[say=pc]Zero.[/say]")
 			saynn("Azazel stares at you with confusion")
@@ -577,7 +576,7 @@ static func addIssixMood(mood: int):
 
 func registerOffspringGuess():
 	var past_guesses: Dictionary = getModuleFlag("IssixModule", "Litter_Guessing_Game", {"guesses_off": [], "last_guess": GM.CS.getChildrenAmountOf("azazel")})
-	past_guesses["guesses_off"].append(reply_litter-azazel.getPregnancyLitterSize())
+	past_guesses["guesses_off"].append(reply_litter-GlobalRegistry.getCharacter("azazel").getPregnancyLitterSize())
 	past_guesses["last_guess"] = GM.CS.getChildrenAmountOf("azazel")
 	setModuleFlag("IssixModule", "Litter_Guessing_Game", past_guesses.duplicate(true))
 
