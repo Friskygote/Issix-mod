@@ -1,6 +1,12 @@
 extends Module
 class_name IssixModule
 
+# If a var matches with your config ID, the config option will be sycronized with the config value
+var characterCoverage = "fur"
+
+func onFoxLibModInit(foxModuleAPI):
+	foxModuleAPI.addListOption("characterCoverage", "Character's coverage", [["fur", "Fur"], ["skin", "Skin"], ["scales", "Scales"]], "Pick how to refer to what kind of coverage your character has", "fur")
+
 const APPROX_WALK_DELAY = 9
 
 func getFlags():
@@ -48,6 +54,8 @@ func getFlags():
 		"Azazel_Corruption_Scene": flag(FlagType.Number),
 		"Azazel_Had_Corruption_Scene_Today": flag(FlagType.Bool),
 		"Azazel_Agreed_Kiss": flag(FlagType.Bool),
+		"Azazel_Corruption_Musk_Happened": flag(FlagType.Bool),
+		"Azazel_Player_Donated_Gasmask": flag(FlagType.Bool),
 		"Hiisi_Encounter_scene": flag(FlagType.Number),
 		"Hiisi_Had_Encounter_Scene_Today": flag(FlagType.Bool),
 		"Issix_Donation_Meter": flag(FlagType.Number),
@@ -132,6 +140,8 @@ func _init():
 		"res://Modules/IssixModule/Scenes/AzazelCorruption/AzazelCorruptionScene2.gd",
 		"res://Modules/IssixModule/Scenes/AzazelCorruption/AzazelCorruptionScene3.gd",
 		"res://Modules/IssixModule/Scenes/HiisiScenes/HiisiWanderScene.gd",
+		"res://Modules/IssixModule/Scenes/HiisiScenes/HiisiWanderScene2.gd",
+		"res://Modules/IssixModule/Scenes/HiisiScenes/HiisiWanderScene3.gd",
 		"res://Modules/IssixModule/Scenes/IssixDonationScene.gd",
 		]
 		

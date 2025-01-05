@@ -7,11 +7,13 @@ func registerTriggers(es):
 	es.addTrigger(self, Trigger.EnteringRoom)
 
 func react(_triggerID, _args):
-	if not (GM.pc.getLocation().begins_with("main_hall") or (GM.pc.getLocation() in ["main_bathroom1"])) or GM.main.isVeryLate():
+	if not (GM.pc.getLocation().begins_with("main_hall") or (GM.pc.getLocation() in ["main_bathroom1", "hall_ne_corner"])) or GM.main.isVeryLate():
 		return false
 	if GM.main.getModuleFlag("IssixModule", "Hiisi_Had_Encounter_Scene_Today", false) == false and RNG.chance(5.0):
 		if activateHiisiScenes():
 			return true
+	if GM.pc.getLocation() == "hall_ne_corner":
+		return false
 	if not (GM.main.getModuleFlag("IssixModule", "Quest_Status", 0) < 1):  # Do not show those if player started the quest as Azazel doesn't have a reason to corrupt the player
 		return false
 	if activateAzazelScenes():
@@ -21,7 +23,9 @@ func react(_triggerID, _args):
 
 func activateHiisiScenes() -> bool:
 	var scene_index = GM.main.getModuleFlag("IssixModule", "Hiisi_Encounter_scene", 1)
-	if scene_index == -1 or GM.main.getModuleFlag("IssixModule", "Hiisi_Affection", -1) < scene_index*2 or scene_index > 2:
+	if scene_index == -1 or GM.main.getModuleFlag("IssixModule", "Hiisi_Affection", -1) < scene_index*2 or scene_index > 3:
+		return false
+	if scene_index != 3 and GM.pc.getLocation() == "hall_ne_corner":  # This scene only shows on that tile
 		return false
 	if scene_index == 1:  # Different conditions per Hiisi's scenes
 		var pawns = findFreePawnsNearby()

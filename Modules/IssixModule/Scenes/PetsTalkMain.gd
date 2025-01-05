@@ -390,7 +390,7 @@ func _run():
 		else:
 			addDisabledButton("Breeder", "You don't have good enough relationship with Azazel to ask about his fetishes")
 		if affection > 18:
-			addDisabledButton("Pussy", "Azazel has a pussy and yet he is rather masculine (WIP)")
+			addButton("Pussy", "Azazel has a pussy and yet he is rather masculine", "azazelpussy")
 		else:
 			addDisabledButton("Pussy", "You don't have good enough relationship with Azazel to ask about his genitalia")
 		if affection > 22:
@@ -474,6 +474,21 @@ func _run():
 		saynn("[say=azazel]When I first arrived here I were so lost. Still very confused by this series of events, felt betrayed, hurt. Eventually I've met Master, they saw something in me and they guided me through my trauma. I were really happy to become his pet. And honestly? It's not so bad, I have food, shelter and Master who takes care of me. And my heats.[/say]")
 		saynn("He says the last one, showing you his tongue at you in a grin")
 		saynn("[say=azazel]So... Yeah... That's how I ended up here. Not a happy story, but I doubt anyone's is. Ironically, I think I'm better here, and I can still engage in sex without any stupid license.[/say]")
+		addButton("Back", "Do something else", "azazeltalk")
+
+	if state == "azazelpussy":  # This is basically describing https://youtu.be/bqloPw5wp48?t=4974, INB4 I get called woke for bringing up Contrapoints
+		saynn("[say=pc]How does it come that you have vagina while being a male?[/say]")
+		saynn("[say=azazel]Well, I were born like this. I won't bore you with genetics, but on our planet the rate of creatures with genitals being different from their actual sex is on the increase, I were just one of such cases.")
+
+		saynn("[say=pc]And how does it make you feel? You like it? Hate it?[/say]")
+		saynn("[say=azazel]I'm really fond of having feminine bits in my body, to the point I'm surprised you asked since I'd expect you already figured it out. It's funny how it is, with gender expression and sex. I were fairly confused in my early youth about it, because even though there are more and more creatures like myself, it's still culturally... Strange. Eventually I've heard the name „andromorph”, which is like, a man with a pussy and it clicked for me, I connected with more creatures just like myself.[/say]")
+		saynn("[say=azazel]Some call us cuntboys or peachboys which is entirely fine, though i like the medical term more.[/say]")
+		saynn("[say=azazel]It's also fair to say that I have a hate/love relationship with how culturally sexes are treated. I hate it because it's unfair that masculinity is associated with power, dominance and what not, I knew plenty of feminine colleagues who had those traits and they wielded them better than some „alpha males” did. I love it because... Uhhh, I don't know how to put it, this cultural phenomena feels deeply rooted in myself? At least to some extent I associate penises with power and dominance they are the hammers, and my pussy is in large part a solidification of my role as submissive bitch that is a total slut, the anvil that hammer strikes. It's a role I gladly assume, even if the association with genitals is wrong.[/say]")
+		saynn("[say=pc]And why is it wrong?[/say]")
+		saynn("[say=azazel]Because it's all wrong! Sexuality is more complex than just pigeonholing creatures into one of two strict categories. Not everyone who is dominant, is a penis wielding sadistic masculine predator, even though some would lead you to believe so. My personality and preferences simply fit into all those boxes on the opposite side, but I'm rather an exception than the rule.[/say]")
+		saynn("[say=pc]That's... Thought provoking, thanks Azazel.[/say]")
+		saynn("[say=azazel]Sure...[/say]")
+		saynn("He feels a bit defensive about this topic.")
 		addButton("Back", "Do something else", "azazeltalk")
 
 	if state == "azazelhobby":

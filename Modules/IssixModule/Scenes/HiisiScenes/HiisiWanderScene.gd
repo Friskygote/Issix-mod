@@ -57,6 +57,17 @@ func _run():
 		saynn("{npc.Name} looks angry, though shaken enough not to retort with anything. Hiisi stands up and goes to the bathroom leaving the defeated inmate on the floor.")
 		addButton("Leave", "Continue walking your way", "endthescene")
 
+func saveData():
+	var data = .saveData()
+
+	data["pawnID"] = pawnID
+
+	return data
+
+func loadData(data):
+	.loadData(data)
+
+	pawnID = SAVE.loadVar(data, "pawnID", null)
 
 func getDevCommentary():
 	return ""

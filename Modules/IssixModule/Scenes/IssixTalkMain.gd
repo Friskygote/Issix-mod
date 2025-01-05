@@ -329,7 +329,7 @@ func _run():
 		saynn("He chuckles")
 		saynn("[say=issix]You will have to use your little head a bit too before you put one. I'll give you a map, I've drawn it myself, but it has to do. I won't spoil your fun and tell you what it shows, I'm sure you are clever enough to figure it out by yourself, after all, this prison isn't thaaat big, right?[/say]")
 		saynn("He winks at you, and lets out a chuckle.")
-		saynn("[say=issix]Go there, blind yourself, go through a wall and bring me the goods. The number you'll need is 84. And morsel, don't hang in there for too long, trust me on that. Don't worry, I'll know if you succeed or not, don't try to cheat. Remember, trust is the key.[/say]")
+		saynn("[say=issix]Go next to where the place in X is marked, blind yourself, go through a wall where the X should be and bring me the goods. The number you'll need is 84. And morsel, don't hang in there for too long, trust me on that. Don't worry, I'll know if you succeed or not, don't try to cheat. Remember, trust is the key.[/say]")
 		addMessage("You've received a map.")
 		addButton("Leave", "Take your leave", "endthescene")
 	

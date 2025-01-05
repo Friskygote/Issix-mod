@@ -1,5 +1,7 @@
 extends SceneBase
 
+const Globals = preload("res://Modules/IssixModule/Globals.gd")
+
 func _init():
 	sceneID = "IssixSlaveryIntro"
 
@@ -108,9 +110,7 @@ func _run():
 			#GM.pc.unequipAllRestraints()
 		else:
 			saynn("[say=issix]You are such a good pet that you are already naked. That's really good, as I want to know every part of your body before I have fun with you.[/say]")
-		for slot in GM.pc.getInventory().getEquippedItems():  # Force unequip all items, why is there getEquippedItems and getAllEquippedItems doing the same thing lol
-			saynn("Issix took off your "+GM.pc.getInventory()["equippedItems"][slot].getVisibleName()+".")
-			GM.pc.getInventory().unequipSlot(slot)
+
 		saynn("He grabs a leash hanging from the armrest of his chair, shows it to you.")
 		saynn("[say=issix]Ready to become my pet for real this time? You've already given your fate into my paws, we might as well get this over with.[/say]")
 		saynn("He once again raises your head by your chin, this time more forcefully than last time. With ease he attaches the end of the leash and gives it some pulls.")
@@ -256,6 +256,9 @@ func _react(_action: String, _args):
 		setModuleFlag("IssixModule", "Progression_Day_Next", GM.main.getDays()+1)
 		setModuleFlag("IssixModule", "Issix_Mood", 50)
 		setModuleFlag("IssixModule", "Last_Walk", GM.main.getDays())
+
+	if _action == "normalroute":
+		Globals.undressPlayerExceptCollar("Issix")
 
 	if _action == "normalroute2":
 		var itemRef = GlobalRegistry.getItemRef("HeatPill")

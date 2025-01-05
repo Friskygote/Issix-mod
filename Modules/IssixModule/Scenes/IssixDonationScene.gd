@@ -41,7 +41,7 @@ func _run():
 		if getModuleFlag("IssixModule", "Issix_Donation_Meter", 0) > 49:
 			if (current_donations - used_donations) >= 10:
 				addButton("Enchant", "Upgrade a restraint with a smart lock", "enchantmenu")
-				saynn("Fair warning: Applying smart locks willy-nilly may break your NPCs and make it impossible to get restraints off them, YOU are responsible for how you use the restraints made this way, this function is mainly made with idea that player may want to get those items on themselves, not NPCs.")
+				saynn("Fair warning: Applying smart locks willy-nilly may break stuff. NPC's don't seem to support smart-locks yet and may struggle out of them as if smart-lock didn't exist. YOU are responsible for how you use the restraints made this way, this function is mainly made with idea that player may want to get those items on themselves, not NPCs.")
 			else:
 				addDisabledButton("Enchant", "Issix isn't willing to apply any SmartLocks to the gear just yet, donate more stuff to him")
 
@@ -161,7 +161,7 @@ func _react(_action: String, _args):
 		var item = _args[0]
 		var lock = _args[1]
 
-		var newLock = SmartLock.create(lock)
+		var newLock = SmartLock.create(lock)  # This is a very basic implementation of "enchanting", I kinda want to make it add more challenges to an item on each enchant but that depends on how this feature is perceived
 		newLock.onLocked({forcer = "pc"})
 		item.getRestraintData.setLevel(item.getRestraintData.getLevel()+1)  # Just an extra
 		item.getRestraintData().setSmartLock(newLock)

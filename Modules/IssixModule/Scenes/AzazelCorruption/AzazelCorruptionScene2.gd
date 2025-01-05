@@ -13,7 +13,7 @@ func _run():
 		saynn("Lost in the murmur of big hallways you walk towards your goal when you get gently hit on your chest by a tail, a long leathery red tail ending in a spade. You blink, and realize that the tail you saw is in actuality a regular gray feline tail, you stop in your tracks, confused, looking for tail's owner you follow the appendage, finding Azazel lusty look focused on you.")
 		saynn("[say=azazel]What's that in your look? Surprised to see me again outside of the corner?[/say]")
 		saynn("[say=pc]Uhh, no, it's just... Ah, forget it.[/say]")
-		saynn("He smiles and walks to your right side, his tail curled around the front of your body, climbing upwards, blocking your way. His arms wrap around you, his smell sticking to you as he borrows your personal space entirely. He says, close to your right ear.")
+		saynn("He smiles and walks to your right side, his tail curled around the front of your body, climbing upwards, blocking your way. His arms wrap around you, his smell sticking to you as he borrows your personal space entirely. He says, struggling to stand as high on his toes, close to your right ear.")
 		saynn("[say=azazel]Tell me cutie, have you ever kissed?[/say]")
 		addButton("Yes", "You did kiss in the past", "kissed")
 		addButton("No", "Didn't kiss before", "notkissed")

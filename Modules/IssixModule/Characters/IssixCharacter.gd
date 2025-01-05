@@ -82,7 +82,7 @@ func _init():
 		InterestTopic.FullyNaked: Interest.Loves,
 		InterestTopic.ExposedPussy: Interest.ReallyLikes,
 		InterestTopic.ExposedAnus: Interest.ReallyLikes,
-		InterestTopic.ExposedBreasts: Interest.ReallyLikes,
+		InterestTopic.ExposedBreasts: Interest.Likes,
 		InterestTopic.ExposedCock: Interest.ReallyLikes,
 		InterestTopic.ExposedPanties: Interest.Hates,
 		InterestTopic.ExposedBra: Interest.Hates,
@@ -142,7 +142,7 @@ func createBodyparts():
 	breasts.size = 0
 	giveBodypartUnlessSame(breasts)
 	var penis = GlobalRegistry.createBodypart("dragonpenis")
-	penis.lengthCM = 15
+	penis.lengthCM = 24
 	penis.ballsScale = 1
 	giveBodypartUnlessSame(penis)
 	var tail = GlobalRegistry.createBodypart("demontail")

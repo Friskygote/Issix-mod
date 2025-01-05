@@ -35,27 +35,7 @@ func generateRestraintData():
 func getUnriggedParts(_character):
 	return {
 		"neck": ["res://Modules/IssixModule/Items/Models/CollarModel.tscn"],
-		#"wrist.L": ["res://Inventory/UnriggedModels/Cuff/CuffModel.tscn"],
-		#"wrist.R": ["res://Inventory/UnriggedModels/Cuff/CuffModel.tscn"],
-		#"ankle.L": ["res://Inventory/UnriggedModels/Cuff/CuffModel.tscn"],
-		#"ankle.R": ["res://Inventory/UnriggedModels/Cuff/CuffModel.tscn"],
 	}
-
-#func getRiggedParts(_character):
-#	return {
-#		"harness": "res://Inventory/RiggedModels/RopeHarness/RopeHarness.tscn",
-#	}
-
-#func getRiggedParts(_character):
-#	return {
-#		"asd": "res://Player/Player3D/Parts/Legs/DigiLegs/DigiLegs.tscn",
-#		"asd2": "res://Player/Player3D/Parts/Arms/HumanArms/HumanArms.tscn",
-#	}
-#
-#func getHidesParts(_character):
-#	return {
-#		BodypartSlot.Penis: true,
-#	}
 
 func getInventoryImage():
 	return "res://Images/Items/bdsm/collar.png"
