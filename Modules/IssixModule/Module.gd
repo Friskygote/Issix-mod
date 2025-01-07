@@ -56,11 +56,14 @@ func getFlags():
 		"Azazel_Agreed_Kiss": flag(FlagType.Bool),
 		"Azazel_Corruption_Musk_Happened": flag(FlagType.Bool),
 		"Azazel_Player_Donated_Gasmask": flag(FlagType.Bool),
+		"Azazel_In_Dream": flag(FlagType.Bool),
+		"Azazel_Corr_Dream_State": flag(FlagType.Dict),
 		"Hiisi_Encounter_scene": flag(FlagType.Number),
 		"Hiisi_Had_Encounter_Scene_Today": flag(FlagType.Bool),
 		"Issix_Donation_Meter": flag(FlagType.Number),
 		"Issix_Used_Donations": flag(FlagType.Number),
 		"Got_Luck_Token_Before": flag(FlagType.Bool),
+		"Announcer_PC_Naive": flag(FlagType.Bool),
 
 		# Slavery related
 		"PC_Enslavement_Role": flag(FlagType.Number),
@@ -114,6 +117,8 @@ func _init():
 		"res://Modules/IssixModule/Events/LamiaCellEvent.gd",
 		"res://Modules/IssixModule/Events/TalkNovaEvent.gd",
 		"res://Modules/IssixModule/Events/PetWanderEvent.gd",
+		"res://Modules/IssixModule/Scenes/AzazelCorruption/StopsEvent.gd",
+		"res://Modules/IssixModule/Events/AnnouncerLuckTokenEvent.gd",
 		]
 		
 	scenes = [
@@ -139,10 +144,12 @@ func _init():
 		"res://Modules/IssixModule/Scenes/AzazelCorruption/AzazelCorruptionScene.gd",
 		"res://Modules/IssixModule/Scenes/AzazelCorruption/AzazelCorruptionScene2.gd",
 		"res://Modules/IssixModule/Scenes/AzazelCorruption/AzazelCorruptionScene3.gd",
+		"res://Modules/IssixModule/Scenes/AzazelCorruption/AzazelCorruptionScene4.gd",
 		"res://Modules/IssixModule/Scenes/HiisiScenes/HiisiWanderScene.gd",
 		"res://Modules/IssixModule/Scenes/HiisiScenes/HiisiWanderScene2.gd",
 		"res://Modules/IssixModule/Scenes/HiisiScenes/HiisiWanderScene3.gd",
 		"res://Modules/IssixModule/Scenes/IssixDonationScene.gd",
+		"res://Modules/IssixModule/Scenes/AnnouncerLuckTokensDialogue.gd",
 		]
 		
 	characters = [
@@ -152,6 +159,10 @@ func _init():
 		"res://Modules/IssixModule/Characters/LamiaCharacter.gd"
 		]
 		
+	gameExtenders = [
+		"res://Modules/IssixModule/GameExtender/processTimeCatcher.gd"
+	]
+
 	worldEdits = [
 		"res://Modules/IssixModule/IssixWorldEdit.gd"
 	]
@@ -228,6 +239,18 @@ static func getPlayerPetName():
 		return "pony"
 	else:
 		return "pet"
+
+static func hackProcessingCharacters():
+	for charID in GM.main.getCharacters():
+		var character = GlobalRegistry.getCharacter(charID)
+		#character.checkOldWayOfUpdating(currentDay, timeOfDay)
+		if(character.shouldBeUpdated()):
+			GM.main.startUpdatingCharacter(charID)
+	for charID in GM.main.dynamicCharacters:
+		var character = GlobalRegistry.getCharacter(charID)
+		#character.checkOldWayOfUpdating(currentDay, timeOfDay)
+		if(character.shouldBeUpdated()):
+			GM.main.startUpdatingCharacter(charID)
 
 func breedSlaveIfNpc():
 	## Function to process breeding by Master on randomly selected TODO maybe do that during the day as an event?

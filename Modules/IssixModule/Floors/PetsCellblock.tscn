@@ -31,7 +31,7 @@ canEast = false
 [node name="CellblockRoom6" parent="." index="2" instance=ExtResource( 2 )]
 self_modulate = Color( 1, 0.6, 0.8, 1 )
 position = Vector2( 0, 256 )
-roomName = "My cell"
+roomName = "End of Liliac hallway"
 roomID = "petsdream_cellblock_pink_playercell"
 roomDescription = "((This will be your potential cell))"
 canWest = false
@@ -44,17 +44,10 @@ position = Vector2( 0, 128 )
 roomName = "Corridor"
 roomID = "petsdream_cellblock_nearcells"
 roomDescription = "This is where the 3 cell blocks branch off into their own sections, there are always a few inmates of all types milling around. Above you there are a number of guards on the catwalks, walls, and posts. From here, the orange, lilac, and red cell blocks lay further ahead."
+roomSprite = 7
+loctag_NoWallsNear = true
 
-[node name="CellblockRoom8" parent="." index="4" instance=ExtResource( 2 )]
-self_modulate = Color( 1, 0.6, 0.6, 1 )
-position = Vector2( 512, 128 )
-roomName = "Solitary"
-roomID = "solitary_cell"
-roomDescription = "A tiny cell for very unruly inmates"
-roomColor = 2
-gridColor = 2
-
-[node name="CellblockRoom9" parent="." index="5" instance=ExtResource( 2 )]
+[node name="CellblockRoom9" parent="." index="4" instance=ExtResource( 2 )]
 self_modulate = Color( 1, 0.6, 0.6, 1 )
 position = Vector2( 64, 128 )
 roomName = "High-security cellblock"
@@ -64,10 +57,10 @@ canNorth = false
 canSouth = false
 roomColor = 2
 
-[node name="CellblockRoom12" parent="." index="6" instance=ExtResource( 2 )]
+[node name="CellblockRoom12" parent="." index="5" instance=ExtResource( 2 )]
 self_modulate = Color( 1, 0.6, 0.6, 1 )
 position = Vector2( 128, 128 )
-roomName = "My cell"
+roomName = "End of High-sec hallway"
 roomID = "petsdream_cellblock_red_playercell"
 roomDescription = "((This will be your potential cell))"
 canNorth = false
@@ -75,7 +68,7 @@ canSouth = false
 roomSprite = 1
 roomColor = 2
 
-[node name="CellblockRoom10" parent="." index="7" instance=ExtResource( 2 )]
+[node name="CellblockRoom10" parent="." index="6" instance=ExtResource( 2 )]
 self_modulate = Color( 1, 0.8, 0.6, 1 )
 position = Vector2( -64, 128 )
 roomName = "General-security cellblock"
@@ -85,24 +78,24 @@ canNorth = false
 canSouth = false
 roomColor = 5
 
-[node name="CellblockRoom11" parent="." index="8" instance=ExtResource( 2 )]
+[node name="CellblockRoom11" parent="." index="7" instance=ExtResource( 2 )]
 self_modulate = Color( 1, 0.8, 0.6, 1 )
 position = Vector2( -128, 128 )
-roomName = "My cell"
+roomName = "End of General hallway"
 roomID = "petsdream_cellblock_orange_playercell"
 canNorth = false
 canSouth = false
 roomSprite = 1
 roomColor = 5
 
-[node name="CellblockRoom1" parent="." index="9" instance=ExtResource( 2 )]
+[node name="CellblockRoom1" parent="." index="8" instance=ExtResource( 2 )]
 roomName = "Corridor"
 roomID = "petsdream_cellblock_corridor_part2"
 roomDescription = "Your standing inside a giant sheet metal tube that connects the cellblocks with the rest of the prison. The only noteworthy thing here is the giant open blast door stretched across the hall."
 canWest = false
 canEast = false
 
-[node name="CellblockRoom2" parent="." index="10" instance=ExtResource( 2 )]
+[node name="CellblockRoom2" parent="." index="9" instance=ExtResource( 2 )]
 position = Vector2( 0, -64 )
 roomName = "Corridor"
 roomID = "petsdream_cellblock_corridor_part3"
@@ -110,7 +103,7 @@ roomDescription = "Your standing inside a giant sheet metal tube that connects t
 canWest = false
 canEast = false
 
-[node name="CellblockRoom3" parent="." index="11" instance=ExtResource( 2 )]
+[node name="CellblockRoom3" parent="." index="10" instance=ExtResource( 2 )]
 position = Vector2( 0, -128 )
 roomName = "Corridor"
 roomID = "petsdream_cellblock_corridor_part4"
@@ -118,7 +111,7 @@ roomDescription = "Your standing inside a giant sheet metal tube that connects t
 canWest = false
 canEast = false
 
-[node name="CellblockRoom13" parent="." index="12" instance=ExtResource( 2 )]
+[node name="CellblockRoom13" parent="." index="11" instance=ExtResource( 2 )]
 position = Vector2( 0, -192 )
 roomName = "Corridor"
 roomID = "petsdream_cellblock_corridor_part5"
@@ -126,7 +119,7 @@ roomDescription = "Your standing inside a giant sheet metal tube that connects t
 canWest = false
 canEast = false
 
-[node name="CellblockRoom14" parent="." index="13" instance=ExtResource( 2 )]
+[node name="CellblockRoom14" parent="." index="12" instance=ExtResource( 2 )]
 position = Vector2( 0, -256 )
 roomName = "Corridor"
 roomID = "petsdream_cellblock_corridor_part6"
@@ -134,7 +127,7 @@ roomDescription = "Your standing inside a giant sheet metal tube that connects t
 canWest = false
 canEast = false
 
-[node name="CellblockRoom15" parent="." index="14" instance=ExtResource( 2 )]
+[node name="CellblockRoom15" parent="." index="13" instance=ExtResource( 2 )]
 position = Vector2( 0, -320 )
 roomName = "Corridor"
 roomID = "petsdream_cellblock_corridor_part7"
@@ -142,7 +135,7 @@ roomDescription = "Your standing inside a giant sheet metal tube that connects t
 canWest = false
 canEast = false
 
-[node name="CellblockRoom16" parent="." index="15" instance=ExtResource( 2 )]
+[node name="CellblockRoom16" parent="." index="14" instance=ExtResource( 2 )]
 position = Vector2( 0, -384 )
 roomName = "Corridor"
 roomID = "petsdream_cellblock_corridor_part8"
@@ -150,7 +143,7 @@ roomDescription = "Your standing inside a giant sheet metal tube that connects t
 canWest = false
 canEast = false
 
-[node name="CellblockRoom17" parent="." index="16" instance=ExtResource( 2 )]
+[node name="CellblockRoom17" parent="." index="15" instance=ExtResource( 2 )]
 position = Vector2( 0, -448 )
 roomName = "Corridor"
 roomID = "petsdream_cellblock_corridor_part9"
@@ -158,7 +151,7 @@ roomDescription = "Your standing inside a giant sheet metal tube that connects t
 canWest = false
 canEast = false
 
-[node name="CellblockRoom18" parent="." index="17" instance=ExtResource( 2 )]
+[node name="CellblockRoom18" parent="." index="16" instance=ExtResource( 2 )]
 position = Vector2( 0, -512 )
 roomName = "Corridor"
 roomID = "petsdream_cellblock_corridor_part10"
@@ -166,7 +159,7 @@ roomDescription = "Your standing inside a giant sheet metal tube that connects t
 canWest = false
 canEast = false
 
-[node name="CellblockRoom19" parent="." index="18" instance=ExtResource( 2 )]
+[node name="CellblockRoom19" parent="." index="17" instance=ExtResource( 2 )]
 position = Vector2( 0, -576 )
 roomName = "Corridor"
 roomID = "petsdream_cellblock_corridor_part11"
@@ -174,7 +167,7 @@ roomDescription = "Your standing inside a giant sheet metal tube that connects t
 canWest = false
 canEast = false
 
-[node name="CellblockRoom20" parent="." index="19" instance=ExtResource( 2 )]
+[node name="CellblockRoom20" parent="." index="18" instance=ExtResource( 2 )]
 position = Vector2( 0, -640 )
 roomName = "Corridor"
 roomID = "petsdream_cellblock_corridor_part12"
@@ -182,7 +175,7 @@ roomDescription = "Your standing inside a giant sheet metal tube that connects t
 canWest = false
 canEast = false
 
-[node name="CellblockRoom21" parent="." index="20" instance=ExtResource( 2 )]
+[node name="CellblockRoom21" parent="." index="19" instance=ExtResource( 2 )]
 position = Vector2( 0, -704 )
 roomName = "Corridor"
 roomID = "petsdream_cellblock_corridor_part13"
@@ -190,7 +183,7 @@ roomDescription = "Your standing inside a giant sheet metal tube that connects t
 canWest = false
 canEast = false
 
-[node name="CellblockRoom22" parent="." index="21" instance=ExtResource( 2 )]
+[node name="CellblockRoom22" parent="." index="20" instance=ExtResource( 2 )]
 position = Vector2( 0, -768 )
 roomName = "Corridor"
 roomID = "petsdream_cellblock_corridor_part14"
@@ -198,7 +191,7 @@ roomDescription = "Your standing inside a giant sheet metal tube that connects t
 canWest = false
 canEast = false
 
-[node name="CellblockRoom23" parent="." index="22" instance=ExtResource( 2 )]
+[node name="CellblockRoom23" parent="." index="21" instance=ExtResource( 2 )]
 position = Vector2( 0, -832 )
 roomName = "Corridor"
 roomID = "petsdream_cellblock_corridor_part15"
@@ -206,7 +199,7 @@ roomDescription = "Your standing inside a giant sheet metal tube that connects t
 canWest = false
 canEast = false
 
-[node name="CellblockRoom24" parent="." index="23" instance=ExtResource( 2 )]
+[node name="CellblockRoom24" parent="." index="22" instance=ExtResource( 2 )]
 position = Vector2( 0, -896 )
 roomName = "Corridor"
 roomID = "petsdream_cellblock_corridor_part16"
@@ -214,13 +207,14 @@ roomDescription = "Your standing inside a giant sheet metal tube that connects t
 canWest = false
 canEast = false
 
-[node name="CellblockRoom25" parent="." index="24" instance=ExtResource( 2 )]
+[node name="CellblockRoom25" parent="." index="23" instance=ExtResource( 2 )]
 position = Vector2( 0, -960 )
 roomName = "Corridor"
 roomID = "petsdream_cellblock_corridor_part17"
 roomDescription = "Your standing inside a giant sheet metal tube that connects the cellblocks with the rest of the prison. The only noteworthy thing here is the giant open blast door stretched across the hall."
 canWest = false
 canEast = false
+roomSprite = 4
 
 [connection signal="onEnter" from="CellblockRoom6" to="." method="_on_CellblockRoom11_onEnter"]
 [connection signal="onPreEnter" from="CellblockRoom6" to="." method="_on_CellblockRoom11_onPreEnter"]

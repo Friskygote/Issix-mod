@@ -30,7 +30,7 @@ func _run():  # TODO Those corruption scenes don't really work when player is bl
 		saynn("He baps you on the nose while giving you a cheerful laugh.")
 		saynn("[say=pc]Mysterious, aren't we?[/say]")
 		saynn("[say=azazel]It's gonna be fun, I promise.[/say]")
-		addButton("Go", "Go with the feline to their cell (heavy drug use, pet play, domination)", "tocell")
+		addButton("Go", "Go with the feline to their cell (heavy drug use, pet play, domination, body modification)", "tocell")
 		addButton("Don't go", "Refuse feline", "dontgo")
 
 	if state == "dontgo":
@@ -105,11 +105,11 @@ func _run():  # TODO Those corruption scenes don't really work when player is bl
 			saynn("[say=azazel]I gotta say, lack of breasts on you is kind of a relief. Not that I hate them! I have them sometimes myself, it's just that... I don't particularly enjoy them either? I don't know. Men usually like boobs, but personally I were never the fan, overhyped stuff.[/say]")
 
 		if GM.pc.getFemininity() >= 66:
-			saynn("[say=azazel]Ahh, you have a very {pc.femininity} body! I like all kinds of bodies, I myself am a little freaky with that haha. Even though I'm a man I do have girl bits, can bear children and well, my body is pretty {azazel.femininity} as well.[/say]")
+			saynn("[say=azazel]Ahh, you have a very {pc.feminine} body! I like all kinds of bodies, I myself am a little freaky with that haha. Even though I'm a man I do have girl bits, can bear children and well, my body is pretty {azazel.feminine} as well.[/say]")
 		elif GM.pc.getFemininity() >= 33:
-			saynn("[say=azazel]Ahh, you have a very {pc.femininity} body! I like all kinds of bodies, I myself am a little freaky with that haha. Even though I'm a man I do have girl bits, can bear children and well, while my body has been described as feminine, I'm fairly androgynous, wouldn't you agree?[/say]")
+			saynn("[say=azazel]Ahh, you have a very {pc.feminine} body! I like all kinds of bodies, I myself am a little freaky with that haha. Even though I'm a man I do have girl bits, can bear children and well, while my body has been described as feminine, I'm fairly androgynous, wouldn't you agree?[/say]")
 		else:
-			saynn("[say=azazel]Ahh, you have a very {pc.femininity} body, I love that! Masculinity is hot. That said, I do like all kinds of bodies, I myself am a little freaky with that haha. Even though I'm a man I do have girl bits, can bear children and well.[/say]")
+			saynn("[say=azazel]Ahh, you have a very {pc.feminine} body, I love that! Masculinity is hot. That said, I do like all kinds of bodies, I myself am a little freaky with that haha. Even though I'm a man I do have girl bits, can bear children and well.[/say]")
 		saynn("[say=azazel]Also, have anyone told you your face is cute? Because it is.[/say]")
 		addMessage("You've learned many of Azazel's interests.")
 
@@ -282,6 +282,10 @@ func _run():  # TODO Those corruption scenes don't really work when player is bl
 		addButton("Black out", "Lose consciousness...?", "transition")
 
 	if state == "transition":  # Figure out if we can make player blinded without a blindfold?
+		aimCameraAndSetLocName("petsdream_cellblock_lilac_nearcell")
+		GM.pc.setLocation("petsdream_cellblock_lilac_nearcell")
+		if GM.main.originalPC.isHeavilyPregnant():
+			saynn("You have a strange feeling like you are missing something important, your body doesn't feel so bloated anymore.")
 		saynn("You open your eyes, confused. You don't remember much, everything is... Fuzzy, you don't really remember what you were doing before you woke up. Your eyes see whiteness surrounding you bright light at the ceiling, and you are laying on your back, underneath you a hard cold floor.")
 		saynn("You smell waft of something powerful from somewhere, the air feels stale, musty, it's a mix of pheromones, wet carpet, a tinge of sulfur.")
 		saynn("[say=pc]What the fuck? Where-[/say]")
@@ -309,10 +313,34 @@ func hasDevCommentary():
 	return false
 
 func _react(_action: String, _args):
-	if _action == "transition": # To make sure - player does not progress the time so event's don't happen
+	if _action == "transition":
+		# We want all of the player parts to look mostly the same. Some things may not survive but that's just how it is. Will track any issues and try to fix
 		GM.main.overridePC()
+		GM.pc.setName(GM.main.originalPC.getName())
+		GM.pc.setGender(GM.main.originalPC.getGender())
+		GM.pc.setSpecies(GM.main.originalPC.getSpecies())
 		GM.pc.resetBodypartsToDefault()
-		GM.pc.getInventory().equipItem(GlobalRegistry.createItem("Leotard"))
+		for bodypart in GM.main.originalPC.bodyparts:
+			if GM.main.originalPC.bodyparts[bodypart] == null:
+				continue
+			var replacedBodypart = GlobalRegistry.createBodypart(GM.main.originalPC.bodyparts[bodypart].id)
+			var body_part_values = GM.main.originalPC.bodyparts[bodypart].getCharCreatorData()
+			if body_part_values != null:
+				for body_part_attribute in body_part_values:
+					replacedBodypart.set(body_part_attribute[0], body_part_attribute[1])
+			Console.printLine(str(GM.main.originalPC.bodyparts[bodypart].get_property_list()))
+			GM.pc.giveBodypart(replacedBodypart)
+		GM.pc.pickedThickness = GM.main.originalPC.getThickness()
+		GM.pc.pickedFemininity = GM.main.originalPC.getFemininity()
+		GM.pc.pickedSkin = GM.main.originalPC.pickedSkin
+		GM.pc.pickedSkinRColor = GM.main.originalPC.pickedSkinRColor
+		GM.pc.pickedSkinGColor = GM.main.originalPC.pickedSkinGColor
+		GM.pc.pickedSkinBColor = GM.main.originalPC.pickedSkinBColor
+		# Not part of the main game yet. Might need to send a pull request later.
+		#GM.main.stopProcessingTime()
+		# Disable processing characters except PC so there are no pregnancies or other events that could ruin the immersion
+		setModuleFlag("IssixModule", "Azazel_In_Dream", true)
+		GM.main.charactersToUpdate.clear() # TODO Remember to regenerate on exit
 		GM.pc.updateNonBattleEffects()
 
 	if _action == "undress":
@@ -334,17 +362,18 @@ func _react(_action: String, _args):
 		geared_up = _args[0]
 		if geared_up:  # Dress up time
 			var item = GlobalRegistry.createItem("ropeharness")
+			var inventory = GM.pc.getInventory()
 			item.clothesColor = Color.deeppink
-			GM.pc.equipItem(item)
+			inventory.equipItem(item)
 			addMessage(item.getVisibleName() + " has been put on your body.")
 			item = GlobalRegistry.createItem("inmateanklecuffs")
-			GM.pc.equipItem(item)
+			inventory.equipItem(item)
 			addMessage("Your ankles have been restrained by "+item.getVisibleName())
 			item = GlobalRegistry.createItem("inmatewristcuffs")
-			GM.pc.equipItem(item)
+			inventory.equipItem(item)
 			addMessage(item.getVisibleName() + " are now restraining your wrists.")
 			item = GlobalRegistry.createItem("bondagemittens")
-			GM.pc.equipItem(item)
+			inventory.equipItem(item)
 			addMessage(item.getVisibleName() + " made your paws useless.")
 
 	# if _action == "stripping":

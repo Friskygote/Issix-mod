@@ -121,9 +121,9 @@ func reward2():
 	return item
 
 func reward3():
-	if getModuleFlag("IssixModule", "Got_Luck_Token_Before", false) == false:
+	if getModuleFlag("IssixModule", "Got_Luck_Token_Before") == null:
 		rewardItemDescription = "I've had this one in my bag for way too long. You can have it, I don't need it... Right, you probably are new to this. Been a while since I've done that, but I think there is still a single person in this prison who can exchange those tokens for credits for you. Try to look around, talk. Hopefully you'll find the one, I don't really care much for those credits."
-		setModuleFlag("IssixModule", "Got_Luck_Token_Before", true)
+		setModuleFlag("IssixModule", "Got_Luck_Token_Before", false)
 	else:
 		rewardItemDescription = "Another one of these? Where the hell do they come from? Here, have it."
 	return GlobalRegistry.createItem("LuckToken")

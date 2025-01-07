@@ -1,7 +1,10 @@
 extends ItemBase
 
+var quality = 1.0
+
 func _init():
 	id = "LuckToken"
+	quality = RNG.randf_range(0.5, 1.0)
 
 func getVisibleName():
 	return "Luck Token"
@@ -24,6 +27,9 @@ func canSell():
 func canCombine():
 	return true
 
+func getQuality():
+	return quality
+
 func tryCombine(_otherItem):
 	return .tryCombine(_otherItem)
 
@@ -35,10 +41,15 @@ func getItemCategory():
 
 func saveData():
 	var data = .saveData()
+
+	data["quality"] = quality
+
 	return data
 
 func loadData(data):
 	.loadData(data)
+
+	quality = SAVE.loadVar(data, "quality", "")
 
 func getInventoryImage():
 	return "res://Modules/IssixModule/Items/Icons/lucktoken.png"
