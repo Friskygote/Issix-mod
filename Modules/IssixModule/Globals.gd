@@ -1,5 +1,6 @@
 const Globals = preload("res://FoxLib/Globals.gd")
 
+
 static func getSkinWord() -> String:
 	var character_skin_name = Globals.ofModule("IssixModule").characterCoverage
 	return character_skin_name
@@ -23,11 +24,11 @@ static func hasPermanentChasityOnBoth(characterID: String):
 		return null
 	if character.hasPenis():
 		var item = character.getInventory().getEquippedItem(BodypartSlot.Penis)
-		if item.isRestraint() and item.getRestraintData() is RestraintUnremovable:
+		if item != null and item.isRestraint() and item.getRestraintData() is RestraintUnremovable:
 			blocked_penis = true
 	if character.hasVagina():
 		var item = character.getInventory().getEquippedItem(BodypartSlot.Vagina)
-		if item.isRestraint() and item.getRestraintData() is RestraintUnremovable:
+		if item != null and item.isRestraint() and item.getRestraintData() is RestraintUnremovable:
 			if blocked_penis:
 				return true
 		blocked_penis = false
@@ -67,3 +68,16 @@ static func getPlayerPetName():
 		return "pony"
 	else:
 		return "pet"
+
+# Check if a state exists inside stateKey dict flag storage
+static func checkIfAchieved(flagName: String, stateKey: String) -> bool:
+	return GM.main.getModuleFlag("IssixModule", flagName, {}).has(stateKey)
+
+static func returnValueFromStateFlag(flagName: String, stateKey: String, default=null):
+	return GM.main.getModuleFlag("IssixModule", flagName, {}).get(stateKey, default)
+
+# Modify state of a state dict flag
+static func modifyDictStates(flagName: String, stateKey: String, stateValue):
+	var states = GM.main.getModuleFlag("IssixModule", flagName, {})
+	states[stateKey] = stateValue
+	GM.main.setModuleFlag("IssixModule", flagName, states.duplicate(true))

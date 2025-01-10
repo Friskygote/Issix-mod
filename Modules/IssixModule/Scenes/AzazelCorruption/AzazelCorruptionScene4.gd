@@ -384,6 +384,9 @@ func _react(_action: String, _args):
 	if _action == "walktocell":
 		GM.pc.setLocation("cellblock_lilac_nearcell")
 
+	if _action == "eagermask":
+		GM.pc.getInventory().equipItem(GlobalRegistry.createItem("GasMask"))
+
 	if(_action == "endthescene"):
 		setModuleFlag("IssixModule", "Azazel_Corruption_Scene", 4)
 		endScene()

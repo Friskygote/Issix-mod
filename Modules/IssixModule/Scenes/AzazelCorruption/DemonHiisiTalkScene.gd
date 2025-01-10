@@ -1,15 +1,20 @@
 extends SceneBase
 
+const Globals = preload("res://Modules/IssixModule/Globals.gd")
+
 func _init():
 	sceneID = "DemonHiisiTalk"
 
 func _run():
 	if(state == ""):
 		addCharacter("hiisidemon")
+		playAnimation(StageScene.Duo, "sit", {pc="hiisidemon", npc="pc"})
 		saynn("Muscular canine body sits a top of a throne placed at the end of the hallway. The dog is residing higher than you, their posture confident, indifferent.")
 		addButton("Talk", "Talk to Hiisi", "talk")
 		if Globals.checkIfAchieved("Azazel_Corr_Dream_State", "Talked_With_Hiisi"):
 			addButton("Learn", "Learn from Hiisi about how the pet should behave", "learn")
+		addButton("Appearance", "Take a good look at Hiisi", "appearance")
+		addButton("Leave", "Get away from here", "endthescene")
 
 	if state == "talk":
 		saynn("[say=pc]Hello Hiisi/[/say]")
@@ -28,8 +33,15 @@ func _run():
 		saynn("[say=hiisidemon]Let me tell you outright, I do not care whether you become Master's pet or not, it is of no concern to me. But considering you are here, I must teach you how a proper pet should behave. When you are ready to be taught, let me know.[/say]")
 		addButton("Sure", "You will", "")
 
+	if state == "appearance":
+		playAnimation(StageScene.Solo, "sit", {pc="hiisidemon"})
+		saynn("You take a good look at {hiisidemon.name}, while there is still some husky gray on canine, most of his fur has been changed into bright red, with markings being even brighter. His hair is red as well. Compared to Hiisi you normally know, the Hiisi that sits before you has long straight horns that go upwards, at base start with gray and the tip is colored bright red. The bushy and monochromatic tail that you remember gor replaced with a long spaded tail colored the same as the rest of red canine. The inside of his ears stayed gray.")
+		saynn("Showing to you is also his penis - a dark canine black tool with red veins")
+		addButton("Back", "You've stared at the canine long enough", "")
+
+
 	if state == "learn":
-		playAnimation(StageScene.Duo, "allfours", {pc="pc", npc="hiisi"})
+		playAnimation(StageScene.Duo, "allfours", {pc="pc", npc="hiisidemon"})
 		saynn("[say=pc]I'm here to learn from you, Hiisi.[/say]")
 		saynn("[say=hiisidemon]So be it. On fours then. A pet should know how to walk and how to keep balance on their fours. Crawl on the floor for me like this.[/say]")
 		saynn("You stand on your fours, it isn't particularly difficult, though it gets tiring really quickly.")
@@ -52,20 +64,20 @@ func _run():
 		addButton("Leave", "", "endthescene")
 
 	if state == "beg":
-		playAnimation(StageScene.Beg, "beg", {pc="pc", npc="hiisi"})
+		playAnimation(StageScene.Beg, "beg", {pc="pc", npc="hiisidemon"})
 		saynn("Without giving it any thought you kneel on your twos and curl your paws obediently begging Hiisi for his treat, you hear a click from all around, it makes you happy.")
 		saynn("[say=hiisidemon]See? It comes to you instinctively now. That's how it should be.[/say]")
 		addButton("Catch", "Catch the treat", "catch")
 
 	if state == "catch":
-		playAnimation(StageScene.Beg, "pat", {pc="pc", npc="hiisi"})
+		playAnimation(StageScene.Beg, "pat", {pc="pc", npc="hiisidemon"})
 		saynn("Hiisi throws a treat at you and you catch it with your mouth.")
 		saynn("[say=hiisidemon]Good {pc.boy}.[/say]")
 		saynn("You repeat begging a few more times, and nail it perfectly each.")
 		addButton("Continue", "Continue the exercises", "sitlay")
 
 	if state == "sitlay":
-		playAnimation(StageScene.Duo, "kneel", {pc="pc", npc="hiisi"})
+		playAnimation(StageScene.Duo, "kneel", {pc="pc", npc="hiisidemon"})
 		saynn("[say=hiisidemon]Sit.[/say]")
 		saynn("You follow his command immediately, hearing a click and feeling rushing endorphins in your blood. It's really your nature now. You don't know when it happened, when did a switch get flipped to make you so receptive to commands, how did that even happen? Right now, no matter what kind of command gets out of Hiisi's mouth you follow it without thinking.")
 		saynn("[say=hiisidemon]Lay.[/say]")
@@ -90,6 +102,10 @@ func _react(_action: String, _args):
 
 	if _action == "sitlay":
 		Globals.modifyDictStates("Azazel_Corr_Dream_State", "Trained_With_Hiisi", true)
+		#warning-ignore:integer_division
+		GM.pc.addStamina(-int(GM.pc.getMaxStamina()/4))
+		GM.pc.getSkillsHolder().addSkillExperience("Pet", 1000)
+		GM.pc.getSkillsHolder().addPerk("Commands")
 
 	if _action == "talk":
 		Globals.modifyDictStates("Azazel_Corr_Dream_State", "Talked_With_Hiisi", true)

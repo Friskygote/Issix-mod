@@ -11,7 +11,7 @@ func getVisibleDescription():
 	return "You have learned the speech of animals without losing ability to communicate with humanoids"
 
 func getSkillTier():
-	return 5
+	return 1
 
 func getPicture():
 	return "res://Modules/IssixModule/Skills/Images/petspeech.png"
@@ -21,4 +21,10 @@ func toggleable():
 	return !(ch.getSkillsHolder().hasPerk(self.id))
 
 func unlockable():
+	return false
+
+func hiddenWhenLocked() -> bool:
+	return true
+
+func hiddenWhenUnlocked() -> bool:
 	return false

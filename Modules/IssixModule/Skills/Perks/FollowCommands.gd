@@ -11,7 +11,7 @@ func getVisibleDescription():
 	return "You learned basic commands that others can give you"
 
 func getSkillTier():
-	return 10
+	return 2
 
 func getPicture():
 	return "res://Modules/IssixModule/Skills/Images/commands.png"

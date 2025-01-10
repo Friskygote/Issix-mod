@@ -119,6 +119,8 @@ func _init():
 		"res://Modules/IssixModule/Events/PetWanderEvent.gd",
 		"res://Modules/IssixModule/Scenes/AzazelCorruption/StopsEvent.gd",
 		"res://Modules/IssixModule/Events/AnnouncerLuckTokenEvent.gd",
+		"res://Modules/IssixModule/Scenes/AzazelCorruption/DemonPetsEvent.gd",
+		"res://Modules/IssixModule/Scenes/AzazelCorruption/LongCorridorEvent.gd"
 		]
 		
 	scenes = [
@@ -150,13 +152,20 @@ func _init():
 		"res://Modules/IssixModule/Scenes/HiisiScenes/HiisiWanderScene3.gd",
 		"res://Modules/IssixModule/Scenes/IssixDonationScene.gd",
 		"res://Modules/IssixModule/Scenes/AnnouncerLuckTokensDialogue.gd",
+		"res://Modules/IssixModule/Scenes/AzazelCorruption/DemonAzazelTalkScene.gd", 
+		"res://Modules/IssixModule/Scenes/AzazelCorruption/DemonHiisiTalkScene.gd", 
+		"res://Modules/IssixModule/Scenes/AzazelCorruption/DemonLamiaTalkScene.gd",
+		"res://Modules/IssixModule/Scenes/AzazelCorruption/FountainScene.gd"
 		]
 		
 	characters = [
 		"res://Modules/IssixModule/Characters/AzazelCharacter.gd", 
 		"res://Modules/IssixModule/Characters/HiisiCharacter.gd", 
 		"res://Modules/IssixModule/Characters/IssixCharacter.gd", 
-		"res://Modules/IssixModule/Characters/LamiaCharacter.gd"
+		"res://Modules/IssixModule/Characters/LamiaCharacter.gd",
+		"res://Modules/IssixModule/Scenes/AzazelCorruption/AzazelDemonCharacter.gd", 
+		"res://Modules/IssixModule/Scenes/AzazelCorruption/HiisiDemonCharacter.gd", 
+		"res://Modules/IssixModule/Scenes/AzazelCorruption/LamiaDemonCharacter.gd"
 		]
 		
 	gameExtenders = [
@@ -164,7 +173,8 @@ func _init():
 	]
 
 	worldEdits = [
-		"res://Modules/IssixModule/IssixWorldEdit.gd"
+		"res://Modules/IssixModule/IssixWorldEdit.gd",
+		"res://Modules/IssixModule/Scenes/AzazelCorruption/HackMainScene.gd",
 	]
 	
 	items = [
@@ -200,8 +210,10 @@ func _init():
 	]
 	speechModifiers = [
 		"res://Modules/IssixModule/SpeechModifiers/CatnipSpeech.gd",
-		"res://Modules/IssixModule/SpeechModifiers/LamiaMute.gd"
+		"res://Modules/IssixModule/SpeechModifiers/LamiaMute.gd",
+		"res://Modules/IssixModule/SpeechModifiers/PetTalk.gd",
 	]
+
 	GlobalRegistry.registerLustTopicFolder("res://Modules/IssixModule/InterestTopics/")
 	GlobalRegistry.registerSkinsFolder("res://Modules/IssixModule/Skins/")
 	GlobalRegistry.registerMapFloorFolder("res://Modules/IssixModule/Floors/")

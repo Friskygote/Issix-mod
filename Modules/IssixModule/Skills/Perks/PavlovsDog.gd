@@ -11,7 +11,7 @@ func getVisibleDescription():
 	return "You have unconditional urge to stop what you are doing when you hear a click"
 
 func getSkillTier():
-	return 10
+	return 2
 
 func getPicture():
 	return "res://Modules/IssixModule/Skills/Images/clicker.png"

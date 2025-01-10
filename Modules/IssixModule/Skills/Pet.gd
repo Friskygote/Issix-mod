@@ -17,4 +17,4 @@ func getPerkTiers():
 	]
 
 func scripted():
-	return true
+	return false

@@ -9,7 +9,7 @@ func _init():
 	regex.compile("([\\!\\.\\?]*)")
 
 func appliesTo(_speaker: BaseCharacter) -> bool:
-	return _speaker.hasEffect("PetLanguage") or _speaker.hasPerk("PetSpeech")
+	return _speaker.hasPerk("PetSpeech")
 
 func modify(_text: String, _speaker: BaseCharacter) -> String:
 	var species = petNoises[Species.Unknown]
@@ -22,9 +22,9 @@ func modify(_text: String, _speaker: BaseCharacter) -> String:
 	for word in split_text:
 		if RNG.chance(20):  # Don't make a sound
 			continue
-		var addition = RNG.choice(species)
-		if word.length() > addition:
-			addition = word.substr(0, 0) + word[1].repeat(word.length()-addition.length()+1) + word.substr(2)
+		var addition = RNG.pick(species)
+		if word.length() > addition.length():
+			addition = addition.substr(0, 1) + addition[1].repeat(word.length()-addition.length()+1) + addition.substr(2)
 		var result = regex.search(word)
 		return_text = return_text + " " + addition + (result.get_string() if result else "")
 	if(GM.pc.hasPerk(Perk.BDSMGagTalk)):

@@ -10,6 +10,8 @@ func _init():
 func _run():
 	if(state == ""):
 		addCharacter("azazeldemon")
+		playAnimation(StageScene.Duo, "sit", {pc="azazeldemon", npc="pc"})
+
 		saynn("Azazel sits atop of his small throne chair, not in dignified way, his ass is on its edge and his back bent between chair's support and base, he looks as if he has been bored to death by someone's long monologue. This position means his pussy and ass are on the display.")
 		addButton("Talk", "Talk to Azazel", "talk")
 		addButton("Appearance", "Check kitty's appearance", "appearance")
@@ -18,6 +20,12 @@ func _run():
 				addDisabledButton("Better", "There is nothing more to be gained in here, move on")
 			else:
 				addButton("Better", "Become an ideal Master pet", "better")
+		addButton("Leave", "Leave", "endthescene")
+
+	if state == "appearance":
+		playAnimation(StageScene.Solo, "sit", {pc="azazeldemon"})
+		saynn("You take a closer look at {azazeldemon.name}. He is a very thin and fairly short feline, judging from him sitting he is around " + Util.cmToString(150) + " tall, with no visible muscles, likely not very strong. Overall his body is still mostly masculine, though here and there there are feminine features like his face or shoulders.\nHis fur is in majority dark purple with splotch of brighter purple to pink on his chest, his face has deeper color of purple. A set of horns protrudes from his head, it looks different from the one you've seen on him before, they are longer and more segmented. His pupils are oval, like ones you'd see on a goat. On his backside there is now a very large spaded black tail.")
+		addButton("Back", "Go back", "")
 
 	if state == "talk":
 		saynn("[say=pc]A-azazel? You look like him though... The colors and the tail...[/say]")
@@ -48,7 +56,7 @@ func _run():
 	if state == "talkrefuse":
 		saynn("[say=azazeldemon]This wasn't a request, it was an order. I'm not the one to instill loyalty into you, but... I think we could do with you being a bit more obedient.[/say]")
 		saynn("He approaches you. At first you try ta take a step back but... You can't. His eyes look so beautiful. Purple eyes with such a pretty glow. Azazel puts two of his paw fingers on your forehead.")
-		saynn("[say=azazeldemon][corrupt]Azeryūze[/corrupt][/say]")
+		saynn("[say=azazeldemon][color=#ac1eff][corrupt]Azeryūze[/corrupt][/color][/say]")
 
 		saynn("Instantly as he finishes saying the word that you didn't understand, you felt different. You can't say what changed, but it felt significant.")
 		saynn("[say=azazeldemon]Lay on the ground for me.[/say]")
@@ -56,6 +64,7 @@ func _run():
 		addButton("Comply", "Comply with Azazel's order", "talklay")
 
 	if state == "talklay":
+		playAnimation(StageScene.SexStart, "defeated", {pc="azazeldemon", npc="pc"})
 		saynn("You comply with Azazel's order, his purple eyes glowing with intense color making you oblige.")
 
 		saynn("[say=azazeldemon]Good "+Globals.getPlayerPetName()+".[/say]")
@@ -76,11 +85,12 @@ func _run():
 			addButton("Continue", "See what Azazel has in store for you", "azazeltattoo")
 		else:
 			saynn("[say=azazeldemon]I'll remold you into Master's fuck pet. I'll make you actually useful.[/say]")
-			saynn("He kneels next to your laying body and moves his paws around your "+("penis" if GM.hasPenis() else "crotch area")+ ". You can feel small tingling near that area.")
+			saynn("He stands next to your laying body and moves his {azazeldemon.foot} around your "+("penis" if GM.pc.hasPenis() else "crotch area")+ ". You can feel small tingling near that area.")
 			addButton("Allow", "Allow Azazel to do whatever he intends to do to you (non-permanent body modification)", "allowbodymod")
 			addButton("Resist", "Call the rest of your mental fortitude to resist Azazel's spell", "denybodymod")
 
 	if state == "allowbodymod":
+		playAnimation(StageScene.SexFeetPlay, "crotch", {pc="pc", npc="azazeldemon", bodyState={hard=true}})
 		if GM.pc.hasPenis():
 			saynn("You allow Azazel to do whatever he wants. Shortly after you feel even more heat concentrated on your {pc.penis} as well as arousal to level you've never felt. Your {pc.penis} gets instantly hard.")
 			saynn("[say=pc]Aahhhh![/say]")
@@ -103,7 +113,6 @@ func _run():
 	if state == "cumafterpenis":
 		if hadVagina:
 			saynn("You reach your peak and start cumming. It's probably your most „productive” milking in your life, and from the looks of it, it's also the last one. You look as your throbbing nugget of a penis reclines into your body leaving only your other sex for use, sealing your fate as Master's breeding bitch.")
-
 			saynn("[say=azazeldemon]Wonderful job, life is better without that pesky sack of flesh. You can enjoy your life with just pussy, that's all you'll ever need. Now, there is still a few more things to do here before I can let you go.[/say]")
 		else:
 			saynn("You reach your peak and start cumming. It's probably your most „productive” milking in your life, and from the looks of it, it's also the last one. You look as your throbbing nugget of a penis reclines into your body and a new body part appears. It's small, but you have no issues recognizing what is your new sex.")
@@ -125,7 +134,7 @@ func _run():
 
 	if state == "azazeltattoo":
 		saynn("[say=azazeldemon]A good breeder must be ready for everything. A good breeder should be appropriately marked and be available at Master's command. I want to make you a perfect breeder, a perfect toy for the Master to break.[/say]")
-		saynn("His paw finger once again hovers over you, this time it's above your {pc.vagina}. Once again, immense heat radiates from where Azazel's paw is, you look at this scene with bewilderment as a new something appears there - a womb tatoo, with each second the lines continue to appear permanenting the sigil inside your skin, the red heart inside takes shape, the dark red shape streaches with tubes connecting the central heart with ovaries - signifying your fertility and advertising yourself as breeding partner. Azazel's mischievous smile appears on his face, he runs his finger over your new tattoo, it feels so good.")
+		saynn("His paw finger once again hovers over you, this time it's above your {pc.vagina}. Once again, immense heat radiates from where Azazel's paw is, you look at this scene with bewilderment as a new something appears there - a womb tattoo, with each second the lines continue to appear permanenting the sigil inside your skin, the red heart inside takes shape, the dark red shape streaches with tubes connecting the central heart with ovaries - signifying your fertility and advertising yourself as breeding partner. Azazel's mischievous smile appears on his face, he runs his finger over your new tattoo, it feels so good.")
 		saynn("[say=azazeldemon]This will keep you in service, it will keep you docile, receptive, it will show everyone who you are. When you are pregnant, it will glow. You will be a good mother {pc.girl}.[/say]")
 
 		saynn("[say=azazeldemon]Now go, I'll see you soon.[/say]")
@@ -153,11 +162,13 @@ func loadData(data):
 
 func _react(_action: String, _args):
 	if _action == "talklay":
-		Globals.modifyDictStates("Azazel_Corr_Dream_State", "Got_Molded_By_Azazel", true)
+		Globals.modifyDictStates("Azazel_Corr_Dream_State", "Got_Azazels_Permission", true)
 
 	if _action == "azazeltattoo":
 		GM.pc.addEffect(StatusEffect.TaviWombMark)
 		GM.pc.forceIntoHeat()
+		#warning-ignore:integer_division
+		GM.pc.addStamina(-int(GM.pc.getMaxStamina()/4))
 
 	if _action == "cumafterpenis":
 		GlobalRegistry.getCharacter("azazeldemon").cummedOnBy("pc", FluidSource.Penis, 1.2)
@@ -178,9 +189,7 @@ func _react(_action: String, _args):
 		else:
 			var vagina = GlobalRegistry.createBodypart("vagina")
 			GM.pc.giveBodypartUnlessSame(vagina)
-
-	if _action == "better":
-		Globals.modifyDictStates("Azazel_Corr_Dream_State", "Got_Azazels_Permission", true)
+		Globals.modifyDictStates("Azazel_Corr_Dream_State", "Got_Molded_By_Azazel", true)
 
 	if _action == "talk":
 		Globals.modifyDictStates("Azazel_Corr_Dream_State", "Talked_With_Azazel", true)

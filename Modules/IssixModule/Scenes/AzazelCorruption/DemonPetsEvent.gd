@@ -22,7 +22,7 @@ func run(_triggerID, _args):
 				saynn("In the center here you see a fountain like structure, except the yellow fluid that reaches its base and drains into the metallic crates falls from the ceiling instead of being ejected from the ground like in all other fountains you've seen. The yellow fluid is very strong in smell.")
 			else:
 				saynn("In the center here you see a fountain like structure, except the transparent fluid that reaches its base and drains into the metallic crates falls from the ceiling instead of being ejected from the ground like in all other fountains you've seen.")
-			addButton("Shower", "Go on the fountain and meet wet embrace of whatever falls from the ceiling", "fountain")
+			addButton("Approach", "Approach the fountain", "fountain")
 
 func getPriority():
 	return 0

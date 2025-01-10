@@ -12,8 +12,14 @@ func _init():
 	pickedSkinGColor=Color("ff656465")
 	pickedSkinBColor=Color("ff72005d")
 	npcSkinData={
-	   "hair": {"r": Color("ff221310"),"g": Color("ff1f1514"),"b": Color("ff28000c"),},
-	   "horns": {"r": Color("ffa9a9a9"),"b": Color("ff606060"),},
+		"head": {"r": Color("ff72027c"),"g": Color("ff7d0092"),},
+		"hair": {"r": Color("ff480f04"),"g": Color("ffcc1300"),"b": Color("ff28000c"),},
+		"horns": {"r": Color("ff7a7575"),"g": Color("ff585656"),"b": Color("ff6a6a6a"),},
+		"body": {"r": Color("ff722a7f"),"g": Color("ffa90aaa"),"b": Color("ffff0000"),},
+		"arms": {"r": Color("ff8e21a4"),},
+		"breasts": {"r": Color("ffac0707"),"g": Color("ffde1fff"),},
+		"tail": {"r": Color("ff000000"),"g": Color("ff000000"),"b": Color("ff000000"),},
+		"legs": {"r": Color("ff802c89"),"g": Color("ff6a0076"),},
 	}
 	npcPersonality = {
 		PersonalityStat.Brat: -0.9,
@@ -123,7 +129,7 @@ func createBodyparts():
 	giveBodypartUnlessSame(GlobalRegistry.createBodypart("vagina"))
 	giveBodypartUnlessSame(GlobalRegistry.createBodypart("anuswomb"))
 	var tail = GlobalRegistry.createBodypart("demontail")
-	tail.tailScale = 1.9
+	tail.tailScale = 1.4
 	giveBodypartUnlessSame(tail)
 	giveBodypartUnlessSame(GlobalRegistry.createBodypart("hoofs"))
 	skillsHolder.addPerk(Perk.FertilityBroodmother)

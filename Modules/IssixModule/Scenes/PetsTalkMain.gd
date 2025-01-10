@@ -458,7 +458,7 @@ func _run():
 			saynn("When approaching there are two distinct smells coming from Azazel - his own pheromones advertising his fertility to everyone around, as well another strong smell of his master. Azazel has been marked, in more ways than one.")
 		else:
 			saynn("When approaching there is one distinct smell coming from Azazel - his own pheromones advertising his fertility to everyone around.")
-		saynn("You take a closer look at {azazel.name}. He is a very thin and fairly short feline, judging from him sitting he is around " + Util.cmToString(150) + " tall, with no visible muscles, likely not very strong. Overall his body is still mostly masculine, though here and there there are feminine features like his face or shoulders.\nHis fur is in majority dark grey, though his face is of ligher shade of gray. A small set of horns protrudes from his head. On his backside there is a medium sized feline tail.")  # TODO Makes no sense player can see that at this point, Azazel is clothed
+		saynn("You take a closer look at {azazel.name}. He is a very thin and fairly short feline, judging from him sitting he is around " + Util.cmToString(150) + " tall, with no visible muscles, likely not very strong. Overall his body is still mostly masculine, though here and there there are feminine features like his face or shoulders.\nHis fur is in majority dark grey, though his face is of ligher shade of gray. A small set of horns protrudes from his head. On his backside there is a medium sized feline tail.")
 		addButton("Back", "Do something else", "azazelmain")
 
 	if state == "azazelprison":

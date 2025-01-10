@@ -24,7 +24,7 @@ roomColor = 4
 position = Vector2( 0, 64 )
 roomName = "Corridor"
 roomID = "petsdream_cellblock_corridor_part1"
-roomDescription = "Your standing inside a giant sheet metal tube that connects the cellblocks with the rest of the prison. The only noteworthy thing here is the giant open blast door stretched across the hall."
+roomDescription = "Your standing inside a giant sheet metal tube that stretches far away into the darkness ahead."
 canWest = false
 canEast = false
 
@@ -33,7 +33,7 @@ self_modulate = Color( 1, 0.6, 0.8, 1 )
 position = Vector2( 0, 256 )
 roomName = "End of Liliac hallway"
 roomID = "petsdream_cellblock_pink_playercell"
-roomDescription = "((This will be your potential cell))"
+roomDescription = "At the end of this hallway is a small chair-throne on which a differently looking Azazel sits."
 canWest = false
 canEast = false
 roomSprite = 1
@@ -43,7 +43,7 @@ roomColor = 4
 position = Vector2( 0, 128 )
 roomName = "Corridor"
 roomID = "petsdream_cellblock_nearcells"
-roomDescription = "This is where the 3 cell blocks branch off into their own sections, there are always a few inmates of all types milling around. Above you there are a number of guards on the catwalks, walls, and posts. From here, the orange, lilac, and red cell blocks lay further ahead."
+roomDescription = "This is where the 3 cell blocks branch off into their own sections. At the center there is a sizable „fountain”, where fluids fall from above, instead from below... From here, the orange, lilac, and red cell blocks lay further ahead."
 roomSprite = 7
 loctag_NoWallsNear = true
 
@@ -52,7 +52,8 @@ self_modulate = Color( 1, 0.6, 0.6, 1 )
 position = Vector2( 64, 128 )
 roomName = "High-security cellblock"
 roomID = "petsdream_cellblock_red_nearcell"
-roomDescription = "A long open space lined with armored windows and clear automatic doors. Unlike most other places in the prison, it is actually pretty dark in this cell block, with a number of unknown stains and trash lining the halls. Dim and broken lights that randomly dot the walls between cells. A large panopticon with guards hangs from the rock ceiling above, casually monitoring the dark atmosphere with a number of spotlights. The Red trim of the large hallway stretches east towards more cells, with even more to be found if you wanted to seek them out."
+roomDescription = "A long open space lined with armored windows and clear automatic doors. Unlike most other places in the prison, it is actually pretty dark in this cell block, with a number of unknown stains and trash lining the halls. Dim and broken lights that randomly dot the walls between cells. 
+The Red trim of the large hallway stretches east towards more cells, with even more to be found if you wanted to seek them out."
 canNorth = false
 canSouth = false
 roomColor = 2
@@ -62,7 +63,7 @@ self_modulate = Color( 1, 0.6, 0.6, 1 )
 position = Vector2( 128, 128 )
 roomName = "End of High-sec hallway"
 roomID = "petsdream_cellblock_red_playercell"
-roomDescription = "((This will be your potential cell))"
+roomDescription = "At the end of this hallway is a small chair-throne on which a canine sits."
 canNorth = false
 canSouth = false
 roomSprite = 1
@@ -83,6 +84,7 @@ self_modulate = Color( 1, 0.8, 0.6, 1 )
 position = Vector2( -128, 128 )
 roomName = "End of General hallway"
 roomID = "petsdream_cellblock_orange_playercell"
+roomDescription = "At the end of this hallway is a blanket engulfed in flames, on which Lamia lays without care in the world."
 canNorth = false
 canSouth = false
 roomSprite = 1
@@ -91,7 +93,7 @@ roomColor = 5
 [node name="CellblockRoom1" parent="." index="8" instance=ExtResource( 2 )]
 roomName = "Corridor"
 roomID = "petsdream_cellblock_corridor_part2"
-roomDescription = "Your standing inside a giant sheet metal tube that connects the cellblocks with the rest of the prison. The only noteworthy thing here is the giant open blast door stretched across the hall."
+roomDescription = "Your standing inside a giant sheet metal tube that stretches far away into the darkness ahead, you notice how it's becoming darker and yet darker."
 canWest = false
 canEast = false
 
@@ -99,7 +101,7 @@ canEast = false
 position = Vector2( 0, -64 )
 roomName = "Corridor"
 roomID = "petsdream_cellblock_corridor_part3"
-roomDescription = "Your standing inside a giant sheet metal tube that connects the cellblocks with the rest of the prison. The only noteworthy thing here is the giant open blast door stretched across the hall."
+roomDescription = "Your standing inside a giant sheet metal tube that stretches far away into the darkness ahead, most worrying is the fact that you don't see anything indicating there is an end to this dark tunel."
 canWest = false
 canEast = false
 
@@ -107,7 +109,7 @@ canEast = false
 position = Vector2( 0, -128 )
 roomName = "Corridor"
 roomID = "petsdream_cellblock_corridor_part4"
-roomDescription = "Your standing inside a giant sheet metal tube that connects the cellblocks with the rest of the prison. The only noteworthy thing here is the giant open blast door stretched across the hall."
+roomDescription = "Your standing inside a giant sheet metal tube that stretches far away into the darkness ahead. It's also where you can see a wall of... Goo? Isolating further dark tunel from the lightened tunel behind."
 canWest = false
 canEast = false
 
@@ -115,7 +117,7 @@ canEast = false
 position = Vector2( 0, -192 )
 roomName = "Corridor"
 roomID = "petsdream_cellblock_corridor_part5"
-roomDescription = "Your standing inside a giant sheet metal tube that connects the cellblocks with the rest of the prison. The only noteworthy thing here is the giant open blast door stretched across the hall."
+roomDescription = "Your standing inside a giant sheet metal tube that stretches far away into the darkness ahead. Darkness is consuming even more."
 canWest = false
 canEast = false
 
@@ -123,7 +125,7 @@ canEast = false
 position = Vector2( 0, -256 )
 roomName = "Corridor"
 roomID = "petsdream_cellblock_corridor_part6"
-roomDescription = "Your standing inside a giant sheet metal tube that connects the cellblocks with the rest of the prison. The only noteworthy thing here is the giant open blast door stretched across the hall."
+roomDescription = "Your standing inside a giant sheet metal tube that stretches far away into the darkness ahead. You can still see the walls and the floor, but the path continues to be shrouded in darkness. Is there even anything there?"
 canWest = false
 canEast = false
 
@@ -131,7 +133,7 @@ canEast = false
 position = Vector2( 0, -320 )
 roomName = "Corridor"
 roomID = "petsdream_cellblock_corridor_part7"
-roomDescription = "Your standing inside a giant sheet metal tube that connects the cellblocks with the rest of the prison. The only noteworthy thing here is the giant open blast door stretched across the hall."
+roomDescription = "Your standing inside a giant sheet metal tube that stretches far away into the darkness ahead. You realize, that soon you won't even see the floor."
 canWest = false
 canEast = false
 
@@ -139,7 +141,7 @@ canEast = false
 position = Vector2( 0, -384 )
 roomName = "Corridor"
 roomID = "petsdream_cellblock_corridor_part8"
-roomDescription = "Your standing inside a giant sheet metal tube that connects the cellblocks with the rest of the prison. The only noteworthy thing here is the giant open blast door stretched across the hall."
+roomDescription = "Your standing inside a giant sheet metal tube that stretches ahead and behind you."
 canWest = false
 canEast = false
 
@@ -147,7 +149,7 @@ canEast = false
 position = Vector2( 0, -448 )
 roomName = "Corridor"
 roomID = "petsdream_cellblock_corridor_part9"
-roomDescription = "Your standing inside a giant sheet metal tube that connects the cellblocks with the rest of the prison. The only noteworthy thing here is the giant open blast door stretched across the hall."
+roomDescription = "Your standing inside a giant sheet metal tube that stretches ahead, into complete darkness and behind you - where you came from."
 canWest = false
 canEast = false
 
@@ -155,7 +157,7 @@ canEast = false
 position = Vector2( 0, -512 )
 roomName = "Corridor"
 roomID = "petsdream_cellblock_corridor_part10"
-roomDescription = "Your standing inside a giant sheet metal tube that connects the cellblocks with the rest of the prison. The only noteworthy thing here is the giant open blast door stretched across the hall."
+roomDescription = "Your standing inside a giant sheet metal tube that stretches ahead? You haven't hit a wall - yet."
 canWest = false
 canEast = false
 
@@ -163,7 +165,7 @@ canEast = false
 position = Vector2( 0, -576 )
 roomName = "Corridor"
 roomID = "petsdream_cellblock_corridor_part11"
-roomDescription = "Your standing inside a giant sheet metal tube that connects the cellblocks with the rest of the prison. The only noteworthy thing here is the giant open blast door stretched across the hall."
+roomDescription = "Your standing inside a giant sheet metal tube, or at least you think you do. It's so dark that it's impossible to tell where exactly are you."
 canWest = false
 canEast = false
 
@@ -171,7 +173,7 @@ canEast = false
 position = Vector2( 0, -640 )
 roomName = "Corridor"
 roomID = "petsdream_cellblock_corridor_part12"
-roomDescription = "Your standing inside a giant sheet metal tube that connects the cellblocks with the rest of the prison. The only noteworthy thing here is the giant open blast door stretched across the hall."
+roomDescription = "Your standing inside a giant sheet metal tube, or at least you think you do. The light from behind is no longer visible to you, there is no light where you are. You can't tell if you are even walking in the right direction."
 canWest = false
 canEast = false
 
@@ -179,7 +181,7 @@ canEast = false
 position = Vector2( 0, -704 )
 roomName = "Corridor"
 roomID = "petsdream_cellblock_corridor_part13"
-roomDescription = "Your standing inside a giant sheet metal tube that connects the cellblocks with the rest of the prison. The only noteworthy thing here is the giant open blast door stretched across the hall."
+roomDescription = "Silence, darkness. Should you continue? No light in sight."
 canWest = false
 canEast = false
 
@@ -187,7 +189,7 @@ canEast = false
 position = Vector2( 0, -768 )
 roomName = "Corridor"
 roomID = "petsdream_cellblock_corridor_part14"
-roomDescription = "Your standing inside a giant sheet metal tube that connects the cellblocks with the rest of the prison. The only noteworthy thing here is the giant open blast door stretched across the hall."
+roomDescription = "You persist and walk forward, your effort is soon rewarded with a shimmer of light in front of you!"
 canWest = false
 canEast = false
 
@@ -195,7 +197,7 @@ canEast = false
 position = Vector2( 0, -832 )
 roomName = "Corridor"
 roomID = "petsdream_cellblock_corridor_part15"
-roomDescription = "Your standing inside a giant sheet metal tube that connects the cellblocks with the rest of the prison. The only noteworthy thing here is the giant open blast door stretched across the hall."
+roomDescription = "You eagerly follow the shimmer of light as it gets bigger and bigger. While you are still shrouded in darkness, you know if you keep walking further the goal will be within your reach."
 canWest = false
 canEast = false
 
@@ -203,18 +205,20 @@ canEast = false
 position = Vector2( 0, -896 )
 roomName = "Corridor"
 roomID = "petsdream_cellblock_corridor_part16"
-roomDescription = "Your standing inside a giant sheet metal tube that connects the cellblocks with the rest of the prison. The only noteworthy thing here is the giant open blast door stretched across the hall."
+roomDescription = "You see it! Just a little bit! You can make out a person from the distance, they are surrounded by purple mass that makes up the walls,ceiling and the floor."
 canWest = false
 canEast = false
 
 [node name="CellblockRoom25" parent="." index="23" instance=ExtResource( 2 )]
+self_modulate = Color( 1, 0.6, 0.8, 1 )
 position = Vector2( 0, -960 )
 roomName = "Corridor"
 roomID = "petsdream_cellblock_corridor_part17"
-roomDescription = "Your standing inside a giant sheet metal tube that connects the cellblocks with the rest of the prison. The only noteworthy thing here is the giant open blast door stretched across the hall."
+roomDescription = "End of long hallways, filled with incredibly moist and musty air. Walls, ceiling as well as floors are made of purple squirming meaty mass that seemingly lives on its own. Right at one end of this space is a chair where Issix sits, amused at seeing you."
 canWest = false
 canEast = false
 roomSprite = 4
+roomColor = 4
 
 [connection signal="onEnter" from="CellblockRoom6" to="." method="_on_CellblockRoom11_onEnter"]
 [connection signal="onPreEnter" from="CellblockRoom6" to="." method="_on_CellblockRoom11_onPreEnter"]
