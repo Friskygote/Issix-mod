@@ -31,7 +31,7 @@ func _run():
 		saynn("[say=pc]A-azazel? You look like him though... The colors and the tail...[/say]")
 		saynn("[say=azazeldemon]Hehe. Welcome, little „morsel”.[/say]")
 		saynn("[say=pc]Are you Azazel? Where, what is this place?[/say]")
-		saynn("[say=azazeldemon]Curiosity killed the "+Util.getSpeciesName(GM.pc.getSpecies())+".[/say]")
+		saynn("[say=azazeldemon]Curiosity killed the "+Util.getSpeciesName(GM.pc.getSpecies()).to_lower()+".[/say]")
 		saynn("He laughs")
 		saynn("[say=azazeldemon]Am I Azazel? Who's to say. What makes Azazel Azazel? Do I check all the boxes?... Probably not. I'm part of Azazel, but I'm not whole.[/say]")
 		saynn("[say=pc]What?[/say]")

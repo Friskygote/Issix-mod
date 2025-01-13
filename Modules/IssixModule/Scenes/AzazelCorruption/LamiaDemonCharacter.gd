@@ -107,7 +107,7 @@ func getBirthWaitTime():
 	return 60*60*24*2
 
 func getDefaultEquipment():
-	return ["oldcollar", "Leotard", "sportyBriefs"]
+	return ["oldcollar", "LeatherJacket", "sportyBriefs"]
 
 func getThickness() -> int:
 	return 70

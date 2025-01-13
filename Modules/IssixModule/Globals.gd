@@ -69,6 +69,10 @@ static func getPlayerPetName():
 	else:
 		return "pet"
 
+# If player is enslaved
+static func checkIfPCEnslaved() -> bool:
+	return GM.main.getModuleFlag("IssixModule", "PC_Enslavement_Role", 0) >= 1
+
 # Check if a state exists inside stateKey dict flag storage
 static func checkIfAchieved(flagName: String, stateKey: String) -> bool:
 	return GM.main.getModuleFlag("IssixModule", flagName, {}).has(stateKey)

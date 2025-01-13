@@ -13,6 +13,7 @@ func _run():
 		if Globals.checkIfAchieved("Azazel_Corr_Dream_State", "Talked_With_Lamia"):
 			addButton("Speech", "Learn how to speak like a good pet does", "finish")
 		addButton("Appearance", "Look at the fox", "appearance")
+		addButton("Leave", "Get away from here", "endthescene")
 
 	if state == "talk":
 		playAnimation(StageScene.Duo, "stand", {pc="pc", npc="lamiademon"})
@@ -31,7 +32,9 @@ func _run():
 		addButton("Talk", "Return to talk", "")
 
 	if state == "appearance":
-
+		saynn("Lamia is very visibly a fox breed, their fur has very vivid and unusual orange/red pallette. Red mostly visible on their arms, tip of their tail and a little bit on their legs. To contrast that, their hair is painted in shades of blue. They are wearing a general block inmate uniform.")
+		saynn("There are two slightly curved horns protruding from their head with black base and red endings.")
+		addButton("Talk", "Return to talk", "")
 
 	if state == "finish":
 		saynn("[say=pc]Well... I did notice the notebook is unfinished, you meant to finish it right?[/say]")

@@ -9,7 +9,7 @@ func registerTriggers(es):
 	es.addTrigger(self, Trigger.EnteringRoom, "petsdream_cellblock_corridor_part17")
 
 func react(_triggerID, _args):
-	runScene("IssixWelcomesPet")
+	runScene("FinalIssixDrugScene")
 	return true
 
 func getPriority():

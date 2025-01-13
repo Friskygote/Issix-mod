@@ -90,6 +90,7 @@ func _react(_action: String, _args):
 		GM.pc.addSkillExperience("Pet", 300)
 		increaseModuleFlag("IssixModule", "Progression_Points")
 		increaseModuleFlag("IssixModule", "PC_Training_Level")
+		setModuleFlag("IssixModule", "Hiisi_Protects_PC", true)
 		endScene()
 		return
 

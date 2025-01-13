@@ -1,5 +1,7 @@
 extends SceneBase
 
+const Globals = preload("res://Modules/IssixModule/Globals.gd")
+
 var rng_per_day = null
 var pet_time_start = null
 var reply_litter = null
@@ -155,7 +157,7 @@ func _run():
 		else:
 			addDisabledButton("Learn", "You are already a master of Azazel's craft of sexual servitude")
 		if GlobalRegistry.getCharacter("azazel").isPregnant() or GM.pc.isVisiblyPregnant():
-			if GM.pc.getSkillLevel(Skill.Fertility) < 10:
+			if GM.pc.getSkillLevel(Skill.Fertility) < 10 and GM.pc.hasAnyWomb():
 				addDisabledButton("Learn fertility", "Learn about being harem's breeder (WIP)")  # , "azazellearnfertility"
 			else:
 				addDisabledButton("Learn", "You already know everything about bearing children")
@@ -288,13 +290,39 @@ func _run():
 			addDisabledButton("Learn", "There isn't anything more you can learn from Hiisi about combat")
 
 		addDisabledButton("Sex", "Ask for sex with Hiisi (WIP)")  # , "hiisisexrequest"
+		if getModuleFlag("IssixModule", "Hiisi_Protects_PC", true):
+			addButton("Don't protect", "Tell Hiisi to stop protecting you in case of assault by an inmate", "hiisidontprotect")
+		else:
+			addButton("Protect", "Tell Hiisi to again protect you from assults of inmates", "hiisiprotect")
 		addButton("Back", "Go back", "")
+
+	if state == "hiisidontprotect":
+		saynn("[say=pc]Hey, Hiisi, could you please stop following me? I should be able to deal with inmates on my own.[/say]")
+		if GM.pc.getSkillLevel(Skill.Combat) < 16:
+			if getModuleFlag("IssixModule", "Trained_With_Hiisi_Combat") == null:  # Low skill and never trained with Hiisi
+				saynn("[say=hiisi]Are you sure? No offense, but you don't look like someone capable of defending {pc.himself}.[/say]")
+				saynn("[say=pc]Yeah, I'll be fine, trust me.[/say]")
+				saynn("[say=hiisi]Alright, I can do that, but please take care of yourself okey?[/say]")
+			else:
+				saynn("[say=hiisi]Are you sure? We did some combat training, but I'd say that you still need some more.[/say]")
+				saynn("[say=pc]Yup, I'm sure I'll be fine, trust me.[/say]")
+				saynn("[say=hiisi]Okey, sure. But please, be cautious, not a great place to live in.[/say]")
+		else:
+			saynn("[say=hiisi]Alright, if you say you are fine without my help then so be it. You do look capable if I had to say just... Please watch over yourself, okey?[/say]")
+		saynn("[say=pc]Don't worry, I will![/say]")
+		addButton("Finish", "End this conversation", "hiisipetmenu")
+
+	if state == "hiisiprotect":
+		saynn("[say=pc]Hey Hiisi, I'd like you to... Umm... Help me with other inmates again...[/say]")
+		saynn("[say=hiisi]Of course. Don't worry, I'll do my best, okey?[/say]")
+		saynn("[say=pc]Thank you Hiisi![/say]")
+		addButton("Finish", "End this conversation", "hiisipetmenu")
 
 
 	if state == "hiisilearncombatfirst":
 		playAnimation(StageScene.Yoga, "warrior", {pc="hiisi", bodyState={naked=true}})
 		saynn("Figuring Hiisi might need an encouragement to teach you something, you prepare an energy drink to further convince the canine to teach you combat.")
-		saynn("[say=pc]Hey Hissi, I were wondering, you seem to know how to fight, any chance you could perhaps teach me something?[/say]")
+		saynn("[say=pc]Hey Hiisi, I were wondering, you seem to know how to fight, any chance you could perhaps teach me something?[/say]")
 		saynn("Hiisi looks at you, surprised a little.")
 		saynn("[say=hiisi]Teach? Combat... I'm not so sure, I don't think I'm a good teacher material.[/say]")
 		saynn("[say=pc]I think you'd do great Hiisi.[/say]")
@@ -472,6 +500,16 @@ func _run():
 		saynn("[say=issix]You did good today, pet. Thank you.[/say]")
 		addButton("Back", "Go back", "")
 
+	if state == "after_sex_issix_unhappy":
+		if getModuleFlag("IssixModule", "PC_Bad_Sex", 1) <= 1:
+			saynn("[say=issix]That was bad. You should learn from Azazel how to do it correctly. Don't make me disappointed again.[/say]")
+			addButton("Back", "Go back", "")
+		else:
+			saynn("[say=issix]I told you to stop disappointing me with this pathetic excuse of what you call sex. I'm going to have to make sure you do not disappoint me again.[/say]")
+			addMessage("You've been assigned punishment by your Master.")  # TODO
+			addButton("Back", "Go back", "")
+
+
 	if state == "readabook":
 		saynn("You read one of the comic books, 20 minutes pass.")  # TODO Expand on this
 		addButton("Back", "Go back", "")
@@ -492,6 +530,9 @@ func getTimeSpentReadable():
 	if getTimeSpent() == 0:
 		return "[color=red]0 minutes[/color]"
 	return "[color="+("green" if isTimeOkey() else "red")+"]"+ Util.getTimeStringHumanReadable(getTimeSpent()) + "[/color]"
+
+func supportsSexEngine():
+	return true
 
 func getSituationalMessage():
 	var responses = []
@@ -588,6 +629,12 @@ func _react(_action: String, _args):
 		getCharacter("issix").prepareForSexAsDom()
 		GlobalRegistry.getCharacter("issix").addPain(-50)
 		runScene("GenericSexScene", ["issix", "pc"], "subbysexissix")
+
+	if _action == "hiisidontprotect":
+		setModuleFlag("IssixModule", "Hiisi_Protects_PC", false)
+
+	if _action == "hiisiprotect":
+		setModuleFlag("IssixModule", "Hiisi_Protects_PC", true)
 
 	if _action == "lamiapetrequest":
 		GM.pc.addPain(-10)
@@ -724,8 +771,16 @@ func _react_scene_end(_tag, _result):
 	if _tag == "subbysexissix":
 		setModuleFlag("IssixModule", "Had_Sex_With_Issix", true)
 		processTime(20*60)
-		addIssixMood(5)
-		setState("after_sex_issix")
+		var issix_sex_result = _result[0].get("doms", {}).get("issix", {})
+		var pc_sex_result = _result[0].get("subs", {}).get("pc", {})
+		if pc_sex_result.get("isUnconscious"):
+			addIssixMood(5)
+		elif issix_sex_result.get("satisfaction") < 0.8:
+			increaseModuleFlag("IssixModule", "PC_Bad_Sex")
+			setState("after_sex_issix_unhappy")
+		else:
+			addIssixMood(5)
+			setState("after_sex_issix")
 
 
 func saveData():

@@ -37,6 +37,7 @@ func _run():
 		saynn("You pass the token to the announcer.")
 		saynn("[say=pc]Pleasure doing business.[/say]")
 		saynn("[say=announcer]Likewise babe.[/say]")
+		addButton("Leave", "Leave", "endthescene")
 
 func calculateCost(item):
 	return int(ceil((45 if getModuleFlag("IssixModule", "Announcer_PC_Naive") else 95)*item.getQuality()))

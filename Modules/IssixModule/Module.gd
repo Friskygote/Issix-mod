@@ -58,6 +58,7 @@ func getFlags():
 		"Azazel_Player_Donated_Gasmask": flag(FlagType.Bool),
 		"Azazel_In_Dream": flag(FlagType.Bool),
 		"Azazel_Corr_Dream_State": flag(FlagType.Dict),
+		"Azazel_Corr_BDSM_Gear": flag(FlagType.Bool),
 		"Hiisi_Encounter_scene": flag(FlagType.Number),
 		"Hiisi_Had_Encounter_Scene_Today": flag(FlagType.Bool),
 		"Issix_Donation_Meter": flag(FlagType.Number),
@@ -95,6 +96,8 @@ func getFlags():
 		"Trained_With_Hiisi_Combat": flag(FlagType.Bool),
 		"PC_Pet_Didnt_Fullfill_Daily": flag(FlagType.Bool),
 		"PC_Pet_Didnt_Mate": flag(FlagType.Bool),
+		"PC_Bad_Sex": flag(FlagType.Number),
+		"Hiisi_Protects_PC": flag(FlagType.Bool)
 		#"Gym_Bullies_Left_Alone": flag(FlagType.Bool)  Currently cannot change the behavior of this :(
 		}
 		
@@ -155,7 +158,9 @@ func _init():
 		"res://Modules/IssixModule/Scenes/AzazelCorruption/DemonAzazelTalkScene.gd", 
 		"res://Modules/IssixModule/Scenes/AzazelCorruption/DemonHiisiTalkScene.gd", 
 		"res://Modules/IssixModule/Scenes/AzazelCorruption/DemonLamiaTalkScene.gd",
-		"res://Modules/IssixModule/Scenes/AzazelCorruption/FountainScene.gd"
+		"res://Modules/IssixModule/Scenes/AzazelCorruption/FountainScene.gd",
+		"res://Modules/IssixModule/Scenes/AzazelCorruption/FinalIssixDrugScene.gd",
+		"res://Modules/IssixModule/Scenes/SlaveryFirst/RescueFromFightScene.gd"
 		]
 		
 	characters = [
@@ -224,6 +229,11 @@ func postInit():
 	GlobalRegistry.registerScene("res://Modules/IssixModule/Scenes/Overwrites/BullyGangScene.gd", "Rahi")  # Still consider it mostly Rahi's creation'
 	GlobalRegistry.registerEvent("res://Modules/IssixModule/Events/Overwrites/BullyGangEvent.gd")
 	#GM.ES.registerEventTrigger("OpeningSlaveryScreen", EventTriggerLocation.new())  # TODO Find a way to do that
+
+static func handleUpdates():
+	if (GM.main.getModuleFlag("IssixModule", "PC_Enslavement_Role", 0) >= 1):  # if enslaved
+		if GM.main.getModuleFlag("IssixModule", "Hiisi_Protects_PC") == null:  # Hiisi protecting the player by default if enslaved
+			GM.main.setModuleFlag("IssixModule", "Hiisi_Protects_PC", true)
 
 static func addSceneToWatched(scene: String):
 	var scenes = GM.main.getModuleFlag("IssixModule", "Misc_Slavery_Info", {"scenes_seen": []})

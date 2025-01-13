@@ -5,8 +5,6 @@ extends SceneBase
 
 const Globals = preload("res://Modules/IssixModule/Globals.gd")
 
-var geared_up = false
-
 func _init():
 	sceneID = "AzazelCorruption4"
 
@@ -125,7 +123,7 @@ func _run():  # TODO Those corruption scenes don't really work when player is bl
 		addButton("Don't allow", "Don't allow Azazel to restrict you", "foreplay", [false])
 
 	if state == "foreplay":
-		if geared_up:
+		if getModuleFlag("IssixModule", "Azazel_Corr_BDSM_Gear", false):
 			saynn("Azazel puts multiple restraints on you, including heavy metal ankle cuffs that he connected to somewhere below the bed, heavy metal wrist cuffs, bondage mittens, he also connects your collar with a chain underneath the bed. To top it off, he dresses you up in a cute pink rope harness.")
 			saynn("[say=azazel]You look so good now, awwwwwwwwwwwwwwwwww.[/say]")
 			saynn("His paws wander around your body, testing the restraints, teasing you.")
@@ -169,7 +167,7 @@ func _run():  # TODO Those corruption scenes don't really work when player is bl
 			saynn("He lets a laugh.")
 
 		saynn("Azazel gives your {pc.penis} little strokes, they aren't a lot, but it's certainly a nice start. He spits on your {pc.penis} to lubricate it a little and gradually picks up the pace pawing you off.")
-		if geared_up:
+		if getModuleFlag("IssixModule", "Azazel_Corr_BDSM_Gear", false):
 			saynn("You get more aroused by the minute, staring at Azazel's pucker and increasingly wetting vagina just underneath. Unfortunately with your collar being attached to a chain you can't move your head close enough to give it rimming, curse the feline being so small!")
 		else:
 			saynn("You get more aroused by the minute, staring at Azazel's pucker and increasingly wetting vagina just underneath, they looks hypnotizing and make you want to help them get even more wet.")
@@ -260,8 +258,8 @@ func _run():  # TODO Those corruption scenes don't really work when player is bl
 		saynn("[say=azazel]Hihi, here it is then![/say]")
 		saynn("Azazel comes onto you again, his elbows on sides next to your neck and he covers your face with the gas mask, his paws fiddle with the device securing it with a strap behind your face.")
 		saynn("[say=azazel]Does it feel tight? Is it sealed around your face?[/say]")
-		if geared_up:
-			saynn("You nod, as much as your restratins you have on you allow you to.")
+		if getModuleFlag("IssixModule", "Azazel_Corr_BDSM_Gear", false):
+			saynn("You nod, as much as your restraints you have on you allow you to.")
 		else:
 			saynn("You nod.")
 
@@ -291,19 +289,6 @@ func _run():  # TODO Those corruption scenes don't really work when player is bl
 		saynn("[say=pc]What the fuck? Where-[/say]")
 		saynn("You feel weak, tired, out of energy, but laying in here, won't give you answers.")
 		addButton("Stand up", "Stand up", "endthescene")
-
-
-func saveData():
-	var data = .saveData()
-
-	data["geared_up"] = geared_up
-
-	return data
-
-
-func loadData(data):
-	.loadData(data)
-	geared_up = SAVE.loadVar(data, "geared_up", false)
 
 
 func getDevCommentary():
@@ -359,7 +344,8 @@ func _react(_action: String, _args):
 
 	if _action == "foreplay":
 		processTime(10*60)
-		geared_up = _args[0]
+		var geared_up = _args[0]
+		setModuleFlag("IssixModule", "Azazel_Corr_BDSM_Gear", geared_up)
 		if geared_up:  # Dress up time
 			var item = GlobalRegistry.createItem("ropeharness")
 			var inventory = GM.pc.getInventory()
@@ -388,7 +374,6 @@ func _react(_action: String, _args):
 		GM.pc.getInventory().equipItem(GlobalRegistry.createItem("GasMask"))
 
 	if(_action == "endthescene"):
-		setModuleFlag("IssixModule", "Azazel_Corruption_Scene", 4)
 		endScene()
 		return
 

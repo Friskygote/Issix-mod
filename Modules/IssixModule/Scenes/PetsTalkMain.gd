@@ -1,5 +1,7 @@
 extends SceneBase
 
+const Globals = preload("res://Modules/IssixModule/Globals.gd")
+
 var artwork = null  # array[array[int numbers of chosen artwork combos], str[description], bool[whether odd art overwrite is active], array[previous art ids, chosen art ids]]
 var pc_pose = null
 var arts_reviewed = 0
@@ -157,7 +159,35 @@ func _run():
 			addButton("Help", "Ask if you can help the canine in something", "hiisihelp")
 		else:
 			addDisabledButton("Help", "You've helped Hiisi today already")
+		var hiisi_affection = getModuleFlag("IssixModule", "Hiisi_Affection", 0)
+		if hiisi_affection > 4:
+			addButton("Prison", "Ask him how he ended up in the prison", "hiisiprison")
+		addButton("Sex", "Ask him about his relation with sex", "hiisisex")
 		addButton("Back", "Do something else", "hiisimain")
+
+	if state == "hiisisex":
+		saynn("[say=pc]How do you feel about sex?[/say]")
+		saynn("[say=hiisi]Don't care.[/say]")
+		saynn("[say=pc]Uhhh, you don't care? Could you elaborate?[/say]")
+		saynn("[say=hiisi]Ehhh. I know it's rare in this debauched place, but I'm indifferent to having sex. It's not that I don't like it, it does nothing for me. If Master wants of me then sure - I'll have some sexy time, but overall? I do not participate unless I need to.[/say]")
+		saynn("[say=pc]That's interesting.[/say]")
+		if Globals.checkIfPCEnslaved():
+			saynn("[say=hiisi]If you want any, there is Azazel, I'm sure he'd love to help. Master may want to use you from time to time as well, could ask him too.[/say]")
+		else:
+			saynn("[say=hiisi]This entire prison is full of people who would love to fuck with you, sometimes metaphorically. ou have plenty of choice, go ask. Just don't try to do that with any of us, Master wouldn't like.[/say]")
+		addButton("Back", "Do something else", "hiisitalk")
+
+	if state == "hiisiprison":
+		saynn("[say=pc]How have you ended up in the prison?[/say]")
+		saynn("[say=hiisi]What's your business in it?[/say]")
+		saynn("[say=pc]I were just.. Curious, if you don't want to talk about it, that's fine...[/say]")
+		saynn("He regards you for few seconds, ending with sigh.")
+		saynn("[say=hiisi]I don't know.[/say]")
+		saynn("[say=pc]Huh?[/say]")
+		saynn("[say=hiisi]Look, I just don't know, okey? I don't remember. End of the story.[/say]")
+		saynn("He seems defensive over this...")
+		addButton("Back", "Do something else", "hiisitalk")
+
 
 	if state == "hiisihelp":
 		saynn("[say=pc]Hey Hiisi, anything you'd like help with? I'd be happy to do something for you![/say]")

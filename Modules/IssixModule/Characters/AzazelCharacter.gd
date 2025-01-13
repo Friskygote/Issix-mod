@@ -103,6 +103,16 @@ func interestVerbalReaction(interest):
 		return "You are so slim! Just like myself! That's super cool!"
 	if(interest == InterestTopic.AverageMassBody):
 		return "Haha, you've got a bit more meat there than I do, it's more fun to fuck you this way!"
+	if(interest == InterestTopic.Bodywritings):
+		return "You have entire story written on your body! Though I guess it only calls you what you are."
+	if(interest == InterestTopic.LactatingBreasts):
+		return "Milky, aren't you? Master could use some..."
+	if(interest == InterestTopic.BDSMRestraints):
+		return "You look pretty in those, I have a nice pile of restraints in my room, super fun to play around with them, especially when you have a partner."
+	if(interest == InterestTopic.NoCock):
+		return "No cock? Awww, I really like getting rammed in my {pussy} with a real meat, but no matter, there are more ways to have fun than just with a {penis}"
+	if(interest == InterestTopic.StuffedPussy):
+		return "Purrr. You must love having your {pussy} stuffed, I know I do."
 	
 func _getName():
 	return "Azazel"
@@ -112,6 +122,9 @@ func getGender():
 	
 func getSmallDescription() -> String:
 	return "Wears an lilac uniform with number P-655. He is the embodiment of ”meek”."
+
+func getInmateNumber() -> String:
+	return "655"
 
 func getSpecies():
 	return [Species.Feline]

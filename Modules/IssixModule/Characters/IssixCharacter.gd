@@ -122,6 +122,9 @@ func _getAttacks():
 func getSmallDescription() -> String:
 	return "Wears a red block uniform with number P-533. He is an intimidating tall demon-dragon, has red fur."
 
+func getInmateNumber() -> String:
+	return "533"
+
 func getSpecies():
 	return [Species.Dragon, Species.Demon]
 
