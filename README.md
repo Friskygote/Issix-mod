@@ -48,6 +48,9 @@ I'm currently undecided whether to prioritize alternative route of enslavement/i
 ## Technical stuff
 The goal is to create a mod with as little of overwriting the core modules to preserve compatibility and not have a dance every time base game gets an update. This means that we'll try to use as many of mechanics that already exist in the game as possible. Granted, while I'm a coder, I'm unsure I can properly implement complex system in Godot, so I might need some help with that.
 
+## Incompatibilities with other mods
+- Ace's Worldbuilding Mod - overwrites entire engineering floor, breaks the quest
+
 # Contributing
 Certain interaction in BDCC community shook me up a little and I've decided to add a politically motivated requirement for contributing to this repo.    
 
