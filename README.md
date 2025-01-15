@@ -4,7 +4,7 @@
 A mod for Broken Dreams Correctional Center. Introduces Issix and his harem of s[l](https://kenashcorp.bandcamp.com/track/im-your-slave)- pets.
 
 ## Disclaimer
-The mod and contents in it is - surprise surprise - a work of fiction. Author does not support, condone, advocate for, endorse, stand up for non-consensual activities, relationships or violence.
+The mod and contents in it is - surprise surprise - a work of fiction. Author does not support, condone, advocate for, endorse, stand up for non-consensual activities, relationships or violence. Just like the base game this mod has been created for - the mod contains content of sexual nature and is **not intended for underage people**. If you are a minor, please leave.
 
 # Existing content
 **This mod currently makes assumptions about a player - mainly that they are playing an anthropomorphic animal character, if this makes you uncomfortable, you are discouraged from playing it. It might be alleviated in the future**

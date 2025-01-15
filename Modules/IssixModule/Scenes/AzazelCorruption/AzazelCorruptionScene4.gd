@@ -28,7 +28,7 @@ func _run():  # TODO Those corruption scenes don't really work when player is bl
 		saynn("He baps you on the nose while giving you a cheerful laugh.")
 		saynn("[say=pc]Mysterious, aren't we?[/say]")
 		saynn("[say=azazel]It's gonna be fun, I promise.[/say]")
-		addButton("Go", "Go with the feline to their cell (heavy drug use, pet play, domination, body modification)", "tocell")
+		addButton("Go", "Go with the feline to their cell (drug use, pet play, domination)", "tocell")
 		addButton("Don't go", "Refuse feline", "dontgo")
 
 	if state == "dontgo":
@@ -36,7 +36,7 @@ func _run():  # TODO Those corruption scenes don't really work when player is bl
 		saynn("[say=azazel]But- But I already prepared and...[/say]")
 		saynn("[say=pc]Sorry.[/say]")
 		saynn("Azazel pleads with you")
-		saynn("[say=azazel]All I wanted is to make you feel good, and show you fun side of being a pet. I wish you could have given me a chance, did I do something wrong? I.. Don't understand. Pleeeasseeee.[/say]")
+		saynn("[say=azazel]All I wanted is to make you [pulse color=#ac1eff height=0.9 freq=0.6]feel good[/pulse], and show you fun side of [pulse color=#ac1eff height=0.9 freq=0.6]being a pet[/pulse]. I wish you could have given me a chance, did I do something wrong? I.. Don't understand. Pleeeasseeee.[/say]")
 		addButton("Go", "Agree to go with the feline to their cell (heavy drug use, pet play, domination)", "tocell")
 		addButton("Don't go", "Refuse feline again (this marks the end of Azazel's individual scenes)", "endthescene")
 
@@ -45,9 +45,9 @@ func _run():  # TODO Those corruption scenes don't really work when player is bl
 		saynn("[say=azazel]Yay![/say]")
 		saynn("Azazel is super excited, he jumps on you and instinctively you wrap your paws around him locking his small body in embrace where his head is on your own head level. He gives you a small kiss this way and jumps off you.")
 		saynn("[say=azazel]But first![/say]")
-		saynn("He pretends to pull something out of his... Underwear. He reaches with his paw around your neck and makes a clicking sound, is he pretending he just clipped a leash onto your collar?")
+		saynn("He pretends to pull something out of his... Underwear. He reaches with his paw around your neck and makes a clicking sound, is he pretending he just clipped a [pulse color=#ac1eff height=0.9 freq=0.6]leash[/pulse] onto your collar?")
 		saynn("[say=azazel]Now we can go![/say]")
-		saynn("His paw is made into a fist, as if he was clutching the other end of the leash as he slowly starts walking towards the cell blocks while looking at you ocassionally. You decide to play along and pretend his leash tugs on your neck making sudden gesture of getting dragged behind smaller feline. When Azazel sees it he laughs and continues.")
+		saynn("His paw is made into a fist, as if he was clutching the other end of the leash as he slowly starts walking towards the cell blocks while looking at you ocassionally. You decide to play along and pretend his leash tugs on your neck making sudden gesture of getting dragged behind smaller feline. When Azazel sees it he laughs and continues walking.")
 		addButton("Walk", "Walk towards the cell", "walktocell")
 
 	if state == "walktocell":
@@ -58,10 +58,10 @@ func _run():  # TODO Those corruption scenes don't really work when player is bl
 		saynn("[say=azazel]Lay in bed for me, will you? Pretty face up, I want to see it.[/say]")
 		saynn("[say=pc]Will you have to leave soon today as well?[/say]")
 		saynn("Mischievous grin shows up on the face of feline, his tail standing high.")
-		saynn("[say=azazel]Somewhat, somewhat not. Hehe, I'm sure you'll have enough of me by the end.[/say]")
+		saynn("[say=azazel]Somewhat, somewhat not. Hehe, I'm sure you'll [pulse color=#ac1eff height=0.9 freq=0.6]have enough of me[/pulse] by the end.[/say]")
 		saynn("You wonder what kind of mysterious plans does Azazel have in mind with being so cryptic about kind of fun he wants you to participate in. You only have assumption that it will be horny considering his past repertoire.")
 		if !Globals.isPlayerSuperNaked():
-			saynn("[say=azazel]For what I want to do with you today you'd feel best naked... Let me take care of this little problem.[/say]")
+			saynn("[say=azazel]For what I want to do with you today you'd feel best [pulse color=#ac1eff height=0.9 freq=0.6]naked[/pulse]... Let me take care of this little problem.[/say]")
 			addButton("Get undressed", "Let Azazel undress you", "undress")
 		else:
 			saynn("[say=azazel]Hehe, I don't even need to undress you! One thing less to do, lets get into mood then.[/say]")
@@ -77,17 +77,17 @@ func _run():  # TODO Those corruption scenes don't really work when player is bl
 		# Body description section
 		saynn("Azazel looks at you from above, you laying on his bed comfortably naked.")
 		if (GM.pc.isCoveredInCum() or GM.pc.isCoveredInGirlCum()) and GM.pc.isCoveredInPiss():
-			saynn("[say=azazel]Haha, you are covered in all kinds of stuff. When did you last shower? Not that this bothers me, in fact, I prefer it when your "+Globals.getSkinWord()+" is sticky and smelly, I can be much dirtier than that![/say]")
+			saynn("[say=azazel]Haha, you are covered in all kinds of stuff. When did you last shower? Not that this bothers me, in fact, I prefer it when your [pulse color=#ac1eff height=0.9 freq=0.6]"+Globals.getSkinWord()+" is sticky and smelly[/pulse], I can be [pulse color=#ac1eff height=0.9 freq=0.6]much dirtier[/pulse] than that![/say]")
 			saynn("[say=pc]Is that a challenge?[/say]")
 			saynn("He smirks")
 			saynn("[say=azazel]Who's to tell?[/say]")
 			saynn("He says as he licks some of the fluids from your belly.")
 		elif GM.pc.isCoveredInCum() or GM.pc.isCoveredInGirlCum():
-			saynn("[say=azazel]Man man, your "+Globals.getSkinWord()+" is dripping with cum. That's hot![/say]")
+			saynn("[say=azazel]Man man, [pulse color=#ac1eff height=0.9 freq=0.6]your "+Globals.getSkinWord()+" is dripping with cum[/pulse]. That's hot![/say]")
 		elif GM.pc.isCoveredInPiss():
-			saynn("[say=azazel]You smell like a wet dog that slept in an urinal, you know that? And that's exactly what I like! Just another reason why I think you'd fit so well in our little corner as another pet, we get our Master's mark daily.[/say]")
+			saynn("[say=azazel]You smell like a wet dog that slept in an urinal, you know that? And that's exactly what I like! Just another reason why I think [pulse color=#ac1eff height=0.9 freq=0.6]you'd fit so well in our little corner as another pet, we get our Master's mark daily[/pulse].[/say]")
 		else:
-			saynn("[say=azazel]You are so clean, you know? Nothing wrong with that, though I do like when people I fuck with are covered with various fluids. I don't know, I think I just like mess and smell of it all.[/say]")
+			saynn("[say=azazel]You are so clean, you know? Nothing wrong with that, though I do like when people I fuck with are [pulse color=#ac1eff height=0.9 freq=0.6]covered with various fluids[/pulse]. I don't know, I think I just like mess and smell of it all.[/say]")
 
 		if GM.pc.getThickness() >= 75:  # Thick
 			saynn("[say=azazel]"+GlobalRegistry.getCharacter("azazel").interestVerbalReaction(InterestTopic.ThickBody)+"[/say]")
@@ -140,7 +140,7 @@ func _run():  # TODO Those corruption scenes don't really work when player is bl
 		else:
 			saynn("[say=azazel]Fun. Let me just get comfortable on top of you.[/say]")
 		if GM.pc.hasReachableVagina() and GM.pc.hasReachablePenis():
-			saynn("[say=azazel]Since you are such a versatile good {pc.boy} I'll give you a choice, would you want me to play with your {pc.penisSize} {pc.penis} or perhaps you'd want me to help keep your {pc.vagina} moisturized?[/say]")
+			saynn("[say=azazel]Since you are such a versatile [pulse color=#ac1eff height=0.9 freq=0.6]good {pc.boy}[/pulse] I'll give you a choice, would you want me to play with your {pc.penisSize} {pc.penis} or perhaps you'd want me to help keep your {pc.vagina} moisturized?[/say]")
 			addButton("Penis", "Let Azazel have fun with your penis", "foreplaypenis")
 			addButton("Vagina", "Let Azazel have fun with your vagina", "foreplayvagina")
 		elif GM.pc.hasReachablePenis():
@@ -202,13 +202,13 @@ func _run():  # TODO Those corruption scenes don't really work when player is bl
 		saynn("[say=pc]Do I have a choice?[/say]")
 		saynn("[say=azazel]Nope! But please hold that for me for a second.[/say]")
 		saynn("Smiling, he brings his two paw fingers near your mouth and opens it, then pushes the dildo right inside. Despite Azazel preferring things messy, it feels like this specific dildo has been cleaned as you don't feel anything taste wise. The dildo feels of a rather good quality, made of soft material that is pleasant to touch with your tongue. He holds the dildo inside of your mouth for a solid minute, making you unable to say anything other than some lustful moans.")
-		saynn("[say=azazel]It's better warm, and this way it comes with lubrication already! Make sure to leave as much of your spit on it as possible. Aww, aren't you a useful pet?[/say]")
-		saynn("After a minute he pulls the dildo out, almost immediately pushing the dildo back, this time however right into his own sensitive folds, you see how kitty's face expression changes really fast as he pushes the fuck stick deeper. He masturbates with it for a while, showing you intricate details of his pussy in between thrusts. Above his love tunnel a "+("a vividly glowing red womb tatoo displayed for you to see" if GlobalRegistry.getCharacter("azazel").isPregnant() else "dark red womb tattoo proudly displayed for you to see")+".")
+		saynn("[say=azazel]It's better warm, and this way it comes with lubrication already! Make sure to leave as much of your spit on it as possible. Aww, aren't you a [pulse color=#ac1eff height=0.9 freq=0.6]useful pet[/pulse]?[/say]")
+		saynn("After a minute he pulls the dildo out, almost immediately pushing the dildo back, this time however right into his own sensitive folds, you see how kitty's face expression changes really fast as he pushes the fuck stick deeper. He masturbates with it for a while, showing you intricate details of his pussy in between thrusts. Above his love tunnel a "+("a vividly glowing red womb tattoo displayed for you to see" if GlobalRegistry.getCharacter("azazel").isPregnant() else "dark red womb tattoo proudly displayed for you to see")+".")
 
 		saynn("[say=azazel]Ahhhh, I hope you enjoy the view. Haaaaaah. It's... Quite a fun experience for me especially. Ahhhh. I'm... I'm gonna cum. Mmmmmmm.[/say]")
 
 		saynn("Shortly after saying that, he did. Covering your body with ample amount of his {azazel.girlcum}.")
-		saynn("[say=azazel]Huff. Good pet, I hope you enjoyed the show.[/say]")
+		saynn("[say=azazel]Huff. [pulse color=#ac1eff height=0.9 freq=0.6]Good pet[/pulse], I hope you enjoyed the show.[/say]")
 		saynn("[say=pc]Yeah... But I wish I could have gotten a chunk of the pie as well..[/say]")
 		saynn("[say=azazel]Nothing to worry about, I got you covered. Let's get to the main dish.[/say]")
 		saynn("His mischevious grin widens, he has something prepared.")
@@ -224,7 +224,7 @@ func _run():  # TODO Those corruption scenes don't really work when player is bl
 			saynn("[say=azazel]Hehe. So, you may remember I've been on the lookout for this thing for ages. Recently came into possession of one. REALLY COOL ISN'T IT?![/say]")
 			saynn("He feels so excited, to the point of screaming out the last sentence.")
 			saynn("[say=pc]I guess?[/say]")
-			saynn("[say=azazel]Hehe, you don't get it, [b]yet[/b]. You know, gas mask can be used in the right way, to filter out the air. Could be useful for that really cool gas some of the guards have that make you go all needy and horny. But I don't want to keep the gases [i]out[/i]. I want to keep them [i]in[/i].[/say]")
+			saynn("[say=azazel]Hehe, you don't get it, [b]yet[/b]. You know, gas mask can be used in the right way, to filter out the air. Could be useful for that really cool gas some of the guards have that make you go all [pulse color=#ac1eff height=0.9 freq=0.6]needy and horny[/pulse]. But I don't want to keep the gases [i]out[/i]. I want to keep them [i]in[/i].[/say]")
 			saynn("You begin to be a little worried at what Azazel might be implying here. Is he into some hardcore stuff? Maybe breath play?")
 			saynn("[say=azazel]I got you all worked up, didn't I? You poor thing. But I want to help you out, you just have to let me. You see, I got my paws on something really cool, and by that I mean I begged my Master to let me have it, he knows I love this kind of stuff. It's a [color=red]red[/color] beauty.[/say]")
 			if getModuleFlag("TaviModule", "ch2PCStoleDrugs", false):
@@ -232,7 +232,7 @@ func _run():  # TODO Those corruption scenes don't really work when player is bl
 			else:
 				saynn("He shows you a vial of something red, it swirls inside the vial. You are unsure what this might be.")
 
-			saynn("[say=azazel]With anything this untested and unknown, I like to experiment by myself. So not to worry my Master, I've sniffed just minuscule amount of this, and it was powerful even at micro doses. It gives you a „hit”. It's really good. [/say]")
+			saynn("[say=azazel]With anything this untested and unknown, I like to experiment by myself. So not to worry my Master, I've sniffed just minuscule amount of this, and it was powerful even at micro doses. It gives you a [pulse color=#ac1eff height=0.9 freq=0.6]„hit”[/pulse]. It's really good. [/say]")
 			if getModuleFlag("TaviModule", "ch2DrugsAgreedToTest", false):
 				saynn("[say=pc]I know, I stole some of it from medical some other day and when asked to try it knocked me out good.[/say]")
 				saynn("[say=azazel]Oh? Wow, you have experience, I didn't expect. How was it?[/say]")
@@ -245,10 +245,10 @@ func _run():  # TODO Those corruption scenes don't really work when player is bl
 			saynn("He shows you a round object with one side being flat along with some small holes and the other make a funnel shape.")
 			saynn("[say=azazel]This thing attaches to the gasmask. It's supposed to filter the air and it will do just that but... I'll change the filter a bit.[/say]")
 			saynn("He opens the part, it's empty inside. He picks up a jockstrap and the vial, opens the vial while stopping to breathe, sticks it to the cloth and turns it upside down so the cloth soaks a little with the liquid, while quickly stopping the process and closing the vial, he puts the soaked jockstrap into the filtering part of the gas masks and closes it tight, all on one breath being very careful not to breathe any fumes in, even trying to spread the air around a little so a large amount of fumes doesn't linger in a single place.")
-			saynn("[say=azazel]Yay! Our toy is now armed. Jockstrap is Master's, I yoinked it before Hiisi went out with the laundry, it smells really good.[/say]")
+			saynn("[say=azazel]Yay! [pulse color=#ac1eff height=0.9 freq=0.6]Our toy[/pulse] is now armed. [pulse color=#ac1eff height=0.9 freq=0.6]Jockstrap is Master's[/pulse], I yoinked it before Hiisi went out with the laundry, it [pulse color=#ac1eff height=0.9 freq=0.6]smells really good[/pulse].[/say]")
 
 			saynn("Azazel is incredibly happy while holding the gas mask. He presents it to you.")
-			saynn("[say=azazel]Now, I don't want anything bad to happen to you, I'll be here, watching you okey? I'll put it on your pretty face, watch you and I'll take it off right after. I'll try not to huff it myself just so I can watch over you, won't be easy considering how good it will be, think I'll keep it for later, maybe at night... Or maybe you could watch over me hehe. Anyways, are you ready?[/say]")
+			saynn("[say=azazel]Now, I don't want anything bad to happen to you, I'll be here, watching you okey? I'll put it on your pretty face, watch you and I'll take it off right after. I'll try not to [pulse color=#ac1eff height=0.9 freq=0.6]huff it[/pulse] myself just so I can watch over you, won't be easy considering how good it will be, think I'll keep it for later, maybe at night... Or maybe you could watch over me hehe. Anyways, are you ready?[/say]")
 			addButton("Yes!", "Beg Azazel to put on the gas mask on you and give you release", "eagermask")
 			addDisabledButton("Reconsider", "Ask Azazel not to put on the mask, at this point you are too far gone, Azazel got you good with his denial")
 
@@ -257,15 +257,15 @@ func _run():  # TODO Those corruption scenes don't really work when player is bl
 
 		saynn("[say=azazel]Hihi, here it is then![/say]")
 		saynn("Azazel comes onto you again, his elbows on sides next to your neck and he covers your face with the gas mask, his paws fiddle with the device securing it with a strap behind your face.")
-		saynn("[say=azazel]Does it feel tight? Is it sealed around your face?[/say]")
+		saynn("[say=azazel]Does it feel tight? Is it [pulse color=#ac1eff height=0.9 freq=0.6]sealed around your face[/pulse]?[/say]")
 		if getModuleFlag("IssixModule", "Azazel_Corr_BDSM_Gear", false):
 			saynn("You nod, as much as your restraints you have on you allow you to.")
 		else:
 			saynn("You nod.")
 
-		saynn("[say=azazel]Goood. Now take some very deep breaths for me "+Globals.getPlayerPetName()+"! Deeeep breeaaaatthhhssss.[/say]")
+		saynn("[say=azazel]Goood. Now take some [pulse color=#ac1eff height=0.9 freq=0.6]very deep breaths for me[/pulse] "+Globals.getPlayerPetName()+"! Deeeep breeaaaatthhhssss.[/say]")
 
-		saynn("As you take breaths you smell musty, warm, AROUSING smell, the time slows down.")
+		saynn("As you take breaths you smell [pulse color=#ac1eff height=0.9 freq=0.6]musty, warm, AROUSING smell[/pulse], the time slows down.")
 		if getModuleFlag("TaviModule", "ch2DrugsAgreedToTest", false):
 			saynn("It's different to when you last tried it.")
 
@@ -285,7 +285,7 @@ func _run():  # TODO Those corruption scenes don't really work when player is bl
 		if GM.main.originalPC.isHeavilyPregnant():
 			saynn("You have a strange feeling like you are missing something important, your body doesn't feel so bloated anymore.")
 		saynn("You open your eyes, confused. You don't remember much, everything is... Fuzzy, you don't really remember what you were doing before you woke up. Your eyes see whiteness surrounding you bright light at the ceiling, and you are laying on your back, underneath you a hard cold floor.")
-		saynn("You smell waft of something powerful from somewhere, the air feels stale, musty, it's a mix of pheromones, wet carpet, a tinge of sulfur.")
+		saynn("You smell waft of something powerful from somewhere, the air feels stale, musty, it's a mix of [pulse color=#ac1eff height=0.9 freq=0.6]pheromones[/pulse], wet carpet, a tinge of sulfur.")
 		saynn("[say=pc]What the fuck? Where-[/say]")
 		saynn("You feel weak, tired, out of energy, but laying in here, won't give you answers.")
 		addButton("Stand up", "Stand up", "endthescene")

@@ -160,7 +160,8 @@ func _init():
 		"res://Modules/IssixModule/Scenes/AzazelCorruption/DemonLamiaTalkScene.gd",
 		"res://Modules/IssixModule/Scenes/AzazelCorruption/FountainScene.gd",
 		"res://Modules/IssixModule/Scenes/AzazelCorruption/FinalIssixDrugScene.gd",
-		"res://Modules/IssixModule/Scenes/SlaveryFirst/RescueFromFightScene.gd"
+		"res://Modules/IssixModule/Scenes/SlaveryFirst/RescueFromFightScene.gd",
+		"res://Modules/IssixModule/Scenes/SlaveryFirst/GenericTrainSessionScene.gd", "res://Modules/IssixModule/Scenes/SlaveryFirst/WalkiesTrainingScene.gd"
 		]
 		
 	characters = [
@@ -217,6 +218,7 @@ func _init():
 		"res://Modules/IssixModule/SpeechModifiers/CatnipSpeech.gd",
 		"res://Modules/IssixModule/SpeechModifiers/LamiaMute.gd",
 		"res://Modules/IssixModule/SpeechModifiers/PetTalk.gd",
+		"res://Modules/IssixModule/SpeechModifiers/AzazelDemon.gd",
 	]
 
 	GlobalRegistry.registerLustTopicFolder("res://Modules/IssixModule/InterestTopics/")

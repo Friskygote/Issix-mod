@@ -131,7 +131,7 @@ func _run():
 		addButton("Leave", "Leave the fight scene", "endthescene")
 
 	if state == "infirmary":
-		playAnimation(StageScene.Duo, "stand", {npc="eliza", npcAction="stand", bodyState={naked=true}})
+		playAnimation(StageScene.Duo, "stand", {npc="eliza", npcAction="stand"})
 		aimCameraAndSetLocName("med_lobbymain")
 		addCharacter("eliza")
 
@@ -152,12 +152,40 @@ func _run():
 
 	if state == "cryopodtreatment":
 		playAnimation(StageScene.Cryopod, "idle", {bodyState={naked=true}})
+		aimCameraAndSetLocName("med_researchlab")
 		if getModuleFlag("MedicalModule", "Medical_FirstTimeHealedHappened"):
 			saynn("You step after Eliza until you arrive at the lab, Eliza unclasps your leash and begins to tap on machines keyboard, preparing it for your session.")
 		else: #TODO Expand?
-			saynn("You eventually arrive in large sterile room with large amount of expensive equipment around. {eliza.She} unclasps your leash and begins to tap on machines keyboard, preparing it for your session.")
-		addButton()
+			saynn("You eventually arrive in large sterile room with large amount of expensive equipment around. {eliza.She} unclasps your leash and begins to tap on machines keyboard, preparing it for your session. You watch with amazement the huge machinery and advanced medical technology for healing, a large glass tube just existing there in size that you could definitely fit in.")
 
+		if !GM.pc.isFullyNaked():
+			saynn("[say=eliza]Please strip down, you do not need clothes.[/say]")
+			saynn("You strip down your clothes, the wound now all visible, it stings a bit and you bleed in non insignificant amounts.")
+
+		saynn("[say=eliza]Okey, it's ready, please step into the cryopod, put on the mask. I'll take care of the rest.[/say]")
+
+		saynn("You follow Eliza's instructions and soon you are surrounded by thick glass as the glass enclosure finally closes trapping you inside. The air you breathe through the mask feels clean, it lack that sterile smell that you've been sniffing just few seconds ago. You can hear muffled Elyze talking to you.")
+		if getModuleFlag("MedicalModule", "Medical_FirstTimeHealedHappened"):
+			saynn("[say=eliza]You know the drill by now. I'll be back when the cycle finishes.[/say]")
+		else:
+			saynn("[say=eliza]Okey, now just rest, don't worry about the liquid, keep the mask on and let the body recover, I'll be back when the cycle finishes.[/say]")
+
+			saynn("The pod fills to the brim with strange liqud until you are fully submerged and floating. Soon enough, your consciousness fades and you stop tracking what's happening.")
+
+		addButton("Continue", "", "cryopodend")
+
+	if state == "cryopodend":
+		playAnimation(StageScene.Duo, "stand", {npc="eliza", npcAction="stand"})
+		aimCameraAndSetLocName("med_nearlab")
+		GM.pc.setLocation("med_nearlab")
+		saynn("Eventually you become aware of the world around you again as the liquid that you were just submerged in drained away. You stood on your legs again, feeling your heavy body again, taking off the mask as the liquid was below your waist now. You can barely hear Eliza through your ears - still full of the liquid.")
+		saynn("[say=eliza]That would be 2 hours, the cycle is complete and the wound you had is looking fine. One last check and you are free to go.[/say]")
+		saynn("After short draining and drying session the glass enclosure opens and you walk out. Eliza walks to you with some kind of scanner that is pointed at the place where you were wounded.")
+		saynn("[say=eliza]Seems everything is okey, the healing process removed the nasty cut, this means you are free to go now. Don't get into trouble again.[/say]")
+		saynn("[say=pc]Thank you, Doctor.[/say]")
+		saynn("[say=eliza]You’re welcome~.[/say]")
+		saynn("You are led to the corridor and let go.")
+		addButton("Leave", "Leave", "endthescene")
 
 
 func boyfriend():
@@ -232,7 +260,11 @@ func _react_scene_end(_tag, _result):
 
 func _react(_action: String, _args):
 	if _action == "cryopodtreatment":
+		processTime(8*60)
+
+	if _action == "cryopodend":
 		processTime(120*60)
+		GM.pc.afterCryopodTreatment()
 
 	if _action == "infirmary":
 		GM.pc.setLocation("med_lobbymain")

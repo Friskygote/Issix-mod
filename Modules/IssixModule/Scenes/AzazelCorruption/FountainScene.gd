@@ -18,7 +18,7 @@ func _run():
 			addDisabledButton("Check", "Seriously, stop.")
 		addButton("Leave", "Leave the fountain alone", "endthescene")
 
-	if state == "checkthepillar":
+	if state == "checkthepillar":  # TODO Make sure the font is properly working before the release
 		saynn("You decide to come closer to the pillar. It's ordained by numerous symbols, none of which you understand.")
 		sayn("[color=#ac1eff]ᚺᛖᚱ ᛚᛁᛈᛋ ᛒᛖᚷᚨᚾ ᛏᛟ ᛋᚲᛟᚱᚲᚺ,[/color]")
 		sayn("[color=#ac1eff]ᛏᚺᚨᛏ ᛃᚢᛁᚲᛖ ᚹᚨᛋ ᚹᛟᚱᛗᚹᛟᛟᛞ ᛏᛟ ᚺᛖᚱ ᛏᛟᚾᚷᚢᛖ,[/color]")

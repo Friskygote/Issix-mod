@@ -85,3 +85,7 @@ static func modifyDictStates(flagName: String, stateKey: String, stateValue):
 	var states = GM.main.getModuleFlag("IssixModule", flagName, {})
 	states[stateKey] = stateValue
 	GM.main.setModuleFlag("IssixModule", flagName, states.duplicate(true))
+
+# Add Issix's mood'
+static func addIssixMood(mood: int):
+	GM.main.setModuleFlag("IssixModule", "Issix_Mood", clamp(GM.main.getModuleFlag("IssixModule", "Issix_Mood", 50)+mood, 0, 100))

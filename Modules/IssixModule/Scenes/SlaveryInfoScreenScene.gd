@@ -157,10 +157,12 @@ func _run():
 		else:
 			addDisabledButton("Learn", "You are already a master of Azazel's craft of sexual servitude")
 		if GlobalRegistry.getCharacter("azazel").isPregnant() or GM.pc.isVisiblyPregnant():
-			if GM.pc.getSkillLevel(Skill.Fertility) < 10 and GM.pc.hasAnyWomb():
-				addDisabledButton("Learn fertility", "Learn about being harem's breeder (WIP)")  # , "azazellearnfertility"
+			if getModuleFlag("IssixModule", "Azazel_Fertility_Training_Today") == true:
+				addDisabledButton("Learn fertility", "You've trained fertility with Azazel today already")
+			elif GM.pc.getSkillLevel(Skill.Fertility) < 10 and GM.pc.hasAnyWomb():
+				addButton("Learn fertility", "Learn about being harem's breeder", "azazellearnfertility")
 			else:
-				addDisabledButton("Learn", "You already know everything about bearing children")
+				addDisabledButton("Learn", "You already know everything about bearing children or you don't have a womb")
 			if GlobalRegistry.getCharacter("azazel").isHeavilyPregnant() and canPromptLitterDialogue():
 				addButton("Guess litter", "Ask Azazel about his pregnancy", "azazelguesslitter")
 		addDisabledButton("Sex", "Ask for sex with Azazel (WIP)")  # , "azazelsexrequest"
@@ -317,6 +319,116 @@ func _run():
 		saynn("[say=hiisi]Of course. Don't worry, I'll do my best, okey?[/say]")
 		saynn("[say=pc]Thank you Hiisi![/say]")
 		addButton("Finish", "End this conversation", "hiisipetmenu")
+
+	if state == "azazelfertilityfirst":
+		playAnimation(StageScene.Duo, "kneel", {pc="azazel"})
+		saynn("[say=pc]Heyy Azazel... Umm.[/say]")
+		saynn("Azazel smiles at you.")
+		saynn("[say=pc]I know you are harem's broodmother and I figured you'd have a lot of experience with, you know, having children?[/say]")
+		saynn("[say=azazel]Haha. Well, you know I only can ever have them for a little bit when they are in me, but then they take them away. But yes, I guess you could say I have some experience with that, why do you ask?[/say]")
+		saynn("[say=pc]Could you perhaps teach me something about that?[/say]")
+		saynn("He flashes you with mischievous smile.")
+		saynn("[say=azazel]But of course I can, cutie! I can make a great mother out of you, you'll see. Buuuuut. I'll want something in exchange.[/say]")
+		saynn("[say=pc]Oh? What would it be?[/say]")
+		if GM.pc.getSkillLevel(Skill.Fertility) < 6:
+			saynn("[say=azazel]Well, at first a bottle of Lube will do. But perhaps in the future I'll want a bit more, you know. I'm a fairly needy kitty.[/say]")
+			saynn("He purrs.")
+		if GM.pc.getSkillLevel(Skill.Fertility) > 5:
+			saynn("[say=azazel]Hehe, I'd like the ability to impregnate you.[/say]")
+			saynn("You are kind of stunned, ability to impregnate you? Azazel doesn't even have the-")
+			if GM.pc.hasVagina():
+				saynn("[say=azazel]You'll bring me a strapon with cum and I'll use it to ram it into your {pc.vagina}. If I can't, there will be no lesson for you. I want to see you have a big belly full of cubs hihi.[/say]")
+			elif GM.pc.hasWombIn(BodypartSlot.Anus):
+				saynn("[say=azazel]You'll bring me a strapon with cum and I'll use it to ram it between your sweet cheeks until it leaks with all of the content of it. If I can't - for whatever reason, there will be no lesson for you. I want to see you have a big belly full of cubs hihi.[/say]")
+			else:
+				saynn("-- THIS SHOULDN'T HAPPEN! UNLESS YOU HAVE WOMB SOMEWHERE IN STRANGE PLACE, IN WHICH CASE - GOOD FOR YOU BUT I HAVEN'T ADDED SUPPORT FOR THAT, LET ME KNOW --")
+			if !GM.pc.hasPenis() or GM.pc.hasPerk(Perk.StartMaleInfertility):
+				saynn("[say=pc]That's... Kinda hot but... Where will I get cum from?[/say]")
+				saynn("[say=azazel]Cmon cutie, you can figure it out, it can be anyone, best if it's Master's cum![/say]")
+
+			saynn("[say=pc]So, you want to impregnate me every lesson?[/say]")
+			saynn("[say=azazel]Indeed! The best way to teach you is with you having your belly full of cubs, isn't it?[/say]")
+			saynn("[say=pc]I guess...[/say]")
+			saynn("[say=azazel]Also, one of us should be pregnant, I can't work my teacher magic without some inspiration.[/say]")
+			saynn("[say=pc]That's... Certainly a requirement.[/say]")
+			saynn("[say=azazel]Easier thank you may think![/say]")
+		addButton("Agree", "Agree to kitten's proposal", "azazelfertilityagree")
+		addButton("Maybe later", "Say you have to think about it some more", "azazelpetmenu")
+
+	if state == "azazelfertilityagree":
+		saynn("[say=pc]Sure, we can do it.[/say]")
+		saynn("[say=azazel]Yaaaay! Thank you, I hope to teach you all I know! I have tons of experience.[/say]")
+		saynn("[say=azazel]Should we have first lesson?[/say]")
+		if GM.pc.getSkillLevel(Skill.Fertility) < 6:
+			if GM.pc.getInventory().hasItemID("lube"):
+				addButton("Sure", "Say yes", "azazelfertilityfirstlube")
+			else:
+				addDisabledButton("No Lube", "Can't do that without lube")
+		else:
+			if checkIfPCHasLoadedStrapons():
+				addButton("Sure", "Say yes", "azazelfertilitysecondsex")
+			else:
+				addDisabledButton("No Strapons", "You don't have loaded strapons")
+		addButton("Later", "You have to go!", "azazelpetmenu")
+
+	if state == "azazelfertilityrepeatlube":
+		saynn("[say=pc]Heey, can we do fertility training right now?[/say]")
+		saynn("[say=azazel]Sure! I'm up for it. Have you brought the slick juice?[/say]")
+		if GM.pc.getInventory().hasItemID("lube"):
+			saynn("[say=pc]Yup, have it here, catch.[/say]")
+			saynn("You throw the bottle of lube at Azazel, he catches it.")
+			saynn("[say=azazel]Thaaaanks, that will come in handy later hehe. Now, where were we last time...[/say]")
+			addMessage("You've gave Azazel one bottle of lube")
+			addButton("Continue", "Continue", "azazelfertilityfirst")
+		else:
+			saynn("[say=pc]Uhhh, frick, I forgot.[/say]")
+			saynn("[say=azazel]Well, I'll wait. As much as I want to breed you, I need lube for stuff![/say]")
+			addButton("Leave", "", "azazelpetmenu")
+
+	if state == "azazelfertilityrepeatsex":
+		saynn("[say=pc]Heey, can we do fertility training right now?[/say]")
+		saynn("[say=azazel]Well, that depends in your strapon is loaded and your womb ready to receive a happy load hihi.[/say]")
+		saynn("He eyes you with lust.")
+		saynn("[say=azazel]First, show me your toys! I wanna see them.[/say]")
+		if checkIfPCHasLoadedStrapons():
+			saynn("You show Azazel the strapons you have.")
+			saynn("[say=azazel]Yay! They look fine![/say]")
+			saynn("He places his paw on your stomach and looks you in the eyes.")
+			if GM.pc.hasPerk(Perk.StartInfertile):
+				saynn("[say=azazel]Waaait a minute! You can't have children! You are infertile![/say]")
+				saynn("Azazel says in accusatory tone. You actually get embarassed a little.")
+				saynn("[say=pc]Y-yeah...[/say]")
+				saynn("[say=azazel]I'm only willing to teach creatures that actually can bear children, otherwise it makes no sense![/say]")
+				saynn("He crosses his arms and puts on a pouty face.")
+				saynn("[say=pc]Alright, sorry then...[/say]")
+				addButton("Leave", "", "azazelpetmenu")
+				return
+			if GM.pc.hasReachableVagina() or (GM.pc.hasWombIn(BodypartSlot.Anus) and GM.pc.hasReachableAnus()):
+				saynn("[say=azazel]Good {pc.boy}. Now, which one should we use?[/say]")
+				for strapon in checkPCStrapon():
+					addButton(strapon.getVisibleName(), "Let Azazel borrow "+strapon.getVisibleName(), "azazelfertilitybreeding", [strapon])
+			else:
+				saynn("[say=azazel]Maaaan, don't tell me you have your holes blocked? How am I supposed to breed you if I can't even put baby batter into your waiting womb? Cmooon.[/say]")
+				saynn("[say=azazel]Free up your breeding hole and come back, I want to breed you![/say]")
+				addButton("Leave", "", "azazelpetmenu")
+		else:
+			if GM.pc.hasStrapons():
+				saynn("[say=pc]Here you go![/say]")
+				saynn("You show the feline strapons you've got, he checks them out.")
+				saynn("[say=azazel]None of them are loaded with enough of cum. I want to breed you.[/say]")
+				saynn("He annoyed.")
+				saynn("[say=azazel]Come back when you have loaded strapons! I won't teach you until them meh![/say]")
+				addMessage("You must come with at least one strapon loaded with 200ml of cum.")
+				addButton("Leave", "", "azazelpetmenu")
+			else:
+				saynn("[say=pc]Oh, sorry, I forgot strapons, give me a minute.[/say]")
+				saynn("[say=azazel]Cmooonnn, come back soon! I wanna fuuuck![/say]")
+				addButton("Leave", "", "azazelpetmenu")
+
+	if state == "azazelfertilityfirst":
+
+
+	if state == "azazelfertilitysecond":
 
 
 	if state == "hiisilearncombatfirst":
@@ -575,6 +687,20 @@ func getMoodMessage():
 	else:
 		return RNG.pick(["How are you today, pet? Maybe I should walk y'all hungry beasts huh?", "Maaan, do you ever just stop and take it aaallllll in for a second? It's soo good."])
 
+# Return all Strapons that have 200ml of Cum or more
+func checkPCStrapon():
+	var available_strapons := []
+	for strapon in GM.pc.getStrapons():
+		var fluids = strapon.getFluids()
+		var fluids_type = fluids.getFluidAmountByType()
+		if fluids_type.has("Cum"):
+			if fluids_type["Cum"] >= 200:
+				available_strapons.append(strapon)
+	return available_strapons
+
+func checkIfPCHasLoadedStrapons():
+	return checkPCStrapon().size() > 0
+
 func getMood():
 	var issix_mood = getModuleFlag("IssixModule", "Issix_Mood", 50)
 	if issix_mood < 10:
@@ -612,9 +738,6 @@ func trainingCheck():
 	else:
 		return "very good"
 
-static func addIssixMood(mood: int):
-	GM.main.setModuleFlag("IssixModule", "Issix_Mood", clamp(GM.main.getModuleFlag("IssixModule", "Issix_Mood", 50)+mood, 0, 100))
-
 func registerOffspringGuess():
 	var past_guesses: Dictionary = getModuleFlag("IssixModule", "Litter_Guessing_Game", {"guesses_off": [], "last_guess": GM.CS.getChildrenAmountOf("azazel")})
 	past_guesses["guesses_off"].append(reply_litter-GlobalRegistry.getCharacter("azazel").getPregnancyLitterSize())
@@ -635,6 +758,17 @@ func _react(_action: String, _args):
 
 	if _action == "hiisiprotect":
 		setModuleFlag("IssixModule", "Hiisi_Protects_PC", true)
+
+	if _action == "azazellearnfertility":
+		if getModuleFlag("IssixModule", "Azazel_Fertility_Training_Today") == null:
+			_action = "azazelfertilityfirst"
+		elif GM.pc.getSkillLevel(Skill.Fertility) < 6:
+			_action = "azazelfertilityrepeatlube"
+		else:
+			_action = "azazelfertilityrepeatsex"
+
+	if _action == "azazelfertilityfirst":
+		GM.pc.getInventory().removeFirstOf("lube")
 
 	if _action == "lamiapetrequest":
 		GM.pc.addPain(-10)
@@ -774,12 +908,12 @@ func _react_scene_end(_tag, _result):
 		var issix_sex_result = _result[0].get("doms", {}).get("issix", {})
 		var pc_sex_result = _result[0].get("subs", {}).get("pc", {})
 		if pc_sex_result.get("isUnconscious"):
-			addIssixMood(5)
+			Globals.addIssixMood(5)
 		elif issix_sex_result.get("satisfaction") < 0.8:
 			increaseModuleFlag("IssixModule", "PC_Bad_Sex")
 			setState("after_sex_issix_unhappy")
 		else:
-			addIssixMood(5)
+			Globals.addIssixMood(5)
 			setState("after_sex_issix")
 
 
