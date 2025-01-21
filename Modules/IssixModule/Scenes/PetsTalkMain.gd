@@ -908,6 +908,8 @@ func _react(_action: String, _args):
 	if _action == "hiisihelp":
 		processTime(2*60)
 		increaseModuleFlag("IssixModule", "Hiisi_Affection", 1)
+		if GM.main.getModuleFlag("IssixModule", "Hiisi_Affection", 0) in [3, 6, 9]:
+			addMessage("New random wander scene for Hiisi has been unlocked")
 		setModuleFlag("IssixModule", "Hiisi_Helped_Today", true)
 		hiisi_help_type = [RNG.randi_range(1,4)]
 		if hiisi_help_type[0] == 4:
@@ -986,6 +988,8 @@ func _react(_action: String, _args):
 		GM.pc.getInventory().removeXOfOrDestroy("CatnipPlant", 1)
 		GM.main.getCharacter("azazel").addLust(10)
 		GM.main.increaseModuleFlag("IssixModule", "Azazel_Affection_given")
+		if GM.main.getModuleFlag("IssixModule", "Azazel_Affection_given", 0) in [3, 6, 9, 12]:
+			addMessage("New random wander scene for Azazel has been unlocked")
 		GM.main.increaseModuleFlag("IssixModule", "Azazel_Catnip_given_today")
 		if GM.main.getModuleFlag("IssixModule", "Azazel_Catnip_given_today", 0) > 5:
 			GlobalRegistry.getCharacter("azazel").addEffect("CatnipOverdose")

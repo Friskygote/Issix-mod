@@ -6,7 +6,7 @@ var levels = {1: ["Walkies", "Learn how to walk like a proper pet", "walkies_tra
 			  4: ["Speech", "Learn how to speak like a pet", "speech_training"],
 			  5: ["Name", "Learn your new name", "name_training"]}
 
-var hasBorrowedMuzzle = false  # TODO Add save
+var hasBorrowedMuzzle = false
 var hasBorrowedMittens = false
 var goodPoints = 0
 const Globals = preload("res://Modules/IssixModule/Globals.gd")
@@ -160,6 +160,8 @@ func _react(_action: String, _args):
 
 func _react_scene_end(_tag, _result):
 	if(_tag == "walkies_end"):
+		goodPoints += 2 if GM.pc.isMuzzled() else 0
+		goodPoints += 2 if GM.pc.hasBlockedHands() else 0
 		destroyBorrowedEquipment()
 		if _result:
 			goodPoints = _result[0]
@@ -173,3 +175,18 @@ func _react_scene_end(_tag, _result):
 			addMessage("You've gained 5 experience points. Also, something went wrong with programming :(")
 			setState("end_walkies")
 
+func saveData():
+	var data = .saveData()
+
+	data["hasBorrowedMuzzle"] = hasBorrowedMuzzle
+	data["hasBorrowedMittens"] = hasBorrowedMittens
+	data["goodPoints"] = goodPoints
+
+	return data
+
+func loadData(data):
+	.loadData(data)
+
+	hasBorrowedMuzzle = SAVE.loadVar(data, "hasBorrowedMuzzle", false)
+	hasBorrowedMittens = SAVE.loadVar(data, "hasBorrowedMittens", false)
+	goodPoints = SAVE.loadVar(data, "goodPoints", 0)

@@ -1,4 +1,5 @@
 # Based on BDCC/Scenes/ParadedOnALeashScene.gd
+# I made it a total mess
 
 extends "res://Scenes/SceneBase.gd"
 
@@ -15,6 +16,7 @@ var stageScene = StageScene.Duo
 var goodPoints = 0
 var waited = 0
 var sat_down = false
+var pace = 0
 
 func _initScene(_args = []):
 	stageScene = StageScene.PuppyDuo if shouldBeInHeavyBondage() else StageScene.Duo
@@ -33,6 +35,9 @@ func _run():
 		saynn("He looks at Hiisi and tells him he will be out for a while.")
 
 	if state == "nova_horny":
+		addCharacter("nova")
+		addCharacter(pawns_interactions[0])
+		addCharacter(pawns_interactions[1])
 		if pawns_interactions.size() < 2:
 			setState("follow")
 		else:
@@ -46,11 +51,60 @@ func _run():
 			saynn("[say=pawn1]Good fuck.[/say]")
 			saynn("[say=pawn2]Arrgghhh.[/say]")
 
-			saynn("") # TODO
+			saynn("[say=issix]Always knew Nova was a horny slut, but rarely I see them going at it with other inmates, they are usually more... Seclusive. Anyways, we should continue. Let's go.[/say]")
+
 			addButton("Continue", "Continue walking", "follow")
+
+	if state == "irritatingguard":
+		addCharacter(pawns_interactions[0])
+		if GM.pc.hasTail():
+			saynn("You continue walking happily behind your Master, however for the second time a guard behind you is steps on your tail. It's fairly painful each time they do this. You could try to do something about it...")
+		else:
+			saynn("You continue walking happily behind your Master, however for the second time a guard behind you is steps on your {pc.toes}. It's fairly painful each time they do this. You could try to do something about this...")
+		addButtonWithChecks("Bite", "Bite the guard", "biteguard", [], [[ButtonChecks.NotOralBlocked]])
+		addButton("Tug leash", "You could tug on leash to get Master's attention...", "tugmaster")
+		addButton("Ignore", "Ignore the guard", "follow")
+
+	if state == "biteguard":
+		addCharacter(pawns_interactions[0])
+		saynn("You decide to bite the guard, they are clearly doing it on purpose considering their wide grin and how they look at you.")
+		saynn("[say=pc]*chomp*[/say]")
+		saynn("[say=pawn1]YOU MOTHERFUCKER![/say]")
+		saynn("Your Master looks behind to see the commotion, {pawn1.name} is looking pissed off, it turns out that even with guard uniform their legs are still quite open to bite attacks... {pawn1.He} jumps on {pawn1.his} one leg while the other one (the one you bit) is in their paws.")
+		saynn("[say=pawn1]Your pet BIT ME![/say]")
+		saynn("Master stares at you as if he demanded an explanation.")
+		if GM.pc.hasTail():
+			saynn("You curl your tail with its tip close to your mouth and whine.")
+		else:
+			saynn("You whine while trying to point your Master at your hinder {pc.toes}.")
+
+		saynn("Your Master's look relaxes and he looks back at the guard.")
+
+		saynn("[say=issix]Trust me, you are lucky it was {pc.him} who bit you.[/say]")
+		saynn("As if nothing else your Master looks forwards and without any further explanation continues walking, you behind him. The guard is still recoiling in pain from your bite as they stare angrily at you both, justice served?")
+		addButton("Follow", "Continue walking", "follow")
+
+	if state == "tugmaster":
+		addCharacter(pawns_interactions[0])
+		saynn("You tug on your Master's leash in a pattern, he recognizes that you need his attention stops and looks at you, the guard from behind you continues walking, passing you on your left.")
+		if GM.pc.hasTail():
+			saynn("You show your Master your tail and try to point at the guard who was just behind you. Your Master looks confused for a moment though he quickly realizes what you are trying to signify.")
+		else:
+			saynn("You show your Master your {pc.toes} and try to point at the guard who was just behind you. Your Master looks confused for a moment though he quickly realizes what you are trying to signify.")
+		saynn("[say=issix]Let's get them.[/say]")
+
+		saynn("Master looks forward, both of you speed up the walk until you catch up to {pawn1.name}.")
+		saynn("[say=issix]Excuse me, were you the one who assulted my pet?[/say]")
+		saynn("[say=pawn1]Assaulted? The fuck you are talking about inmate?[/say]")
+		saynn("Issix closes in to them and moves his head to guard's ear, whispering something to {pawn1.him}. {pawn1.His} face expression changes immediately as he apologizes both to your Master as well as you while fleeing the place in embarrassment.")
+		saynn("[say=issix]Thank you for the mention. They should treat you with respect you deserve from now on.[/say]")
+		saynn("You wonder what Issix whispered to that guard to get that kind of effect. It must have been something really personal considering their reaction. Either way, the situation seems to be handled now.")
+		addButton("Follow", "Continue walking", "follow")
 
 
 	if(state == "" || state == "leashed"):
+		clearCharacter()
+		addCharacter("issix")
 		if(state == "leashed"):
 			playAnimation(stageScene, "crawl", {npc="issix", npcAction="walk", flipNPC=true, bodyState={leashedBy="issix"}})
 		if(path.size() > 0):
@@ -62,6 +116,11 @@ func _run():
 			saynn("You're being walked on a leash by Issix")
 		else:
 			saynn("You're being walked on a leash by Issix")
+
+			if pace < 0:
+				saynn("[color=#ff5500]Your Master slows down and you can feel the leash getting looser, if you keep walking you will walk into your Master![/color]")
+			elif pace > 0:
+				saynn("[color=#ff5500]Your Master speeds up and you can feel the leash pulling you forward, if you don't keep up the pace you will slow down your Master![/color]")
 			
 			if(GM.pc.isBlindfolded() && !GM.pc.canHandleBlindness()):
 				saynn(_roomInfo.getBlindDescription())
@@ -70,18 +129,14 @@ func _run():
 				
 
 		addButton("Skip", "Skip the walk (skips all of the potential random small scenes as well!)", "skipwalk")
-		addButtonAt(6, "Follow", "Follow the leash", "follow")
+		addButtonAt(6, "Follow", "Follow the leash at regular speed", "follow")
+		addButtonAt(7, "Faster", "Follow the leash a little bit faster", "followfast")
+		addButtonAt(8, "Slower", "Follow the leash a little bit slower", "followslow")
 		if RNG.chance(2):
-			addButtonAt(7, "Check", "You've noticed something nearby, you could investigate but your Master wouldn't like it", "distraction")
+			addButtonAt(9, "Check", "You've noticed something nearby, you could investigate but your Master wouldn't like it", "distraction")
 		addDisabledButtonAt(10, "Leashed", "Can't escape from the leash")
 		addDisabledButtonAt(11, "Leashed", "Can't escape from the leash")
 		addDisabledButtonAt(12, "Leashed", "Can't escape from the leash")
-
-	if (state == "skipwalk"):
-		aimCamera(destination)
-		GM.pc.setLocation(destination)
-		
-		endScene()
 
 	if state == "yard_vaulthere":
 		if GM.pc.isBlindfolded():
@@ -123,17 +178,44 @@ func _run():
 		if GM.pc.hasBlockedHands():
 			if RNG.chance(clamp(GM.pc.getStat(Stat.Agility), 0, 50)):
 				saynn("Despite the fact that your paws were rendered truthfully useless by the bondage mittens, your skill had helped you to pocket the work credit for yourself. You are quite proud of yourself. Your Master? Not so much. You got noticed as you were doing that and your Master is unimpressed. Aw.")
+				distractionSuccess()
+				distractionFailure()
 			else:
 				saynn("With your paws rendered useless, you struggle to get the work credits for yourself. Unfortunately your efforts end at nothing ad the work credit just gets pushed by your rubber mitts. To add to that, your efforts were noticed by your Master and he is unimpressed. Aw.")
+				distractionFailure()
 		else:
 			if RNG.chance(95):
 				saynn("You snag and secure the work credit without any issue. Score for {pc.Name}!")
+				distractionSuccess()
 			else:
 				saynn("You attempt to snag the work credit but you didn't notice another inmate coming from behind, his leg hits your arm in a fairly painful accident. You don't manage to snag the work token and you have to deal with very unimpressed Master.")
+				distractionFailure()
+		addButton("Continue", "Continue", "follow")
 
+func distractionSuccess():
+	GM.pc.addCredits(2)
+	addMessage("You obtained 2 work credits")
 
+func distractionFailure():
+	goodPoints -= 1
 
-
+func checkSpeed(state):
+	if state == "followfast":
+		pace -= 1
+	if state == "followslow":
+		pace += 1
+	if state != "follow":
+		if pace == 0:
+			goodPoints += 1
+			addMessage("Your pace started matching your Master's.")
+	if pace < 0:
+		addMessage("You have bumped into your Master and earned an earful about watching your pace!")
+		goodPoints -= 1
+		pace = 0
+	elif pace > 0:
+		addMessage("Master's pace caught up with you until you were dragged on your leash, Master orders you to keep up.")
+		goodPoints -= 1
+		pace = 0
 
 
 func _react(_action: String, _args):
@@ -146,6 +228,12 @@ func _react(_action: String, _args):
 		goodPoints -= 1
 		sat_down = true
 
+	if _action == "disctraction":  # TODO: Add more distractions
+		_action = "distraction1"
+
+	if _action == "tugmaster":
+		goodPoints += 1
+
 	if _action == "return":
 		GM.pc.setLocation(corner)
 		aimCamera(corner)
@@ -156,7 +244,7 @@ func _react(_action: String, _args):
 		processTime(5*60)
 		waited += 1
 	
-	if(_action == "follow"):
+	if(_action in ["follow", "followfast", "followslow"]):
 		if(path.size() == 0):
 			setState(destination)
 			return
@@ -173,7 +261,13 @@ func _react(_action: String, _args):
 			return
 		if path.size() in custom_scenes[destination] and RNG.chance(20):
 			_action = custom_scenes[destination][path.size()]
+			pace = 0
+		elif RNG.chance(1):
+			_action = "irritatingguard"
 		else:
+			checkSpeed(_action)
+			if RNG.chance(20):
+				pace += RNG.pick([-1, 1])
 			setState("leashed")
 			return
 
@@ -182,6 +276,18 @@ func _react(_action: String, _args):
 		if null in pawns_interactions:
 			setState("leashed")
 			return
+
+	if _action == "irritatingguard":
+		pawns_interactions = pick_unique_one(findPawns([[["isGuard"], []]]))
+		if null in pawns_interactions:
+			setState("leashed")
+			return
+		GM.pc.addPain(10)
+
+	if _action == "skipwalk":
+		aimCamera(destination)
+		GM.pc.setLocation(destination)
+		_action = destination
 	
 	setState(_action)
 
@@ -261,6 +367,7 @@ func saveData():
 	data["pawnsInteractions"] = pawns_interactions
 	data["waited"] = waited
 	data["sat"] = sat_down
+	data["pace"] = pace
 
 	return data
 	
@@ -274,5 +381,6 @@ func loadData(data):
 	pawns_interactions = SAVE.loadVar(data, "pawnsInteractions", [])
 	waited = SAVE.loadVar(data, "waited", 0)
 	sat_down = SAVE.loadVar(data, "sat_down", false)
+	pace = SAVE.loadVar(data, "pace", 0)
 	
 	return null

@@ -304,7 +304,7 @@ func _react(_action: String, _args):
 		GM.pc.setName(GM.main.originalPC.getName())
 		GM.pc.setGender(GM.main.originalPC.getGender())
 		GM.pc.setSpecies(GM.main.originalPC.getSpecies())
-		GM.pc.resetBodypartsToDefault()
+		GM.pc.resetSlots()
 		for bodypart in GM.main.originalPC.bodyparts:
 			if GM.main.originalPC.bodyparts[bodypart] == null:
 				continue

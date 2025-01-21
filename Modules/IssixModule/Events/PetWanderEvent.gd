@@ -23,7 +23,7 @@ func react(_triggerID, _args):
 
 func activateHiisiScenes() -> bool:
 	var scene_index = GM.main.getModuleFlag("IssixModule", "Hiisi_Encounter_scene", 1)
-	if scene_index == -1 or GM.main.getModuleFlag("IssixModule", "Hiisi_Affection", -1) < scene_index*2 or scene_index > 3:
+	if scene_index == -1 or GM.main.getModuleFlag("IssixModule", "Hiisi_Affection", -1) < scene_index*3 or scene_index > 3:
 		return false
 	if scene_index != 3 and GM.pc.getLocation() == "hall_ne_corner":  # This scene only shows on that tile
 		return false
@@ -46,7 +46,7 @@ func activateHiisiScenes() -> bool:
 func activateAzazelScenes() -> bool:
 	if GM.main.getModuleFlag("IssixModule", "Azazel_Had_Corruption_Scene_Today", false) == false and RNG.chance(2.0):
 		var scene_index = GM.main.getModuleFlag("IssixModule", "Azazel_Corruption_Scene", 1)
-		if scene_index == -1 or GM.main.getModuleFlag("IssixModule", "Azazel_Affection_given", -1) < scene_index*2 or scene_index > 3:  # Player disabled corruption scenes, their affection score is too low or we ran out of them
+		if scene_index == -1 or GM.main.getModuleFlag("IssixModule", "Azazel_Affection_given", -1) < scene_index*3 or scene_index > 4:  # Player disabled corruption scenes, their affection score is too low or we ran out of them
 			return false
 		GM.main.setModuleFlag("IssixModule", "Azazel_Had_Corruption_Scene_Today", true)
 		runScene("AzazelCorruption"+str(scene_index))

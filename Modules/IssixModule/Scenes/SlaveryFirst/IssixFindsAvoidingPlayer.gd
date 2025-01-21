@@ -1,6 +1,7 @@
 extends SceneBase
 
 var reaction = false
+const Globals = preload("res://Modules/IssixModule/Globals.gd")
 
 func _init():
 	sceneID = "IssixFoundPlayer"
@@ -9,7 +10,7 @@ func _run():
 	if(state == ""):
 		playAnimation(StageScene.Duo, "stand", {npc="issix", npcAction="stand"})
 
-		saynn("[say=issix]Hey there pet! Now, care to explain why haven't you visited for past XX days?[/say]")
+		saynn("[say=issix]Hey there pet! Now, care to explain why haven't you visited for past "+str(GM.main.getDays()-GM.main.setModuleFlag("IssixModule", "Last_Day_Visited_Master", GM.main.getDays()))+" days?[/say]")
 		saynn("Issix almost running stops you with haste before the guard checkpoint. His face is a mix of concern and anger.")
 		addButton("Excuse", "Think of an excuse to escape this awkward situation", "excuse")
 		addButton("Honest", "Tell your Master that you just haven't had the time", "honest")
@@ -42,7 +43,7 @@ func _run():
 		saynn("Your Master stands stunned by your proclamation.")
 		saynn("[say=issix]What did you just say?[/say]")
 		saynn("[say=pc]I no longer want to be your pet.[/say]")
-		saynn("[say=issix]I don't think you understand your position, pet. You are not in a position to decide on that anymore, you've made your decision a while ago, you don't just get to change it because your feel like it, such decision belongs to your Master. Now, be a good "+GlobalRegistry.getModule("IssixModule").getPlayerPetName()+" and come with me.[/say]")
+		saynn("[say=issix]I don't think you understand your position, pet. You are not in a position to decide on that anymore, you've made your decision a while ago, you don't just get to change it because your feel like it, such decision belongs to your Master. Now, be a good "+Globals.getPlayerPetName()+" and come with me.[/say]")
 		addButton("Continue", "Follow Issix to the corner", "walkcorner")
 
 	if state == "leave":
@@ -73,10 +74,14 @@ func _run():
 				addButton("Fight", "Issix is ready to fight you", "startfight")
 				addButton("Surrender", "Don't even attempt to fight", "surrenderfight")
 			2, 2.0:
-				addMessage("This is still under construction, sowwy :( ~ Frisk")  # TODO Finish end of Issix's story on disobedience
-				saynn("Master Issix sits in silence, just staring into you for a while.")
-				saynn("[say=issix]I really don't know what to say. No, really. I have no idea what words can I use in here. The demons of this world ran out of juice. Like, what the fuck does this even mean? What am I doing here?[/say]")
-				addButton("Back", "Maybe chaining mod's creator in the dungeon with a computer will make this go faster.", "endthescene")
+				saynn("[say=issix]I came to the conclusion I let you run on too loose of a leash. You disobeyed me multiple times now, I do not have any need for disobedient pet. Perhaps it's a failure of my own, perhaps you are just useless even as someone's pet. This ends today.[/say]")
+				saynn("[say=issix]I'll give you two options, last fucking options.[/say]")
+				saynn("He breathes in the air and looks at you with intensity.")
+				saynn("[say=issix]I can release you - you could stop being my pet - if that's what you fucking want. Or you can submit to me in full - I can strip you of the very ability to disobey me. You'll be my walking puppet on the strings, something even lesser than a pet if you ask me, but we'll pretend like you are one.[/say]")
+				saynn("[say=issix]So what is it? Which option do you choose?[/say]")
+
+				addButton("Leave harem", "Stop being Issix's pet", "leaveharem")
+				addButton("Submit", "Submit to Issix in full", "submitinfull")
 
 	if state == "understand":
 		saynn("[say=pc]I understand, Master.[/say]")
@@ -133,7 +138,7 @@ func _run():
 		saynn("Feeling in pain, you don't have anything else to answer other than.")
 		saynn("[say=pc]I'm sorry, Master, I won't do this again.[/say]")
 		saynn("[say=issix]Do you really mean it? Or is that another lie? Look at me, LOOK![/say]")
-		saynn("He grabs you by your neck, tilts your face to meet his gaze, his face angry, furious even, staring deep into you, just like when he was judging you when you wished to become his "+ GlobalRegistry.getModule("IssixModule").getPlayerPetName() + ".")
+		saynn("He grabs you by your neck, tilts your face to meet his gaze, his face angry, furious even, staring deep into you, just like when he was judging you when you wished to become his "+ Globals.getPlayerPetName() + ".")
 		saynn("[say=issix]Don't make me assert control over you again.[/say]")
 		saynn("He releases your body from heavy grip.")
 		saynn("[say=issix]I think you suffered enough of humiliation for today. Do whatever you want, but I expect you tomorrow in the corner, as usual.[/say]")

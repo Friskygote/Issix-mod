@@ -79,6 +79,10 @@ func _run():
 		else:
 			addDisabledButton("Sex", "You've already had sex with Issix today")
 		addButton("Walk", "Ask when he plans the next walk to the pasture", "issixwalkquestion")
+		if getModuleFlag("IssixModule", "Trained_Pet_Today", false) == false:
+			addButton("Training", "Ask Master if he could train you to be a better pet", "issixpettraining")
+		else:
+			addDisabledButton("Training", "You can only train once per day")
 		addDisabledButton("Tasks", "Ask for extra tasks (WIP)")  # , "issixtaskquestion"
 		addDisabledButton("Options", "Ask your Master to change how he treats you (WIP)")  #, "issixoptions" Pet etiquette, make player communicate via animalistic sounds, unlocks optional training
 		addButton("Back", "Go back", "")
@@ -152,10 +156,10 @@ func _run():
 	if state == "azazelpetmenu":
 		addCharacter("azazel")
 		playAnimation(StageScene.Duo, "kneel", {pc="azazel", npcAction="kneel", npc="pc", bodyState={naked=false, hard=false}})
-		if GM.pc.getSkillLevel(Skill.SexSlave) < 15:
-			addDisabledButton("Learn sex", "Learn about sexual slavery from Azazel (WIP)")  # , "azazellearnslavery"
-		else:
-			addDisabledButton("Learn", "You are already a master of Azazel's craft of sexual servitude")
+		# if GM.pc.getSkillLevel(Skill.SexSlave) < 15:
+		# 	addDisabledButton("Learn sex", "Learn about sexual slavery from Azazel (WIP)")  # , "azazellearnslavery"
+		# else:
+		# 	addDisabledButton("Learn", "You are already a master of Azazel's craft of sexual servitude")
 		if GlobalRegistry.getCharacter("azazel").isPregnant() or GM.pc.isVisiblyPregnant():
 			if getModuleFlag("IssixModule", "Azazel_Fertility_Training_Today") == true:
 				addDisabledButton("Learn fertility", "You've trained fertility with Azazel today already")
@@ -425,11 +429,92 @@ func _run():
 				saynn("[say=azazel]Cmooonnn, come back soon! I wanna fuuuck![/say]")
 				addButton("Leave", "", "azazelpetmenu")
 
-	if state == "azazelfertilityfirst":
+	if state == "azazelfertilitybreeding":
+		if GM.main.getDays() % 2 == 0:
+			playAnimation(StageScene.SexLotus, "fast", {pc="pc", npc="azazel", npcCum=true, bodyState={naked=true, hard=true}, npcBodyState={naked=true, hard=true}})
+		else:
+			playAnimation(StageScene.SexAllFours, "fast", {pc="azazel", npc="pc", pcCum=true, bodyState={naked=true, hard=true}, npcBodyState={naked=true, hard=true}})
+		if !GM.pc.isFullyNaked():
+			saynn("Azazel eagerly puts on the strapon and prepares you for fucking, taking off all of his own and your clothes, he runs his paw over your "+Globals.getSkinWord()+" sensually.")
+		else:
+			saynn("Azazel eagerly puts on the strapon and prepares for fucking, taking off all of his clothes, he runs his paw over your "+Globals.getSkinWord()+" sensually.")
+		if GM.pc.hasReachableVagina():
+			saynn("He moves his paw fingers towards your {pc.pussyStretch} {pc.pussy} lips. With his other paw he applies lube.")
+		else:
+			saynn("He moves his paw fingers towards your {pc.analStretch} pucker. With his other paw he applies lube.")
 
+		saynn("He hums a song when doing all of this while at the same time he prepares a strapon wrapping its tape around his body keeping it securely attached.")
+		saynn("[say=azazel]Oki, I'm going in, operation fertilize {pc.name} is a go, nyaaa![/say]")
+		if GM.main.getDays() % 2 == 0:
+			saynn("Sitting feline takes your paws and leads you onto his legs until you are positioned directly above his {azazel.penisOrStrapon}. You lower onto his strapon very gently at first, however this doesn't take long as he motions you to speed up pretty fast. Soon you are bobbing on his dick like animal in heat. It doesn't seem like he is looking for a long fuck but rather he has only one goal in his mind.")
+		else:
+			saynn("Feline puts on {azazel.penisOrStrapon} and leads you to face away from him while on your fours, you oblige. It's pretty animalistic to fuck on fours, only bringing your lust further up. Not long after you feel the tip of his strapon touch you until it goes all in. Azazel quickens his pace really fast, ramming into you like an animal in heat. It doesn't seem like he is looking for a long fuck but rather he has only one goal in his mind.")
+
+		saynn("Your love making does attract attention of your Master, but you don't notice that, as you have more important task to fulfill in a moment and he prefers to just watch you two have fun.")
+		addButton("Cum!", "Cum!", "azazelfertilitybreedingfinish")
+
+	if state == "azazelfertilityswitchstates":
+		saynn("[say=pc]Please teach me more about fertility.[/say]")
+		saynn("[say=azazel]Sure! Though... This time lube won't do.[/say]")
+		saynn("[say=pc]What do you mean?[/say]")
+		saynn("[say=azazel]You know plenty already, this time I'd want something different... I'd like the ability to impregnate you.[/say]")
+		saynn("You are kind of stunned, ability to impregnate you? Azazel doesn't even have the-")
+		if GM.pc.hasVagina():
+			saynn("[say=azazel]You'll bring me a strapon with cum and I'll use it to ram it into your {pc.vagina}. If I can't, there will be no lesson for you. I want to see you have a big belly full of cubs hihi.[/say]")
+		elif GM.pc.hasWombIn(BodypartSlot.Anus):
+			saynn("[say=azazel]You'll bring me a strapon with cum and I'll use it to ram it between your sweet cheeks until it leaks with all of the content of it. If I can't - for whatever reason, there will be no lesson for you. I want to see you have a big belly full of cubs hihi.[/say]")
+		else:
+			saynn("-- THIS SHOULDN'T HAPPEN! UNLESS YOU HAVE WOMB SOMEWHERE IN STRANGE PLACE, IN WHICH CASE - GOOD FOR YOU BUT I HAVEN'T ADDED SUPPORT FOR THAT, LET ME KNOW --")
+		if !GM.pc.hasPenis() or GM.pc.hasPerk(Perk.StartMaleInfertility):
+			saynn("[say=pc]That's... Kinda hot but... Where will I get cum from?[/say]")
+			saynn("[say=azazel]Cmon cutie, you can figure it out, it can be anyone, best if it's Master's cum![/say]")
+
+		saynn("[say=pc]So, you want to impregnate me every lesson?[/say]")
+		saynn("[say=azazel]Indeed! The best way to teach you is with you having your belly full of cubs, isn't it?[/say]")
+		saynn("[say=pc]I guess...[/say]")
+		saynn("[say=azazel]Also, one of us should be pregnant, I can't work my teacher magic without some inspiration.[/say]")
+		saynn("[say=pc]That's... Certainly a requirement.[/say]")
+		saynn("[say=azazel]Easier thank you may think![/say]")
+		addButton("Go for it", "Sure, why not, if it helps you train", "azazelfertilityagreeswitched")
+		addButton("Maybe later", "Say you have to think about it some more", "azazelpetmenu")
+
+	if state == "azazelfertilitybreedingfinish":
+		if GM.main.getDays() % 2 == 0:
+			playAnimation(StageScene.SexLotus, "tease", {pc="pc", npc="azazel", npcCum=true, pcCum=true, bodyState={naked=true, hard=true}, npcBodyState={naked=true, hard=true}})
+		else:
+			playAnimation(StageScene.SexAllFours, "teaseflop", {pc="azazel", npc="pc", pcCum=true, npcCum=true, bodyState={naked=true, hard=true}, npcBodyState={naked=true, hard=true}})
+
+		saynn("Eventually the moment comes, and both Azazel as well as you come to a climax. You can feel your fertile body squeezing the {azazel.strapon} for its contents until it ends up deep inside of you, perhaps leading to pregnancy. This idea only arose you even further as you were making love to Azazel.")
+		saynn("[say=azazel]Nyaaaaa. That was cool, did you enjoy your breeding? Mroowww.[/say]")
+		saynn("[say=pc]I did, thank you Azazel![/say]")
+		if GM.pc.hasReachableVagina():
+			saynn("He pulls out the strapon out of your {pc.vagina}, it's still dripping bit of cum as he takes it out, but most ended up deep inside of you.")
+		else:
+			saynn("He pulls out the strapon out of your {pc.analStretch} ass, it's still dripping bit of cum as he takes it out, but most ended up deep inside of you.")
+
+		saynn("[say=azazel]Hehe, I hope you keep all that spudge inside of you and it makes you a wonderful mother, speaking of which, it's time for training, let me just...[/say]")
+
+		saynn("He takes off strapon and gives it back to you.")
+
+		saynn("[say=azazel]Thankiiii! Was fun.[/say]")
+		saynn("You recover and you both decide to continue to the lesson.")
+		addButton("Continue", "Continue to the lesson", "azazelfertilitysecond")
+
+	if state == "azazelfertilityfirst":
+		saynn("[say=azazel]Alright, when you are pregnant there are three trimesters, each takes around three months. First sperm fertilizes the egg, then that egg travels through a fun tube to the uterus where it attaches and begins to form the embryo...[/say]")
+		saynn("Azazel continues boring you with all of the details on pregnancy for what feels a looong time. You are surprised he knows so much, even though maybe you shouldn't he did bring likely countless children onto the world.")
+		saynn("[say=azazel]... and sometimes - until around middle of your second trimester when you wake up, you might feel sick and dizzy, in my experience it happens around 1 in 3 mornings. It's totally normal! You are not dying or anything, it's just pregnancy stuff.[/say]")
+		saynn("[say=azazel]Anyways, I hope you got all of that, it would be it for today. Come back some other day eh? There is still so much I have to tell you![/say]")
+		saynn("And just like that you've learned a lot about pregnancy and what it means.")
+		addButton("End lesson", "Lesson ended, you can go now", "azazelpetmenu")
 
 	if state == "azazelfertilitysecond":
+		saynn("[say=azazel]To be a good breeding bitch for our Master you'll have to make sure you stay healthy and take every opportunity to stay as fertile as possible. Keep in mind your ovulation calendar, when you go into heat it's the best time to start breedin', I like to keep all that cum in, you can help yourself with a plug - they are good for all kinds of holes hehe.[/say]")
+		saynn("[say=azazel]Don't get stressed, eat healthy... Well, not much you can do about that with prison food but still. Try to use lubricants that won't kill sperm before it reaches your eggs, avoid stress - best if you stay in the harem for that honestly. Prison can be stressful place but we are safe under Master's watch! When you get round belly make sure to keep it safe, you can still have sex just...[/say]")
+		saynn("He continues his long string of advice which you listen to. Eventually it ends.")
+		saynn("[say=azazel]Phew, I think that's all for today. Let me know if you need anything more![/say]")
 
+		addButton("End lesson", "Lesson ended, you can go now", "azazelpetmenu")
 
 	if state == "hiisilearncombatfirst":
 		playAnimation(StageScene.Yoga, "warrior", {pc="hiisi", bodyState={naked=true}})
@@ -621,7 +706,6 @@ func _run():
 			addMessage("You've been assigned punishment by your Master.")  # TODO
 			addButton("Back", "Go back", "")
 
-
 	if state == "readabook":
 		saynn("You read one of the comic books, 20 minutes pass.")  # TODO Expand on this
 		addButton("Back", "Go back", "")
@@ -759,16 +843,59 @@ func _react(_action: String, _args):
 	if _action == "hiisiprotect":
 		setModuleFlag("IssixModule", "Hiisi_Protects_PC", true)
 
+	if _action == "azazelfertilitybreeding":
+		var strapon = _args[0]
+		getCharacter("azazel").getInventory().forceEquipStoreOtherUnlessRestraint(strapon)
+		GM.pc.addEffect(StatusEffect.LubedUp, [30*60])
+		GM.pc.addLust(50)
+
+	if _action == "azazelfertilitybreedingfinish":
+		if GM.pc.hasReachableVagina():
+			GM.pc.cummedInVaginaBy("azazel", FluidSource.Strapon, RNG.randf_range(0.8, 1.0))
+		elif GM.pc.hasReachableAnus():
+			GM.pc.cummedInAnusBy("azazel", FluidSource.Strapon, RNG.randf_range(0.8, 1.0))
+		GM.pc.cummedOnBy("pc", FluidSource.Penis if GM.pc.hasPenis() else FluidSource.Vagina)
+		GlobalRegistry.getCharacter("azazel").cummedOnBy("pc", FluidSource.Penis if GM.pc.hasPenis() else FluidSource.Vagina)
+		GM.pc.addLust(-90)
+		GM.pc.addStamina(-10)
+
+	if _action == "azazelfertilitysecond":
+		GM.pc.getInventory().addItem(getCharacter("azazel").getInventory().getEquippedItem(InventorySlot.Strapon))
+
+	if _action == "azazelfertilityagreeswitched":
+		setModuleFlag("IssixModule", "Had_Previously_Trained_Fertility_LVL1", false)
+		_action = "azazelfertilityrepeatsex"
+
 	if _action == "azazellearnfertility":
 		if getModuleFlag("IssixModule", "Azazel_Fertility_Training_Today") == null:
 			_action = "azazelfertilityfirst"
 		elif GM.pc.getSkillLevel(Skill.Fertility) < 6:
 			_action = "azazelfertilityrepeatlube"
 		else:
-			_action = "azazelfertilityrepeatsex"
+			if getModuleFlag("IssixModule", "Had_Previously_Trained_Fertility_LVL1") == true:
+				_action = "azazelfertilityswitchstates"
+			else:
+				_action = "azazelfertilityrepeatsex"
 
 	if _action == "azazelfertilityfirst":
 		GM.pc.getInventory().removeFirstOf("lube")
+		setModuleFlag("IssixModule", "Had_Previously_Trained_Fertility_LVL1", true)
+
+	if _action in ["azazelfertilityfirst", "azazelfertilitysecond"]:
+		processTime(25*60)
+		var skill = GM.pc.getSkillsHolder().getSkill(Skill.Fertility)
+		var exp_calc = 25
+		if skill != null:
+			exp_calc = int(skill.getRequiredExperience(skill.getLevel()+1)/4)
+		GM.pc.addSkillExperience(Skill.Fertility, exp_calc)  # Needs <4 trainings per level, to not be too OP
+		addMessage("You've gained "+str(exp_calc)+"XP in Fertility thanks to training with Azazel.")
+		GM.main.setModuleFlag("IssixModule", "Azazel_Fertility_Training_Today", true)
+		GM.pc.addStamina(-25)
+
+	if _action == "issixpettraining":
+		runScene("IssixGenericTrainSession")
+		_action = "issixpetmenu"
+		setModuleFlag("IssixModule", "Trained_Pet_Today", true)
 
 	if _action == "lamiapetrequest":
 		GM.pc.addPain(-10)
