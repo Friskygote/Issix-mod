@@ -89,3 +89,62 @@ static func modifyDictStates(flagName: String, stateKey: String, stateValue):
 # Add Issix's mood'
 static func addIssixMood(mood: int):
 	GM.main.setModuleFlag("IssixModule", "Issix_Mood", clamp(GM.main.getModuleFlag("IssixModule", "Issix_Mood", 50)+mood, 0, 100))
+
+# Get item that covers given inventory slot
+static func getBodyCoveringItem(character, bodyslot):
+	var equippedItems = character.getInventory().getAllEquippedItems()
+	for inventorySlot in equippedItems:
+		var item = equippedItems[inventorySlot]
+		if(item.coversBodypart(bodyslot)):
+			return true
+
+	return null
+
+# Verify requirements for pawns, requirements is array of two arrays, first one are methods which should return true in CharacterPawn obj and second is same but for BaseCharacter
+static func verifyRequirements(pawn: CharacterPawn, requirements: Array) -> bool:
+	if pawn.isPlayer():
+		return false
+	for method in requirements[0]:
+		if !pawn.has_method(method) or !pawn.call(method):
+			return false
+	var base_character = pawn.getCharacter()
+	for method in requirements[1]:
+		base_character.has_method(method)
+		if !base_character.call(method):
+			return false
+	return true
+
+# Find pawns that succeed requirements in list of lists
+static func findPawns(requirements) -> Array:
+	var all_pawns = GM.main.IS.getPawns()
+	var results = []
+	for pawn_requirement in requirements:
+		var meet_criteria = []
+		for pawn in all_pawns:
+			if !verifyRequirements(all_pawns[pawn], pawn_requirement):
+				continue
+			meet_criteria.append(pawn)
+		results.append(meet_criteria)
+	return results
+
+# Pick a unique random item for each of arrays
+static func pick_unique_one(input_array: Array) -> Array:
+	var sizes_of_arrays = []  # We will need to compare sized of arrays to first process smallest arrays
+	var processed_array = input_array.duplicate(true)
+	for array in input_array:
+		sizes_of_arrays.append(array.size())
+
+	for _item in range(input_array.size()):
+		var smallest_array = sizes_of_arrays.min()
+		var index = sizes_of_arrays.find(smallest_array)
+		for _i in range(smallest_array):
+			var pick = processed_array[index].pick_random()
+			if pick in processed_array:
+				processed_array[index].erase(pick)
+				continue
+			processed_array[index] = pick
+			break
+		if processed_array[index] is Array:
+			processed_array[index] = null
+		sizes_of_arrays[index] = 999999
+	return processed_array

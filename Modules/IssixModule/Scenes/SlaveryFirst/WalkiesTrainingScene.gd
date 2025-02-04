@@ -41,7 +41,7 @@ func _run():
 		if pawns_interactions.size() < 2:
 			setState("follow")
 		else:
-			playAnimation(StageScene.SexTrain, "inside", {pc=pawns_interactions[0], npc="nova", npc2=pawns_interactions[1], bodyState={naked=true, hard=true}, npcBodyState={naked=true, hard=true}})
+			playAnimation(StageScene.SexTrain, "sex", {pc="nova", npc=pawns_interactions[0], npc2=pawns_interactions[1], bodyState={naked=true, hard=true}, npcBodyState={naked=true, hard=true}})
 			if GM.pc.isBlindfolded() and !GM.pc.canHandleBlindness():
 				saynn("You are crawling on your fours while walking towards "+destinations[destination]+" while as you continue, both you and your Master become aware and curious about source of some intense sounds. You close in to the sounds, walking forward there is a little bit of free space on the left, you recognize the sounds as... Intense love making. The leash that usually slightly tugs on you becomes much more loose, signifying your Master has stopped, you take a break as well.")
 			else:
@@ -259,7 +259,7 @@ func _react(_action: String, _args):
 		if(path.size() == 0):
 			setState(destination)
 			return
-		if path.size() in custom_scenes[destination] and RNG.chance(20):
+		if path.size() in custom_scenes[destination] and RNG.chance(25):
 			_action = custom_scenes[destination][path.size()]
 			pace = 0
 		elif RNG.chance(1):
@@ -272,13 +272,13 @@ func _react(_action: String, _args):
 			return
 
 	if _action == "nova_horny":
-		pawns_interactions = pick_unique_one(findPawns([[["isInmate"], []], [["isInmate"], ["hasPenis"]]]))
+		pawns_interactions = Globals.pick_unique_one(Globals.findPawns([[["isInmate"], []], [["isInmate"], ["hasPenis"]]]))
 		if null in pawns_interactions:
 			setState("leashed")
 			return
 
 	if _action == "irritatingguard":
-		pawns_interactions = pick_unique_one(findPawns([[["isGuard"], []]]))
+		pawns_interactions = Globals.pick_unique_one(Globals.findPawns([[["isGuard"], []]]))
 		if null in pawns_interactions:
 			setState("leashed")
 			return
@@ -291,55 +291,7 @@ func _react(_action: String, _args):
 	
 	setState(_action)
 
-# Verify requirements for pawns TODO TEST
-func verifyRequirements(pawn: CharacterPawn, requirements: Array) -> bool:
-	for method in requirements[0]:
-		pawn.has_method(method)
-		if !pawn.call(method):
-			return false
-	var base_character = pawn.getCharacter()
-	for method in requirements[1]:
-		base_character.has_method(method)
-		if !base_character.call(method):
-			return false
-	return true
 
-# Find pawns that succeed requirements in list of lists
-func findPawns(requirements) -> Array:
-	var all_pawns = GM.main.IS.getPawns()
-	var results = []
-	for pawn_requirement in requirements:
-		var meet_criteria = []
-		for pawn in all_pawns:
-			if !verifyRequirements(all_pawns[pawn], pawn_requirement):
-				continue
-			meet_criteria.append(pawn)
-		results.append(meet_criteria)
-	return results
-
-func check_if_string(element):
-	return element is String
-
-# Pick a unique random item for each of arrays
-func pick_unique_one(input_array: Array) -> Array:
-	var sizes_of_arrays = []  # We will need to compare sized of arrays to first process smallest arrays
-	var processed_array = input_array.duplicate(true)
-	for array in input_array:
-		sizes_of_arrays.append(array.size())
-
-	for _item in range(input_array.size()):
-		var smallest_array = sizes_of_arrays.min()
-		var index = sizes_of_arrays.find(smallest_array)
-		for _i in range(smallest_array):
-			var pick = input_array.pick_random()
-			if pick in processed_array:
-				continue
-			processed_array[index] = pick
-			break
-		if processed_array[index] is Array:
-			processed_array[index] = null
-		sizes_of_arrays[index] = 999999
-	return processed_array
 
 func shouldBeInHeavyBondage(): # TODO Skill rebalance
 	return GM.pc.getSkillsHolder().getSkill("Pet").getLevel() > 2 or GM.pc.getSkillsHolder().getSkill("Pet").getExperience() > 80

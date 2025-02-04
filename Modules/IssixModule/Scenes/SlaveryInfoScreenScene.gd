@@ -24,7 +24,7 @@ func _run():
 		playAnimation(StageScene.Duo, "kneel", {npc="issix", npcAction="stand"})
 		if pet_time_start == null:
 			pet_time_start = GM.main.getTime()
-		addMessage("WARNING: A lot of the content in here is a placeholder. It will change, it will break, it will cause calamities. Treat it as a sneek peek into the (potential) future.")
+		#addMessage("WARNING: A lot of the content in here is a placeholder. It will change, it will break, it will cause calamities. Treat it as a sneek peek into the (potential) future.")
 		saynn("Your slave role: "+("pet" if GM.main.getModuleFlag("IssixModule", "PC_Enslavement_Role", 1) == 1 else "prostitute"))
 		saynn("Your training: "+trainingCheck())
 		saynn("Master's mood: "+getMood())
@@ -65,7 +65,8 @@ func _run():
 			addButtonWithChecks("Comic", "Read one of "+ str(getModuleFlag("IssixModule", "Comic_Books", 0)) +" comic books", "readabook", [], [ButtonChecks.NotBlindfolded])
 		if not (GM.main.getModuleFlag("IssixModule", "Is_Player_Forced_Today", 0) > (getTimeSpent())) or GM.main.isVeryLate():
 			addButton("Leave", "Leave", "endthescene")
-		GM.ES.triggerRun("OpeningSlaveryScreen")
+		#GM.ES.triggerRun("OpeningSlaveryScreen")
+		GM.ES.triggerReact(Trigger.TalkingToNPC, ["slaveryscreen"])
 
 	if state == "issixpetmenu":
 		addCharacter("issix")
@@ -83,9 +84,16 @@ func _run():
 			addButton("Training", "Ask Master if he could train you to be a better pet", "issixpettraining")
 		else:
 			addDisabledButton("Training", "You can only train once per day")
-		addDisabledButton("Tasks", "Ask for extra tasks (WIP)")  # , "issixtaskquestion"
+		addButton("Tasks", "Ask for extra tasks", "issixtaskquestion")  # , "issixtaskquestion"
 		addDisabledButton("Options", "Ask your Master to change how he treats you (WIP)")  #, "issixoptions" Pet etiquette, make player communicate via animalistic sounds, unlocks optional training
 		addButton("Back", "Go back", "")
+
+
+	if state == "issixtaskquestionlist":
+		saynn("You can do certain tasks for Master to help in the harem and raise Issix's mood.")
+		addButton("")
+		addButton("Back", "Go back", "")
+
 
 	if state == "issixmilkingfirst":
 		saynn("[say=pc]Master, you mentioned something about unburdening my chest?[/say]")
