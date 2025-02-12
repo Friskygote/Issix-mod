@@ -97,8 +97,15 @@ func getFlags():
 		"PC_Pet_Didnt_Fullfill_Daily": flag(FlagType.Bool),
 		"PC_Pet_Didnt_Mate": flag(FlagType.Bool),
 		"PC_Bad_Sex": flag(FlagType.Number),
-		"Hiisi_Protects_PC": flag(FlagType.Bool)
-		#"Gym_Bullies_Left_Alone": flag(FlagType.Bool)  Currently cannot change the behavior of this :(
+		"Hiisi_Protects_PC": flag(FlagType.Bool),
+		"Azazel_Fertility_Training_Today": flag(FlagType.Bool),
+		"Had_Previously_Trained_Fertility_LVL1": flag(FlagType.Bool),
+		"Trained_Pet_Today": flag(FlagType.Bool),
+		"PC_Should_Be_Punished": flag(FlagType.Number),
+		"PC_Should_Be_Rewarded": flag(FlagType.Number),
+		"Did_Task_Today": flag(FlagType.Bool),
+		"Drone_Task_Timeout": flag(FlagType.Number), # 0 = everything is fine, -1 = drone lost, 0> day at which when the task can resume,
+		"Drone_Flight_Unlocked": flag(FlagType.Bool) # null = locked, false = unlocked, true = flew in the past
 		}
 		
 
@@ -123,7 +130,8 @@ func _init():
 		"res://Modules/IssixModule/Scenes/AzazelCorruption/StopsEvent.gd",
 		"res://Modules/IssixModule/Events/AnnouncerLuckTokenEvent.gd",
 		"res://Modules/IssixModule/Scenes/AzazelCorruption/DemonPetsEvent.gd",
-		"res://Modules/IssixModule/Scenes/AzazelCorruption/LongCorridorEvent.gd"
+		"res://Modules/IssixModule/Scenes/AzazelCorruption/LongCorridorEvent.gd",
+		"res://Modules/IssixModule/Events/SlaveryScreenOpen.gd"
 		]
 		
 	scenes = [
@@ -161,7 +169,11 @@ func _init():
 		"res://Modules/IssixModule/Scenes/AzazelCorruption/FountainScene.gd",
 		"res://Modules/IssixModule/Scenes/AzazelCorruption/FinalIssixDrugScene.gd",
 		"res://Modules/IssixModule/Scenes/SlaveryFirst/RescueFromFightScene.gd",
-		"res://Modules/IssixModule/Scenes/SlaveryFirst/GenericTrainSessionScene.gd", "res://Modules/IssixModule/Scenes/SlaveryFirst/WalkiesTrainingScene.gd"
+		"res://Modules/IssixModule/Scenes/SlaveryFirst/GenericTrainSessionScene.gd",
+		"res://Modules/IssixModule/Scenes/SlaveryFirst/WalkiesTrainingScene.gd",
+		"res://Modules/IssixModule/Scenes/SlaveryFirst/PunRew/IssixPawJobScene.gd",
+		"res://Modules/IssixModule/Scenes/Tasks/DroneFinder.gd", 
+		"res://Modules/IssixModule/Scenes/Tasks/HiisiLaundry.gd"
 		]
 		
 	characters = [
@@ -230,7 +242,33 @@ func postInit():
 	# Overwrite scenes for dealing with bullies, they need to be initiated in here due to module initialization order overwriting our modules
 	GlobalRegistry.registerScene("res://Modules/IssixModule/Scenes/Overwrites/BullyGangScene.gd", "Rahi")  # Still consider it mostly Rahi's creation'
 	GlobalRegistry.registerEvent("res://Modules/IssixModule/Events/Overwrites/BullyGangEvent.gd")
+	# var console_commands = load("res://Modules/IssixModule/Internal/ConsoleCommands.gd")
+	# if(!console_commands):
+	# 	Log.printerr("ERROR: couldn't load console_commands from path ")
+	# 	return
+	# var commands = console_commands.new()
+	# commands.init()
+	GlobalRegistry.registerPawnType("res://Modules/IssixModule/Internal/Guard.gd")
+
 	#GM.ES.registerEventTrigger("OpeningSlaveryScreen", EventTriggerLocation.new())  # TODO Find a way to do that
+
+# https://gitlab.com/Delta-V-Modding/Mods/-/blob/main/game/ModLoader.gd, credits to harrygiel, Mariusz Chwalba and Vladimir Panteleev
+func installScriptExtension(childScriptPath:String):
+	var childScript = ResourceLoader.load(childScriptPath)
+
+	# Force Godot to compile the script now.
+	# We need to do this here to ensure that the inheritance chain is
+	# properly set up, and multiple mods can chain-extend the same
+	# class multiple times.
+	# This is also needed to make Godot instantiate the extended class
+	# when creating singletons.
+	# The actual instance is thrown away.
+	childScript.new()
+
+	var parentScript = childScript.get_base_script()
+	var parentScriptPath = parentScript.resource_path
+	print("ModLoader: Installing script extension: %s <- %s" % [parentScriptPath, childScriptPath])
+	childScript.take_over_path(parentScriptPath)
 
 static func handleUpdates():
 	if (GM.main.getModuleFlag("IssixModule", "PC_Enslavement_Role", 0) >= 1):  # if enslaved
@@ -361,6 +399,17 @@ func resetFlagsOnNewDay():  # I apologize for abusing this hook, but startNewDay
 	GM.main.setModuleFlag("IssixModule", "Has_Been_Milked_Today", true)
 	if GM.main.getModuleFlag("IssixModule", "Trained_With_Hiisi_Combat") != null:
 		GM.main.setModuleFlag("IssixModule", "Trained_With_Hiisi_Combat", false)
+	if GM.main.getModuleFlag("IssixModule", "Azazel_Fertility_Training_Today") != null:
+		GM.main.setModuleFlag("IssixModule", "Azazel_Fertility_Training_Today", false)
 	GM.main.setModuleFlag("IssixModule", "Azazel_Had_Corruption_Scene_Today", false)
 	GM.main.setModuleFlag("IssixModule", "Hiisi_Helped_Today", false)
 	GM.main.setModuleFlag("IssixModule", "Hiisi_Had_Encounter_Scene_Today", false)
+	GM.main.setModuleFlag("IssixModule", "Trained_Pet_Today", false)
+	if GM.main.getModuleFlag("IssixModule", "Did_Task_Today") != null:
+		GM.main.setModuleFlag("IssixModule", "Did_Task_Today", false)
+	# Reward player if master happy
+	if GM.main.getModuleFlag("IssixModule", "Issix_Mood", 50) > 80:
+		if RNG.chance(35):
+			GM.main.setModuleFlag("IssixModule", "PC_Should_Be_Rewarded", 10)
+	if GM.main.getDays() >= GM.main.getModuleFlag("IssixModule", "Drone_Task_Timeout", 0):
+		GM.main.setModuleFlag("IssixModule", "Drone_Task_Timeout", 0)

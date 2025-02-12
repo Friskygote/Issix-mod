@@ -8,6 +8,7 @@ var reply_litter = null
 var azazel_teased_motherhood = false
 var AVERAGE_WALK_DELAY = 9
 var milk_result = []
+var allow_pawns = false
 
 func _init():
 	sceneID = "SlaveryInfoScreen"
@@ -84,14 +85,28 @@ func _run():
 			addButton("Training", "Ask Master if he could train you to be a better pet", "issixpettraining")
 		else:
 			addDisabledButton("Training", "You can only train once per day")
-		addButton("Tasks", "Ask for extra tasks", "issixtaskquestion")  # , "issixtaskquestion"
+		match getModuleFlag("IssixModule", "Did_Task_Today"):
+			true:
+				addDisabledButton("Tasks", "You've already done a task today")
+			false:
+				addButton("Tasks", "Ask for extra tasks", "issixtaskquestion")
+			null:
+				pass
 		addDisabledButton("Options", "Ask your Master to change how he treats you (WIP)")  #, "issixoptions" Pet etiquette, make player communicate via animalistic sounds, unlocks optional training
 		addButton("Back", "Go back", "")
 
 
 	if state == "issixtaskquestionlist":
 		saynn("You can do certain tasks for Master to help in the harem and raise Issix's mood.")
-		addButton("")
+		addButton("Laundry", "Help Hiisi with laundry", "starthiisilaundry")
+		if getModuleFlag("IssixModule", "Drone_Task_Timeout", 0) == -1:
+			addDisabledButton("Drone", "Drone is currently unavailable, talk with Master Issix")
+		elif getModuleFlag("IssixModule", "Drone_Task_Timeout", 0) > 0:
+			addDisabledButton("Drone", "New drone has been ordered, however it will take a while before it gets to the prison")
+		elif getModuleFlag("IssixModule", "Progression_Points", 0) > 5:
+			addButtonWithChecks("Drone", "Help with finding items", "start_drone_task", [], [ButtonChecks.NotBlindfolded, ButtonChecks.NotHandsBlocked])
+		else:
+			addDisabledButton("????", "You haven't unlocked this yet")
 		addButton("Back", "Go back", "")
 
 
@@ -916,6 +931,10 @@ func _react(_action: String, _args):
 			_action = "lamiapetrequestanother"
 		GM.main.setModuleFlag("IssixModule", "Have_Received_Headpats_Lamia", true)
 
+	if _action == "start_drone_task":
+		allow_pawns = true
+		runScene("DroneFlightTask", [], "drone_end")
+
 	if _action == "issixmilkingq":
 		if GM.main.getModuleFlag("IssixModule", "Total_Fluids_Milked", 0) == 0:
 			_action = "issixmilkingfirst"
@@ -1035,6 +1054,8 @@ func _react(_action: String, _args):
 func onTextBoxEnterPressed(_new_text:String):
 	GM.main.pickOption("littercountresult", [])
 
+func supportsShowingPawns() -> bool:
+	return allow_pawns
 
 func _react_scene_end(_tag, _result):
 	if _tag == "subbysexissix":
@@ -1051,6 +1072,10 @@ func _react_scene_end(_tag, _result):
 			Globals.addIssixMood(5)
 			setState("after_sex_issix")
 
+	if _tag == "drone_end":
+		allow_pawns = false
+		setState("issixpetmenu")
+
 
 func saveData():
 	var data = .saveData()
@@ -1059,6 +1084,7 @@ func saveData():
 	data["replyLitter"] = reply_litter
 	data["petTimeStart"] = pet_time_start
 	data["azazelTease"] = azazel_teased_motherhood
+	data["allowPawns"] = allow_pawns
 
 	return data
 
@@ -1069,3 +1095,28 @@ func loadData(data):
 	pet_time_start = SAVE.loadVar(data, "petTimeStart", null)
 	azazel_teased_motherhood = SAVE.loadVar(data, "azazelTease", false)
 	reply_litter = SAVE.loadVar(data, "reply_litter", 0)
+	allow_pawns = SAVE.loadVar(data, "allowPawns", false)
+
+func getDebugActions():
+	return [
+		{
+			"id": "spawnGuard",
+			"name": "SpawnGuard",
+			"args": [
+			],
+		},
+		{
+			"id": "checkGuard",
+			"name": "checkGuard",
+			"args": [
+			],
+		},
+	]
+
+func doDebugAction(_id, _args = {}):
+	if(_id == "spawnGuard"):
+		GM.main.IS.trySpawnPawn("Guard")
+	if _id == "checkGuard":
+		for pawn in GM.main.IS.pawns:
+			if !GM.main.IS.pawns[pawn].isPlayer():
+				print(String(GM.main.IS.pawns[pawn].getChar().npcAttacks))

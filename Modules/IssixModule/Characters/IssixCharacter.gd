@@ -117,7 +117,7 @@ func getGender():
 	return Gender.Male
 
 func _getAttacks():
-	return ["IssixSlaveTease", "trygetupattack", "simplepunchattack","CuffPCHands", "ForceGagPC", "ForceMuzzlePC", "simplekickattack", "biteattack", "shoveattack"]
+	return ["IssixSlaveTease", "trygetupattack", "simplepunchattack","CuffPCHands", "ForceGagPC", "ForceMuzzlePC", "simplekickattack", "biteattack", "shoveattack", "PetCommandRoll", "PetCommandSit"]
 	
 func getSmallDescription() -> String:
 	return "Wears a red block uniform with number P-533. He is an intimidating tall demon-dragon, has red fur."
