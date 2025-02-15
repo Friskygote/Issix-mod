@@ -17,8 +17,7 @@ func getPicture():
 	return "res://Modules/IssixModule/Skills/Images/petspeech.png"
 
 func toggleable():
-	var ch = npc if npc != null else GM.pc
-	return !(ch.getSkillsHolder().hasPerk(self.id))
+	return true
 
 func unlockable():
 	return false

@@ -252,7 +252,6 @@ func _react(_action: String, _args):
 	if _action == "acceptslavery":
 		GM.pc.addExperience(500)
 		setModuleFlag("IssixModule", "Misc_Slavery_Info", {"day_enslaved": GM.main.getDays(), "scenes_seen": []})
-		setModuleFlag("IssixModule", "Progression_Points", 1)
 		setModuleFlag("IssixModule", "Progression_Day_Next", GM.main.getDays()+1)
 		setModuleFlag("IssixModule", "Issix_Mood", 50)
 		setModuleFlag("IssixModule", "Last_Walk", GM.main.getDays())

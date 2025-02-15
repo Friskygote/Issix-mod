@@ -21,8 +21,6 @@ func _initScene(_args = []):
 	item_target = RNG.pick(["main_dressing2", "main_green_corridor10", "main_green_secret", "main_dressing1", "main_hallroom5", "med_mental_entrance", "medical_hospitalwards", "medical_storage", "med_corridor_split2", "med_nearshower", "med_researchlab", "med_milkingroom", "eng_corridor_blue3", "eng_airventskip", "eng_robotics", "eng_storage", "eng_corridor6", "eng_corridor3", "eng_assemblylab", "mining_shafts_entering", "eng_bay_nearbreakroom", "cellblock_red_playercell", "cellblock_lilac_nearcell", "cellblock_orange_playercell", "cellblock_corridor_nearstairs"])
 	strike = 0
 	flying_back = false
-	# DEBUG
-	item_target = "eng_assemblylab"
 
 func _run():
 	if(state == ""):
@@ -149,6 +147,10 @@ func _run():
 		saynn("[say=issix]Here you go[/say]")
 		addButton("Finish", "End the task", "endthescene")
 
+	if state == "wrong_location_search":
+		saynn("You decide to dive lower with the drone to search for "+item+" however you find nothing. You do however get a few creatures trying to catch the drone. This unneeded attention significantly increases the risk of the mission. You refocus, maybe the the vibrations from the controller aren't at their max, and the item is somewhere else?")
+		addButton("Continue", "Continue the search", "search")
+
 	if state == "guard_catch":
 		aimCameraAndSetLocName(location)
 		saynn("As you continue flying out of the sudden a large object appears in your eyes scaring you. The visor flashes in colors before becoming completely dark.")
@@ -242,6 +244,28 @@ func _react(_action: String, _args):
 			_action = "retrival_success"
 		else:
 			_action = "retrival_failure"
+
+	if _action == "search_retrieve":
+		var endLocation = null
+		if item_target_type == 1:
+			endLocation = item_target
+		else:
+			endLocation = GM.main.IS.getPawn(item_target).getLocation()
+		if location != endLocation:
+			var pawsAtNewLoc = GM.main.IS.getPawnsAt(location)
+			var is_caught = false
+			for pawn in pawsAtNewLoc:
+				if pawn.isGuard():
+					if RNG.chance(80):
+						is_caught = true
+			if is_caught:
+				_action = "guard_catch"
+			elif strike == 2:
+				_action = "retrival_failure"
+			else:
+				strike += 1
+				_action = "wrong_location_search"
+		processTime(60)
 
 	if _action == "retrival_failure":
 		strike += 1

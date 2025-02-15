@@ -212,7 +212,7 @@ func _react(_action: String, _args):
 		GM.pc.setLocation("hall_ne_corner")
 		timedifference = GM.main.getTimeCap() - GM.main.timeOfDay
 		processTime(timedifference)
-		increaseModuleFlag("IssixModule", "Progression_Points")
+		GM.pc.addSkillExperience("Pet", 200)
 
 	if _action == "brandtalk":
 		attitude = _args[0]

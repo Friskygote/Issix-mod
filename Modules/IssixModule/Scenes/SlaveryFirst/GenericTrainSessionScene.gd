@@ -85,8 +85,8 @@ func _run():
 		addButton("Back", "End today's training session", "endthescene")
 
 
-func shouldBeInHeavyBondage(): # TODO Skill rebalance
-	return GM.pc.getSkillsHolder().getSkill("Pet").getLevel() > 2 or GM.pc.getSkillsHolder().getSkill("Pet").getExperience() > 80
+func shouldBeInHeavyBondage():
+	return GM.pc.getSkillsHolder().getSkill("Pet").getLevel() > 3
 
 func createButtons():
 	var trainingLevel = int(getModuleFlag("IssixModule", "PC_Training_Level", 0))
@@ -160,6 +160,7 @@ func _react(_action: String, _args):
 
 func _react_scene_end(_tag, _result):
 	if(_tag == "walkies_end"):
+		goodPoints += 5 if shouldBeInHeavyBondage() else 0
 		goodPoints += 2 if GM.pc.isMuzzled() else 0
 		goodPoints += 2 if GM.pc.hasBlockedHands() else 0
 		destroyBorrowedEquipment()

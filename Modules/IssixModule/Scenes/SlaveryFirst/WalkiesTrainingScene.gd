@@ -293,8 +293,8 @@ func _react(_action: String, _args):
 
 
 
-func shouldBeInHeavyBondage(): # TODO Skill rebalance
-	return GM.pc.getSkillsHolder().getSkill("Pet").getLevel() > 2 or GM.pc.getSkillsHolder().getSkill("Pet").getExperience() > 80
+func shouldBeInHeavyBondage():
+	return GM.pc.getSkillsHolder().getSkill("Pet").getLevel() > 3
 
 func rollDestination():
 	destination = RNG.pick(destinations.keys())

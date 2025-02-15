@@ -73,7 +73,7 @@ func _react(_action: String, _args):
 		scenes["scenes_seen"].append(sceneID)
 		GM.main.setModuleFlag("IssixModule", "Misc_Slavery_Info", scenes.duplicate(true))
 		setModuleFlag("IssixModule", "Progression_Day_Next", GM.main.getDays()+3)
-		increaseModuleFlag("IssixModule", "Progression_Points", 1)
+		GM.pc.addSkillExperience("Pet", 60)
 		endScene()
 		return
 

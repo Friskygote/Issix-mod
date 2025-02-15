@@ -62,3 +62,6 @@ func _react(_action: String, _args):
 		return
 	
 	setState(_action)
+
+func getSceneCreator():
+	return "Rahi, Frisk"

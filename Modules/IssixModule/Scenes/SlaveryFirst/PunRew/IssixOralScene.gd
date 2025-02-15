@@ -50,6 +50,9 @@ func _react(_action: String, _args):
 	if _action == "normal2":
 		GM.pc.addLust(20)
 
+	if _action == "normal3":
+		GM.pc.addStamina(-40)
+
 	if(_action == "endthescene"):
 		endScene()
 		return

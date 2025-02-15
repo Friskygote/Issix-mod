@@ -103,7 +103,7 @@ func _run():
 			addDisabledButton("Drone", "Drone is currently unavailable, talk with Master Issix")
 		elif getModuleFlag("IssixModule", "Drone_Task_Timeout", 0) > 0:
 			addDisabledButton("Drone", "New drone has been ordered, however it will take a while before it gets to the prison")
-		elif getModuleFlag("IssixModule", "Progression_Points", 0) > 5:
+		elif GM.pc.getSkillsHolder().getSkill("Pet").getLevel() > 5:
 			addButtonWithChecks("Drone", "Help with finding items", "start_drone_task", [], [ButtonChecks.NotBlindfolded, ButtonChecks.NotHandsBlocked])
 		else:
 			addDisabledButton("????", "You haven't unlocked this yet")
