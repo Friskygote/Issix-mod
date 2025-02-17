@@ -222,6 +222,7 @@ func _react(_action: String, _args):
 		GM.pc.addStamina(-300)
 		GM.pc.addPain(300)
 		GM.pc.addEffect("AfterBrandPain")
+		setModuleFlag("IssixModule", "Issix_Branded_PC", true)
 
 	if _action == "firstwalk":
 		processTime(10*60)
@@ -246,6 +247,7 @@ func _react(_action: String, _args):
 			"What a great day for marking a pet",
 			"I got this branding iron as a gift, actually. not a very standard one, would you agree?",
 		], "medical_confessionary", "crawl"])
+		GM.main.addRoomMemory("medical_confessionary", "You remember being branded by your Master in this very room recently.", 3)
 
 	if(_action == "endthescene"):
 		setModuleFlag("IssixModule", "Progression_Day_Next", GM.main.getDays()+4)

@@ -52,6 +52,8 @@ The goal is to create a mod with as little of overwriting the core modules to pr
 - Ace's Worldbuilding Mod - overwrites entire engineering floor, breaks the quest
 
 # Contributing
+The main repository for the project exists on https://git.frisk.space/Frisk/Issix-mod now while GitHub is a mirror, regardless, contributions are welcome on GitHub (and they will be merged into main project on my website). This is mainly done to protect the mod from potential future purge of adult content on large platform like GitHub.
+
 Certain interaction in BDCC community shook me up a little and I've decided to add a politically motivated requirement for contributing to this repo.    
 
 I'll **not** take contributions from persons who **publicly or otherwise visibly condone a military conflict (wars), genocide or hatred towards any minority group**. I dislike making political requirement in software, but the fact is that I feel extremely uncomfortable working with people who call for any of those, the harms of one's doing affect real individuals.

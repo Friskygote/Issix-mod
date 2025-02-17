@@ -11,7 +11,7 @@ func getVisibleDescription():
 	return "You have learned the speech of animals without losing ability to communicate with humanoids"
 
 func getSkillTier():
-	return 1
+	return 2
 
 func getPicture():
 	return "res://Modules/IssixModule/Skills/Images/petspeech.png"

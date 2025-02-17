@@ -4,7 +4,7 @@ func _init():
 	id = "IssixSpecialEvent"
 
 
-var registered_special_scenes = [['IssixSlaveryIntroCont', 0, {}], ['IssixSlaveryBranding', 0, {}], ['IssixBringsComicbooks', 1, {"Comic_Books": 1}], ['IssixSlaveryBowlTraing', 3, {}], ]
+var registered_special_scenes = [['IssixSlaveryIntroCont', 0, {}], ['IssixSlaveryBranding', 0, {}], ['IssixBringsComicbooks', 1, {"Comic_Books": 1}], ['IssixSlaveryBowlTraing', 3, {}], ['IssixSlaveryCommandTraining', 5, {}]]
 
 class CustomSorter:
 	static func sort_by_progressionpoints(a, b):
