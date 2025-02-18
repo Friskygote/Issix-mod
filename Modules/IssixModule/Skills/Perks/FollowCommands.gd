@@ -10,6 +10,9 @@ func getVisibleName():
 func getVisibleDescription():
 	return "You learned basic commands that others can give you"
 
+func getMoreDescription():
+	return "Master Issix taught you various commands such as Sit, Roll, Give a paw, Stand. Guards and Master Issix can command you with Roll and Sit commands to skip turns."
+
 func getSkillTier():
 	return 1
 

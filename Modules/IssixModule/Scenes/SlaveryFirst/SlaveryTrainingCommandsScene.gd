@@ -43,6 +43,7 @@ func _run():
 		addButton("Follow", "Follow your Master", "follow_to_cell")
 
 	if state == "follow_to_cell":
+		aimCamera("cellblock_red_nearcell")
 		saynn("You follow your Master to his own cell. One the way a rude guard bumped pretty hard into you while going in direction opposite to yours, Your master noticed because you lost your balance making the leash pull Master's paw backwards. After making sure everything is okey, Your Master continued walking and you behind him, led on a leash.")
 
 		saynn("You are back at the crampy cell of your Master. Little space there is doesn't afford you much comfort, you are just standing almost in the entrance, in the inner part of the cell.")
@@ -141,8 +142,12 @@ func _run():
 		saynn("[say=issix]Perfect. Let me just retrieve devices.[/say]")
 		saynn("Issix's retrieval of his training tools doesn't take long, you are squirming on the floor so he takes advantage of your numbed state. Taking off the „butt plug” gave you the last jolt of pleasure.")
 
+		saynn("[say=pc]Ahhhhhhh![/say]")
 
-
+		saynn("[say=issix]Oh dear pet, what to do with you now, what to do... Can you move on your own.[/say]")
+		saynn("[say=pc]Y-yes, I t-think.[/say]")
+		saynn("With difficulty you are able to stand up and leave Issix's cell.")
+		addButton("Leave", "Leave the cell", "endthescene")
 
 
 func _react(_action: String, _args):
@@ -160,18 +165,14 @@ func _react(_action: String, _args):
 			else:
 				GM.pc.addLust(100)
 
+	if _action == "follow_to_cell":
+		GM.pc.setLocation("cellblock_red_nearcell")
+
 	if _action == "stand_up":
 		GM.pc.addLust(30)
 
 	if _action == "training":
 		GM.pc.addLust(10)
-
-	if _action == "finish":
-		increaseModuleFlag("IssixModule", "PC_Training_Level")
-		GM.pc.addSkillExperience("Pet", 200)
-		GM.pc.getSkillsHolder().addPerk("Commands")
-		setModuleFlag("IssixModule", "Taught_To_Be_Commanded", true)
-
 
 	if(_action == "endthescene"):
 		endScene()

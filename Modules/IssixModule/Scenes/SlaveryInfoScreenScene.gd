@@ -918,7 +918,6 @@ func _react(_action: String, _args):
 	if _action == "issixpettraining":
 		runScene("IssixGenericTrainSession")
 		_action = "issixpetmenu"
-		setModuleFlag("IssixModule", "Trained_Pet_Today", true)
 
 	if _action == "lamiapetrequest":
 		GM.pc.addPain(-10)
@@ -1075,6 +1074,10 @@ func _react_scene_end(_tag, _result):
 	if _tag == "drone_end":
 		allow_pawns = false
 		setState("issixpetmenu")
+
+	if _result is Array:
+		if _result.has("force_close"):
+			GM.main.pickOption("endthescene", [])
 
 
 func saveData():

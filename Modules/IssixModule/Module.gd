@@ -104,7 +104,8 @@ func getFlags():
 		"PC_Should_Be_Rewarded": flag(FlagType.Number),
 		"Did_Task_Today": flag(FlagType.Bool),
 		"Drone_Task_Timeout": flag(FlagType.Number), # 0 = everything is fine, -1 = drone lost, 0> day at which when the task can resume,
-		"Drone_Flight_Unlocked": flag(FlagType.Bool) # null = locked, false = unlocked, true = flew in the past
+		"Drone_Flight_Unlocked": flag(FlagType.Bool), # null = locked, false = unlocked, true = flew in the past
+		"Learned_Commands": flag(FlagType.Bool)
 		}
 		
 
@@ -171,6 +172,8 @@ func _init():
 		"res://Modules/IssixModule/Scenes/SlaveryFirst/GenericTrainSessionScene.gd",
 		"res://Modules/IssixModule/Scenes/SlaveryFirst/WalkiesTrainingScene.gd",
 		"res://Modules/IssixModule/Scenes/SlaveryFirst/PunRew/IssixPawJobScene.gd",
+		"res://Modules/IssixModule/Scenes/SlaveryFirst/SlaveryTrainingCommandsScene.gd",
+		"res://Modules/IssixModule/Scenes/SlaveryFirst/SlaveryTrainingCommandsContScene.gd",
 		"res://Modules/IssixModule/Scenes/Tasks/DroneFinder.gd", 
 		"res://Modules/IssixModule/Scenes/Tasks/HiisiLaundry.gd"
 		]

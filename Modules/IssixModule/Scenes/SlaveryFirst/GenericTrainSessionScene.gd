@@ -1,10 +1,10 @@
 extends SceneBase
 
-var levels = {1: ["Walkies", "Learn how to walk like a proper pet", "walkies_training"],
-			  2: ["Bowl", "Learn how to eat like a proper pet", "bowl_training"],
-			  3: ["Commands", "Learn how to listen to your Master's commands", "command_training"],
-			  4: ["Speech", "Learn how to speak like a pet", "speech_training"],
-			  5: ["Name", "Learn your new name", "name_training"]}
+var levels = {1: ["Walkies", "Learn how to walk like a proper pet", "walkies_training"],  # level, button name, button description, state, flag ID required
+			  3: ["Bowl", "Learn how to eat like a proper pet", "bowl_training", "Taught_To_Use_Bowl"],
+			  5: ["Commands", "Learn how to listen to your Master's commands", "command_training", "Learned_Commands"],
+			  7: ["Speech", "Learn how to speak like a pet", "speech_training"],
+			  10: ["Name", "Learn your new name", "name_training"]}
 
 var hasBorrowedMuzzle = false
 var hasBorrowedMittens = false
@@ -21,6 +21,7 @@ func _run():
 		saynn("[say=issix]My dear pet would like to train a little? That's good. Good pets want to be the best pets for their owners.[/say]")
 		saynn("[say=issix]Hmm, what was the last thing I trained you?[/say]")
 		createButtons()
+		addButtonAt(14, "Back", "Do not train today", "endthescene")
 
 	if state == "walkies_training":
 		playAnimation(StageScene.Duo, "stand", {pc="issix", npc="pc", npcBodyState={naked=true, leashedBy="issix"}, npcAction="kneel"})
@@ -89,15 +90,28 @@ func shouldBeInHeavyBondage():
 	return GM.pc.getSkillsHolder().getSkill("Pet").getLevel() > 3
 
 func createButtons():
-	var trainingLevel = int(getModuleFlag("IssixModule", "PC_Training_Level", 0))
-	for x in range(1, 5):
+	var trainingLevel = GM.pc.getSkillLevel("Pet")
+	var available_special_training = []
+	for x in levels.keys():
 		if x <= trainingLevel:
 			var buttonData = levels[x]
-			addButton(buttonData[0], buttonData[1], buttonData[2])
+			if buttonData.size() == 4 and getModuleFlag("IssixModule", buttonData[3]) != true:
+				available_special_training.append(buttonData[0])
+				addDisabledButton(buttonData[0], buttonData[1]+" (you haven't unlocked this training)")
+			else:
+				if buttonData[2] == "bowl_training":
+					pass  # skip bowl training? Not much we can do for repeatable scene here
+				elif buttonData[2] == "command_training":
+					addDisabledButton(buttonData[0], "WIP")
+				else:
+					addButton(buttonData[0], buttonData[1], buttonData[2])
 		elif x > trainingLevel:
 			var buttonData = levels[x]
 			addDisabledButton(buttonData[0], buttonData[1]+" (you haven't unlocked this training yet)")
 			break
+	for y in range(available_special_training.size()):
+		var training_name = available_special_training[y]
+		addButtonAt(5+y, training_name, "Receive a special training in "+training_name.to_lower(), "special_"+training_name.to_lower())
 
 func destroyBorrowedEquipment():
 	if hasBorrowedMittens and GM.pc.hasBlockedHands():
@@ -112,6 +126,15 @@ func _react(_action: String, _args):
 			addMessage("You've struggled out of the blindfold")
 		else:
 			addMessage("You've tried to struggle out of the blindfold but failed")
+
+	if _action == "special_bowl":
+		runScene("IssixSlaveryBowlTraing", [], "special_bowl_training_complete")
+
+	if _action == "special_commands":
+		if getModuleFlag("IssixModule", "Learned_Commands") == null:
+			runScene("IssixSlaveryCommandTraining", [], "special_commands_training_complete")
+		else:
+			runScene("IssixSlaveryCommandContTraining", [], "special_commands_training_complete")
 
 	if _action == "blindfold_takeon":
 		GM.pc.getInventory().forceEquipByStoreOtherUnlessRestraint(GM.pc.getInventory().getFirstOf("blindfold"), "issix")
@@ -164,6 +187,7 @@ func _react_scene_end(_tag, _result):
 		goodPoints += 2 if GM.pc.isMuzzled() else 0
 		goodPoints += 2 if GM.pc.hasBlockedHands() else 0
 		destroyBorrowedEquipment()
+		setModuleFlag("IssixModule", "Trained_Pet_Today", true)
 		if _result:
 			goodPoints = _result[0]
 			if goodPoints > 2:
@@ -175,6 +199,16 @@ func _react_scene_end(_tag, _result):
 			GM.pc.addSkillExperience("Pet", 5)
 			addMessage("You've gained 5 experience points. Also, something went wrong with programming :(")
 			setState("end_walkies")
+
+	if _tag == "special_commands_training_complete":
+		setModuleFlag("IssixModule", "Trained_Pet_Today", true)
+		endScene(["force_close"])
+		return
+
+	if _tag == "special_bowl_training_complete":
+		setModuleFlag("IssixModule", "Trained_Pet_Today", true)
+		endScene()
+		return
 
 func saveData():
 	var data = .saveData()
