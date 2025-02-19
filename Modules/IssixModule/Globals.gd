@@ -115,6 +115,7 @@ static func verifyRequirements(pawn: CharacterPawn, requirements: Array) -> bool
 	return true
 
 # Find pawns that succeed requirements in list of lists
+# It returns list of lists of pawnIDs like dynamicnpc32
 static func findPawns(requirements) -> Array:
 	var all_pawns = GM.main.IS.getPawns()
 	var results = []

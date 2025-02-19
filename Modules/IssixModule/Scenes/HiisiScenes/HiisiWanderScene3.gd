@@ -59,7 +59,7 @@ func _run():
 		addButton("Whatever", "Say that it doesn't matter whether he did or not", "doesntmatter")
 		addButton("I'm out", "You forgot that you've left your iron running... Or make up more believable excuse", "preendthescene")
 
-	if state in ["bent", "notbent"]:
+	if state in ["bent", "doesntmatter", "notbent"]:
 		if state == "bent":
 			saynn("[say=pc]Yes, Hiisi's leg was bent.[/say]")
 			saynn("[say=azazel]Nooooooooo.[/say]")

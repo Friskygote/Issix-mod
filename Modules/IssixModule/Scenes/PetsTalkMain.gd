@@ -33,13 +33,17 @@ var animal_flora_lamia_art = [
 	"feral bear fishing",
 	"multiple cats chasing each other as their small ones rest on a pillow nearby",
 	"a horse galloping in the distance",
-	"a spread purple flower that has multiple petals of various sizes attached"
+	"a spread purple flower that has multiple petals of various sizes attached",
+	"a large orange fox overlooking a blue globe",  # best browser
+	"a jar full of worms"
 	]
 
 var humanoids_animals_lamia_art = [
 	"an anthro cat holding a little feral mouse on palm of their paw",
 	"a cat person leading their feral dog on a leash",
-	"coyote person releasing a bird - a white dove from their paws into the air, the dove flies away"
+	"coyote person releasing a bird - a white dove from their paws into the air, the dove flies away",
+	"a feminine lizard running along feral dog by their side",
+	"faces of a humanoid lion and a feral weasel illuminated only by a single candle in the center, everything else is dark, only faces and a candle are visible"
 	]
 
 var background_lamia_art = [
@@ -49,35 +53,45 @@ var background_lamia_art = [
 	"darkness extending everywhere, the little light that can be found on the picture gives you a hint that the drawing shows some kind of a mine, with glistering rock and a lake in the distance",
 	"stalactites and stalagmites extending from the top and bottom of the cave, a torch is visible somewhere deeper in the cave",
 	"what looks to be an empty dog park with various dog attractions in it, in the background you can see sun raising from the horizon - it must be early morning",
+	"a sunrise above a large body of water"
 	]
 	
 var animals_backgrounds_lamia_art = [
-		"a jungle full of flora, you see giant trees as well as a large amount of green plants, some purple flowers growing here and there",
-		"a bird's-eye view of abandoned city, reclaimed by nature, full of thorny vines and trees growing from the houses",
-		"a rabbit jumping above a huge ravine, even though they there is no way their paws could put them so high, considering their position they will likely land on the other side",
-		"a feral dragon sitting atop a pile of gold, crusty fries, nearby there is a small well filled to the brim with red liquid (ketchup, you presume), with a single giant fry sticking out of it"
-	]
+	"a jungle full of flora, you see giant trees as well as a large amount of green plants, some purple flowers growing here and there",
+	"a bird's-eye view of abandoned city, reclaimed by nature, full of thorny vines and trees growing from the houses",
+	"a rabbit jumping above a huge ravine, even though they there is no way their paws could put them so high, considering their position they will likely land on the other side",
+	"a feral dragon sitting atop a pile of gold, crusty fries, nearby there is a small well filled to the brim with red liquid (ketchup, you presume), with a single giant fry sticking out of it",
+	"raccoon family walking towards sunset, passing many households on the way",
+]
 
 var humanoids_backgrounds_lamia_art = [
 	"an anthro bull standing at the top of the mountain looking at clear view of green terrains below them",
 	"an inmate staring at the cosmos behind the reinforced glass display",
 	"various species of humanoids having a party on what looks to be a flying... Egg",
+	"above ground view of various anthropomorphic creatures holding each other's paws and forming a wall, behind them a gray, smoking ruined village destroyed by war",
+	"many anthropomorphic animals belonging to some kind of a tribe based on fresh fur markings holding a ceremony, in the the background a highly detailed stone altar and plenty of decorations all around",
+	"multiple people inside a cave, there is a high contrast between technologically advanced humanoids and simplicity of cave environment that surrounds them"
 ]
 
 var other_lamia_art = [
 	"a wide assortment of geometrical figures - squares, triangles and hexadecagons",
-	"a collar, very similar to the one every inmate wears, on it a barbed wire"
-	]
+	"a collar, very similar to the one every inmate wears, on it a barbed wire",
+	"a very tasty looking cake",
+	"a large industrial sledgehammer",
+	"world's tiniest shovel",
+	"a paper map of some sorts"
+]
 
 var all_features_combined_lamia_art = [
-		"some sort of a spaceship, multiple people hanging out, laughing and eating in its living area, you can spot a feral bird in one of the cages placed on a table in this wide open space",
-		"a bunch of masculine tribe anthropomorphic canines hunting for what looks to be a wyvern of some sort in the air, they use primitive tools like spears thrown into air, the area they are located in seems very swampy with plenty of mud and flora that usually grows in highly watery places"
-	]
+	"some sort of a spaceship, multiple people hanging out, laughing and eating in its living area, you can spot a feral bird in one of the cages placed on a table in this wide open space",
+	"a bunch of masculine tribe anthropomorphic canines hunting for what looks to be a wyvern of some sort in the air, they use primitive tools like spears thrown into air, the area they are located in seems very swampy with plenty of mud and flora that usually grows in highly watery places",
+	"a humanoid of unknown species terrified, running away with other humanoids and many feral species while above the horizon an enormous purple tentable beast covers entire sky"
+]
 
 var odd_lamia_art = [
 	"a worm that seems to have a very slippery texture, on one of the ends there is a simple „tail” with spike like ending, while the other seems to be a hollowed circle with numerous tiny teeth around it",
 	"at first what seems like a tube of some sorts, though later you notice that this tube ends with a hole on one end, around the „hole” a bunch of yellowish protrusions extending from the fleshy tube"
-	]
+]
 
 var crossword_puzzles = [["Sex in 11 letters", "Intercourse"], ["Subfamily of goats and sheep", "Caprinae"], ["Lacking the authority or capacity to act", "Powerless"], ["Male heir to the throne", "Prince"], ["Fantasy art of bringing creatures from death to living", "Necromancy"]]
 # OWNERSHIP
@@ -647,7 +661,7 @@ func _run():
 		saynn("You recall the following about Lamia's explanations:")
 		saynn("The [color=blue]blue box[/color] is associatied with PEOPLE, humanoids, anthropomorphic animals. If artwork features only a humanoid, or it has a feral animal along with humanoid, or the humanoid is drawn with a background - the artwork goes to this box.")
 		saynn("The [color=red]red box[/color] is associated with feral animals and plants. If the artwork features only animal/plant or animal/plant and a background then it belongs in this box.")
-		saynn("The [color=green]green box[/color] is for backgrounds, though optionally artwork goes there if it has all of the elements - so animals/plants, humanoids as well as the background.")
+		saynn("The [color=green]green box[/color] is for rather detailed backgrounds, though optionally artwork goes there if it has all of the elements - so animals/plants, humanoids as well as the background.")
 		saynn("The [color=purple]purple box[/color] is for everything that doesn't fit in other boxes. Abstract art, simple text, figures or items.")
 		addButton("Back", "Go back to categorizing art!", "artminigameae")
 

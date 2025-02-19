@@ -18,7 +18,15 @@ var location_dir = {"hall_elevator": "med_elevator", "mining_elevator": "hall_el
 func _initScene(_args = []):
 	item = RNG.pick(missing_items)
 	location = GM.pc.getLocation()
-	item_target = RNG.pick(["main_dressing2", "main_green_corridor10", "main_green_secret", "main_dressing1", "main_hallroom5", "med_mental_entrance", "medical_hospitalwards", "medical_storage", "med_corridor_split2", "med_nearshower", "med_researchlab", "med_milkingroom", "eng_corridor_blue3", "eng_airventskip", "eng_robotics", "eng_storage", "eng_corridor6", "eng_corridor3", "eng_assemblylab", "mining_shafts_entering", "eng_bay_nearbreakroom", "cellblock_red_playercell", "cellblock_lilac_nearcell", "cellblock_orange_playercell", "cellblock_corridor_nearstairs"])
+	item_target = ""
+	if RNG.chance(20):
+		var pawns = Globals.pick_unique_one(Globals.findPawns([[["isInmate"], []]]))
+		if pawns[0] != null:
+			item_target = pawns[0]
+			item_target_type = 2
+	if item_target == "":
+		item_target = RNG.pick(["main_dressing2", "main_green_corridor10", "main_green_secret", "main_dressing1", "main_hallroom5", "med_mental_entrance", "medical_hospitalwards", "medical_storage", "med_corridor_split2", "med_nearshower", "med_researchlab", "med_milkingroom", "eng_corridor_blue3", "eng_airventskip", "eng_robotics", "eng_storage", "eng_corridor6", "eng_corridor3", "eng_assemblylab", "mining_shafts_entering", "eng_bay_nearbreakroom", "cellblock_red_playercell", "cellblock_lilac_nearcell", "cellblock_orange_playercell", "cellblock_corridor_nearstairs"])
+
 	strike = 0
 	flying_back = false
 
@@ -65,7 +73,7 @@ func _run():
 		saynn("[say=hiisi]They don't care. If your item is in the medical wing consider yourself lucky.[/say]")
 
 		saynn("[say=pc]And how will I know where the item is?[/say]")
-		saynn("[say=hiisi]The closer you get the more vibrations the controller gives you. [/say]")
+		saynn("[say=hiisi]The closer you get the more vibrations the controller gives you. Be aware that sometimes items can get picked up by others as well, if this happens - well, it might move.[/say]")
 		saynn("He pulls out the equipment from the bag and passes them to you.")
 		saynn("[say=hiisi]You wear the googles to see what the drone sees, and the controller is as you can imagine - to control the drone. We'd use some kind of neura-link to steer it better however it was way outside the budget and obviously it's not the kind of thing we can make on our own, so analog controller it is. Don't worry, you can do it.[/say]")
 		saynn("[say=hiisi]Oh, also, the drone is pretty quick, so watch out when you fly not to bump into walls.[/say]")
@@ -130,7 +138,10 @@ func _run():
 		game.connect("minigameCompleted", self, "onMinigameCompleted")
 
 	if state == "retrival_success":
-		saynn("You were able to fish out "+item+" without an issue! Time to fly back to the harem.")
+		if item_target_type == 1:
+			saynn("You were able to fish out "+item+" without an issue! Time to fly back to the harem.")
+		else:
+			saynn("You were able to fish out "+item+" out of "+GM.main.IS.getPawn(item_target).getChar().getName()+"'s pocket, well done! Time to fly back to the harem.")
 		addButton("Fly back", "Fly back", "fly_back")
 
 	if state == "drone_lost":
@@ -307,7 +318,7 @@ func _react(_action: String, _args):
 		var item_index = missing_items.find(item)
 		if item_index != -1:
 			reward = (item_index*8)+RNG.randi_range(0,7)
-		addMessage("You've received "+str(reward)+" from Issix for successful task")
+		addMessage("You've received "+str(reward)+" credits from Issix for successful task")
 		GM.pc.addCredits(reward)
 
 	if _action == "switch_place":

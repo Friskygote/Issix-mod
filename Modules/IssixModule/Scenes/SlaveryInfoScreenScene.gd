@@ -93,7 +93,17 @@ func _run():
 			null:
 				pass
 		addDisabledButton("Options", "Ask your Master to change how he treats you (WIP)")  #, "issixoptions" Pet etiquette, make player communicate via animalistic sounds, unlocks optional training
+		# If all training options have been finished, the option hasn't been rejected and Pet level 10+
+		# if GM.pc.getSkillLevel("Pet") >= 10 and getModuleFlag("IssixModule", "Issix_Mood", 50) > 85:
+		# 	addButton("Talk", "Talk with Master about being a pet", "mindbroken_intro")
 		addButton("Back", "Go back", "")
+
+	# if state == "mindbroken_intro":
+	# 	saynn("[say=pc]Master?[/say]")
+	# 	saynn("[say=issix]Yes, pet?[/say]")
+	# 	saynn("[say=pc]I were thinking, is there something else I could do to be an even better pet for you?[/say]")
+	# 	saynn("[say=issix]Hahahaha. Your ambition knows no bounds, does it? {pc.Name} for me you are already a perfect pet.[/say]")
+	# 	saynn("[say=pc]Please Master, there must be something I can do better! [/say]")
 
 
 	if state == "issixtaskquestionlist":
