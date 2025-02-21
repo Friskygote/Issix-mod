@@ -42,6 +42,8 @@ func _run():
 				pass
 		if playerToFuck() and getModuleFlag("IssixModule", "Had_Sex_With_Issix", false) != true:
 			saynn("[color=#983030][b]Master expects you to be available for fucking today.[/b][/color]")
+		if Globals.untilNextWalk() == 0 and GM.main.getTime() > 15*60*60 and GM.main.getTime() < 17*60*60:
+			saynn("[color=#ffaa00][b]Everyone at the corner is preparing to leave for the walk[/b][/color]")
 		setModuleFlag("IssixModule", "Last_Day_Visited_Master", GM.main.getDays())
 		addButton("Master", "Talk with your master about something", "issixpetmenu")
 		addButton("Azazel", "Actions in relation to Azazel", "azazelpetmenu")
@@ -61,6 +63,7 @@ func _run():
 				addDisabledButton("Walk", "Walks are unimplemented at the moment, possibly in future releases!")
 			else:
 				addDisabledButton("Walk", "Too late for a walk")
+		addButton("Trash can", "Open the trash can", "trash_can")
 		addButton("Pass", "Pass the time (placeholder button for now, supposed to be actions with pets/master later)", "passtime")
 		if getModuleFlag("IssixModule", "Comic_Book_Unlocked", false) == true and getModuleFlag("IssixModule", "Comic_Books", 0) > 0:
 			addButtonWithChecks("Comic", "Read one of "+ str(getModuleFlag("IssixModule", "Comic_Books", 0)) +" comic books", "readabook", [], [ButtonChecks.NotBlindfolded])
@@ -93,6 +96,8 @@ func _run():
 			null:
 				pass
 		addDisabledButton("Options", "Ask your Master to change how he treats you (WIP)")  #, "issixoptions" Pet etiquette, make player communicate via animalistic sounds, unlocks optional training
+		if GM.pc.hasKeyholderLocksFrom("issix"):
+			addButton("Smartlocks", "Ask Issix for keys to gear on you", "issix_smartlock_ask_keys")
 		# If all training options have been finished, the option hasn't been rejected and Pet level 10+
 		# if GM.pc.getSkillLevel("Pet") >= 10 and getModuleFlag("IssixModule", "Issix_Mood", 50) > 85:
 		# 	addButton("Talk", "Talk with Master about being a pet", "mindbroken_intro")
@@ -357,7 +362,7 @@ func _run():
 		saynn("[say=pc]Thank you Hiisi![/say]")
 		addButton("Finish", "End this conversation", "hiisipetmenu")
 
-	if state == "azazelfertilityfirst":
+	if state == "azazel_fertility_first_ask":
 		playAnimation(StageScene.Duo, "kneel", {pc="azazel"})
 		saynn("[say=pc]Heyy Azazel... Umm.[/say]")
 		saynn("Azazel smiles at you.")
@@ -408,13 +413,16 @@ func _run():
 				addDisabledButton("No Strapons", "You don't have loaded strapons")
 		addButton("Later", "You have to go!", "azazelpetmenu")
 
-	if state == "azazelfertilityrepeatlube":
-		saynn("[say=pc]Heey, can we do fertility training right now?[/say]")
-		saynn("[say=azazel]Sure! I'm up for it. Have you brought the slick juice?[/say]")
+	if state in ["azazelfertilityfirstlube", "azazelfertilityrepeatlube"]:
+		if state == "azazelfertilityfirstlube":
+			saynn("[say=azazel]Alrighty then! Pass me the lube {pc.boy}![/say]")
+		else:
+			saynn("[say=pc]Heey, can we do fertility training right now?[/say]")
+			saynn("[say=azazel]Sure! I'm up for it. Have you brought the slick juice?[/say]")
 		if GM.pc.getInventory().hasItemID("lube"):
 			saynn("[say=pc]Yup, have it here, catch.[/say]")
 			saynn("You throw the bottle of lube at Azazel, he catches it.")
-			saynn("[say=azazel]Thaaaanks, that will come in handy later hehe. Now, where were we last time...[/say]")
+			saynn("[say=azazel]Thaaaanks, that will come in handy later hehe. "+("Let the learning begin!" if state == "azazelfertilityfirstlube" else "Now, where were we last time...")+"[/say]")
 			addMessage("You've gave Azazel one bottle of lube")
 			addButton("Continue", "Continue", "azazelfertilityfirst")
 		else:
@@ -422,9 +430,12 @@ func _run():
 			saynn("[say=azazel]Well, I'll wait. As much as I want to breed you, I need lube for stuff![/say]")
 			addButton("Leave", "", "azazelpetmenu")
 
-	if state == "azazelfertilityrepeatsex":
-		saynn("[say=pc]Heey, can we do fertility training right now?[/say]")
-		saynn("[say=azazel]Well, that depends in your strapon is loaded and your womb ready to receive a happy load hihi.[/say]")
+	if state in ["azazelfertilitysecondsex", "azazelfertilityrepeatsex"]:
+		if state == "azazelfertilitysecondsex":
+			saynn("[say=azazel]Yay![/say]")
+		else:
+			saynn("[say=pc]Heey, can we do fertility training right now?[/say]")
+			saynn("[say=azazel]Well, that depends in your strapon is loaded and your womb ready to receive a happy load hihi.[/say]")
 		saynn("He eyes you with lust.")
 		saynn("[say=azazel]First, show me your toys! I wanna see them.[/say]")
 		if checkIfPCHasLoadedStrapons():
@@ -699,11 +710,16 @@ func _run():
 		addButton("Finish", "Finish this interaction", "lamiapetmenu")
 
 	if state == "issixwalkquestion":
-		var last_walk = getModuleFlag("IssixModule", "Last_Walk", 0)
-		if last_walk + 5 > GM.main.getDays():
+		saynn("[say=pc]Master, when do we go on next walk to the pasture?[/say]")
+		var to_walk = Globals.untilNextWalk()
+		if to_walk > 5:
 			saynn("[say=issix]We've just been on a walk pretty recently, so you'll have to be a little bit more patient my pet.[/say]")
+		elif to_walk == 1:
+			saynn("[say=issix]I plan to go out tomorrow, you excited? Just remember to come before 17:00 to hang out, otherwise there is little time.[/say]")
+		elif to_walk == 0:
+			saynn("[say=issix]Sorry, we've already been to the pasture today. We didn't want to wait at that point. Maybe next time? Just watch out for the day.[/say]")
 		else:
-			saynn("[say=issix]Hmm, soonish, probably in around "+ str(AVERAGE_WALK_DELAY-(GM.main.getDays()-last_walk)) + " days. Are you excited for the next walk?[/say]")
+			saynn("[say=issix]Hmm, soonish, probably in around "+ str(Globals.untilNextWalk(true)) + " days. Are you excited for the next walk?[/say]")
 		addButton("Back", "Go back", "issixpetmenu")
 
 	if state == "issixsexrequest":
@@ -742,6 +758,36 @@ func _run():
 	if state == "readabook":
 		saynn("You read one of the comic books, 20 minutes pass.")  # TODO Expand on this
 		addButton("Back", "Go back", "")
+
+	if state == "trash_can":
+		saynn("You can throw garbage into harems trash can")
+		addButton("Empty condoms", "Discard all of empty condoms in your inventory", "discard_condoms")
+		addButton("Back", "Close the trash can", "")
+
+	if state == "issix_smartlock_ask_keys_success":
+		saynn("[say=pc]M-master, may I have a key to your restraints?[/say]")
+		saynn("It's clear your predicament brings a smile to Master's face.")
+		saynn("[say=issix]Mmmm, you don't want to be rendered helpless by my gear pet? Owww, you hurt my feelings! You look great like this.[/say]")
+		saynn("[say=pc]*whine*[/say]")
+		saynn("[say=issix]I'll consider your plea but I want to see you beg. Beg for me to release you.[/say]")
+		addButton("Beg", "Beg your Master to free you from his restraints", "issix_beg_smartlocks")
+		addButton("Don't beg", "Decide not to beg and leave", "issixpetmenu")
+
+	if state == "issix_beg_smartlocks":
+		saynn("You beg your Master to free you of the restraints, he relents.")
+		saynn("[say=issix]Fine, it served its purpose.[/say]")
+		saynn("He then comes to you and opens each restraint with his key one by one until all of the keylocked by himself are no longer on your body.")
+		saynn("[say=issix]I'll keep them for another session, go.[/say]")
+		saynn("He winks and waves at you to go.")
+		addButton("Leave", "Leave", "issixpetmenu")
+
+	if state == "issix_smartlock_ask_keys_fail":
+		saynn("[say=pc]M-master, may I have a key to your restraints?[/say]")
+		saynn("Your Master's grimace doesn't seem very friendly.")
+		saynn("[say=issix]No. You look better this way, don't you dare reject my gifts.[/say]")
+		saynn("He grabs you by the arm and shakes you in show of power over your helplessness being bound by his gear.")
+		saynn("[say=issix]Now, leave.[/say]")
+		addButton("Leave", "Leave", "issixpetmenu")
 
 func getTimeSpent():
 	return getModuleFlag("IssixModule", "Pet_Time_Interaction_Today", 0)+(GM.main.getTime()-pet_time_start)
@@ -836,7 +882,7 @@ func getMood():
 		return "[color=green]excellent[/color]"
 
 static func playerToFuck():
-	return (int(GM.main.getDays()) % 2 == 1) and GM.main.getModuleFlag("IssixModule", "Todays_Bred_Slave", "") == "pc"
+	return GM.main.getModuleFlag("IssixModule", "Todays_Bred_Slave", "") == "pc"
 
 func getDays():
 	var days_enslaved = getModuleFlag("IssixModule", "Misc_Slavery_Info", {})["day_enslaved"]
@@ -892,6 +938,16 @@ func _react(_action: String, _args):
 		GM.pc.addLust(-90)
 		GM.pc.addStamina(-10)
 
+	if _action == "discard_condoms":
+		var counter = 0
+		for condom in GM.pc.getInventory().getAllOf("UsedCondom"):
+			condom.getFluids().removeEmptyInternalEntries()
+			if condom.getFluids().isEmpty():
+				counter += 1
+				condom.destroyMe()
+		addMessage("You've trashed "+str(counter)+" empty condoms.")
+		_action = "trash_can"
+
 	if _action == "azazelfertilitysecond":
 		GM.pc.getInventory().addItem(getCharacter("azazel").getInventory().getEquippedItem(InventorySlot.Strapon))
 
@@ -901,7 +957,7 @@ func _react(_action: String, _args):
 
 	if _action == "azazellearnfertility":
 		if getModuleFlag("IssixModule", "Azazel_Fertility_Training_Today") == null:
-			_action = "azazelfertilityfirst"
+			_action = "azazel_fertility_first_ask"
 		elif GM.pc.getSkillLevel(Skill.Fertility) < 6:
 			_action = "azazelfertilityrepeatlube"
 		else:
@@ -1051,6 +1107,19 @@ func _react(_action: String, _args):
 		processTime(15*60)
 		_action = ""
 
+	if _action == "issixwalkquestion":
+		if Globals.untilNextWalk() == 0 and 17 * 60 * 60 > GM.main.getTime():
+			runScene("IssixPastureWalk", [], "walkies")
+
+	if _action == "issix_smartlock_ask_keys":
+		if getModuleFlag("IssixModule", "Issix_Mood", 50) < 50:
+			_action = "issix_smartlock_ask_keys_fail"
+		else:
+			_action = "issix_smartlock_ask_keys_success"
+
+	if _action == "issix_beg_smartlocks":
+		addMessage("Your Master has freed you from "+str(GM.pc.unlockAllKeyholderLocksFrom("issix"))+" restraints.")
+
 	if(_action == "endthescene"):
 		# increaseModuleFlag("IssixModule", "PC_Training_Level")
 		increaseModuleFlag("IssixModule", "Pet_Time_Interaction_Today", GM.main.getTime()-pet_time_start)
@@ -1083,6 +1152,9 @@ func _react_scene_end(_tag, _result):
 
 	if _tag == "drone_end":
 		allow_pawns = false
+		setState("issixpetmenu")
+
+	if _tag == "walkies":
 		setState("issixpetmenu")
 
 	if _result is Array:

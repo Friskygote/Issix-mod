@@ -4,10 +4,10 @@ class_name IssixModule
 # If a var matches with your config ID, the config option will be sycronized with the config value
 var characterCoverage = "fur"
 
+const Globals = preload("res://Modules/IssixModule/Globals.gd")
+
 func onFoxLibModInit(foxModuleAPI):
 	foxModuleAPI.addListOption("characterCoverage", "Character's coverage", [["fur", "Fur"], ["skin", "Skin"], ["scales", "Scales"]], "Pick how to refer to what kind of coverage your character has", "fur")
-
-const APPROX_WALK_DELAY = 9
 
 func getFlags():
 	return {
@@ -285,14 +285,11 @@ static func addSceneToWatched(scene: String):
 static func addIssixMood(mood: int):
 	GM.main.setModuleFlag("IssixModule", "Issix_Mood", clamp(GM.main.getModuleFlag("IssixModule", "Issix_Mood", 50)+mood, 0, 100))
 
-static func getWalkDelay():
-	return APPROX_WALK_DELAY
-
 static func getPlayerRole():
 	return "pet" if GM.main.getModuleFlag("IssixModule", "PC_Enslavement_Role", 1) == 1 else "prostitute"
 
 static func playerToFuck():
-	return (int(GM.main.getDays()-1) % 2 == 1) and GM.main.getModuleFlag("IssixModule", "Todays_Bred_Slave", "") == "pc"  # every uneven day
+	return GM.main.getModuleFlag("IssixModule", "Todays_Bred_Slave", "") == "pc"  # every uneven day
 
 static func getPlayerPetName():
 	if Species.Canine in GM.pc.getSpecies():
@@ -377,7 +374,7 @@ func tickDay():
 		GM.main.increaseModuleFlag("IssixModule", "Comic_Books", RNG.randi_range(5, 8))
 	if int(GM.main.getDays()) % 30 == 0 and GM.main.getModuleFlag("IssixModule", "Strikes_For_Disobedience", 0) > 0:  # every 30 days remove one strike
 		GM.main.increaseModuleFlag("IssixModule", "Strikes_For_Disobedience", -1)
-	if GM.main.getDays()-1-GM.main.getModuleFlag("IssixModule", "Last_Walk", GM.main.getDays()) == APPROX_WALK_DELAY:
+	if Globals.untilNextWalk() < 0:
 		GM.main.setModuleFlag("IssixModule", "Last_Walk", GM.main.getDays()-1)
 
 

@@ -158,19 +158,29 @@ func _react(_action: String, _args):
 		return
 
 	if _action == "enchant":
-		var item = _args[0]
-		var lock = _args[1]
+		var item: ItemBase = _args[0]
+		var lock: String = _args[1]
+		var newLock: SmartLockBase = null
 
-		var newLock = SmartLock.create(lock)  # This is a very basic implementation of "enchanting", I kinda want to make it add more challenges to an item on each enchant but that depends on how this feature is perceived
-		newLock.onLocked({forcer = "pc"})
+		if item.getRestraintData().getSmartLock():
+			newLock = item.getRestraintData().getSmartLock()
+		else:
+			newLock = SmartLock.create(lock)  # This is a very basic implementation of "enchanting", I kinda want to make it add more challenges to an item on each enchant but that depends on how this feature is perceived
+			newLock.onLocked({forcer = "pc"})
+			item.getRestraintData().setSmartLock(newLock)
+
 		item.getRestraintData.setLevel(item.getRestraintData.getLevel()+1)  # Just an extra
-		item.getRestraintData().setSmartLock(newLock)
 		# Hey kids, don't do this at home, it's bound to be dangerous (seriously, I'm fucking surprised that works, though it feels like shoestring held kind of feature and fairly restricted)
 
 		if lock == SmartLock.SlutLock:
-			var availableTasks = ["Orgasms", "Choke", "Bodywritings"]  # Tasks should be available to anyone regardless any body configuration
+			var availableTasks = ["Orgasms", "Choke", "Bodywritings"]  # Tasks should be available to anyone regardless any body configuration TODO Add more?
+			for task in newLock.tasks:
+				availableTasks.erase(task.id)
 
-			var theTask:NpcBreakTaskBase = GlobalRegistry.createSlaveBreakTask(RNG.pick(availableTasks))
+			if availableTasks.size() == 0:
+				addMessage("Cannot apply any more slut lock tasks to this item!")
+				return
+			var theTask: NpcBreakTaskBase = GlobalRegistry.createSlaveBreakTask(RNG.pick(availableTasks))
 
 			theTask.generateFor("pc", false, RNG.randf_rangeX2(1.0, 2.0))
 			newLock.tasks.append(theTask)
@@ -179,6 +189,8 @@ func _react(_action: String, _args):
 				var _ok = task.connect("onTaskCompleted", newLock, "onSlutTaskCompleted")
 
 		addMessage(newLock.getName()+" has been applied to "+item.getVisibleName())
+		GM.main.increaseModuleFlag("IssixModule", "Issix_Used_Donations", 10)
+
 		setState("")
 		if(lockedInto):
 			endScene()

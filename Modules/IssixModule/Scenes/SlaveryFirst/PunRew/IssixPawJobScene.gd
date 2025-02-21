@@ -1,4 +1,4 @@
-extends RequirementsBasedScene
+extends "res://Modules/IssixModule/Scenes/RequirementsBasedScene.gd"
 
 var preference = 0
 

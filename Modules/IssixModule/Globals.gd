@@ -80,6 +80,19 @@ static func checkIfAchieved(flagName: String, stateKey: String) -> bool:
 static func returnValueFromStateFlag(flagName: String, stateKey: String, default=null):
 	return GM.main.getModuleFlag("IssixModule", flagName, {}).get(stateKey, default)
 
+# Return average time for which there should be a walk
+static func averageWalkTime() -> int:
+	return 9
+
+static func untilNextWalk(fake = false) -> int:
+	var last_walk = GM.main.getModuleFlag("IssixModule", "Last_Walk", GM.main.getDays())
+	var rng = RandomNumberGenerator.new()
+	rng.seed = last_walk
+	var variation = rng.randi_range(-2, 2)
+	if fake:
+		variation += rng.randi_range(1, 1)
+	return last_walk + averageWalkTime() + variation - GM.main.getDays()
+
 # Modify state of a state dict flag
 static func modifyDictStates(flagName: String, stateKey: String, stateValue):
 	var states = GM.main.getModuleFlag("IssixModule", flagName, {})
