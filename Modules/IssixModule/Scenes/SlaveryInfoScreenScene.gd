@@ -58,11 +58,7 @@ func _run():
 			addDisabledButton("Play", "Play with other pets (WIP)")
 		else:
 			addDisabledButton("Play", "You are too tired to play with other pets (minimum 100 stamina)")
-		if GM.main.getDays()-last_walk == AVERAGE_WALK_DELAY:  # TODO Walks
-			if GM.main.getTime() < 54000:
-				addDisabledButton("Walk", "Walks are unimplemented at the moment, possibly in future releases!")
-			else:
-				addDisabledButton("Walk", "Too late for a walk")
+		addButton("Walk", "Ask when Master about walk to the „Pasture”", "issixwalkquestion")
 		addButton("Trash can", "Open the trash can", "trash_can")
 		addButton("Pass", "Pass the time (placeholder button for now, supposed to be actions with pets/master later)", "passtime")
 		if getModuleFlag("IssixModule", "Comic_Book_Unlocked", false) == true and getModuleFlag("IssixModule", "Comic_Books", 0) > 0:
@@ -83,7 +79,6 @@ func _run():
 			addButton("Sex", "Ask for sex with Master", "issixsexrequest")
 		else:
 			addDisabledButton("Sex", "You've already had sex with Issix today")
-		addButton("Walk", "Ask when he plans the next walk to the pasture", "issixwalkquestion")
 		if getModuleFlag("IssixModule", "Trained_Pet_Today", false) == false:
 			addButton("Training", "Ask Master if he could train you to be a better pet", "issixpettraining")
 		else:
@@ -98,6 +93,14 @@ func _run():
 		addDisabledButton("Options", "Ask your Master to change how he treats you (WIP)")  #, "issixoptions" Pet etiquette, make player communicate via animalistic sounds, unlocks optional training
 		if GM.pc.hasKeyholderLocksFrom("issix"):
 			addButton("Smartlocks", "Ask Issix for keys to gear on you", "issix_smartlock_ask_keys")
+		if getModuleFlag("IssixModule", "Mindlessness_Day_Start") == null:
+			if GM.pc.getInventory().hasItemID("ObeyPill"):
+				addButton("Slave Candy", "Ask Issix to use Slave Candy on you", "issix_slave_candy")
+		else:
+			if getModuleFlag("IssixModule", "Mindlessness_Day_Start") + 4 >= GM.main.getDays():
+				addButton("Mindbreak", "Ask Master about the promised removal of free will", "issix_free_will_do")  # TODO
+			else:
+				addButton("Mindbreak", "Ask Master about the promised removal of free will", "issix_free_will_ask")
 		# If all training options have been finished, the option hasn't been rejected and Pet level 10+
 		# if GM.pc.getSkillLevel("Pet") >= 10 and getModuleFlag("IssixModule", "Issix_Mood", 50) > 85:
 		# 	addButton("Talk", "Talk with Master about being a pet", "mindbroken_intro")
@@ -789,6 +792,110 @@ func _run():
 		saynn("[say=issix]Now, leave.[/say]")
 		addButton("Leave", "Leave", "issixpetmenu")
 
+	if state == "issix_slave_candy":
+		saynn("[say=pc]Master! Could you please feed me this candy?[/say]")
+		saynn("You show Slave Candy to Master Issix, he takes it from your paw with interest and studies it.")
+		saynn("[say=issix]This is no ordinary candy, you know that right? It's also not something that [i]should[/i] be obtainable without specialized equipment, this is the type of thing sold on the rare kind of black markets. Where did you get it?[/say]")
+		saynn("You know you shouldn't be revealing anything about Blacktail Market, would Master even believe?"+(" Would Mirri give me the promised kiss of death?" if GM.main.getModuleFlag("IssixModule", "mirriNotBlacktail", false) else ""))
+		addButton("Lie", "Lie about origin of Slave Candy, say you found it on the station", "station_lie")
+		addButton("Mirri", "Admit the real source of the Slave Candy to Master", "mirri_mention")
+
+	if state == "station_lie":
+		saynn("[say=pc]I found it in medical wing, in one of the plastic containers.[/say]")
+		saynn("Your Master stares deep into your eyes and sighs.")
+		saynn("[say=issix]I know this station, I know the deliveries, I know what medical wing is capable of producing. What is so secret for you to lie to me like this? Why?[/say]")
+		saynn("Issix is not going to accept a lie like this.")
+		addButton("Mirri", "Admit the real source of the Slave Candy to Master", "mirri_mention")
+
+	if state == "mirri_mention":
+		saynn("[say=pc]... Please Master, nobody can know. I-[/say]")
+		saynn("[say=issix]You are safe here, I promise. What is it, pet?[/say]")
+		saynn("[say=pc]I've got the slave candy from a lady - Mirri from Syndicate...[/say]")
+		saynn("Issix doesn't seem surprised one bit.")
+		saynn("[say=issix]Blacktail Market.[/say]")
+		saynn("But you certainly are.")
+		saynn("[say=pc]How did yo-[/say]")
+		saynn("[say=issix]Please pet, I wouldn't be here if I didn't know my shit. Unexpected visitors from afar may slip attention from useless staff of this facility, but not me. I'm well aware of what Blacktail Market is and that we get visits from certain cat-like lady. They may be crafty and I may not know all of the details, but as long as you are in this corner I can assure your safety, you do not have to fear.[/say]")
+		saynn("„as long as you are in this corner” doesn't sound very reassuring, you do have to sleep after all. However you guess there is only so much your Master can do.")
+		saynn("[say=pc]Thank you, Master.[/say]")
+		addButton("Questions", "Master has more questions for you", "mirri_questions")
+
+	if state == "mirri_questions":
+		saynn("[say=issix]So, who is that cat lady... Mirri? Did she hurt you? I assume not considering your mind seems in-tact.[/say]")
+
+		saynn("[say=pc]I'm fine, Master, I've been just trading with her.[/say]")
+		saynn("You notice that Hiisi is listening to your conversation with Master.")
+		saynn("[say=issix]Trading? What an imprisoned pet from BDCC could possibly have to interest Syndicate? Wait, you don't mean to say that the missing slaves from your...[/say]")
+		saynn("[say=pc]Yes, Master. I've been selling slaves to Mirri.[/say]")
+		saynn("You expect Master to be angry, wouldn't he be? BDCC is in part his territory, hard to tell how he would react.")
+		saynn("[say=issix]That's... Concerning, to say the least. And why are you doing such a thing in the first place? I doubt Syndicate would offer you freedom, not that you could accept it considering your circumstances.[/say]")
+		saynn("[say=pc]It's complicated, Master.[/say]")
+		saynn("[say=issix]Then speak, we have the time.[/say]")
+		# TODO I know there are developments to Blacktail story, however I haven't progressed in my own save so far to be able to write for it
+		saynn("You explain the entire deal you have with Mirri, her insistence on you getting slaves for her to sell, the little cut of the deal you have for every sold slave, teleporting to Synticate station and the reserved wolf Luxe.")
+		saynn("[say=issix]I see. It is troubling, though the fact that so far it seems that only Mirri knows the coordinates of BDCC and they don't seem cooperative to share it with others in Syndicate is a saving grace. What I'd like for you to do is keep me updated with developments regarding Syndicate. If it ever comes to situation where we are in danger I'd have to intervene. And be careful around the cat... They sound like trouble. Hiisi, keep paw on the pulse, okey? And no talking with anyone else about it, we don't need attention.[/say]")
+		saynn("You breathe with relief, it doesn't seem like Master is angry at you. Though you do feel there is a sliver of disappointment in his voice, he likely wishes you'd tell him sooner.")
+		addButton("Slave candy?", "Ask again about feeding Slave Candy to you", "slave_candy_again")
+		addButton("Leave", "Leave the topic be", "issixpetmenu")
+
+	if state == "slave_candy_again":
+		saynn("[say=pc]Umm, Master, what about Slave Candy again? Can you feed it to me so I can be an even better pet for you?[/say]")
+		saynn("[say=issix]Do you really think so little of yourself? You are MY pet! I don't take just any pets, to be owned by myself is a privilege. You don't need no Slave Candy to be „better” for me. Don't tell me your self-esteem is worse than Azazel's, it already took a lot from me to turn him around.[/say]")
+		saynn("Master seems frustrated with your attitude, though he falls into deeper thought.")
+		if !hasAllPerksRequiredForMindfuck():
+			saynn("[say=issix]Besides, what you are asking for is not something one can reverse. It's permanent change in one's mind, to make someone a permanent slave both in body and mind. I'm not one to push anyone towards such a fate. Thought...[/say]")
+			saynn("He pauses, you look at him with sparkling eyes, for the firest time his dark orbs meet your pleading gaze.")
+			saynn("[say=issix]Do you remember the time when I asked you about whether you believe in existence of souls?[/say]")
+			saynn("[say=pc]Yes, Master.[/say]")
+			if getModuleFlag("IssixModule", "QuestionnaireQ1", false) == true:
+				saynn("[say=issix]You answered yes. And I explained to you the nature of souls as I see them. To do what you are asking me for - is to take away your soul.[/say]")
+			else:
+				saynn("[say=issix]You answered that you don't believe in existence of souls. And that's fine, what is a „soul” is not exactly defined anywhere. But to me, me doing what you are asking for is doing exactly that - stripping you of the last thing you have, pet. Of your soul.[/say]")
+
+			saynn("[say=issix]It is the ultimate sacrifice you could make to someone else, the final one, where you truthfully strip yourself of any choice. You would be doing do exactly as I say, you wouldn't have an option to disobey me. I'd become extension of your will, at best you'll have second wheel - entirely insignificant, a mere puppet. I'll own you fully, and you'd be just a husk of yourself.[/say]")
+			saynn("You stir, this is exactly what you want, isn't it? To let someone else take the reins, to become Master's - forever.")
+
+			saynn("[say=issix]I can't accept that. I'm sorry pet, but this is too far. I love my pets the way they are, they do not need to go to such extremes for me.[/say]")
+			saynn("He kisses your cheek.")
+			saynn("[say=issix]And that? Keep that for your slaves, don't let it get anywhere near your mouth, okey?[/say]")
+			saynn("[say=pc]Yes, Master.[/say]")
+			saynn("You say saddened.")
+			saynn("[say=issix]Don't look at me like that, I know what I'm doing and I'm not letting you get hurt. That's all.[/say]")
+			saynn("[say=pc]I understand, Master. Thank you.[/say]")
+			saynn("( Issix doesn't believe you are ready to lose your free will, you'll have to prove to him that you are ready )")
+			addButton("Back", "", "issixpetmenu")
+		else:
+			saynn("Finally, he sighs.")
+			saynn("[say=issix]Do you remember the time when I asked you about whether you believe in existence of souls?[/say]")
+			saynn("[say=pc]Yes, Master.[/say]")
+			if getModuleFlag("IssixModule", "QuestionnaireQ1", false) == true:
+				saynn("[say=issix]You answered yes. And I explained to you the nature of souls as I see them. To do what you are asking me for - is to take away your soul.[/say]")
+			else:
+				saynn("[say=issix]You answered that you don't believe in existence of souls. And that's fine, what is a „soul” is not exactly defined anywhere. But to me, me doing what you are asking for is doing exactly that - stripping you of the last thing you have, pet. Of your soul.[/say]")
+
+			saynn("[say=issix]Despite the consequences of losing your own free will forever, despite the fact that it will make you my puppet - a creature lacking ability to make decisions of their own, you still want to do it?[/say]")
+			saynn("[say=issix]You already know I love my pets how they are, so don't feel pressured to answer one way or another.[/say]")
+			addButton("Yes", "Answer yes (this is EXTREME, you won't have a chance to avoid certain content, it will literally strip you of choice and make your game MORE DIFFICULT. Not for the fainthearted, CW: parasite, soul vore, non-con, watersports, blood)", "slave_candy_yes")
+			addButton("No", "Answer no", "slave_candy_no")
+
+		if state == "slave_candy_yes":
+			saynn("[say=pc]Yes, Master. I want to be changed, be forever yours, in body and mind.[/say]")
+			saynn("[say=issix]*sigh* I see. In that case, I'm willing to fulfill your last wish, but we will not be using any Slave Candy, understood? If you want to walk this way, we do it my way.[/say]")
+			saynn("You become very excited on prospect of becoming Master's pet in mind too, to give yourself in to losing your free will and letting Master own you for good."+(" The tail behind you wags excitedly." if GM.pc.hasTail() else ""))
+			saynn("[say=pc]I'm so happy! Thank you Master so much![/say]")
+			saynn("[say=issix]What I don't do for my pets. Ahhhh.[/say]")
+			saynn("[say=pc]So... How will Master do it?[/say]")
+			saynn("[say=issix]You'll learn in due time. I need to make appropriate preparations before I can change you.[/say]")
+			saynn("[say=pc]Understood. I'll wait then, Master.[/say]")
+			saynn("[say=issix]Good. I'll let you know when I'm ready.[/say]")
+			addButton("Back", "", "issixpetmenu")
+
+		if state == "issix_free_will_ask":
+			saynn("[say=pc]Master, are you ready with... The thing we discussed?[/say]")
+			saynn("[say=issix]Not yet, have patience "+Globals.getPlayerPetName()+".[/say]")
+			addButton("Back", "", "issixpetmenu")
+
+
 func getTimeSpent():
 	return getModuleFlag("IssixModule", "Pet_Time_Interaction_Today", 0)+(GM.main.getTime()-pet_time_start)
 
@@ -799,6 +906,12 @@ func isTimeOkey():
 			return false
 	elif getTimeSpent() < 60*60:
 		return false
+	return true
+
+func hasAllPerksRequiredForMindfuck():
+	for perk in ["BowlTraining", "Commands", "PetName", "PetSpeech", "PetWalkies", "PetRelocated"]:
+		if !GM.pc.hasPerk(perk):
+			return false
 	return true
 
 func getTimeSpentReadable():
@@ -1119,6 +1232,17 @@ func _react(_action: String, _args):
 
 	if _action == "issix_beg_smartlocks":
 		addMessage("Your Master has freed you from "+str(GM.pc.unlockAllKeyholderLocksFrom("issix"))+" restraints.")
+
+	if _action == "issix_slave_candy":
+		if getModuleFlag("IssixModule", "Told_Issix_About_Blacktail") == true:
+			_action = "slave_candy_again"
+
+	if _action == "slave_candy_yes":
+		setModuleFlag("IssixModule", "Mindlessness_Day_Start", GM.main.getDays())
+
+	if _action == "mirri_questions":
+		processTime(20*60)
+		setModuleFlag("IssixModule", "Told_Issix_About_Blacktail", true)
 
 	if(_action == "endthescene"):
 		# increaseModuleFlag("IssixModule", "PC_Training_Level")

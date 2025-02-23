@@ -105,7 +105,9 @@ func getFlags():
 		"Did_Task_Today": flag(FlagType.Bool),
 		"Drone_Task_Timeout": flag(FlagType.Number), # 0 = everything is fine, -1 = drone lost, 0> day at which when the task can resume,
 		"Drone_Flight_Unlocked": flag(FlagType.Bool), # null = locked, false = unlocked, true = flew in the past
-		"Learned_Commands": flag(FlagType.Bool)
+		"Learned_Commands": flag(FlagType.Bool),
+		"Told_Issix_About_Blacktail": flag(FlagType.Bool),
+		"Mindlessness_Day_Start": flag(FlagType.Number)
 		}
 		
 
