@@ -21,7 +21,6 @@ func _initScene(_args = []):
 func _run():
 	if(state == ""):
 		clearCharacter()
-		var last_walk = getModuleFlag("IssixModule", "Last_Walk", 0)
 		playAnimation(StageScene.Duo, "kneel", {npc="issix", npcAction="stand"})
 		if pet_time_start == null:
 			pet_time_start = GM.main.getTime()
@@ -96,6 +95,8 @@ func _run():
 		if getModuleFlag("IssixModule", "Mindlessness_Day_Start") == null:
 			if GM.pc.getInventory().hasItemID("ObeyPill"):
 				addButton("Slave Candy", "Ask Issix to use Slave Candy on you", "issix_slave_candy")
+			if getModuleFlag("IssixModule", "Mindlessness_Walkies_Status", 0) == 2:
+				addButton("Drone", "Talk with Master about your encounter with a guard who owns a drone", "guard_drone_owner_question")
 		else:
 			if getModuleFlag("IssixModule", "Mindlessness_Day_Start") + 4 >= GM.main.getDays():
 				addButton("Mindbreak", "Ask Master about the promised removal of free will", "issix_free_will_do")  # TODO
@@ -890,9 +891,65 @@ func _run():
 			saynn("[say=issix]Good. I'll let you know when I'm ready.[/say]")
 			addButton("Back", "", "issixpetmenu")
 
+		if state == "slave_candy_no":
+			saynn("[say=pc]I don't think I'm ready for such sacrifice yet, Master.[/say]")
+			saynn("[say=issix]That's what I thought too. I'm glad you think so as well. If you ever change your mind - do tell, but for now let's just drop this.[/say]")
+			addButton("Back", "", "issixpetmenu")
+
 		if state == "issix_free_will_ask":
 			saynn("[say=pc]Master, are you ready with... The thing we discussed?[/say]")
 			saynn("[say=issix]Not yet, have patience "+Globals.getPlayerPetName()+".[/say]")
+			addButton("Back", "", "issixpetmenu")
+
+		if state == "guard_drone_owner_question":
+			saynn("[say=pc]Master, I have a question.[/say]")
+			saynn("[say=issix]Yes, pet?[/say]")
+			saynn("[say=pc]Would Master be interested in making me a drone?[/say]")
+			saynn("Issix looks at you with his head tilted to side in both concern as well as confusion.")
+			saynn("[say=issix]A drone? Where did you get this idea from?[/say]")
+			saynn("[say=pc]There was this... Pair when were were back on the Pasture, a guard and an inmate, and the guard had the inmate leashed. They looked strange so I came closer to notice how strange inmate's behavior was - he was very robotic.[/say]")
+			saynn("[say=pc]Later I stumbled upon both and we talked briefly. I were confused about nature of drones so I inquired and they explained to me that the pet was a drone, it had its own designation and has no free will. I were wondering if I could become one too, I could be a better pet for You, Master.[/say]")
+			saynn("Master sighs")
+			saynn("[say=issix]You are already a great pet for me, {pc.name}, you don't need to do anything more to be a good pet. Don't think of yourself so little, besides, doing so is a doubt put on me, a good Master doesn't let their pet think they are somehow not enough.[/say]")
+			saynn("[say=pc]I didn't think about it this way, I'm sorry Master.[/say]")
+			saynn("You produce a sad whine.")
+			saynn("[say=issix]Don't do it again, okey? Great.[/say]")
+			addButton("Drone?", "Continue with drone topic", "issix_guard_drone_question2")
+
+		if state == "issix_guard_drone_question2":
+			saynn("[say=pc]But... Would that be possible? For me to be a drone? I... Can't hide that I do like this idea.[/say]")
+			saynn("[say=issix]It's true, I can feel it in you, you yearn for this kind of experience.[/say]")
+			saynn("Master sighs")
+			saynn("[say=issix]I won't allow you to become a drone, as that's not something I'm willing to do, however...[/say]")
+			saynn("[say=issix]Do you remember the time when I asked you about whether you believe in existence of souls?[/say]")
+			saynn("[say=pc]Yes, Master.[/say]")
+			if getModuleFlag("IssixModule", "QuestionnaireQ1", false) == true:
+				saynn("[say=issix]You answered yes. And I explained to you the nature of souls as I see them. What I can do - is to take away your soul away.[/say]")
+			else:
+				saynn("[say=issix]You answered that you don't believe in existence of souls. And that's fine, what is a „soul” is not exactly defined anywhere. What I can do for you is strip you of the last thing you have, pet. Of your soul.[/say]")
+
+			saynn("[say=issix]The consequences of losing your own free will forever are dire, it will make you my puppet - a creature lacking ability to make decisions of their own, it's not exactly the same as the drone you saw, but it's pretty darn close. I don't feel like this is the „right” path, however if you are insistent you want to free yourself of burden of decision, if you want to truthfully become mine forever – this is a way to do this. Knowing all of this, my question to you is – do you still want to go with this idea?[/say]")
+			saynn("[say=issix]You already know I love my pets how they are, so don't feel pressured to answer one way or another.[/say]")
+
+			addButton("Yes", "Say yes (this is EXTREME, you won't have a chance to avoid certain content, it will literally strip you of choice and make your game MORE DIFFICULT. Not for the fainthearted, CW: parasite, soul vore, non-con, watersports, blood)", "issix_guard_drone_yes")
+			addButton("Drop topic", "Drop the topic of losing free will", "issix_guard_drone_no")
+
+		if state == "issix_guard_drone_yes":
+			# That's enough of writing for me anyways :sob:
+			saynn("[say=pc]Yes, Master. I want to be changed, be forever yours, in body and mind.[/say]")
+			saynn("[say=issix]*sigh* I see. In that case, I'm willing to fulfill your last wish.[/say]")
+			saynn("You become very excited on prospect of becoming Master's pet in mind too, to give yourself in to losing your free will and letting Master own you for good."+(" The tail behind you wags excitedly." if GM.pc.hasTail() else ""))
+			saynn("[say=pc]I'm so happy! Thank you Master so much![/say]")
+			saynn("[say=issix]What I don't do for my pets. Ahhhh.[/say]")
+			saynn("[say=pc]So... How will Master do it?[/say]")
+			saynn("[say=issix]You'll learn in due time. I need to make appropriate preparations before I can change you.[/say]")
+			saynn("[say=pc]Understood. I'll wait then, Master.[/say]")
+			saynn("[say=issix]Good. I'll let you know when I'm ready.[/say]")
+			addButton("Back", "", "issixpetmenu")
+
+		if state == "issix_guard_drone_no":
+			saynn("[say=pc]I don't think I'm ready for such sacrifice yet, Master.[/say]")
+			saynn("[say=issix]That's what I thought too. I'm glad you think so as well. If you ever change your mind - do tell, but for now let's just drop this.[/say]")
 			addButton("Back", "", "issixpetmenu")
 
 
@@ -1244,6 +1301,13 @@ func _react(_action: String, _args):
 		processTime(20*60)
 		setModuleFlag("IssixModule", "Told_Issix_About_Blacktail", true)
 
+	if _action == "issix_guard_drone_yes":
+		setModuleFlag("IssixModule", "Mindlessness_Day_Start", GM.main.getDays())
+		setModuleFlag("IssixModule", "Mindlessness_Walkies_Status", 3)
+
+	# if _action == "issix_guard_drone_no":
+	# 	setModuleFlag("IssixModule", "Mindlessness_Walkies_Status", 100)
+
 	if(_action == "endthescene"):
 		# increaseModuleFlag("IssixModule", "PC_Training_Level")
 		increaseModuleFlag("IssixModule", "Pet_Time_Interaction_Today", GM.main.getTime()-pet_time_start)
@@ -1320,6 +1384,12 @@ func getDebugActions():
 			"args": [
 			],
 		},
+		{
+			"id": "intcheck",
+			"name": "intcheck",
+			"args": [
+			],
+		},
 	]
 
 func doDebugAction(_id, _args = {}):
@@ -1329,3 +1399,5 @@ func doDebugAction(_id, _args = {}):
 		for pawn in GM.main.IS.pawns:
 			if !GM.main.IS.pawns[pawn].isPlayer():
 				print(String(GM.main.IS.pawns[pawn].getChar().npcAttacks))
+	if _id == "intcheck":
+		setState("azazel_fertility_first_ask")

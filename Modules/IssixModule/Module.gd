@@ -107,6 +107,7 @@ func getFlags():
 		"Drone_Flight_Unlocked": flag(FlagType.Bool), # null = locked, false = unlocked, true = flew in the past
 		"Learned_Commands": flag(FlagType.Bool),
 		"Told_Issix_About_Blacktail": flag(FlagType.Bool),
+		"Mindlessness_Walkies_Status": flag(FlagType.Number),
 		"Mindlessness_Day_Start": flag(FlagType.Number)
 		}
 		
@@ -176,6 +177,7 @@ func _init():
 		"res://Modules/IssixModule/Scenes/SlaveryFirst/PunRew/IssixPawJobScene.gd",
 		"res://Modules/IssixModule/Scenes/SlaveryFirst/SlaveryTrainingCommandsScene.gd",
 		"res://Modules/IssixModule/Scenes/SlaveryFirst/SlaveryTrainingCommandsContScene.gd",
+		"res://Modules/IssixModule/Scenes/SlaveryFirst/NonconAlternativeIntro.gd",
 		"res://Modules/IssixModule/Scenes/Tasks/DroneFinder.gd", 
 		"res://Modules/IssixModule/Scenes/Tasks/HiisiLaundry.gd"
 		]

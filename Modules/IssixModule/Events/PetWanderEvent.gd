@@ -14,12 +14,18 @@ func react(_triggerID, _args):
 			return true
 	if GM.pc.getLocation() == "hall_ne_corner":
 		return false
+	if activateOtherScenes():
+		return true
+	# BEFORE ENSLAVEMENT
 	if not (GM.main.getModuleFlag("IssixModule", "Quest_Status", 0) < 1):  # Do not show those if player started the quest as Azazel doesn't have a reason to corrupt the player
 		return false
-	if activateAzazelScenes():
-		return true
-	return false
+	return activateAzazelScenes()
 
+func activateOtherScenes():
+	# Mindless pet scene
+	if getModuleFlag("IssixModule" ,"Mindlessness_Walkies_Status", 0) == 1 and RNG.chance(3):
+		runScene("NonconAltIntro")
+		return true
 
 func activateHiisiScenes() -> bool:
 	var scene_index = GM.main.getModuleFlag("IssixModule", "Hiisi_Encounter_scene", 1)
@@ -40,6 +46,9 @@ func activateHiisiScenes() -> bool:
 		GM.main.setModuleFlag("IssixModule", "Hiisi_Had_Encounter_Scene_Today", true)
 		GM.pc.setLocation(path[1])
 		runScene("HiisiWanderScene2")
+		return true
+	elif scene_index == 3 and GM.pc.getLocation() == "hall_ne_corner":
+		runScene("HiisiWanderScene3")
 		return true
 	return false
 

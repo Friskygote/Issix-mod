@@ -6,9 +6,20 @@ var char1 = ""
 var char2 = ""
 var privates_choice = "ass"
 var borrowed_strapon = false
+var tasks := []
 
 func _init():
 	sceneID = "IssixPastureWalk"
+
+func _initScene(_args = []):
+	finished_activities = []
+	tasks = [["Threesome", "Say you'd like some not-so-private action with Issix and Hiisi", "threesome_issix"],
+			 ["Fetch", "Say you'd be up for a game of fetch, like a good puppy you are", "ball_chasing"],
+			 ["Waterfall", "Check out the waterfall", "waterfall_check"],
+			 ["Outhouse", "Investigate the outhouse", "outhouse_thing"],
+			 ["Hiisi", "Spend time with Hiisi", "hiisi_time"],
+			 ["Lamia", "Spend time with Lamia", "lamia_time"]]
+	tasks.shuffle()
 
 # Main loop:
 # Player gets to choose from 2 options twice per pasture walk in regards to possible activities
@@ -26,8 +37,7 @@ func _init():
 # Connect with PC finding petplay with elements of mind control to trigger conversation about this with Issix
 # Secret under waterfall unlocked from the Computer
 
-var tasks = [["Threesome", "Say you'd like some not-so-private action with Issix and Hiisi", "threesome_issix"],
-			 ["Fetch", "Say you'd be up for a game of fetch, like a good puppy you are", "ball_chasing"]]
+
 var chosen_scene = ""
 
 func _run():
@@ -63,6 +73,45 @@ func _run():
 		saynn("[say=issix]What will you two do? Any plans? Should I take something out of the bag?[/say]")
 		for item in randomTasks():
 			addButton(item[0], item[1], item[2])
+
+	if state == "2ndactivity":
+		saynn("You are deliberating what to do now.")
+
+		for item in randomTasks():
+			addButton(item[0], item[1], item[2])
+
+		if hasAllPerksRequiredForMindfuck() and getModuleFlag("IssixModule", "Mindlessness_Walkies_Status", 0) < 1 and getModuleFlag("IssixModule", "Mindlessness_Day_Start") == null:
+			saynn("As you think what to do next, you notice a guard walking out an inmate nearby, what catches your attention is the fact that the canine inmate is led on a leash just like your Master walks you all to the pasture, in addition they walk on their fours. It is still a rather rare sight.")
+			saynn("At some point they stop, the pet sits. There is something strange about this couple...")
+			addButton("Other pet", "Investigate the couple", "mindless_investigate")
+
+	if state == "mindless_investigate":
+		saynn("The pair interested you enough for you to stealthy come closer and try to see why do they feel so strange. The guard is in the regular guard clothing - they have fairly androgynous build and facial features. Their face has a neutral face expression and their posture gives you a very authoritarian vibe. Other than that, there is nothing special about their look, they look like a regular guard. The inmate, on the other hand, is a smaller build anthropomorphic canine, they seem to be naked under large amount of latex bondage gear on them. While the bondage gear seems in fine condition, though there are small signs of use. Judging by the look and smell they are masculine and possess a penis. Their head is turned in direction of the guard's face. Unnervingly the inmate doesn't seem to move a bit. They seem inanimate for all you can see, even their tail lies dead behind.")
+		saynn("[sayOther]D-1, rub my back.[/sayOther]")
+		saynn("As the androgynous guard said, they lower onto the ground sitting on it with their arms around their legs. The canine immediately gets to work, however their paws are bound in the mittens.")
+		saynn("[sayMale]Master, I'm unable to fulfill the task in my current condition, to provide massage I require unrestricted paws.[/sayMale]")
+		saynn("The guard sighs, turns around and takes off the bondage mittens off canine's paws, after which they turn around once again and canine begins massaging the guard in circular almost robotic movements. In fact, the moves are so repetitive and mechanical you might as well consider the inmate a robot.")
+		saynn("[sayOther]Stop.[/sayOther]")
+		saynn("Finally the guard seems satisfied, and as they command the inmate, the inmate immediately stops the massage and moves their arm to stick to the torso. Guard stands up, cleaning their butt and legs with a hand as they begin to move, leash in hand leading the crawling inmate behind.")
+		addButton("Woah!", "Your shoulders are grabbed and a sound from behind speaks out", "mindless_investigate2")
+
+	if state == "mindless_investigate2":
+		saynn("[say=hiisi]Anything fun? I've seen you've been looking at them for a while.[/say]")
+		saynn("[say=pc]Yeah, a strange... Pair. The inmate moved as if they were a robot, and the guard called them, what was it? D-1? Yeah, D-1 I think.[/say]")
+		saynn("[say=hiisi]Yup. That was Yuan. They aren't exactly „themselves” anymore.[/say]")
+		saynn("[say=pc]Was? Themselves? What do you mean? They changed their name?[/say]")
+		saynn("[say=hiisi]Like you are the one to talk.[/say]")
+		saynn("Hiisi's lighthearted joke referring to your change of name still sounded incredibly serious coming from him, he couldn't light up when joking even if he wanted.")
+		saynn("[say=pc]Ha, ha. No, but seriously, what's up with them?[/say]")
+		saynn("[say=hiisi]Apparently Yuan went through some kind of metamorphosis, don't know all of the details, but rumors say that he has became an „ultimate pet” for the guard. Ever since the day it happened they barely leave the guard alone, to their detriment, that particular guard seems pretty sadistic as far as guards go.[/say]")
+		saynn("[say=pc]I see, but they aren't a robot, right?[/say]")
+		saynn("[say=hiisi]Doubt it, but their mind isn't the same as it was, that's for sure. The creatures closest to Yuan say that he has became „odd” and when they saw the guard give them commands he obeyed them unconditionally, whatever the commands were.[/say]")
+		saynn("[say=pc]Curious, ultimate pet huh.[/say]")
+		saynn("[say=hiisi]I don't know, it seems creepy as hell. I'd stay away from them if I were you.[/say]")
+		saynn("[say=pc]Well, thanks for the info Hiisi, I'll... Be careful. Let's go back.[/say]")
+		saynn("You make a mental note of the couple, being interested in the description given by Hiisi. Maybe they could teach you something about being a pet?")
+		addButton("Go back", "", "2ndactivity")
+
 
 	if state == "threesome_issix":
 		saynn("[say=pc]I were thinking of something in climate of fun with you Master and Hiisi?[/say]")
@@ -134,21 +183,89 @@ func _run():
 		saynn("As Master Issix gives his signal the suddenness of Azazel's and Issix's first thrust caught you off the guard. They both were seemingly very pent up and needed to give in to the lust.")
 		if char2 == "pc":
 			if privates_choice == "ass":
-				saynn("You've steered Azazel's {azazel.penisOrStrapon} towards your ass as he plunges right in. ")
+				saynn("You've steered Azazel's {azazel.penisOrStrapon} towards your ass as he plunges right in. His {azazel.penisOrStrapon} enters it with certain force that comes with suddenness of the action, but thanks to fair amount of lube in your ass as well on the strapon this does not prove an issue. Azazel's paws land on same height as your waist finding grip to control speed at which he wants to bury his rubbery bone inside of you.")
 			else:
-				saynn("Azazel ")
+				saynn("You've steered Azazel's {azazel.penisOrStrapon} towards your {pc.pussy} as he plunges right in. His {azazel.penisOrStrapon} enters it with certain force that comes with suddenness of the action, but thanks to fair amount of lube as well on the strapon this does not prove an issue. Azazel's paws land on same height as your waist finding grip to control speed at which he wants to bury his rubbery bone inside of you.")
 		else:
+			var privates1 = "{pc.pussy}" if GM.pc.hasReachableVagina() else "{pc.ass}"
+			saynn("As you are on your knees Master gives a command and your bottom feels squeezed between two horny beasts. Feelings assault you from both front and back, they aren't unpleasant by any means. Your Master's {issix.penis} accompanied by large amount of lube went right up your "+privates1+" penetrating it, while the move was sudden, Master didn't insert his entire length into your "+privates1+" but rather started entry with half of it, still growing a little as his tool gets stimulated even harder.")
 			if privates_choice == "ass":
-				saynn("You've ")
+				saynn("On the other side your {pc.penisOrStrapon} got pushed inside of Azazel's backside by {azazel.him} pushing hard onto you with powerful hips.")
 			else:
-				saynn("Azazel ")
+				saynn("On the other side your {pc.penisOrStrapon} got pushed inside of Azazel's {azazel.pussy} by {azazel.him} pushing hard onto you with powerful hips.")
 
+		saynn("[say=azazel]Mewwwl!!! Ahhhhh. Soo gooood.[/say]")
+		saynn("[say=issix]Fuck yeah, what a nice cocksleeve you make {"+char1+".Name}![/say]")
+		saynn("With time everyone's moves become more or less rhythmic with occasional changes of pace as one or the other participant chooses to speed up or slow down. Master Issix gives out occasional grunts while Azazel meowls uncontrollably but sweetly in pleasure"+(" as his pussy is being bred by Master's hard {issix.cockSize} {issix.penis}." if char2 == "pc" else "."))
+		addButton("Finish", "Finish the threesome", "threesome_3_SexTrain")
+
+	if state == "threesome_3_SexTrain":
+		playAnimation(StageScene.SexTrain, "inside", {pc=char1, npc=char2, pcCum=true, cum=true, npcCum=true, bodyState={naked=true, hard=true}, npcBodyState={naked=true, hard=true}, npc2="issix", npc2BodyState={naked=true,hard=true}})
+		saynn("After considerable amount of time arousal as well as tiredness begins to run their course and meowls and grunts increasingly take form of gasps.")
+		if char2 == "pc":
+			if privates_choice == "ass":
+				saynn("Azazel for a while now uses the entirety of his tool to ram your backdoor. With your front arms giving their way under repeated motions coming from Azazel, and with arousal buildup from terrific job Azazel has been doing in keeping you stimulated you collapse onto your elbows and climax. Azazel's release comes just moments later as his own {azazel.pussy} leaks profusely of his love juices.")
+			else:
+				saynn("Azazel for a while now uses the entirety of his tool to ram your wet {pc.pussy}. With your front arms giving their way under repeated motions coming from Azazel, and with arousal buildup from terrific job Azazel has been doing in keeping you stimulated you collapse onto your elbows and climax. Azazel's release comes just moments later as his own {azazel.pussy} leaks profusely of his love juices.")
+		else:
+			var privates1 = "{pc.pussy}" if GM.pc.hasReachableVagina() else "{pc.ass}"
+			if privates_choice == "ass":
+				saynn("Your knees start to weaken from exhaustion of being in the center of attention - constantly drained by kitty in front of you and demon in your back. Your arousal from constant attention, well stimulated ass and even better stimulated {pc.penisOrStrapon} raises until it cannot anymore and you give in to the sweet sweet climax."+(" Azazel's pussy drains you of your load, which goes straight into his feline fertile womb. This is exactly what he wanted, since he looks back at you giving you a smirk." if GM.pc.hasReachablePenis() else "Azazel's ass drains you of your load which paints his inside walls with your salty treat. You have the feeling the naughty cat would prefer breeding in the other hole, however he is hardly dissatisfied either considering the mix of pheromones and just how wet the feline is. ")+"On the opposite side, Master Issix reaches his own climax putting his virile load inside of your "+privates1+".")
+			else:
+				saynn("Your knees start to weaken from exhaustion of being in the center of attention - constantly drained by kitty in front of you and demon in your back. Your arousal from constant attention, well stimulated ass and even better stimulated {pc.penisOrStrapon} raises until it cannot anymore and you give in to the sweet sweet climax."+(" Azazel's pussy drains you of your load, which goes straight into his feline fertile womb. This is exactly what he wanted, since he looks back at you giving you a smirk. " if GM.pc.hasReachablePenis() else "Azazel's ass drains you of your load which paints his inside walls with your salty treat. You have the feeling the naughty cat would prefer breeding in the other hole, however he is hardly dissatisfied either considering the mix of pheromones and just how wet the feline is. ")+"On the opposite side, Master Issix reaches his own climax putting his virile load inside of your "+privates1+".")
+			if GM.pc.hasReachableVagina():
+				saynn("[say=issix]Fuck yes, take my seed bitch. Give me nice little dragons, will you? Hufff.[/say]")
+
+		saynn("All three of you stay like this for a while, still inside of each other just trying to get a breath.")
+		saynn("[say=issix]Round two?[/say]")
+		saynn("[say=azazel]Maybe not this time Master, I feel spent.[/say]")
+		saynn("[say=issix]Sure, up to you, I need to grab some water anyways.[/say]")
+		addButton("Continue", "Continue", "threesome_4_SexTrain")
+
+	if state == "threesome_4_SexTrain":
+		saynn("After another minute it's Master who first moves away, stretches giving some pained sounds likely from being in position on knees for so long and goes to his bag to grab a bottle of water.")
+		if getModuleFlag("IssixModule", "Azazel_Affection_given", 5) > 40:
+			saynn("You and Azazel collapse onto the blanket, your looks wander to the ceiling of the prison facility, his paw finds its way to yours and gently grabs it.")
+			saynn("[say=azazel]How did you like today's session?[/say]")
+			saynn("[say=pc]Pretty awesome, if I can say so myself.[/say]")
+			if char2 == "pc":
+				saynn("[say=azazel]Hihi, I think so too! And you made such cute moans while I rammed your pretty "+privates_choice+" with a strapon! Maaan, that was good, we should absolutely do it often.[/say]")  # It's 01:21 AM, honestly I'm pretty sleepy, meanwhile my brain now wants to add romance option with Azazel even though it's not even on my roadmap aaaaaaaaaaaaaaaaa
+			else:
+				saynn("[say=azazel]Hihi, I think so too! And you made such cute moans while getting rammed into your adorable "+("{pc.pussy}" if GM.pc.hasReachableVagina() else "{pc.ass}")+" by the Master! Your moves were also quite something, I mean, not on level of what I've experienced fooling around with other sex workers, but you are still a pretty decent slut, you know?[/say]")
+			saynn("His head tilts to the side as his eyes meet your face, you look at him as well, his head is a bit lower, he notices that and helps with his legs to push himself „higher” so he can be on the same level with your head. He gives you a genuine, warm smile, his eyes closing slightly.")
+			saynn("[say=azazel]Your paw is so cute, and {pc.name}... I like you, a lot.[/say]")
+			saynn("His face looks a little embarrassed, and his attempt to hid it only makes it more apparent.")
+			addDisabledButton("Kiss", "Kiss the feline (not implemented yet)")  # TODO Add plz?
+			addButton("Nice", "Be nice with the kitten, but don't give him hopes", "azazel_nice_answer")
+			addDisabledButton("Cold", "Give the kitten a cold answer")  # , "azazel_cold_answer"
+		else:
+			saynn("You and Azazel collapse onto the blanket.")
+			saynn("[say=azazel]Was fun, thanks. Huff.[/say]")
+			saynn("[say=pc]Same here. Thanks.[/say]")
+
+			saynn("You both walk back on your knees to your respective blankets to rest a bit more before continuing.")
+			addButton("Continue", "Continue", "2ndactivity")
+
+	if state == "azazel_nice_answer":
+		saynn("[say=pc]Aww, thank you Azazel! I appreciate it, I do like you too just... Not this way.[/say]")
+		saynn("His look of embarrassment is still there, though now mixed with sadness.")
+		saynn("[say=azazel]I understand, it's okey, didn't really expect anything more anyways. I'm still incredibly happy that you become a pet, you know? Lets me spend time with you.[/say]")
+		saynn("[say=pc]Yeah, that's nice. Spending time with you all is worth it.[/say]")
+		saynn("[say=azazel]Yeah...[/say]")
+		addButton("Continue", "Move away to your blanket in the pasture", "2ndactivity")
+
+	if state == "ball_chasing":
 
 
 
 func randomTasks():  # TODO If no will, player will have no choice here
-	tasks.shuffle()
-	return [tasks[0], tasks[1]]
+	return [tasks.pop_front(), tasks.pop_front()]
+
+func hasAllPerksRequiredForMindfuck():
+	for perk in ["BowlTraining", "Commands", "PetName", "PetSpeech", "PetWalkies", "PetRelocated"]:
+		if !GM.pc.hasPerk(perk):
+			return false
+	return true
 
 
 func saveData():
@@ -203,6 +320,7 @@ func _react(_action: String, _args):
 
 	if _action == "threesome_1_SexTrain":
 		# Equip strapon, if no strapon in inventory create Feline strapon and mark borrowed status as True
+		processTime(10*60)
 		var character = GlobalRegistry.getCharacter(char1)
 		if !character.HasReachablePenis() and character.canWearStrapon():
 			var strapons = character.getStrapons()
@@ -211,9 +329,36 @@ func _react(_action: String, _args):
 				strapons = [GlobalRegistry.createItem("StraponFeline")]
 			character.getInventory().equipItem(RNG.pick(strapons))
 			addMessage(character.getName()+" equipped a strapon.")
+		GM.pc.addLust(20)
+
+	if _action == "threesome_3_SexTrain":
+		if !char2 == "pc":  # Player is in the middle, bred by Issix
+			if (GM.pc.hasReachablePenis() or GM.pc.isWearingLoadedStrapon()):
+				if privates_choice == "ass":
+					GlobalRegistry.getCharacter("azazel").cummedInAnusBy("pc", FluidSource.Penis if GM.pc.hasReachablePenis() else FluidSource.Strapon)
+				else:
+					GlobalRegistry.getCharacter("azazel").cummedInVaginaBy("pc", FluidSource.Penis if GM.pc.hasReachablePenis() else FluidSource.Strapon)
+			if GM.pc.hasReachableVagina():
+				GM.pc.cummedInVaginaBy("issix", FluidSource.Penis)
+			else:
+				GM.pc.cummedInAnusBy("issix", FluidSource.Penis)
+		processTime(20*60)
+		GM.pc.addLust(-600)
+
+	if _action == "threesome_issix":
+		finished_activities.append(_action)
 
 	if _action == "threesome_2_SexTrain":
-		privates_choice = args[0]
+		privates_choice = _args[0]
+		processTime(30*60)
+		GM.pc.addLust(60)
+
+	if _action == "threesome_4_SexTrain":
+		# TODO Unequip a strapon
+		processTime(10*60)
+
+	if _action == "mindless_investigate2":
+		setModuleFlag("IssixModule" ,"Mindlessness_Walkies_Status", 1)
 
 	if _action == "threesome_prepare":
 		GM.pc.addEffect(StatusEffect.LubedUp, 60*60)

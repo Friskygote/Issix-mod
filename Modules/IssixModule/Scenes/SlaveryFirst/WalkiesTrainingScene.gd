@@ -94,7 +94,7 @@ func _run():
 		saynn("[say=issix]Let's get them.[/say]")
 
 		saynn("Master looks forward, both of you speed up the walk until you catch up to {pawn1.name}.")
-		saynn("[say=issix]Excuse me, were you the one who assulted my pet?[/say]")
+		saynn("[say=issix]Excuse me, were you the one who assaulted my pet?[/say]")
 		saynn("[say=pawn1]Assaulted? The fuck you are talking about inmate?[/say]")
 		saynn("Issix closes in to them and moves his head to guard's ear, whispering something to {pawn1.him}. {pawn1.His} face expression changes immediately as he apologizes both to your Master as well as you while fleeing the place in embarrassment.")
 		saynn("[say=issix]Thank you for the mention. They should treat you with respect you deserve from now on.[/say]")
