@@ -108,7 +108,8 @@ func getFlags():
 		"Learned_Commands": flag(FlagType.Bool),
 		"Told_Issix_About_Blacktail": flag(FlagType.Bool),
 		"Mindlessness_Walkies_Status": flag(FlagType.Number),
-		"Mindlessness_Day_Start": flag(FlagType.Number)
+		"Mindlessness_Day_Start": flag(FlagType.Number),
+		"Noncon_Mode_Enabled": flag(FlagType.Bool)
 		}
 		
 
@@ -353,6 +354,9 @@ func calculateDailyScore() -> int:
 	if GM.main.getModuleFlag("IssixModule", "PC_Enslavement_Role", 0) == 1:
 		var time_forced = GM.main.getModuleFlag("IssixModule", "Is_Player_Forced_Today", 0)
 		var time_served = GM.main.getModuleFlag("IssixModule", "Pet_Time_Interaction_Today", 0)
+		# If player in non-con mode assume they've always fulfilled their duties as we are doing the time automatically
+		if GM.main.getModuleFlag("IssixModule", "Noncon_Mode_Enabled", false) == true:
+			time_served = time_forced if time_forced != 0 else 60*60
 		if time_forced > 0:
 			if time_served >= time_forced:
 				score += 1

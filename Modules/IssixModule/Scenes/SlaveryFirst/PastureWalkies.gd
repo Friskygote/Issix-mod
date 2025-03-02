@@ -12,7 +12,6 @@ func _init():
 	sceneID = "IssixPastureWalk"
 
 func _initScene(_args = []):
-	finished_activities = []
 	tasks = [["Threesome", "Say you'd like some not-so-private action with Issix and Hiisi", "threesome_issix"],
 			 ["Fetch", "Say you'd be up for a game of fetch, like a good puppy you are", "ball_chasing"],
 			 ["Waterfall", "Check out the waterfall", "waterfall_check"],
@@ -255,6 +254,14 @@ func _run():
 		addButton("Continue", "Move away to your blanket in the pasture", "2ndactivity")
 
 	if state == "ball_chasing":
+		saynn("[say=issix]Pets, come. I have something for you.[/say]")
+		saynn("Lamia, Hiiisi, Azazel and yourself come closer to Master sitting on his blanket with one paw in his bag, holding something none of you can see.")
+		saynn("[say=issix]I thought you might wanna stretch those bones so I brought... THIS![/say]")
+		saynn("Master shows you all a brightly colored ball.")
+		saynn("[say=pc]What is it for?[/say]")
+		saynn("You look at other pets, Azazel seems disinterested, Hiisi - quite the opposite, he seems livened up with tail swishing in the air. Lamia seems reserved.")
+		saynn("[say=issix]What do we use balls for {pc.name}? For play of course. You should know this, as a pet. Anyways, first to bring me the ball 3 times wins a treat, no foul play![/say]")
+		saynn("You notice that Azazel's demeanor changes, his face gains a sly face expression. Lamia hearing word „treat” seems additionally motivated.")
 
 
 
@@ -345,16 +352,18 @@ func _react(_action: String, _args):
 		processTime(20*60)
 		GM.pc.addLust(-600)
 
-	if _action == "threesome_issix":
-		finished_activities.append(_action)
-
 	if _action == "threesome_2_SexTrain":
 		privates_choice = _args[0]
 		processTime(30*60)
 		GM.pc.addLust(60)
 
 	if _action == "threesome_4_SexTrain":
-		# TODO Unequip a strapon
+		var character = GlobalRegistry.getCharacter(char1)
+		if character.isWearingStrapon():
+			if borrowed_strapon:
+				character.removeStrapon()
+			else:
+				character.unequipStrapon()
 		processTime(10*60)
 
 	if _action == "mindless_investigate2":
@@ -362,6 +371,8 @@ func _react(_action: String, _args):
 
 	if _action == "threesome_prepare":
 		GM.pc.addEffect(StatusEffect.LubedUp, 60*60)
+		GlobalRegistry.getCharacter("issix").addEffect(StatusEffect.LubedUp, 60*60)
+		GlobalRegistry.getCharacter("azazel").addEffect(StatusEffect.LubedUp, 60*60)
 
 	if(_action == "endthescene"):
 		endScene()

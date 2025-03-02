@@ -876,7 +876,7 @@ func _run():
 
 			saynn("[say=issix]Despite the consequences of losing your own free will forever, despite the fact that it will make you my puppet - a creature lacking ability to make decisions of their own, you still want to do it?[/say]")
 			saynn("[say=issix]You already know I love my pets how they are, so don't feel pressured to answer one way or another.[/say]")
-			addButton("Yes", "Answer yes (this is EXTREME, you won't have a chance to avoid certain content, it will literally strip you of choice and make your game MORE DIFFICULT. Not for the fainthearted, CW: parasite, soul vore, non-con, watersports, blood)", "slave_candy_yes")
+			addButton("Yes", "Answer yes (this is EXTREME, you won't have a chance to avoid certain content, it will literally strip you of choice and make your game MORE DIFFICULT. This is point of no return (unless you cheat), CW: parasite, soul vore, non-con, watersports, blood)", "slave_candy_yes")
 			addButton("No", "Answer no", "slave_candy_no")
 
 		if state == "slave_candy_yes":
@@ -931,7 +931,7 @@ func _run():
 			saynn("[say=issix]The consequences of losing your own free will forever are dire, it will make you my puppet - a creature lacking ability to make decisions of their own, it's not exactly the same as the drone you saw, but it's pretty darn close. I don't feel like this is the „right” path, however if you are insistent you want to free yourself of burden of decision, if you want to truthfully become mine forever – this is a way to do this. Knowing all of this, my question to you is – do you still want to go with this idea?[/say]")
 			saynn("[say=issix]You already know I love my pets how they are, so don't feel pressured to answer one way or another.[/say]")
 
-			addButton("Yes", "Say yes (this is EXTREME, you won't have a chance to avoid certain content, it will literally strip you of choice and make your game MORE DIFFICULT. Not for the fainthearted, CW: parasite, soul vore, non-con, watersports, blood)", "issix_guard_drone_yes")
+			addButton("Yes", "Say yes (this is EXTREME, you won't have a chance to avoid certain content, it will literally strip you of choice and make your game MORE DIFFICULT. This is point of no return (unless you cheat), CW: parasite, soul vore, non-con, watersports, blood)", "issix_guard_drone_yes")
 			addButton("Drop topic", "Drop the topic of losing free will", "issix_guard_drone_no")
 
 		if state == "issix_guard_drone_yes":
@@ -1138,6 +1138,7 @@ func _react(_action: String, _args):
 
 	if _action == "azazelfertilityfirst":
 		GM.pc.getInventory().removeFirstOf("lube")
+		GlobalRegistry.getCharacter("azazel").getInventory().addItem(GlobalRegistry.createItem("lube"))
 		setModuleFlag("IssixModule", "Had_Previously_Trained_Fertility_LVL1", true)
 
 	if _action in ["azazelfertilityfirst", "azazelfertilitysecond"]:
