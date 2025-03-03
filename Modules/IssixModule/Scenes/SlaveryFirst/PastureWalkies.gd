@@ -263,6 +263,8 @@ func _run():
 		saynn("[say=issix]What do we use balls for {pc.name}? For play of course. You should know this, as a pet. Anyways, first to bring me the ball 3 times wins a treat, no foul play![/say]")
 		saynn("You notice that Azazel's demeanor changes, his face gains a sly face expression. Lamia hearing word „treat” seems additionally motivated.")
 
+		saynn("[say=issix]Ready.. Set..[/say]")
+		addButton("Go!", "Chase the ball", "ball_minigame")
 
 
 func randomTasks():  # TODO If no will, player will have no choice here

@@ -31,7 +31,11 @@ func shouldBeShownForcedEvent():
 	var scenes_seen = getModuleFlag("IssixModule", "Misc_Slavery_Info", {"scenes_seen": []})
 	GM.pc.getSkillsHolder().ensureSkillExists("Pet")
 	var current_progression_points = GM.pc.getSkillsHolder().getSkill("Pet").getLevel()
-	if GM.main.getDays() >= GM.main.getModuleFlag("IssixModule", "Progression_Day_Next", 0) and GM.main.getModuleFlag("IssixModule", "Unwelcome_At_Corner", false) != true:
+	if GM.main.getModuleFlag("IssixModule", "Unwelcome_At_Corner", false) == true:
+		return null
+	if getModuleFlag("IssixModule", "Mindlessness_Day_Start", GM.main.getDays()) + 5 <= GM.main.getDays() and GM.main.getModuleFlag("IssixModule", "Noncon_Mode_Enabled", false) != true:
+		return "NonconModeStart"
+	if GM.main.getDays() >= GM.main.getModuleFlag("IssixModule", "Progression_Day_Next", 0):
 		registered_special_scenes.sort_custom(CustomSorter, "sort_by_progressionpoints")
 		for scene in registered_special_scenes:
 			if scene[1] > current_progression_points:

@@ -291,7 +291,7 @@ func _run():
 			GM.main.setModuleFlag("IssixModule", "Score_Explored", score)
 		elif(score_explored > 1):
 			saynn("[say=issix]You still look the same as the last time you came to me, do not waste my time. If you are really serious about becoming my pet you'll know what to do.[/say]")
-			saynn("(May be a good idea to ask Issix's pets for advice)")
+			saynn("( Ask Azazel for advice )")
 		else:
 			saynn("[say=issix]Look, you are lovely and all that, but I don't think you have what it takes to join my other pets. I require absolute obedience and sexual experience. Once you submit to me there is no going back, you become MY treasured pet forever. Those three? They know their place, they are ready to be mated whenever I feel like doing so. They obey my every single command. I just don't see that in you, sorry.[/say]")
 		addButton("Back", "Maybe another time then...", "talk")

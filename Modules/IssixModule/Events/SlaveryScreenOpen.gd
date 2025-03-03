@@ -8,6 +8,9 @@ func registerTriggers(es):
 	es.addTrigger(self, Trigger.TalkingToNPC, "slaveryscreen")
 
 func react(_triggerID, _args):
+	if GM.main.getModuleFlag("IssixModule", "Todays_Bred_Slave", "") == "pc" and GM.main.getModuleFlag("IssixModule", "Noncon_Mode_Enabled", false) and getModuleFlag("IssixModule", "Had_Sex_With_Issix", false) != true:
+		GM.main.pickOption("noncon_issix_sex_start", [])
+		return false
 	if GM.main.getModuleFlag("IssixModule", "PC_Should_Be_Punished", 0) != 0:
 		var scene_to_play = assignScene("PUNISHMENT")
 		if scene_to_play:

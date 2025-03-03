@@ -11,7 +11,7 @@ func _run():
 		saynn("[say=issix]Pet. I'm disappointed.[/say]")
 		saynn("He continues - scolding you for your behavior. calling you a bad pet, and giving you advice on how to do better.")
 		addButton("Accept", "Accept your place", "accept")
-		addButton("Disagree", "Disagree with your Master", "decline")
+		Globals.addButtonCheckNoncon("Disagree", "Disagree with your Master", "decline")
 
 	if state == "accept":
 		saynn("You listen thoroughly to your Master, you agree with him that your behavior wasn't appropriate, apologize to him and make amends.")

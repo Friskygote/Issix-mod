@@ -149,7 +149,7 @@ func _run():
 
 		saynn("[say=issix]Sit, {pc.name}, but not on the bench. Benches are not for pets.[/say]")
 		if !sat_down:
-			addButton("Sit", "Try to sit next to your Master (bratty)", "sit_yard")
+			Globals.addButtonCheckNoncon("Sit", "Try to sit next to your Master (bratty)", "sit_yard")
 		else:
 			addDisabledButton("Sit", "You can't do that again")
 		addButton("Wait", "Wait next to the bench", "wait_yard")

@@ -1,0 +1,135 @@
+[gd_scene load_steps=7 format=2]
+
+[ext_resource path="res://Modules/IssixModule/Minigames/BallChaser/BallChaser.gd" type="Script" id=1]
+[ext_resource path="res://Modules/IssixModule/Minigames/BallChaser/Slider.gd" type="Script" id=2]
+
+[sub_resource type="StyleBoxFlat" id=3]
+bg_color = Color( 0, 0, 0, 1 )
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 4
+border_color = Color( 1, 1, 1, 1 )
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+expand_margin_left = 4.0
+expand_margin_right = 4.0
+expand_margin_top = 4.0
+expand_margin_bottom = 4.0
+
+[sub_resource type="StyleBoxEmpty" id=8]
+
+[sub_resource type="StyleBoxFlat" id=1]
+bg_color = Color( 0.639216, 0, 0, 1 )
+
+[sub_resource type="StyleBoxFlat" id=2]
+bg_color = Color( 0, 0, 0, 1 )
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 4
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+expand_margin_left = 4.0
+expand_margin_right = 4.0
+expand_margin_top = 4.0
+expand_margin_bottom = 4.0
+
+[node name="BallChaser" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+rect_min_size = Vector2( 0, 500 )
+script = ExtResource( 1 )
+
+[node name="ColorRect" type="ColorRect" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color( 0.0588235, 0.249449, 0.258824, 1 )
+
+[node name="GameScreen" type="Control" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="Panel" type="Panel" parent="GameScreen"]
+anchor_left = 0.05
+anchor_top = 0.86
+anchor_right = 0.95
+anchor_bottom = 0.86
+margin_top = -40.0
+margin_bottom = 40.0
+custom_styles/panel = SubResource( 3 )
+
+[node name="FailZone" type="Panel" parent="GameScreen/Panel"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+rect_clip_content = true
+custom_styles/panel = SubResource( 8 )
+
+[node name="Slider" type="Panel" parent="GameScreen/Panel/FailZone"]
+margin_left = 577.0
+margin_right = 626.0
+margin_bottom = 81.0
+script = ExtResource( 2 )
+
+[node name="SliderColorFill" type="ColorRect" parent="GameScreen/Panel/FailZone/Slider"]
+margin_right = 49.0
+margin_bottom = 80.0
+mouse_filter = 1
+color = Color( 1, 0, 0, 1 )
+
+[node name="ProgressBar" type="ProgressBar" parent="GameScreen"]
+anchor_left = 0.35
+anchor_top = 0.72
+anchor_right = 0.65
+anchor_bottom = 0.72
+margin_top = 163.0
+margin_bottom = 193.0
+rect_min_size = Vector2( 0, 30 )
+custom_styles/fg = SubResource( 1 )
+custom_styles/bg = SubResource( 2 )
+max_value = 1.0
+value = 0.37
+percent_visible = false
+
+[node name="Label" type="Label" parent="GameScreen/ProgressBar"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+text = "Time"
+align = 1
+valign = 1
+
+[node name="PathClipper" type="ColorRect" parent="GameScreen"]
+anchor_left = 0.045
+anchor_right = 0.948
+anchor_bottom = 0.11
+margin_left = 4.4
+margin_top = 52.0
+margin_right = 5.55994
+margin_bottom = 431.8
+color = Color( 0.101961, 0.101961, 0.101961, 1 )
+
+[node name="RichTextLabel" type="RichTextLabel" parent="."]
+margin_left = 577.0
+margin_top = 4.0
+margin_right = 827.0
+margin_bottom = 62.0
+bbcode_enabled = true
+bbcode_text = "[font_size=6]Total score: [/font_size]"
+text = "[font_size=6]Total score: [/font_size]"
+
+[node name="Spawner" type="Panel" parent="."]
+show_behind_parent = true
+anchor_left = 0.491
+anchor_top = 0.072
+anchor_right = 0.522
+anchor_bottom = 0.128
+margin_left = -0.480042
+margin_top = 0.159996
+margin_right = -0.160034
+margin_bottom = -0.160004
+
+[connection signal="gui_input" from="GameScreen/Panel/FailZone/Slider" to="GameScreen/Panel/FailZone/Slider" method="_on_Panel_gui_input"]

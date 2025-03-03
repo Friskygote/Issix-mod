@@ -62,7 +62,12 @@ func _run():
 		addButton("Pass", "Pass the time (placeholder button for now, supposed to be actions with pets/master later)", "passtime")
 		if getModuleFlag("IssixModule", "Comic_Book_Unlocked", false) == true and getModuleFlag("IssixModule", "Comic_Books", 0) > 0:
 			addButtonWithChecks("Comic", "Read one of "+ str(getModuleFlag("IssixModule", "Comic_Books", 0)) +" comic books", "readabook", [], [ButtonChecks.NotBlindfolded])
-		if not (GM.main.getModuleFlag("IssixModule", "Is_Player_Forced_Today", 0) > (getTimeSpent())) or GM.main.isVeryLate():
+		if getModuleFlag("IssixModule", "Noncon_Mode_Enabled", false) == true:
+			if !isTimeOkey() and !GM.main.isVeryLate():
+				addDisabledButton("Leave", "You can't leave without spending enough time with other pets, you wouldn't forgive yourself to disobey Master")
+			else:
+				addButton("Leave", "Leave", "endthescene")
+		elif not (GM.main.getModuleFlag("IssixModule", "Is_Player_Forced_Today", 0) > (getTimeSpent())) or GM.main.isVeryLate():
 			addButton("Leave", "Leave", "endthescene")
 		#GM.ES.triggerRun("OpeningSlaveryScreen")
 		GM.ES.triggerReact(Trigger.TalkingToNPC, ["slaveryscreen"])
@@ -92,15 +97,13 @@ func _run():
 		addDisabledButton("Options", "Ask your Master to change how he treats you (WIP)")  #, "issixoptions" Pet etiquette, make player communicate via animalistic sounds, unlocks optional training
 		if GM.pc.hasKeyholderLocksFrom("issix"):
 			addButton("Smartlocks", "Ask Issix for keys to gear on you", "issix_smartlock_ask_keys")
-		if getModuleFlag("IssixModule", "Mindlessness_Day_Start") == null:
-			if GM.pc.getInventory().hasItemID("ObeyPill"):
+		if getModuleFlag("IssixModule", "Mindlessness_Day_Start") == null:  # Didn't start any Noncon related activities
+			if GM.pc.getInventory().hasItemID("ObeyPill") and GM.pc.getSkillLevel("Pet") >= 10:
 				addButton("Slave Candy", "Ask Issix to use Slave Candy on you", "issix_slave_candy")
 			if getModuleFlag("IssixModule", "Mindlessness_Walkies_Status", 0) == 2:
 				addButton("Drone", "Talk with Master about your encounter with a guard who owns a drone", "guard_drone_owner_question")
-		else:
+		elif GM.main.getModuleFlag("IssixModule", "Noncon_Mode_Enabled", false) != true:  # Is already nonconned
 			if getModuleFlag("IssixModule", "Mindlessness_Day_Start") + 4 >= GM.main.getDays():
-				addButton("Mindbreak", "Ask Master about the promised removal of free will", "issix_free_will_do")  # TODO
-			else:
 				addButton("Mindbreak", "Ask Master about the promised removal of free will", "issix_free_will_ask")
 		# If all training options have been finished, the option hasn't been rejected and Pet level 10+
 		# if GM.pc.getSkillLevel("Pet") >= 10 and getModuleFlag("IssixModule", "Issix_Mood", 50) > 85:
@@ -127,7 +130,6 @@ func _run():
 		else:
 			addDisabledButton("????", "You haven't unlocked this yet")
 		addButton("Back", "Go back", "")
-
 
 	if state == "issixmilkingfirst":
 		saynn("[say=pc]Master, you mentioned something about unburdening my chest?[/say]")
@@ -726,6 +728,12 @@ func _run():
 			saynn("[say=issix]Hmm, soonish, probably in around "+ str(Globals.untilNextWalk(true)) + " days. Are you excited for the next walk?[/say]")
 		addButton("Back", "Go back", "issixpetmenu")
 
+	if state == "noncon_issix_sex":
+		saynn("It appears that your Master requires your availability today. You swiftly report yourself for duties as his loyal pet.")
+		saynn("[say=pc]I'm here now Master! Please use me as you wish!~[/say]")
+		saynn("Your Master gives you a sly grin before possessively embracing your body.")
+		addButton("Sex", "Have sex with Master", "noncon_issix_sex_start")
+
 	if state == "issixsexrequest":
 		if GM.main.getModuleFlag("IssixModule", "Todays_Bred_Slave", "hiisi") == "pc":
 			saynn("[say=pc]I'm ready, Master.[/say]")
@@ -1081,6 +1089,11 @@ func canPromptLitterDialogue():
 	return getModuleFlag("IssixModule", "Litter_Guessing_Game", {"guesses_off": [], "last_guess": -1})["last_guess"] != GM.CS.getChildrenAmountOf("azazel")
 
 func _react(_action: String, _args):
+	if _action == "noncon_issix_sex_start":
+		getCharacter("issix").prepareForSexAsDom()
+		GlobalRegistry.getCharacter("issix").addPain(-50)
+		runScene("GenericSexScene", ["issix", "pc"], "subbysexissix")
+
 	if _action == "startsexissix":
 		getCharacter("issix").prepareForSexAsDom()
 		GlobalRegistry.getCharacter("issix").addPain(-50)

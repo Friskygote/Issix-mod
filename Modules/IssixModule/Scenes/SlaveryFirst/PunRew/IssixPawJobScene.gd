@@ -11,7 +11,7 @@ func _run():
 		saynn("[say=hiisi]... I don't know, perhaps a headpat?[/say]")
 		saynn("[say=issix]No, I think something better is in order. How about a pawjob {pc.name}? What do you think? Would you like to have some nice stimulation?[/say]")
 		addButton("Yes!", "Be excited about it", "yespawjob")
-		addButton("Meh", "Reject the proposed activity", "nopawjob")
+		Globals.addButtonCheckNoncon("Meh", "Reject the proposed activity", "nopawjob")
 
 	if state == "yespawjob":
 		saynn("[say=pc]I like the idea Master.[/say]")

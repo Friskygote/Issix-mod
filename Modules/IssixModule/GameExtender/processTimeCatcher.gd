@@ -17,7 +17,7 @@ func pcProcessTime(_pc:Player, _seconds):
 
 func pcProcessBattleTurn(_pc: Player):
 	if GM.main.getModuleFlag("IssixModule", "Hiisi_Protects_PC") == true:
-		if RNG.chance(100):
+		if RNG.chance(40):
 			var scene = GM.main.getCurrentScene()
 			# Make sure we are in generic FightScene and it's the player defending themselves not starting a fight'
 			if scene.sceneID != "FightScene" or scene.sceneTag != "interaction_fight_pcdef":

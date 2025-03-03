@@ -11,7 +11,7 @@ func _run():
 	if(state == ""):
 		
 		if (getModuleFlag("IssixModule", "Medical_Peeked") == null):
-			saynn("You can definietely hear something happening in the hospital room nearby...")
+			saynn("You can definitely hear something happening in the hospital room nearby...")
 			addButtonAt(3, "Investigate", "Try to see if you can hear something", "eavesdrop")
 		else:
 			saynn("The room to north seems to be quiet now, occasionally some ruffling can be heard.")

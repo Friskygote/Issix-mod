@@ -135,7 +135,8 @@ func _init():
 		"res://Modules/IssixModule/Events/AnnouncerLuckTokenEvent.gd",
 		"res://Modules/IssixModule/Scenes/AzazelCorruption/DemonPetsEvent.gd",
 		"res://Modules/IssixModule/Scenes/AzazelCorruption/LongCorridorEvent.gd",
-		"res://Modules/IssixModule/Events/SlaveryScreenOpen.gd"
+		"res://Modules/IssixModule/Events/SlaveryScreenOpen.gd",
+		"res://Modules/IssixModule/Events/NonconAuto.gd"
 		]
 		
 	scenes = [
@@ -179,8 +180,12 @@ func _init():
 		"res://Modules/IssixModule/Scenes/SlaveryFirst/SlaveryTrainingCommandsScene.gd",
 		"res://Modules/IssixModule/Scenes/SlaveryFirst/SlaveryTrainingCommandsContScene.gd",
 		"res://Modules/IssixModule/Scenes/SlaveryFirst/NonconAlternativeIntro.gd",
+		"res://Modules/IssixModule/Scenes/SlaveryFirst/NonconGoBackCorner.gd",
+		"res://Modules/IssixModule/Scenes/SlaveryFirst/NonconModeStart.gd",
+		"res://Modules/IssixModule/Scenes/SlaveryFirst/PastureWalkies.gd",
 		"res://Modules/IssixModule/Scenes/Tasks/DroneFinder.gd", 
-		"res://Modules/IssixModule/Scenes/Tasks/HiisiLaundry.gd"
+		"res://Modules/IssixModule/Scenes/Tasks/HiisiLaundry.gd",
+		
 		]
 		
 	characters = [
@@ -354,9 +359,6 @@ func calculateDailyScore() -> int:
 	if GM.main.getModuleFlag("IssixModule", "PC_Enslavement_Role", 0) == 1:
 		var time_forced = GM.main.getModuleFlag("IssixModule", "Is_Player_Forced_Today", 0)
 		var time_served = GM.main.getModuleFlag("IssixModule", "Pet_Time_Interaction_Today", 0)
-		# If player in non-con mode assume they've always fulfilled their duties as we are doing the time automatically
-		if GM.main.getModuleFlag("IssixModule", "Noncon_Mode_Enabled", false) == true:
-			time_served = time_forced if time_forced != 0 else 60*60
 		if time_forced > 0:
 			if time_served >= time_forced:
 				score += 1

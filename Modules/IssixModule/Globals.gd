@@ -162,3 +162,10 @@ static func pick_unique_one(input_array: Array) -> Array:
 			processed_array[index] = null
 		sizes_of_arrays[index] = 999999
 	return processed_array
+
+# This is a replacement for addButtonWithChecks which is entirely non-flexible in terms of adding new checks
+static func addButtonCheckNoncon(text: String, tooltip: String, method: String, args=[]):
+	if GM.main.getModuleFlag("IssixModule", "Noncon_Mode_Enabled", false) == true:
+		GM.ui.addDisabledButton(text, RNG.pick(["That's not what Master wants to hear", "I don't want to be a bad pet!", "This isn't available to me, good pet obeys"]))
+	else:
+		GM.ui.addButton(text, tooltip, method, args)

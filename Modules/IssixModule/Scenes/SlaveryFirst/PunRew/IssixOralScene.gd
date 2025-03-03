@@ -15,7 +15,7 @@ func _run():
 		saynn("[say=issix]Yes my Pet~ You are going to service me nicely~ I need to use that Nice maw of yours so could you be so Kind an open up please?[/say]")
 		saynn("As you are asked to open your maw you watch him strip his pants of and out flops his hard and thick dragon cock~")
 		addButton("Open Wide", "Listen to your master and open that pretty maw of yours~", "normal")
-		addButton("Reject", "You don't want to suck him to enjoy your maw", "reject")
+		Globals.addButtonCheckNoncon("Reject", "You don't want to suck him to enjoy your maw", "reject")
 
 	if state == "normal":
 
