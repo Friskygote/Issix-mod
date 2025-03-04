@@ -1,0 +1,10 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://Modules/IssixModule/Minigames/BallChaser/Ball.gd" type="Script" id=1]
+
+[node name="BallTemplate" type="Control"]
+anchor_right = 0.013
+anchor_bottom = 0.024
+margin_right = 0.360001
+margin_bottom = -0.280001
+script = ExtResource( 1 )

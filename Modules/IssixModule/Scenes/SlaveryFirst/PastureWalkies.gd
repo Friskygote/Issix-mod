@@ -7,6 +7,7 @@ var char2 = ""
 var privates_choice = "ass"
 var borrowed_strapon = false
 var tasks := []
+var minigameScene = preload("res://Modules/IssixModule/Minigames/BallChaser/BallChaser.tscn")
 
 func _init():
 	sceneID = "IssixPastureWalk"
@@ -266,9 +267,20 @@ func _run():
 		saynn("[say=issix]Ready.. Set..[/say]")
 		addButton("Go!", "Chase the ball", "ball_minigame")
 
+	if state == "ball_minigame":
+		var game = minigameScene.instance()
+		GM.ui.addCustomControl("minigame", game)
+		game.connect("minigameCompleted", self, "onMinigameCompleted")
+
+	if state == "minigameResult":
+		saynn("You stinky!")
+		addButton("Yes", "Of course", "2ndactivity")
 
 func randomTasks():  # TODO If no will, player will have no choice here
 	return [tasks.pop_front(), tasks.pop_front()]
+
+func onMinigameCompleted(result):
+	GM.main.pickOption("minigameResult", [result])
 
 func hasAllPerksRequiredForMindfuck():
 	for perk in ["BowlTraining", "Commands", "PetName", "PetSpeech", "PetWalkies", "PetRelocated"]:
@@ -299,8 +311,10 @@ func loadData(data):
 
 func _react(_action: String, _args):
 	if _action == "inventory":
-		runScene("InventoryScene")
-		setState("")
+		runScene("InventoryScene", [], "inventory")
+
+	if _action == "minigameResult":
+		addMessage(("Result is: "+str(_args[0])))
 
 	if _action == "walk_pasture":
 		playAnimation(StageScene.Duo, "kneel", {npc="issix", npcAction="stand", bodyState={leashedBy="issix"}})
@@ -381,3 +395,7 @@ func _react(_action: String, _args):
 		return
 
 	setState(_action)
+
+func _react_scene_end(_tag, _result):
+	if _tag == "inventory":
+		setState("")
