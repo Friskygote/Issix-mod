@@ -35,7 +35,7 @@ func shouldBeShownForcedEvent():
 		return null
 	if getModuleFlag("IssixModule", "Mindlessness_Day_Start", GM.main.getDays()) + 5 <= GM.main.getDays() and GM.main.getModuleFlag("IssixModule", "Noncon_Mode_Enabled", false) != true:
 		return "NonconModeStart"
-	if GM.main.getDays() >= GM.main.getModuleFlag("IssixModule", "Progression_Day_Next", 0):
+	if GM.main.getDays() >= GM.main.getModuleFlag("IssixModule", "Progression_Day_Next", 999999):
 		registered_special_scenes.sort_custom(CustomSorter, "sort_by_progressionpoints")
 		for scene in registered_special_scenes:
 			if scene[1] > current_progression_points:

@@ -7,6 +7,7 @@ var char2 = ""
 var privates_choice = "ass"
 var borrowed_strapon = false
 var tasks := []
+var tasks_finished = 0
 var minigameScene = preload("res://Modules/IssixModule/Minigames/BallChaser/BallChaser.tscn")
 
 func _init():
@@ -20,6 +21,7 @@ func _initScene(_args = []):
 			 ["Hiisi", "Spend time with Hiisi", "hiisi_time"],
 			 ["Lamia", "Spend time with Lamia", "lamia_time"]]
 	tasks.shuffle()
+	tasks_finished = 0
 
 # Main loop:
 # Player gets to choose from 2 options twice per pasture walk in regards to possible activities
@@ -71,14 +73,12 @@ func _run():
 		saynn("[say=hiisi]Everyone was fine at the end, but nobody likes being ran into.[/say]")
 		saynn("[say=pc]*chuckle* Can imagine.[/say]")
 		saynn("[say=issix]What will you two do? Any plans? Should I take something out of the bag?[/say]")
-		for item in randomTasks():
-			addButton(item[0], item[1], item[2])
+		randomTasks()
 
 	if state == "2ndactivity":
 		saynn("You are deliberating what to do now.")
 
-		for item in randomTasks():
-			addButton(item[0], item[1], item[2])
+		randomTasks()
 
 		if hasAllPerksRequiredForMindfuck() and getModuleFlag("IssixModule", "Mindlessness_Walkies_Status", 0) < 1 and getModuleFlag("IssixModule", "Mindlessness_Day_Start") == null:
 			saynn("As you think what to do next, you notice a guard walking out an inmate nearby, what catches your attention is the fact that the canine inmate is led on a leash just like your Master walks you all to the pasture, in addition they walk on their fours. It is still a rather rare sight.")
@@ -261,7 +261,7 @@ func _run():
 		saynn("Master shows you all a brightly colored ball.")
 		saynn("[say=pc]What is it for?[/say]")
 		saynn("You look at other pets, Azazel seems disinterested, Hiisi - quite the opposite, he seems livened up with tail swishing in the air. Lamia seems reserved.")
-		saynn("[say=issix]What do we use balls for {pc.name}? For play of course. You should know this, as a pet. Anyways, first to bring me the ball 3 times wins a treat, no foul play![/say]")
+		saynn("[say=issix]What do we use balls for {pc.name}? For play of course. You should know this, as a pet. Anyways, first to bring me the ball wins a treat, have fun![/say]")
 		saynn("You notice that Azazel's demeanor changes, his face gains a sly face expression. Lamia hearing word „treat” seems additionally motivated.")
 
 		saynn("[say=issix]Ready.. Set..[/say]")
@@ -272,12 +272,150 @@ func _run():
 		GM.ui.addCustomControl("minigame", game)
 		game.connect("minigameCompleted", self, "onMinigameCompleted")
 
-	if state == "minigameResult":
-		saynn("You stinky!")
-		addButton("Yes", "Of course", "2ndactivity")
+	if state == "ball_chaser_lose":
+		var winner = RNG.pick(["Lamia", "Azazel", "Hiisi"])
+		saynn("You chase after the ball along with two other pets on your sides. Azazel's mishaps however landed you with a bucket over your head making you unable to continue the race for some time until the others gained so much advantage over you that it didn't make sense to continue. You can only watch how Hiisi and Lamia ended up enduring their own set of tricks, for which they seemed to be mostly prepared for. At the end "+winner+" was able to secure the ball in their mouth (as Master intended).")
+		saynn("[say="+winner.to_lower()+"]I gohht yyt![/say]")  # Even if Lamia tries to speak, it's going to be just ...
+		saynn("[say=issix]Haha, splendid. It was quite a sight to behold as you all ran for it. Seeing {pc.name} confused with a bucket on their head was hilarious, though probably going a bit too far Azazel.[/say]")
+		saynn("[say=azazel]Aww. That bucket asked for it though, Master. Was literally on the path![/say]")
+		saynn("[say=issix]Now now, don't be such a bully.[/say]")
+		saynn("[say=azazel]Sorry, Master.[/say]")
+		saynn("[say=issix]Alright. Treats belong to "+winner+" today, everyone else, better luck next time![/say]")
+		addButton("Finish", "Finish here", "2ndactivity")
 
-func randomTasks():  # TODO If no will, player will have no choice here
-	return [tasks.pop_front(), tasks.pop_front()]
+	if state == "ball_chaser_meh":
+		var winner = RNG.pick(["Lamia", "Azazel", "Hiisi"])
+		saynn("You chase after the ball along with two other pets on your sides. At first things go great, however when you closed half of the distance you found your legs unable to move landing your face in the grassy soft ground. After initial shock of the impact you looked at your legs and found them tied up by bola, you can't quite tell where it came from, you only know engineering win in BDCC is equipped with those. You look in direction of the ball and see "+winner+" with a ball in their mouth slowly coming back along with two other tired pets. After dealing with bola you join them and get back to the Master.")
+		saynn("[say="+winner.to_lower()+"]I gohht yyt![/say]")
+		saynn("[say=issix]Haha, yes you did! Great job! What happened there {pc.name}? I saw you collapse in the middle, are you alright?[/say]")
+		saynn("[say=pc]Yeah, I'm okey. It's just a... Bola? I'm not sure where it came from.[/say]")
+		saynn("Everyone, including Master look with suspicion at Azazel.")
+		saynn("[say=azazel]Hey, it wasn't me this time, okey? It must have been just a stranded one or something...[/say]")
+		saynn("[say=issix]No matter, hope next time you can win {pc.name}. Right now "+winner+" is the rightful owner of treats I have here. Enjoy![/say]")
+		if winner == "Lamia":
+			saynn("Lamia takes a few cookies from Master's paw and their face lights up. It's pretty adorable how they look like this you think, this genuine smile and appreciation is a very rare sight in the prison.")
+		else:
+			saynn(winner+" takes a few cookies from the Master and begins to slowly munch on them savoring them. Everyone else decoded to do something else.")
+		addButton("Finish", "Finish here", "2ndactivity")
+
+	if state == "ball_chaser_okey":
+		var winner = RNG.pick(["Azazel", "Hiisi"])
+		saynn("You chase after the ball along with two other pets on your sides. For the first quarter of distance are doing fairly good, going head to head with other pets, though soon after the advantage of three other pets becomes obvious. Hiisi on the lead with his muscular and well maintained body structure, with Lamia and Azazel right behind him.")
+		saynn("This state of matters stays this way until last stretch where Lamia is essentially eliminated by getting tired just before reaching the ball. Ultimately "+winner+" comes out victorious by mere moments of clarity lending them enough time to grab the ball in final lunge.")
+		saynn("Azazel and Hiisi pick up tired Lamia from the ground and you all come back to the Master, with "+winner+" holding the ball in their mouth (as Master intended).")
+		saynn("[say="+winner.to_lower()+"]I goht iyt![/say]")
+		saynn("[say=issix]Haha, yes you did! Great job! Hope everyone had fun.[/say]")
+		if "Azazel" == winner:
+			saynn("[say=hiisi]I'd have a lot of fun if not for Azazel constantly making strange noises making me look behind.[/say]")
+			saynn("[say=azazel]Well, it did work, didn't it? Hehe.[/say]")
+			saynn("[say=hiisi]Mph.[/say]")
+			saynn("[say=issix]Haha. Azazel clearly had to find something else to bridge the gap between your trained body and his trained... Pussy.[/say]")
+			saynn("Master laughs. Judging by Azazel's face, he took it as a compliment.")
+			saynn("[say=issix]Just try not to give in to his distraction warfare Hiisi, and the treats will be yours next time![/say]")
+			saynn("Azazel clearly enjoys the cookies given to him by the Master. you can't tell whether his „in your face” manner of consuming them is him boasting about his win or just the way he feels like eating them today.")
+		else:
+			saynn("Master takes the ball from Hiisi's mouth and in return gives him a few chocolate cookies.")
+			saynn("[say=hiisi]Thank you Master![/say]")
+			saynn("[say=issix]But of course, you deserve them.[/say]")
+			saynn("[say=azazel]Any consolation prize for the second place Master?[/say]")
+			saynn("[say=issix]Haha! Good one Azazel. If you want, you can relieve Hiisi of Laundry tasks as a reward. I'm sure he would appreciate.[/say]")
+			saynn("[say=hiisi]Oh, that would be great, thank you Azazel![/say]")
+			saynn("[say=azazel]Master![/say]")
+			saynn("He makes a sulking face, both of them laugh it out.")
+		addButton("Finish", "Finish here", "2ndactivity")
+
+	if state == "ball_chaser_good":
+		saynn("You chase after the ball along with two other pets on your sides. For the first part of the race everyone was going head to head, until Azazel has pulled a trick on Hiisi that resulted in him tripping and falling on his front leaving just three of you racing for the ball in the distance.")
+		saynn("Azazel visibly slowed down, you assume that's because the chase tires him out, his steps became smaller and smaller until it was just you and Lamia left.")
+		if GM.pc.getPersonality().getStat(PersonalityStat.Mean) > 0.4:
+			saynn("You look at each other, Lamia giving you a smile and thumbs up while continuing to run, somehow. You look forward leaving them without any response other than a push with your right arm to make them fall. They do not yield however and race you until the very end.")
+		else:
+			saynn("You look at each other, Lamia giving you a smile and thumbs up while continuing to run, somehow. Liking this good sportsmanship behavior you reciprocate with a thumbs up as you both turn your head to a ball that is very close by now, preparing to fish it out of the grass.")
+
+		if RNG.chance(70):
+			saynn("Having the ball incredibly close now you jump towards it to grab it. You didn't look on your right to see how is Lamia doing recently, only sensing they are very close by. Ultimately you secure the ball while staying on your front on the soft ground with plenty of grass in between.")
+			saynn("You look above, Lamia's tired and frustrated face right beside you, with them on their knees supported by their front paws heavily breathing.")
+			saynn("[say=pc]Huff, good job Lamia. That was something huh?[/say]")
+			saynn("They nod to you, still breathing heavily. You can see their face being... Saddened?")
+			addButton("Share", "Say you can share Master's treat with Lamia", "ball_chaser_good_share")
+			addButton("Keep it", "Keep the reward to yourself", "ball_chaser_good_dont_share")
+		else:
+			saynn("It was at the very moment you jumped having the ball just a few steps away, that you realized you've lost. In slowmotion like speed you saw Lamia's body swoosh below you grabbing the ball in their teeth as if they were a vacuum cleaner collecting trash from the ground, their front eventually reaches the ground in full with you landing on their legs.")
+			saynn("Lamia gives a silent whimper, they pull their legs to themselves, you just move to your side.")
+			saynn("[say=pc]Shit, are you okey Lamia?[/say]")
+			saynn("They look at their legs and give you a nod, with the ball in their teeth.")
+			saynn("[say=pc]Sorry about that, guess we got all too excited there, didn't we haha.[/say]")
+			saynn("They smile at you and nod again.")
+			saynn("You come back to Master along with Lamia head back to the place where Master along with Azazel and Hiisi are.")
+			saynn("[say=issix]Here are the biggest player's of today's fetch! So, tell me, how was it huh? I can see that Lamia is the one with the ball, everyone good there? It looked like you both crashed somewhat at the end?[/say]")
+			saynn("[say=pc]Yes, Master, we are fine.[/say]")
+			saynn("Lamia nods to confirm.")
+			saynn("[say=issix]I see, well, it looked quite bad from where I were standing, but I'm glad to hear you are alright, here is your reward Lamia.[/say]")
+			saynn("He hands a few cookies to Lamia, he is delighted to see them and immediately starts munching on them, his face incredibly happy by the fact.")
+			addButton("Finish", "Finish here", "2ndactivity")
+
+	if state == "ball_chaser_good_share":
+		saynn("[say=pc]You know, whatever the reward Master has, I could share it with you if you want. I can see that you really want it.[/say]")
+		saynn("His face immediately lights up as he looks at you with his vulpine face filled with reinvigorated happiness, their tail swooshing behind them, they give you very stern nods.")
+		saynn("[say=pc]Okey okey, sure. We can share, you did pretty well anyways, you deserve it.[/say]")
+		saynn("Lamia hugs you as both of you roll on the ground.")
+		saynn("Shortly after you both regain your breathes, you move towards Master, Hiisi and Azazel are already there.")
+		saynn("[say=issix]Here are the biggest player's of today's fetch! So, tell me, how was it huh? I can see that {pc.name} came with the ball, but I also saw you rolling around? What was that about?[/say]")
+		saynn("[say=pc]Uhhh, was just Lamia being really happy about me saying that I want to share a treat with him, Master.[/say]")
+		saynn("[say=issix]Hahhaha, that's so nice of you {pc.name}! Here they are, cookies. I know they are Lamia's favorite, so you might have just made his day by deciding to share.[/say]")
+		saynn("And so you do, half for you, half for him. His face completely brightens up giving a dazzling look of content as he munches the cookie in his paws. There is enough for you to stash one for later. Maybe it was worth just for seeing that? Their cheer is infectious.")
+		addButton("Finish", "Finish here", "2ndactivity")
+
+	if state == "ball_chaser_good_dont_share":
+		saynn("You ignore that and along with Lamia head back to the place where Master along with Azazel and Hiisi are.")
+		saynn("[say=issix]Here are the biggest player's of today's fetch! So, tell me, how was it huh? I can see that {pc.name} came with the ball, everyone good there?[/say]")
+		saynn("[say=pc]Yes, Master.[/say]")
+		saynn("[say=issix]Splendid.[/say]")
+		saynn("Master takes the ball of you, in return you gain multiple cookies.")
+		saynn("[say=issix]Hope you all enjoyed it all. [/say]")
+		addButton("Finish", "Finish here", "2ndactivity")
+
+	if state == "ball_chaser_great":
+		saynn("The moment Master says „go” your body starts running as if your life depended on it. Halfway to place where the ball fell there doesn't seem to be any competition near you, or so you think as your focus is only shifted towards the ball. Your two legs propel you forward at speed you didn't know you even could achieve. Strangely, you feel so... Free. With breeze on your "+Globals.getSkinWord()+" it feels unreal. You don't feel like there is any tiredness, you feel great, actually. Having passed third of the distance the ball is now basically yours. Behind you there is no one, they might have given up the fight already. Which si strange, Hiisi should be fairly good at running, however this doesn't matter now. Not when you see the white ball along the short grass basically within your grasp.")
+		saynn("You pick up the ball in your paw. Grasping it as you take it all in. You sit on the ground there, facing towards Master and other pets, they are coming back to the Master, With fetch over, you've achieved the goal, you've gotten the ball. The tiredness and exhaustion finally caught up to your brain. You notice heavy breathing, sweat coming off you.")
+		saynn("You chill there for a minute before standing up on your now aching legs and walking back towards the blankets, Master and other pets. With ball in your grasp.")
+		saynn("[say=issix]Here we have our absolute winner, what a spectacle! I'll be honest, I couldn't believe what I saw, you beat Hiisi? That was simply amazing.[/say]")
+		saynn("[say=pc]Thank you Master, to be honest... I don't really know what happened there, I just... Ran.[/say]")
+		saynn("[say=issix]And ran you did.[/say]")
+		saynn("[say=hiisi]That was something, good job {pc.name}. Maybe you could do running errands from now on, heh.[/say]")
+		saynn("Lamia gives you thumbs up for performance.")
+		saynn("[say=azazel]I think you could outrun anyone in this prison at that pace. Were you ever a runner? Anyways, good job. You certainly deserve that treat from Master.[/say]")
+		saynn("Master hands you a few cookies with chocolate chips. You eat some on the spot, while storing 2 of them for later. That was certainly something!")
+		addButton("Finish", "Finish here", "2ndactivity")
+
+	if state == "ball_chaser_demon":
+		var winner = RNG.pick(["Lamia", "Azazel", "Hiisi"])
+		saynn("You chase after the ball along with two other pets on your sides. You are quickly overtaken by other pets, however what stuns you in place is seeing them all with similar long, leathery, [color=red]red[/color], spaded tails. Not only that, they all have horns on their heads. This is now how they looked just a minute ago! You are seriously spooked, seeing the three creatures running after the ball as if nothing had happened. You are quarter of distance from starting point, standing in awe, looking at their backs until a winner emerges, "+winner+". They are all coming back, you see their faces looking... A little bit different. You can clearly still recognize them but they aren't... The same. Still stunned with inability to comment you come back to your encampment at the pasture.")
+		saynn("[say="+winner.to_lower()+"]I gohht yyt![/say]")  # Even if Lamia tries to speak, it's going to be just ...
+		saynn("[say=issix]Haha, splendid. It was quite a sight to behold as you all ran for it. You deserve the treats here!... {pc.name} is everything alright? You look as if you saw a ghost, any reason you stopped mid way? Have you stepped wrong and hurt yourself?[/say]")
+		saynn("[say=pc]Uhhhh, I-.. Wh-[/say]")
+		saynn("You continue staring with big eyes at everyone. Master Issix doesn't look much different, thought the rest of pets are visibly more... Demonic in looks. You blink. Everything comes back to... Normal? No more leathery tails, no more horns, except on those who had them before, like Azazel. It's... Strange.")
+		if getModuleFlag("IssixModule", "Azazel_Corruption_Scene", 0) > 4:
+			saynn("To think of it, all of the pets looked exactly how you remember them back in the drug drunken dream(?). Those forms... They keep appearing. And yet you see them as normal. What is going on?!")
+		elif getModuleFlag("IssixModule", "Azazel_Corruption_Scene", 0) > 2:
+			saynn("To think of it, Azazel looked exactly how you remember him back in the hall a while ago as he was convincing you to join Master's harem. ")
+
+		saynn("[say=pc]I... I don't know. I thought... Nevermind, I think I'm just tired today, sorry Master.[/say]")
+		saynn("[say=issix]It's all alright {pc.name}, I'm just happy you aren't hurt.[/say]")
+		saynn("[say=issix]Alright. Treats belong to "+winner+" today, everyone else, better luck next time![/say]")
+		addButton("Finish", "Finish here", "2ndactivity")
+
+	if state == "end_pasture":
+		#TODO Finish
+		pass
+
+
+func randomTasks():
+	var task = []
+	task = tasks.pop_front()
+	addButton(task[0], task[1], task[2])
+	task = tasks.pop_front()
+	Globals.addButtonCheckNoncon(task[0], task[1], task[2])
 
 func onMinigameCompleted(result):
 	GM.main.pickOption("minigameResult", [result])
@@ -297,6 +435,7 @@ func saveData():
 	data["borrowedStrapon"] = borrowed_strapon
 	data["chosen_scene"] = chosen_scene
 	data["privates_choice"] = privates_choice
+	data["tasks_finished"] = tasks_finished
 
 	return data
 
@@ -308,13 +447,53 @@ func loadData(data):
 	borrowed_strapon = SAVE.loadVar(data, "borrowedStrapon", false)
 	chosen_scene = SAVE.loadVar(data, "chosen_scene", StageScene.SexTrain)
 	privates_choice = SAVE.loadVar(data, "privates_choice", "ass")
+	tasks_finished = SAVE.loadVar(data, "tasks_finished", 0)
 
 func _react(_action: String, _args):
 	if _action == "inventory":
 		runScene("InventoryScene", [], "inventory")
 
-	if _action == "minigameResult":
-		addMessage(("Result is: "+str(_args[0])))
+	if _action == "minigameResult":  # TODO Take into account bondage gear
+		GM.pc.addStamina(-60)
+		if _args[0] == 666:
+			_action = "ball_chaser_demon"
+		elif _args[0] < 900:
+			_action = "ball_chaser_lose"
+		elif _args[0] < 1900:
+			_action = "ball_chaser_meh"
+		elif _args[0] < 2800:
+			_action = "ball_chaser_okey"
+		elif _args[0] < 3100:
+			_action = "ball_chaser_good"
+		else:
+			_action = "ball_chaser_great"
+			GM.pc.getSkillsHolder().addExperience(30)
+			addMessage("You've gained 30 XP and two cookies!")
+			GM.pc.getInventory().addItemID("Cookie")
+			GM.pc.getInventory().addItemID("Cookie")
+			GM.pc.addStamina(50)
+
+		addMessage(("Final score is: "+str(_args[0])))
+
+	if _action == "ball_chaser_good_share":
+		GM.pc.getInventory().addItemID("Cookie")
+		if GM.pc.personalityChangesAfterSex():
+			addMessage("You've gained one cookie, also you became kinder.")
+			GM.pc.getPersonality().addStat(PersonalityStat.Mean, -0.04)
+		else:
+			addMessage("You've gained one cookie.")
+		GM.pc.addStamina(20)
+
+	if _action == "ball_chaser_good_dont_share":
+		GM.pc.getInventory().addItemID("Cookie")
+		GM.pc.getInventory().addItemID("Cookie")
+		if GM.pc.personalityChangesAfterSex():
+			addMessage("You've gained two cookies, also you became more mean.")
+			GM.pc.getPersonality().addStat(PersonalityStat.Mean, 0.04)
+		else:
+			addMessage("You've gained two cookies.")
+
+		GM.pc.addStamina(50)
 
 	if _action == "walk_pasture":
 		playAnimation(StageScene.Duo, "kneel", {npc="issix", npcAction="stand", bodyState={leashedBy="issix"}})
@@ -324,6 +503,11 @@ func _react(_action: String, _args):
 			"Hiisi, stop sniffing every inmate, you are slowing us all down",
 			"{pc.name} stay in between Lamia and Hiisi, you fit there perfectly"
 		], "yard_waterfall", "crawl"])
+
+	if _action == "2ndactivity":
+		tasks_finished += 1
+		if tasks_finished > 1:
+			_action = "end_pasture"
 
 	if _action == "sextrain_choice":
 		chosen_scene = StageScene.SexTrain
@@ -367,11 +551,13 @@ func _react(_action: String, _args):
 				GM.pc.cummedInAnusBy("issix", FluidSource.Penis)
 		processTime(20*60)
 		GM.pc.addLust(-600)
+		GM.pc.addStamina(-20)
 
 	if _action == "threesome_2_SexTrain":
 		privates_choice = _args[0]
 		processTime(30*60)
 		GM.pc.addLust(60)
+		GM.pc.addStamina(-20)
 
 	if _action == "threesome_4_SexTrain":
 		var character = GlobalRegistry.getCharacter(char1)

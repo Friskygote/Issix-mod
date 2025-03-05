@@ -177,6 +177,7 @@ func _init():
 		"res://Modules/IssixModule/Scenes/SlaveryFirst/GenericTrainSessionScene.gd",
 		"res://Modules/IssixModule/Scenes/SlaveryFirst/WalkiesTrainingScene.gd",
 		"res://Modules/IssixModule/Scenes/SlaveryFirst/PunRew/IssixPawJobScene.gd",
+		"res://Modules/IssixModule/Scenes/SlaveryFirst/PunRew/IssixScoldingScene.gd",
 		"res://Modules/IssixModule/Scenes/SlaveryFirst/SlaveryTrainingCommandsScene.gd",
 		"res://Modules/IssixModule/Scenes/SlaveryFirst/SlaveryTrainingCommandsContScene.gd",
 		"res://Modules/IssixModule/Scenes/SlaveryFirst/NonconAlternativeIntro.gd",
@@ -243,6 +244,10 @@ func _init():
 		"res://Modules/IssixModule/SpeechModifiers/LamiaMute.gd",
 		"res://Modules/IssixModule/SpeechModifiers/PetTalk.gd",
 		"res://Modules/IssixModule/SpeechModifiers/AzazelDemon.gd",
+	]
+
+	buffs = [
+		"res://Modules/IssixModule/Buffs/NaturallyObedient.gd",
 	]
 
 	GlobalRegistry.registerLustTopicFolder("res://Modules/IssixModule/InterestTopics/")

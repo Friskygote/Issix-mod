@@ -47,12 +47,16 @@ func run(_triggerID, _args):
 			addDisabledButton("Pets", "They don't want to speak to you today")
 	else:
 		saynn("You see Issix sitting on a chair in a corner, around him there are three leashed slaves.")
-		addButton("Issix", "Talk to Issix", "talk")
-		if(!getModuleFlag("IssixModule", "Pets_Introduced")):
-			#addButton("Look at pets", "Look at pets", "pets")
-			addDisabledButton("Talk with pets", "You should probably first talk with intimidating figure who got them leashed")
+		if getModuleFlag("IssixModule", "Unwelcome_At_Corner", false) != true:
+			addButton("Issix", "Talk to Issix", "talk")
+			if(!getModuleFlag("IssixModule", "Pets_Introduced")):
+				#addButton("Look at pets", "Look at pets", "pets")
+				addDisabledButton("Talk with pets", "You should probably first talk with intimidating figure who got them leashed")
+			else:
+				addButton("Pets", "Look at pets", "pets")
 		else:
-			addButton("Pets", "Look at pets", "pets")
+			addDisabledButton("Issix", "He doesn't want to speak to you today")
+			addDisabledButton("Pets", "They don't want to speak to you today")
 
 
 func getPriority():

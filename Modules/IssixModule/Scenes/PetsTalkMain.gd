@@ -903,7 +903,7 @@ func _react(_action: String, _args):
 				_action = "artminigame"
 
 	if _action == "hiisireassure":
-		increaseModuleFlag("IssixModule", "Hiisi_Affection", 5)
+		increaseModuleFlag("IssixModule", "Hiisi_Affection", 1)
 		setModuleFlag("IssixModule", "Hiisi_Name_Helped", true)
 		processTime(10*60)
 
@@ -915,8 +915,9 @@ func _react(_action: String, _args):
 		in_training_mode = true
 
 	if _action == "hiisiadvice":
-		increaseModuleFlag("IssixModule", "Hiisi_Affection", -5)
+		increaseModuleFlag("IssixModule", "Hiisi_Affection", -3)
 		setModuleFlag("IssixModule", "Hiisi_Name_Helped", true)
+		setModuleFlag("IssixModule", "Unwelcome_At_Corner", true)
 		processTime(5*60)
 
 	if _action == "hiisihelp":
