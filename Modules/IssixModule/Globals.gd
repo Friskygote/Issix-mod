@@ -1,9 +1,19 @@
-const Globals = preload("res://FoxLib/Globals.gd")
-
 
 static func getSkinWord() -> String:
-	var character_skin_name = Globals.ofModule("IssixModule").characterCoverage
+	var character_skin_name = "fur"
+	if checkIfFoxlib():
+		var Globals = load("res://FoxLib/Globals.gd")
+		character_skin_name = Globals.ofModule("IssixModule").characterCoverage
+
 	return character_skin_name
+
+# Check if FoxLib is installed (this is shitty, we should check version too but I'm lazy)
+static func checkIfFoxlib():
+	var loaded_mods = GlobalRegistry.getLoadedMods()
+	for item in loaded_mods:
+		if "FoxLib" in item:
+			return true
+	return false
 
 
 # Undress the player of everything but unremovable restraints

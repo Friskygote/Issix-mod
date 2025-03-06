@@ -14,7 +14,7 @@ var pick_up_lamia_art = [
 	"With some difficulty you manage to separate the last artwork from the pile from the rest to look at it",
 	"You grab yet another artwork from the pile",
 	"With a swift grab another artwork from the pile is now yours to look at"
-	]
+]
 
 var humanoids_lamia_art = [
 	"a group of inmates celebrating someone's birthday",
@@ -25,7 +25,7 @@ var humanoids_lamia_art = [
 	"multiple versions of legs belonging to a bovine anthro, likely drawn for practice",
 	"anthropomorphic deer cuddling with a giant plush of a shark",
 	"three dark figures in black robes, with their faces hidden inside long hoods looming above a ritualistic slab made out of stone where an anthropomorphic feline lies unconscious"
-	]
+]
 
 var animal_flora_lamia_art = [
 	"a goat with impressive curly horns",
@@ -36,7 +36,7 @@ var animal_flora_lamia_art = [
 	"a spread purple flower that has multiple petals of various sizes attached",
 	"a large orange fox overlooking a blue globe",  # best browser
 	"a jar full of worms"
-	]
+]
 
 var humanoids_animals_lamia_art = [
 	"an anthro cat holding a little feral mouse on palm of their paw",
@@ -44,7 +44,7 @@ var humanoids_animals_lamia_art = [
 	"coyote person releasing a bird - a white dove from their paws into the air, the dove flies away",
 	"a feminine lizard running along feral dog by their side",
 	"faces of a humanoid lion and a feral weasel illuminated only by a single candle in the center, everything else is dark, only faces and a candle are visible"
-	]
+]
 
 var background_lamia_art = [
 	"a large valley full of trees and small stream of water going down",
@@ -54,7 +54,7 @@ var background_lamia_art = [
 	"stalactites and stalagmites extending from the top and bottom of the cave, a torch is visible somewhere deeper in the cave",
 	"what looks to be an empty dog park with various dog attractions in it, in the background you can see sun raising from the horizon - it must be early morning",
 	"a sunrise above a large body of water"
-	]
+]
 	
 var animals_backgrounds_lamia_art = [
 	"a jungle full of flora, you see giant trees as well as a large amount of green plants, some purple flowers growing here and there",
@@ -188,7 +188,7 @@ func _run():
 		if Globals.checkIfPCEnslaved():
 			saynn("[say=hiisi]If you want any, there is Azazel, I'm sure he'd love to help. Master may want to use you from time to time as well, could ask him too.[/say]")
 		else:
-			saynn("[say=hiisi]This entire prison is full of people who would love to fuck with you, sometimes metaphorically. ou have plenty of choice, go ask. Just don't try to do that with any of us, Master wouldn't like.[/say]")
+			saynn("[say=hiisi]This entire prison is full of people who would love to fuck with you, sometimes metaphorically. You have plenty of choice, go ask. Just don't try to do that with any of us, Master wouldn't like.[/say]")
 		addButton("Back", "Do something else", "hiisitalk")
 
 	if state == "hiisiprison":
@@ -904,6 +904,8 @@ func _react(_action: String, _args):
 
 	if _action == "hiisireassure":
 		increaseModuleFlag("IssixModule", "Hiisi_Affection", 1)
+		if GM.main.getModuleFlag("IssixModule", "Hiisi_Affection", 0) in [3, 6, 9]:
+			addMessage("New random wander scene for Hiisi has been unlocked")
 		setModuleFlag("IssixModule", "Hiisi_Name_Helped", true)
 		processTime(10*60)
 

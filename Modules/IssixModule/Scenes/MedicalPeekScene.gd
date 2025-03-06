@@ -24,7 +24,7 @@ func _run():
 		
 	if(state == "eavesdrop"):
 		setModuleFlag("IssixModule", "Medical_Peeked", true)
-		saynn("There are a couple of voices you can hear throuh the doors, none of them are loud enough to make out full sentences, but from the tone you can at least make out who is speaking.")
+		saynn("There are a couple of voices you can hear through the doors, none of them are loud enough to make out full sentences, but from the tone you can at least make out who is speaking.")
 		saynn("[say=issix]- long ---? --- pain?[/say]")
 		saynn("[say=eliza]-- tell, --- midnight. We've -- anesthetic -- shouldn't feel any -. ------ nutrients --, --- needs - rest.[/say]")
 		saynn("[say=issix]-- believe --- again, -- sake![/say]")

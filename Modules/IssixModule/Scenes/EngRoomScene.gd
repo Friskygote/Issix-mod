@@ -152,7 +152,7 @@ func randomItemFromSeed(array):
 	return array[cabinet_random.randi() % array.size()]
 	
 func randomNumberFromSeed(numStart, numEnd):
-	cabinet_random.randi_range(numStart, numEnd)
+	return cabinet_random.randi_range(numStart, numEnd)
 		
 func generateLoot(cabinet_number: int):
 	cabinet_random.seed = GM.main.getDays() + cabinet_number * 1000

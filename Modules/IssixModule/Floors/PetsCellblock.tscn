@@ -205,7 +205,7 @@ canEast = false
 position = Vector2( 0, -896 )
 roomName = "Corridor"
 roomID = "petsdream_cellblock_corridor_part16"
-roomDescription = "You see it! Just a little bit! You can make out a person from the distance, they are surrounded by purple mass that makes up the walls,ceiling and the floor."
+roomDescription = "You see it! Just a little bit! You can make out a person from the distance, they are surrounded by purple mass that makes up the walls, ceiling and the floor."
 canWest = false
 canEast = false
 

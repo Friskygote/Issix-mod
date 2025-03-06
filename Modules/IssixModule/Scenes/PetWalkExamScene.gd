@@ -497,13 +497,14 @@ func _run():
 		addButton("Headpat", "Give the artist fox a headpat", "headpat")
 		
 	if state == "hugandthank":
+		playAnimation(StageScene.Hug, "hug", {pc="lamia", npc="pc", bodyState={naked=true, hard=true}, npcBodyState={naked=true, hard=true}})
 		saynn("Stunned, your heart melted, the first thing that comes to your mind is to hug the fox. You do that completely on impulse with no hesitation. Fox at first taken aback by that gesture (embarrassed, blushing hard), eventually embraces the hug and reciprocates. Still hugging you say")
 		saynn("[say=pc]Thank you Lamia, I love it so much. I'll cherish it.[/say]")
 		saynn("They smile and nod twice to you excitedly.")
 		addButton("Back", "End the conversation", "lamia")
 				
 	if state == "headpat":
-		playAnimation(StageScene.Grope, "pat", {pc="pc", npc="lamia", bodyState={naked=true, hard=false}, npcBodyState={naked=true, hard=false}})
+		playAnimation(StageScene.Grope, "pat", {pc="lamia", npc="pc", bodyState={naked=true, hard=false}, npcBodyState={naked=true, hard=false}})
 		saynn("Stunned, your heart melted, the first thing that comes to your mind is to give the fox a headpat. You put your paw on their head and gently pat them. Their ears flatten and their face seems very pleased by your patting.")
 		saynn("[say=pc]Thank you Lamia, I like it very much.[/say]")
 		saynn("They smile and nod to you excitedly.")

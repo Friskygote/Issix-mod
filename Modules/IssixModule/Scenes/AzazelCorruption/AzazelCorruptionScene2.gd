@@ -34,7 +34,7 @@ func _run():
 		saynn("[say=pc]Truth be told, I've never kissed anyone...[/say]")
 		saynn("[say=azazel]Did you?! Woaaah, this is such an opportunity to learn! Oh man, I'm so excited![/say]")
 		saynn("You can see Azazel's tail going haywire behind him at edge of your vision, his voice incredibly excited.")
-		saynn("[say=azazel]You must know, everyone's kiss is different, all have different taste and ways they kiss! It's always a combination of factors like forcefulness, approach, timing, grace... I've had many kisses! Well,.. Maybe not in here exactly...[/say]")
+		saynn("[say=azazel]You must know, everyone's kiss is different, all have different taste and ways they kiss! It's always a combination of factors like forcefulness, approach, timing, grace... I've had many kisses! Well... Maybe not in here exactly...[/say]")
 		saynn("Suddenly his demeanor changes as he says last sentence, his body less... Vibrating, his speech much quieter - barely audible, there is sadness in his voice, all of those quickly come back to previous state with his next sentence, you face Azazel's face, he seems so enthusiastic and happy, his eyes look [pulse color=#ac1eff height=0.0 freq=1.0]inviting[/pulse].")
 		saynn("[say=azazel]But it's all fine with you in here, why cry over something like that when we could do exactly that! What do you say? Would you want me to still your first kiss cutie? Please, let me, let me! I want to taste you and show you![/say]")
 		addButton("Sure", "Accept Azazel's offer (CW: drug use, cum swap)", "agreekiss")

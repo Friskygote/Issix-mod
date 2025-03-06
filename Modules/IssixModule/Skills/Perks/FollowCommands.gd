@@ -27,3 +27,8 @@ func unlockable():
 
 func hiddenWhenLocked():
 	return true
+
+func getBuffs():
+	return [
+		buff("CommandTrained"),
+	]

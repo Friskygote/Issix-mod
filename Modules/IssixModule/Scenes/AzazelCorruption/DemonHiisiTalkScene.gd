@@ -17,7 +17,7 @@ func _run():
 		addButton("Leave", "Get away from here", "endthescene")
 
 	if state == "talk":
-		saynn("[say=pc]Hello Hiisi/[/say]")
+		saynn("[say=pc]Hello Hiisi?[/say]")
 		saynn("[say=hiisidemon]A fly caught in spider's web, how... Tragic.[/say]")
 		saynn("[say=pc]Huh?[/say]")
 		saynn("[say=hiisidemon]Sometimes I wonder who really is the devil - the one who treats free will as sacred, or the one who corrupts the very meaning of freedom, who wants others to follow in his footsteps leading to downfall.[/say]")

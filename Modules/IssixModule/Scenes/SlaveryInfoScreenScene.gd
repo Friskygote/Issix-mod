@@ -74,7 +74,9 @@ func _run():
 
 	if state == "issixpetmenu":
 		addCharacter("issix")
-		saynn("[say=issix]"+getSituationalMessage() + " " + getMoodMessage()+"[/say]")
+		if getSituationalMessage():
+			saynn("[say=issix]"+getSituationalMessage()+"[/say]")
+		saynn("[say=issix]"+getMoodMessage()+"[/say]")
 		saynn("Is there anything you want to do with Master?")
 		if GM.pc.hasBreastsFullOfMilk():
 			saynn("[say=issix]{pc.Name}, wouldn't you want to unburden your heavy chest a little?[/say]")
@@ -726,7 +728,7 @@ func _run():
 			saynn("[say=issix]Sorry, we've already been to the pasture today. We didn't want to wait at that point. Maybe next time? Just watch out for the day.[/say]")
 		else:
 			saynn("[say=issix]Hmm, soonish, probably in around "+ str(Globals.untilNextWalk(true)) + " days. Are you excited for the next walk?[/say]")
-		addButton("Back", "Go back", "issixpetmenu")
+		addButton("Back", "Go back", "")
 
 	if state == "noncon_issix_sex":
 		saynn("It appears that your Master requires your availability today. You swiftly report yourself for duties as his loyal pet.")
@@ -989,6 +991,8 @@ func supportsSexEngine():
 
 func getSituationalMessage():
 	var responses = []
+	var random = RandomNumberGenerator.new()
+	random.seed = GM.main.getDays()
 	if GM.pc.isWearingHypnovisor():
 		responses.append("Making sure you stay obedient for your Master with that thing? That's cute. I like it.")
 	if GM.pc.isHeavilyPregnant():
@@ -1009,7 +1013,9 @@ func getSituationalMessage():
 		responses.append("Fuck yes. It gotta be one of my favorite things when my pet's paws are reduced to absolutely useless mittens. I think this look befits you, in fact, I think you should wear them permanently.")
 	if GM.pc.getInventory().hasItemIDEquipped("GasMask"):
 		responses.append("Where the hell have you found that thing? A fucking gas mask? Damn. Did not expect that.")
-	return ""
+	if responses:
+		return responses[random.randi_range(0, responses.size()-1)]
+	return null
 
 func getMoodMessage():
 	var issix_mood = getModuleFlag("IssixModule", "Issix_Mood", 50)
@@ -1067,7 +1073,7 @@ func getDays():
 	return GM.main.getDays() - days_enslaved
 
 func trainingCheck():
-	var training_level = getModuleFlag("IssixModule", "PC_Training_Level", 0)
+	var training_level = GM.pc.getSkillLevel("Pet")
 	if training_level < 3:
 		return "poor"
 	elif training_level < 6:
@@ -1130,6 +1136,9 @@ func _react(_action: String, _args):
 				condom.destroyMe()
 		addMessage("You've trashed "+str(counter)+" empty condoms.")
 		_action = "trash_can"
+
+	if _action == "azazelguesslitterguess":
+		processTime(5*60)
 
 	if _action == "azazelfertilitysecond":
 		GM.pc.getInventory().addItem(getCharacter("azazel").getInventory().getEquippedItem(InventorySlot.Strapon))
@@ -1269,12 +1278,13 @@ func _react(_action: String, _args):
 		match guesses["guesses_off"].size():
 			0:
 				_action = "azazelguesslitterfirst"
-			1,2,3:
+			# 1,2,3:
+			_:  # TODO this has to be added
 				_action = "azazelguesslitterrepeat"
-			4:
-				_action = "azazelguesslitterlast"
-			_:
-				_action = "azazelguesslitterfun"
+			# 4:
+			# 	_action = "azazelguesslitterlast"
+			# _:
+			# 	_action = "azazelguesslitterfun"
 
 	if _action == "lamiahelpbondage":
 		var bondage = GM.pc.getInventory().getEquppedRemovableRestraintsNoLockedSmartlocks()

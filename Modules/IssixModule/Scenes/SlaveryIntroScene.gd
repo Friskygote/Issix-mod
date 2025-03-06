@@ -254,6 +254,7 @@ func _react(_action: String, _args):
 		setModuleFlag("IssixModule", "Misc_Slavery_Info", {"day_enslaved": GM.main.getDays(), "scenes_seen": []})
 		setModuleFlag("IssixModule", "Progression_Day_Next", GM.main.getDays()+1)
 		setModuleFlag("IssixModule", "Issix_Mood", 50)
+		setModuleFlag("IssixModule", "Todays_Bred_Slave", "hiisi")  # Just prevent it from being a player
 		setModuleFlag("IssixModule", "Last_Walk", GM.main.getDays())
 
 	if _action == "normalroute":

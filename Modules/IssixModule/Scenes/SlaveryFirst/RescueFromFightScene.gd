@@ -18,7 +18,7 @@ func resolveCustomCharacterName(_charID):
 
 func _run():
 	if(state == ""):  # TODO If enemy is especially powerful summon Issix instead
-		playAnimation(StageScene.Duo, "stand", {pc="hiisi", npc=enemyID, npcAction="stand"})  # TODO Make an animation with 3 people
+		playAnimationForceReset(StageScene.Duo, "stand", {pc="hiisi", npc=enemyID, npcAction="stand"})  # TODO Make an animation with 3 people
 		addCharacter("hiisi")
 		addCharacter(enemyID)
 		saynn("Before fight can continue, all of the sudden Hiisi appears on the scene, he looks a little out of breath but either way, he separates you from {npc.name}.")
@@ -59,11 +59,14 @@ func _run():
 		saynn("[say=pc]Can't promise.[/say]")
 		addButton("Leave", "Leave as well", "endthescene")
 
-	if state == "sayhurt":
+	if state in ["sayhurt", "after_fight_lost"]:
 		playAnimation(StageScene.Duo, "kneel", {pc="hiisi", npc="pc", npcAction="kneel"})
-		saynn("[say=pc]Actually, I think I might need some medical attention, I've been bruised pretty badly.[/say]")
-		saynn("[say=hiisi]Shit, show.[/say]")
-		saynn("You show the canine damage on your body, hissing when he touches a place on your "+Globals.getSkinWord()+".")
+		if state == "sayhurt":
+			saynn("[say=pc]Actually, I think I might need some medical attention, I've been bruised pretty badly.[/say]")
+			saynn("[say=hiisi]Shit, show.[/say]")
+			saynn("You show the canine damage on your body, hissing when he touches a place on your "+Globals.getSkinWord()+".")
+		else:
+			saynn("[say=hiisi]Let me take a look at you...[/say]")
 		if GM.pc.hasEffect(StatusEffect.Wounded):  # TODO Do that only when there is direct path to medical, check with shit
 
 			saynn("[say=hiisi]You are looking really bad, we will have to get you out of here. Follow m- actually, nevermind, let me hold you.[/say]")
@@ -85,6 +88,7 @@ func _run():
 			addButton("Leave", "Leave as well", "endthescene")
 
 	if state in ["fightalone", "fightalonedefeat"]:
+		playAnimation(StageScene.Duo, "throw", {pc="hiisi", npc=enemyID, bodyState={naked=true, hard=true}, npcBodyState={naked=true, hard=true}})
 		if state == "fightalone":
 			saynn("You decide to observe Hiisi's fight from the distance.")
 		else:
@@ -96,8 +100,19 @@ func _run():
 		saynn("[say=npc]Fuck. Fine. Just leave me fucking be.[/say]")
 		saynn("[say=hiisi]Learn the smell of my Master and avoid his pets next time, fucker.[/say]")
 		saynn("[say=npc]Ugh...[/say]")
-		saynn("Hiisi leaves like that the inmate on his knees recovering {npc.himself}")
-		addButton("Leave", "Leave", "endthescene")  # TODO Expand
+
+		if state == "fightalonedefeat" and (GM.pc.getPain() > 50 or GM.pc.hasEffect(StatusEffect.Wounded)):
+			saynn("Hiisi turns to you.")
+			addButton("Continue", "Continue", "after_fight_lost")
+		else:
+			saynn("Hiisi leaves like that the inmate on {npc.his} knees recovering {npc.himself}")
+			saynn("[say=hiisi]Hey {pc.name}, everything alright?[/say]")
+			saynn("[say=pc]Yeah, I'm alright.[/say]")
+			saynn("[say=hiisi]You can walk right?[/say]")
+			saynn("[say=pc]Yeah.[/say]")
+			saynn("[say=hiisi]Great, I'll be on my way, Stay out of trouble.[/say]")
+			saynn("[say=pc]Thank you Hiisi.[/say]")
+			addButton("Leave", "Leave", "endthescene")  # TODO Expand
 
 	if state == "fightpc":
 		saynn("[say=pc]Hey Hiisi, don't worry, I can handle this.[/say]")
@@ -106,12 +121,13 @@ func _run():
 			saynn("[say=pc]No, really I ca-[/say]")
 			saynn("[say=hiisi]Shut the fuck up and watch, do not move, lay on the ground.[/say]")
 			saynn("Hiisi is having none of that, he makes you lay on the ground and wait for him to finish the fight.")
+			addButton("Wait", "Can't do much other than let the canine fight", "fightalonedefeat")
 		else:
 			saynn("[say=hiisi]Are you absolutely positive you can handle this?[/say]")
 			saynn("[say=pc]Yes, I'm.[/say]")
 			saynn("[say=hiisi]*sigh* Fine, go at it.[/say]")
 			saynn("He steps aside so you can continue fighting.")
-		addButton("Continue", "Resume the fight", "resumefight")
+			addButton("Continue", "Resume the fight", "resumefight")
 
 	if state == "hiisi_congratulates":
 		saynn("[say=hiisi]Good job. I'll go now.[/say]")
@@ -123,7 +139,7 @@ func _run():
 
 	if state == "hiisi_takesover":
 		saynn("[say=hiisi]Let me take this over alright? Have some rest.[/say]")
-		saynn("Says Hiisi as he finishes the job with the inmate.")
+		saynn("Says Hiisi as he prepares to finish the job with the inmate.")
 		addButton("Watch", "Watch what happens next", "fightalonedefeat")
 
 	if state == "leave":
@@ -198,22 +214,35 @@ func boyfriend():
 			return "lover"
 
 func cleanupFight():
+
 	var pawn:CharacterPawn = GM.main.IS.getPawn("pc")
 	var interaction:PawnInteractionBase = pawn.getInteraction()
-	var pawn_ids = interaction.getInvolvedPawnIDs()
-	pawn_ids.erase("pc")
-	GM.main.IS.getPawn(pawn_ids[0]).satisfyAnger()
-	interaction.stopMe()  # Force stop interaction with no gains
-	fightScene.parentSceneUniqueID = -1  # Nullify previous scene so the react is sent nowhere
-	GM.main.removeScene(fightScene)  # Remove fighting scene as if it never happened
+	if interaction != null and interaction.id == "GenericAttack":
+		var pawn_ids = interaction.getInvolvedPawnIDs()
+		pawn_ids.erase("pc")
+		var pawn_to_handle = GM.main.IS.getPawn(pawn_ids[0])
+		pawn_to_handle.satisfyAnger()
+		pawn_to_handle.makeExhausted()
+		interaction.stopMe()  # Force stop interaction with no gains
+		if is_instance_valid(fightScene) and fightScene:
+			fightScene.parentSceneUniqueID = -1  # Nullify previous scene so the react is sent nowhere
+			GM.main.removeScene(fightScene)  # Remove fighting scene as if it never happened
 
 func continueFight():  # Hijack parent of FightScene, reorder scene order (so our scene is parent of fight scene, change so Hiisi doesn't interrupt and rerun fighting scene)
+	removeCharacter("hiisi")
 	var ourCurrentScene = GM.main.sceneStack.pop_back()  # Remove our current scene from the SceneStack and save its reference to a variable
 	fightScene.parentSceneUniqueID = ourCurrentScene.uniqueSceneID  # Change parent scene of fightScene so we get a callback when FightScene is over
 	ourCurrentScene.parentSceneUniqueID = GM.main.sceneStack[-2].uniqueSceneID  # Set our parent scene to WorldScene, not needed but makes things neat I guess?
 	GM.main.sceneStack.insert(GM.main.sceneStack.size()-1, ourCurrentScene)  # Reorder stack scene, move this scene to be between WorldScene and FightScene
 	GM.main.sceneStack.back().sceneTag = "interaction_fight_pcdef_hijacked"  # So GameExtender doesn't hijak the scene once again
+	GM.main.sceneStack.back().setState("fighting")
+	GM.main.sceneStack.back().whatPlayerDid = ""
+	GM.main.sceneStack.back().whatEnemyDid = ""
+	GM.main.sceneStack.back().whatHappened = ""
 	GM.main.reRun()
+
+func supportsShowingPawns() -> bool:
+	return true
 
 func saveData():
 	var data = .saveData()
@@ -242,6 +271,7 @@ func loadData(data):
 
 func _react_scene_end(_tag, _result):
 	if(_tag == "interaction_fight_pcdef_hijacked"):
+		addCharacter("hiisi")
 		var battlestate = _result[0]
 		var parent_scene = GM.main.sceneStack[-2]
 		var ignore_func_calls := false
@@ -270,14 +300,14 @@ func _react(_action: String, _args):
 		GM.pc.setLocation("med_lobbymain")
 		processTime(15*60)
 
-	if _action in ["sayfine", "saybetter", "sayhurt", "fightalone", "leave"]:
+	if _action in ["sayfine", "saybetter", "sayhurt", "fightalone", "leave", "hiisi_takesover"]:
 		processTime(3*60)
 		cleanupFight()
 
 	if _action == "resumefight":
 		continueFight()
 
-	if _action == "sayhurt":
+	if _action in ["sayhurt", "after_fight_lost"]:
 		if !GM.pc.hasEffect(StatusEffect.Wounded):
 			GM.pc.addPain(-35)
 			GM.pc.addIntoxication(0.15)

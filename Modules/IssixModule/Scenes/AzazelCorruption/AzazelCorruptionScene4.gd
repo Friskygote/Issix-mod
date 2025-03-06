@@ -51,7 +51,7 @@ func _run():  # TODO Those corruption scenes don't really work when player is bl
 		addButton("Walk", "Walk towards the cell", "walktocell")
 
 	if state == "walktocell":
-		playAnimation(StageScene.Sleeping, "rub", {pc="pc", npc="azazel", bodyState={naked=true, hard=GM.pc.getLust()>80}, npcBodyState={naked=true, hard=false}})
+		playAnimation(StageScene.Sleeping, "rub", {pc="pc", npc="azazel", bodyState={naked=false, hard=GM.pc.getLust()>80}, npcBodyState={naked=false, hard=false}})
 		aimCamera("cellblock_lilac_nearcell")
 		setLocationName("Azazel's cell")
 		saynn("Azazel's walk seems so carefree, his arms and legs relaxed and swinging forward and backwards as well as to the sides as if they were just limbs barely attached by one strong joint to the rest of his body, and like that „led” on an invisible leash you arrive at Lilac block in one cell dedicated to horny kitten, he invites you in with his paw finger.")
@@ -68,6 +68,7 @@ func _run():  # TODO Those corruption scenes don't really work when player is bl
 			addButton("Continue", "See what the cat has to offer", "smallforeplay")
 
 	if state in ["undress", "smallforeplay"]:
+		playAnimation(StageScene.Sleeping, "rub", {pc="pc", npc="azazel", bodyState={naked=true, hard=GM.pc.getLust()>80}, npcBodyState={naked=true, hard=false}})
 		if state == "undress":
 			saynn("[say=azazel]Alright lets see...[/say]")
 			saynn("Azazel skillfully removes your restraints and clothes, he removes his own clothes afterwards as well and throws them all into a pile near.")
@@ -123,6 +124,7 @@ func _run():  # TODO Those corruption scenes don't really work when player is bl
 		addButton("Don't allow", "Don't allow Azazel to restrict you", "foreplay", [false])
 
 	if state == "foreplay":
+		playAnimation(StageScene.Sleeping, "rub", {pc="pc", npc="azazel", bodyState={naked=true, hard=GM.pc.getLust()>80}, npcBodyState={naked=true, hard=false}})
 		if getModuleFlag("IssixModule", "Azazel_Corr_BDSM_Gear", false):
 			saynn("Azazel puts multiple restraints on you, including heavy metal ankle cuffs that he connected to somewhere below the bed, heavy metal wrist cuffs, bondage mittens, he also connects your collar with a chain underneath the bed. To top it off, he dresses you up in a cute pink rope harness.")
 			saynn("[say=azazel]You look so good now, awwwwwwwwwwwwwwwwww.[/say]")
@@ -155,6 +157,7 @@ func _run():  # TODO Those corruption scenes don't really work when player is bl
 			addButton("Continue", "Continue", "foreplayazazel")
 
 	if state == "foreplaypenis":
+		playAnimation(StageScene.Sleeping, "rub", {pc="pc", npc="azazel", bodyState={naked=true, hard=GM.pc.getLust()>80}, npcBodyState={naked=true, hard=false}})
 		saynn("[say=azazel]Soo, how is your {pc.penisSize} {pc.penis} doing today? It's a time for check up, I'd say.[/say]")
 
 		saynn("Azazel turns around, still laying on you but you now can only see his {azazel.analStretch} anus, his legs around your head, he reaches towards your groin with his paws.")
@@ -182,6 +185,7 @@ func _run():  # TODO Those corruption scenes don't really work when player is bl
 		addButton("Continue", "Continue", "maindish")
 
 	if state == "foreplayvagina":  # Fair warning, I'm far from being a good writer for those bits
+		playAnimation(StageScene.Sleeping, "rub", {pc="pc", npc="azazel", bodyState={naked=true, hard=GM.pc.getLust()>80}, npcBodyState={naked=true, hard=false}})
 		saynn("[say=azazel]Hehe, let's give your {pc.vagina} some attention, shall we?[/say]")
 		saynn("Azazel turns around, still laying on you but you now can only see his {azazel.analStretch} anus, his legs around your head, he reaches towards your vagina with his paws. You can feel his digits massaging the folds gently. He spits next to your pussy, fixing his mistake with his paw fingers moving the spit into the entrance.")
 
@@ -195,6 +199,7 @@ func _run():  # TODO Those corruption scenes don't really work when player is bl
 		addButton("Continue", "Continue", "maindish")
 
 	if state == "foreplayazazel":
+		playAnimation(StageScene.Sleeping, "rub", {pc="pc", npc="azazel", bodyState={naked=true, hard=GM.pc.getLust()>80}, npcBodyState={naked=true, hard=false}})
 		saynn("[say=azazel]Well, even if you won't have your fun [i]yet[/i], I want to have some of my own okey?[/say]")
 		saynn("He stands up and comes to the pile, picking up one of the dildos and climbing back on top of you, with his ass directly above your crotch.")
 
@@ -215,6 +220,7 @@ func _run():  # TODO Those corruption scenes don't really work when player is bl
 		addButton("Continue", "Continue", "maindish")
 
 	if state == "maindish":
+		playAnimation(StageScene.Sleeping, "rub", {pc="pc", npc="azazel", bodyState={naked=true, hard=GM.pc.getLust()>80}, npcBodyState={naked=true, hard=false}})
 		saynn("[say=pc]You got me curious, what is it?[/say]")
 		if getModuleFlag("IssixModule", "Azazel_Player_Donated_Gasmask", false):
 			pass  # TODO Unsure if I'll ever do this route, but I'll keep it in mind
@@ -280,6 +286,7 @@ func _run():  # TODO Those corruption scenes don't really work when player is bl
 		addButton("Black out", "Lose consciousness...?", "transition")
 
 	if state == "transition":  # Figure out if we can make player blinded without a blindfold?
+		playAnimation(StageScene.Sleeping, "sleep", {pc="pc"})
 		aimCameraAndSetLocName("petsdream_cellblock_lilac_nearcell")
 		GM.pc.setLocation("petsdream_cellblock_lilac_nearcell")
 		if GM.main.originalPC.isHeavilyPregnant():
@@ -329,7 +336,7 @@ func _react(_action: String, _args):
 		GM.pc.updateNonBattleEffects()
 
 	if _action == "undress":
-		Globals.undressPlayerExceptCollar("azazel")
+		Globals.undressPlayerExceptCollar("Azazel")
 
 	if _action == "foreplayazazel":
 		GM.pc.cummedOnBy("azazel", FluidSource.Vagina)

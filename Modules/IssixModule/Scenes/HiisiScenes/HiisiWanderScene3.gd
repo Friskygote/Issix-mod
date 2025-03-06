@@ -28,7 +28,6 @@ func _run():
 		addCharacter("lamia")
 		addCharacter("azazel")
 		addCharacter("hiisi")
-		saynn(Globals.getSkinWord())
 		saynn("You walk near Issix's corner to see three of Issix standing on their blankets. Both Azazel as well as Lamia stand there looking at Hiisi who standing in their inmate uniform is showing the other two his dance moves. Their master seemingly occupied with something else, with bunch of BDSM restraints in his paws.")
 		saynn("[say=hiisi]You have to remember about keeping your arms like his and moving them ever so slowly towards yourself while you push your chest forward. It's just some practice, nothing too hard.[/say]")
 		saynn("[say=azazel]Hah, easy for you to say, it's difficult for me to focus on my chest when I have to do this with my arms![/say]")

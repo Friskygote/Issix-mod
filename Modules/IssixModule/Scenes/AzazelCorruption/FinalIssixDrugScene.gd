@@ -45,7 +45,7 @@ func _run():
 		addButton("Continue", "Wake up", "finalstagenopet")
 
 	if state == "answeryes":
-		playAnimation(StageScene.Duo, "stand", {pc="issix", npc="pc", npcBodyState="kneel"})
+		playAnimation(StageScene.Duo, "kneel", {npc="issix", npcAction="stand"})
 		saynn("[say=pc]Yes.[/say]")
 		if GM.pc.getSkillsHolder().hasPerk("PetSpeech"):
 			saynn("Master smiles and claps his paws in return.")
@@ -77,12 +77,12 @@ func _run():
 
 
 	if state == "collaring":
-		playAnimation(StageScene.Duo, "sit", {pc="issix", npc="pc", npcBodyState="kneel"})
+		playAnimation(StageScene.Duo, "kneel", {npc="issix", npcAction="stand"})
 		saynn("[say=pc]Y-yes Master.[/say]")
 		saynn("[say=issix]Splendid. In that case...[/say]")
 		saynn("He snaps his paw fingers. Suddenly the surrounding changes. The meaty walls are still meaty walls, however they are now decorated by a lot of white decor, many fancy shapes hang on the meaty walls, seemingly sticking to them by small tendrils holding them. Issix's chair is replaced by a small stage on which you now sit instead after being moved with no effort taken by anyone. Issix continues to stand before you, holding a collar in his paw. You look to your side, on which there still is an incredibly long dark tunnel, but also there are three chairs occupied by three very well known to you creatures - Azazel, Lamia and Hiisi, the first two hold an excited face expression, while the last one observes with interest the two of you on the stage.")
 		saynn("In a way, the long dark tunnel adds creepiness to what this would otherwise be - a happy ceremony. Because judging by the surrounding decor and furniture - this does remind you of some kind of a old-school wedding.")
-		saynn("If this  wasn't enough, some kind of organ music plays, you don't see the source of the sound, but the intention of the tune is quite apparent. The echo of long corridor making this experience even more bizzare.")
+		saynn("If this wasn't enough, some kind of organ music plays, you don't see the source of the sound, but the intention of the tune is quite apparent. The echo of long corridor making this experience even more bizarre.")
 		saynn("[say=issix]We all gather here today to celebrate a new pet in my collection. {pc.name} decided to spend the rest of their life in servitude to me. {pc.He} is willingly in mind and body giving {pc.him}self to me, Master Issix as a submissive and recognizing me as his superior - master.[/say]")
 		saynn("Issix continues in pompous tone, presenting the collar to the audience of three.")
 		saynn("[say=issix]The collar I hold here is a sign of this subservience, it's an evidence of eternal pact. It's a heavy duty collar that keeps pets in check. The heaviness of its weight reminds them of their place at all times, the look and engraved words serve as banner for everyone else to know who owns this beautiful "+Globals.getPlayerPetName()+" here.[/say]")
@@ -240,6 +240,9 @@ func _react(_action: String, _args):
 		processTime(40*60)
 		GM.pc.addStamina(-40)
 		GM.pc.addLust(-300)
+
+	if _action == "collaring2":
+		GM.pc.getInventory().equipItem(GlobalRegistry.createItem("oldcollar"))
 
 	if _action in ["finishstage", "nostrip"]:
 		if getModuleFlag("IssixModule", "Azazel_Corr_BDSM_Gear", false):

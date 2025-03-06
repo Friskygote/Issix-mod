@@ -38,7 +38,7 @@ func _run():
 		addButton("Leave", "Be on your way", "endthescene")
 		
 	if(state == "appearance"):
-		saynn("Before you, on his ”throne” sits an intimidating figure - a demon-dragon hybrid. His piercing black eyes look distinct from any other inmate. His bright red fur uncommon for a dragon or even inmates, though his color pallette does fit a demon - his fur has three main colors, bright red, dark red and black.\n\nHe can certainly be called muscular, his arms and legs are on the beefier side, not extremely so, but one wouldn't want to pick a fight with him.\nEven though intimidating, his face... Shows kindness and calm.\n\nWhat makes him much different from everyone else is the... Harem? He holds a bundle of 3 leashes attached to his wrist, at the end of each is a creature laying or sitting on a blanket.")
+		saynn("Before you, on his ”throne” sits an intimidating figure - a demon-dragon hybrid. His piercing black eyes look distinct from any other inmate. His bright red fur uncommon for a dragon or even inmates, though his color pallette does fit a demon - his fur has three main colors, bright red, dark red and black.\n\nHe can certainly be called muscular, his arms and legs are on the beefier side, not extremely so, but one wouldn't want to pick a fight with him.\nEven though intimidating, his face... Shows kindness and calm.\n\nWhat makes him much different from everyone else is the... Harem? Three leashed creatures sit around on their blankets.")
 		addButton("Back", "Go back", "")
 		
 	if(state == "talk"):

@@ -192,8 +192,8 @@ func _react_scene_end(_tag, _result):
 			goodPoints = _result[0]
 			if goodPoints > 2:
 				Globals.addIssixMood(2)
-			GM.pc.addSkillExperience("Pet", 5+int(max(goodPoints, 0)/2.0))
-			addMessage("You've gained "+str(5+int(max(goodPoints, 0)/2.0))+ " experience points.")
+			GM.pc.addSkillExperience("Pet", 5+int(max(goodPoints, 0)))
+			addMessage("You've gained "+str(5+int(max(goodPoints, 0)))+ " pet experience points.")
 			setState("end_walkies")
 		else:
 			GM.pc.addSkillExperience("Pet", 5)

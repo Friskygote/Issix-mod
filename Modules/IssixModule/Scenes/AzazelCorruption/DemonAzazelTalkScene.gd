@@ -90,7 +90,7 @@ func _run():
 			addButton("Resist", "Call the rest of your mental fortitude to resist Azazel's spell", "denybodymod")
 
 	if state == "allowbodymod":
-		playAnimation(StageScene.SexFeetPlay, "crotch", {pc="pc", npc="azazeldemon", bodyState={hard=true}})
+		playAnimation(StageScene.SexFeetPlay, "crotch", {pc="azazeldemon", npc="pc", npcBodyState={hard=true}})
 		if GM.pc.hasPenis():
 			saynn("You allow Azazel to do whatever he wants. Shortly after you feel even more heat concentrated on your {pc.penis} as well as arousal to level you've never felt. Your {pc.penis} gets instantly hard.")
 			saynn("[say=pc]Aahhhh![/say]")

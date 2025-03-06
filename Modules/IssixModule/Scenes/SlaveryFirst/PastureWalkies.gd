@@ -9,6 +9,7 @@ var borrowed_strapon = false
 var tasks := []
 var tasks_finished = 0
 var minigameScene = preload("res://Modules/IssixModule/Minigames/BallChaser/BallChaser.tscn")
+var time_started_pasture = 0
 
 func _init():
 	sceneID = "IssixPastureWalk"
@@ -16,19 +17,18 @@ func _init():
 func _initScene(_args = []):
 	tasks = [["Threesome", "Say you'd like some not-so-private action with Issix and Hiisi", "threesome_issix"],
 			 ["Fetch", "Say you'd be up for a game of fetch, like a good puppy you are", "ball_chasing"],
-			 ["Waterfall", "Check out the waterfall", "waterfall_check"],
+			 # ["Waterfall", "Check out the waterfall", "waterfall_check"],
 			 ["Outhouse", "Investigate the outhouse", "outhouse_thing"],
 			 ["Hiisi", "Spend time with Hiisi", "hiisi_time"],
 			 ["Lamia", "Spend time with Lamia", "lamia_time"]]
 	tasks.shuffle()
 	tasks_finished = 0
+	time_started_pasture = 0
 
 # Main loop:
 # Player gets to choose from 2 options twice per pasture walk in regards to possible activities
 # Options:
-# Threesome with Issix, Azazel
 # Foursome with Hiisi?
-# Chasing ball with other pets
 # Getting wet under waterfall
 # Pulling tricks on inmates with Azazel
 # Learning from Hiisi art of gathering intelligence (on pawns)
@@ -406,9 +406,28 @@ func _run():
 		addButton("Finish", "Finish here", "2ndactivity")
 
 	if state == "end_pasture":
-		#TODO Finish
-		pass
+		saynn("[say=issix]I think it's a good time to end it here, time is getting short and it's sleepy time soon. Hiisi, help me pack those blankets, Azazel, Lamia - pack your own stuff. {pc.name}, clean this in the stream.[/say]")
+		saynn("Master gives you a few plastic containers to clean in the water stream. You do that and dry them up with a tower you obtain before it is packed as well in Master's bag. Everyone else finishes their tasks as well, leaving the pasture cleared up of any belongings.")
+		saynn("[say=issix]Everyone ready?[/say]")
+		saynn("[say=azazel]Yup.[/say]")
+		saynn("Lamia nods")
+		saynn("[say=hiisi]Yes, Master.[/say]")
+		saynn("[say=pc]I have everything I need, Master.[/say]")
+		saynn("[say=issix]In that case let's go.[/say]")
+		saynn("He clasps leashes to all of you, you drop to your fours and begin crawling back towards the corner.")
+		addButton("Crawl", "Crawl towards the corner", "pasture_come_back")
 
+	if state == "pasture_come_back":
+		saynn("After arriving back in the corner Master sits on the chair and lets Hiisi unpack blankets and other things. Azazel, Lamia do the same with their own stuff.")
+		saynn("[say=issix]THat was a pretty good walk if I can say so myself, ahh.[/say]")
+		saynn("Says Issix while stretching his body.")
+		saynn("[say=issix]Bit more work and we can go to sleep eh? I'm sure you all could use some rest after that.[/say]")
+		saynn("[say=azazel]Indeed.[/say]")
+		saynn("Lamia is once again too consumed by drawing to hear Master.")
+		addButton("Finish", "That was the end of pasture walk for today", "endthescene")
+
+	if state == "outhouse_thing":
+		pass
 
 func randomTasks():
 	var task = []
@@ -426,7 +445,6 @@ func hasAllPerksRequiredForMindfuck():
 			return false
 	return true
 
-
 func saveData():
 	var data = .saveData()
 
@@ -436,6 +454,7 @@ func saveData():
 	data["chosen_scene"] = chosen_scene
 	data["privates_choice"] = privates_choice
 	data["tasks_finished"] = tasks_finished
+	data["time_started_pasture"] = time_started_pasture
 
 	return data
 
@@ -448,10 +467,15 @@ func loadData(data):
 	chosen_scene = SAVE.loadVar(data, "chosen_scene", StageScene.SexTrain)
 	privates_choice = SAVE.loadVar(data, "privates_choice", "ass")
 	tasks_finished = SAVE.loadVar(data, "tasks_finished", 0)
+	time_started_pasture = SAVE.loadVar(data, "time_started_pasture", 0)
 
 func _react(_action: String, _args):
 	if _action == "inventory":
 		runScene("InventoryScene", [], "inventory")
+
+	if _action == "onward":
+		processTime(5*60)
+		time_started_pasture = GM.main.getTime()
 
 	if _action == "minigameResult":  # TODO Take into account bondage gear
 		GM.pc.addStamina(-60)
@@ -472,10 +496,20 @@ func _react(_action: String, _args):
 			GM.pc.getInventory().addItemID("Cookie")
 			GM.pc.getInventory().addItemID("Cookie")
 			GM.pc.addStamina(50)
-
+		processTime(30*60)
 		addMessage(("Final score is: "+str(_args[0])))
 
+	if _action == "pasture_come_back":
+		processTime(40*60)
+		runScene("ParadedOnALeashScene", ["issix", "yard_waterfall", "hall_ne_corner", [
+			"Lamia, please try to keep up",
+			"Azazel, watch out, inmate on your right is aboout to reach her climax",
+			"Hiisi, stop sniffing every inmate, you are slowing us all down",
+			"{pc.name} stay in between Lamia and Hiisi, you fit there perfectly"
+		], "hall_ne_corner", "crawl"])
+
 	if _action == "ball_chaser_good_share":
+		processTime(20*60)
 		GM.pc.getInventory().addItemID("Cookie")
 		if GM.pc.personalityChangesAfterSex():
 			addMessage("You've gained one cookie, also you became kinder.")
@@ -485,6 +519,7 @@ func _react(_action: String, _args):
 		GM.pc.addStamina(20)
 
 	if _action == "ball_chaser_good_dont_share":
+		processTime(20*60)
 		GM.pc.getInventory().addItemID("Cookie")
 		GM.pc.getInventory().addItemID("Cookie")
 		if GM.pc.personalityChangesAfterSex():
@@ -496,6 +531,7 @@ func _react(_action: String, _args):
 		GM.pc.addStamina(50)
 
 	if _action == "walk_pasture":
+		processTime(40*60)
 		playAnimation(StageScene.Duo, "kneel", {npc="issix", npcAction="stand", bodyState={leashedBy="issix"}})
 		runScene("ParadedOnALeashScene", ["issix", GM.pc.getLocation(), "yard_waterfall", [
 			"Lamia, please try to keep up",
@@ -568,15 +604,21 @@ func _react(_action: String, _args):
 				character.unequipStrapon()
 		processTime(10*60)
 
+	if _action == "mindless_investigate":
+		processTime(20*60)
+
 	if _action == "mindless_investigate2":
+		processTime(10*60)
 		setModuleFlag("IssixModule" ,"Mindlessness_Walkies_Status", 1)
 
 	if _action == "threesome_prepare":
+		processTime(20*60)
 		GM.pc.addEffect(StatusEffect.LubedUp, 60*60)
 		GlobalRegistry.getCharacter("issix").addEffect(StatusEffect.LubedUp, 60*60)
 		GlobalRegistry.getCharacter("azazel").addEffect(StatusEffect.LubedUp, 60*60)
 
 	if(_action == "endthescene"):
+		increaseModuleFlag("IssixModule", "Pet_Time_Interaction_Today", GM.main.getTime()-time_started_pasture)
 		endScene()
 		return
 

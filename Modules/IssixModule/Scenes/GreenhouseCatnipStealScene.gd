@@ -46,7 +46,7 @@ func _react(_action: String, _args):
 		GM.main.setModuleFlag("IssixModule", "Azazel_Catnip_taken_today", true)
 		processTime(10 * 5)
 		
-		if(RNG.chance(25)):
+		if(RNG.chance(20)):
 			if(GM.ES.triggerReact(Trigger.CaughtStealingInGreenhouse)):
 				endScene()
 				return
