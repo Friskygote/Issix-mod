@@ -123,11 +123,14 @@ func _run():
 		saynn("[say=issix]A word of warning, you might feel a bit of nausea during [color=#F75079]the ritual[/color]. This is expected.[/say]")
 		saynn("[say=pc]Understood, Master.[/say]")
 		saynn("He stands next to the bed you are laying on and puts his paw right below the metal bar going over your belly.")
-		saynn("[say=issix][runic]ᛗᛟᚱᛏᚨᛚ'ᛋ ᛋᛟᚢᛚ ᛒᛟᚾᛞᛖᛞ ᛏᛟ ᛏᚺᛖ ᚠᛚᛖᛋᚺ.[/runic][/say]")
-		saynn("[say=issix][runic]ᛏᛟ ᛒᛖ ᚠᚱᛖᛖᛞ ᚠᚱᛟᛗ ᛁᛏᛋ ᛒᛁᚾᛞ.[/runic][/say]")
-		saynn("[say=issix][runic]ᛏᚺᛖ ᛗᛁᚾᛞ ᛏᛟ ᛒᛖ ᚠᛟᚱᛖᚡᛖᚱ ᚲᚺᚨᚾᚷᛖᛞ, ᛏᛟ ᛋᛖᚱᚡᛖ.[/runic][/say]")
-		saynn("[say=issix][runic]ᚠᛟᚱ ᛒᛟᛞᚤ ᚨᛚᚱᛖᚨᛞᚤ ᚺᚨᛋ ᚨᚾ ᛟᚹᚾᛖᚱ.[/runic][/say]")
-		saynn("[say=issix][runic]ᛋᛟᚢᛚ ᛋᚺᚨᛚᛚ ᛒᛖ ᛗᛁᚾᛖ.[/runic][/say]")
+		if ResourceLoader.exists("res://Modules/FoxLib/Resources/NotoSansRunic-Regular.ttf"):
+			saynn("[say=issix][runic]ᛗᛟᚱᛏᚨᛚ'ᛋ ᛋᛟᚢᛚ ᛒᛟᚾᛞᛖᛞ ᛏᛟ ᛏᚺᛖ ᚠᛚᛖᛋᚺ.[/runic][/say]")
+			saynn("[say=issix][runic]ᛏᛟ ᛒᛖ ᚠᚱᛖᛖᛞ ᚠᚱᛟᛗ ᛁᛏᛋ ᛒᛁᚾᛞ.[/runic][/say]")
+			saynn("[say=issix][runic]ᛏᚺᛖ ᛗᛁᚾᛞ ᛏᛟ ᛒᛖ ᚠᛟᚱᛖᚡᛖᚱ ᚲᚺᚨᚾᚷᛖᛞ, ᛏᛟ ᛋᛖᚱᚡᛖ.[/runic][/say]")
+			saynn("[say=issix][runic]ᚠᛟᚱ ᛒᛟᛞᚤ ᚨᛚᚱᛖᚨᛞᚤ ᚺᚨᛋ ᚨᚾ ᛟᚹᚾᛖᚱ.[/runic][/say]")
+			saynn("[say=issix][runic]ᛋᛟᚢᛚ ᛋᚺᚨᛚᛚ ᛒᛖ ᛗᛁᚾᛖ.[/runic][/say]")
+		else:
+			saynn("Master speaks in language you don't recognize.")
 		saynn("[say=issix]Repeat after me, slave:[/say]")
 		saynn("[say=issix]My mortal body belongs to a Master.[/say]")
 		saynn("[say=pc]My mortal body belongs to a Master.[/say]")
@@ -302,7 +305,7 @@ func _react(_action: String, _args):
 	if _action == "confessionary_soul_wakeup":
 		processTime(50*60)
 
-	if _action in ["confessionary_soul_end", "confessionary_med_end"]:
+	if _action in ["corner_soul_end", "confessionary_med_end"]:
 		processTime(20*60)
 		GM.pc.getInventory().addItemID("Cookie")
 		GM.pc.addStamina(15)

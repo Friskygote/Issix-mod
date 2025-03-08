@@ -10,6 +10,7 @@ var tasks := []
 var tasks_finished = 0
 var minigameScene = preload("res://Modules/IssixModule/Minigames/BallChaser/BallChaser.tscn")
 var time_started_pasture = 0
+var pawns_interactions = []
 
 func _init():
 	sceneID = "IssixPastureWalk"
@@ -426,8 +427,53 @@ func _run():
 		saynn("Lamia is once again too consumed by drawing to hear Master.")
 		addButton("Finish", "That was the end of pasture walk for today", "endthescene")
 
+	if state == "outhouse_right":
+		if null in pawns_interactions or pawns_interactions.size() == 0:
+			addMessage("Error: Couldn't find enough paws! Please late the modder know.")
+			state = "outhouse_thing"
+		saynn("You enter the doors on the right, first thing you notice is the acrid smell that wafts in the air. In addition, it takes a while for your eyes to get used to the dimly lit room. The room looks surprisingly spacious inside, in fact, there are already 2 figures standing in it.")
+		saynn("[say=pawn1]{pawn2.name} look, we've got another guest here.[/say]")
+		saynn("[say=pawn2]Oh shit, you are right, welcome to toilets, you here to piss or help our friend here?[/say]")
+		saynn("Two inmates stand with their bottoms completely exposed. {pawn1.name} has {pawn1.his} {pawn1.privates} while {pawn2.name} stands with {pawn2.his} {pawn2.privates} in full visibility. Second inmate seems to point at something, at first you don't recognize what is it due to your eyes still getting to lack of light in here, however soon you begin to recognize a shape - it's a "+Util.getSpeciesName(pawns_interactions[2].getChar().getSpecies())+" who is kneeling bonded to the nearby wall next to urinals. A plate hangs from their neck saying „URINAL”. They are wearing a guard uniform and do not have a collar on their neck, their face has a ringed gag in it, the eyes are covered by the blindfold.")
+		saynn("[say=pc]H-help?[/say]")
+		saynn("[say=pawn2]Oh, don't look at us like that, {pawn3.he} volunteered by {pawn3.yourself} to be here. I think they are now... {pawn1.name} when did we start?[/say]")
+		saynn("[say=pawn1]One hour ago I think.[/say]")
+		saynn("[say=pawn2]One hour in here. I think they might be getting tired and people keep coming. So look, you could help them a little and join next to them to spread the load a little hehe.[/say]")
+		saynn("[say=pawn1]Hehe, I'm sure they would appreciate, being an urinal is a serious job, that piss must go somewhere after all.[/say]")
+		saynn("[say=pawn2]But if you don't want to, you can always use {pawn3.him}. So what is it?[/say]")
+		addButton("Help", "„Help” the guard by offering yourself as another urinal", "outhouse_urinal")
+		addButton("Piss", "You do feel kind of needy to piss actually...", "outhouse_piss")
+		addButton("Leave", "Say you think you took wrong doors", "outhouse_leave")
+
+	if state == "outhouse_leave_right":
+		saynn("[say=pc]Uh huh, I think I took wrong doors, sorry for the trouble![/say]")
+		saynn("[say=pawn1]Aww, really? Don't even want to take a leak? Fuck. shame.[/say]")
+		saynn("[say=pawn2]Guess {pawn3.name} is going to go dry for a little longer. Do wave people on way out, will ya? Maybe someone is need.[/say]")
+		saynn("[say=pc]Sure...[/say]")
+		saynn("You leave the room and the building having seen enough. Probably best not to fool around in case Master and other pets began to head back.")
+		addButton("Leave", "Leave the outhouse", "2ndactivity")
+
+	if state == "outhouse_piss":
+		saynn("[say=pc]Mmmm, I do feel quite full actually.[/say]")
+		saynn("[say=pawn1]Ha ha! That's great, we were starting to run dry here. Not many come hang around in the grasses here.[/say]")
+		saynn("[say=pawn2]Finally, {pawn3.name} you got new client, be a good urinal for {pc.him} will you?[/say]")
+		saynn("You can hear grunts coming from kneeling guard. The ropes holding them in place seem pretty solid, Some are attached to the floor, some are tied to the hooks on the wall. {pawn3.His} head is affixed with a metal frame so it looks slightly above and provide perfect angle for one to use the mouth.")
+		saynn("[say=][/say]")
+
+
 	if state == "outhouse_thing":
+		if getModuleFlag("IssixModule", "Knows_Outhouse", false) == true:
+			saynn("Other pets and Master are busy playing a 4 player board game and you are the 5th one out this time. This isn't that terrible however, you think to yourself. You can use this time to for yourself, right? And so, you decide to check out a small outhouse.")
+		else:
+			saynn("Other pets and Master are busy playing a 4 player board game and you are the 5th one out this time. This isn't that terrible however, you think to yourself. You can use this time to for yourself, right? And so, you decide to check out a fairly small and primitive building. It's sticking out in here - it doesn't feel very well maintained and its purpose is also not immediately apparent.")
+			saynn("You approach the building, even though its rundown it still seems to have some use, inmates, guards can be seen using it. You enter through half broken doors and find yourself in dimly lit vestibule. In here, there are 2 sets of doors, you can hear commotion going from both of them. You could choose to go into one of them or leave the building altogether.")
+		addButton("Left door", "Enter the doors on your left", "outhouse_left")
+		addButtonWithChecks("Right door", "Enter the doors on your right (CW: watersports)", "outhouse_right", [], [[ButtonChecks.ContentEnabled, ContentType.Watersports]])
+		addButton("Leave", "Leave the outhouse", "2ndactivity")
+
+	if state == "outhouse_left":
 		pass
+
 
 func randomTasks():
 	var task = []
@@ -455,6 +501,7 @@ func saveData():
 	data["privates_choice"] = privates_choice
 	data["tasks_finished"] = tasks_finished
 	data["time_started_pasture"] = time_started_pasture
+	data["pawns_interactions"] = pawns_interactions
 
 	return data
 
@@ -468,10 +515,23 @@ func loadData(data):
 	privates_choice = SAVE.loadVar(data, "privates_choice", "ass")
 	tasks_finished = SAVE.loadVar(data, "tasks_finished", 0)
 	time_started_pasture = SAVE.loadVar(data, "time_started_pasture", 0)
+	pawns_interactions = SAVE.loadVar(data, "pawns_interactions", [])
+
+func resolveCustomCharacterName(_charID):
+	if _charID.begins_with("pawn"):
+		return pawns_interactions[int(_charID[-1])-1]
+
+	return null
 
 func _react(_action: String, _args):
 	if _action == "inventory":
 		runScene("InventoryScene", [], "inventory")
+
+	if _action in ["outhouse_left", "outhouse_right"]:
+		setModuleFlag("IssixModule", "Knows_Outhouse", true)
+
+	if _action == "outhouse_right":
+		pawns_interactions = Globals.pick_unique_one(Globals.findPawns([[["isInmate"], []], [["isInmate"], []], [["isGuard"], []]]))
 
 	if _action == "onward":
 		processTime(5*60)
@@ -507,6 +567,7 @@ func _react(_action: String, _args):
 			"Hiisi, stop sniffing every inmate, you are slowing us all down",
 			"{pc.name} stay in between Lamia and Hiisi, you fit there perfectly"
 		], "hall_ne_corner", "crawl"])
+		GM.pc.setLocation("hall_ne_corner")
 
 	if _action == "ball_chaser_good_share":
 		processTime(20*60)

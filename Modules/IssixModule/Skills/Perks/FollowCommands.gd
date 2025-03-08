@@ -14,7 +14,7 @@ func getMoreDescription():
 	return "Master Issix taught you various commands such as Sit, Roll, Give a paw, Stand. Guards and Master Issix can command you with Roll and Sit commands to skip turns."
 
 func getSkillTier():
-	return 1
+	return 2
 
 func getPicture():
 	return "res://Modules/IssixModule/Skills/Images/commands.png"
@@ -26,7 +26,7 @@ func unlockable():
 	return false
 
 func hiddenWhenLocked():
-	return true
+	return GM.pc.getSkillLevel("Pet") < 3
 
 func getBuffs():
 	return [

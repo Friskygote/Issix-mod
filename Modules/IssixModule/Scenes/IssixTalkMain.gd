@@ -384,7 +384,7 @@ func _react(_action: String, _args):
 	if _action == "quest1turn":
 		GM.main.setModuleFlag("IssixModule", "Quest_Status", 4)
 		GM.main.setModuleFlag("IssixModule", "Quest_Wait_Another_Day", true)
-		#GM.pc.getInventory().removeFirstOf("IssixsMap")  - might be useful for later?
+		GM.pc.getInventory().removeFirstOf("IssixsMap")  #- might be useful for later?
 
 	if _action == "issixdonate":
 		runScene("IssixDonationScreen")

@@ -54,6 +54,7 @@ func _react(_action: String, _args):
 		GM.pc.addStamina(-40)
 
 	if(_action == "endthescene"):
+		increaseModuleFlag("IssixModule", "Pet_Time_Interaction_Today", 20*60)
 		endScene()
 		return
 

@@ -11,7 +11,7 @@ func getVisibleDescription():
 	return "You have received a completely new name from your Master - Seir"
 
 func getSkillTier():
-	return 1
+	return 4
 
 func getPicture():
 	return "res://Modules/IssixModule/Skills/Images/name.png"

@@ -3,8 +3,8 @@ extends SceneBase
 var levels = {1: ["Walkies", "Learn how to walk like a proper pet", "walkies_training"],  # level, button name, button description, state, flag ID required
 			  3: ["Bowl", "Learn how to eat like a proper pet", "bowl_training", "Taught_To_Use_Bowl"],
 			  5: ["Commands", "Learn how to listen to your Master's commands", "command_training", "Learned_Commands"],
-			  7: ["Speech", "Learn how to speak like a pet", "speech_training"],
-			  10: ["Name", "Learn your new name", "name_training"]}
+			  7: ["Speech", "Learn how to speak like a pet", "speech_training", "Learned_Speech"],
+			  10: ["Name", "Learn your new name", "name_training", "Obtained_New_Name"]}
 
 var hasBorrowedMuzzle = false
 var hasBorrowedMittens = false
@@ -61,7 +61,7 @@ func _run():
 
 	if state == "walkies_ready":
 		# Walkies will be to one of few generated locations, and can have a random person met on the way (or none), the restraints on the player can change the meeting scenes
-		playAnimation(StageScene.PuppyDuo if shouldBeInHeavyBondage() else StageScene.Duo, "kneel", {pc="pc", npc="issix", bodyState={naked=true, leashedBy="issix"}, flipNPC=true})
+		showAppropriateScene()
 		if shouldBeInHeavyBondage():
 			saynn("[say=issix]Actually, lets get you into even more proper look, I think you are ready.[/say]")
 			saynn("Issix pulls out a larger heavy gear, it consists of four large black pads which have metal plates on one end and holes on another. They are kept tight with a belt.")
@@ -74,7 +74,7 @@ func _run():
 		addButton("Ready", "You are ready (once again)", "walkies_ready_final")
 
 	if state == "end_walkies":
-		playAnimation(StageScene.PuppyDuo if shouldBeInHeavyBondage() else StageScene.Duo, "kneel", {pc="pc", npc="issix", npcAction="kneel", bodyState={naked=true, leashedBy="issix"}})
+		showAppropriateScene()
 
 		if goodPoints < 0:
 			saynn("[say=issix]Your behavior on today's training session was awful. You are not getting any reward. Next time work harder![/say]")
@@ -85,6 +85,11 @@ func _run():
 			saynn("As a reward, you get headpats.")
 		addButton("Back", "End today's training session", "endthescene")
 
+func showAppropriateScene():
+	if shouldBeInHeavyBondage():
+		playAnimation(StageScene.PuppyDuo, "stand", {pc="issix", npc="pc", npcAction="crawl", npcBodyState={naked=true, leashedBy="issix"}})  # TODO we will need new scene as this one is not really flexible at all
+	else:
+		playAnimation(StageScene.Duo, "kneel", {pc="pc", npc="issix", npcAction="kneel", bodyState={naked=true, leashedBy="issix"}})
 
 func shouldBeInHeavyBondage():
 	return GM.pc.getSkillsHolder().getSkill("Pet").getLevel() > 3
@@ -189,7 +194,7 @@ func _react_scene_end(_tag, _result):
 		destroyBorrowedEquipment()
 		setModuleFlag("IssixModule", "Trained_Pet_Today", true)
 		if _result:
-			goodPoints = _result[0]
+			goodPoints += _result[0]*2
 			if goodPoints > 2:
 				Globals.addIssixMood(2)
 			GM.pc.addSkillExperience("Pet", 5+int(max(goodPoints, 0)))
@@ -201,7 +206,8 @@ func _react_scene_end(_tag, _result):
 			setState("end_walkies")
 
 	if _tag == "special_commands_training_complete":
-		setModuleFlag("IssixModule", "Trained_Pet_Today", true)
+		if _result and _result[0] == true:
+			setModuleFlag("IssixModule", "Trained_Pet_Today", true)
 		endScene(["force_close"])
 		return
 

@@ -109,7 +109,9 @@ func getFlags():
 		"Told_Issix_About_Blacktail": flag(FlagType.Bool),
 		"Mindlessness_Walkies_Status": flag(FlagType.Number),
 		"Mindlessness_Day_Start": flag(FlagType.Number),
-		"Noncon_Mode_Enabled": flag(FlagType.Bool)
+		"Noncon_Mode_Enabled": flag(FlagType.Bool),
+		"Learned_Speech": flag(FlagType.Bool),
+		"Obtained_New_Name": flag(FlagType.Bool)
 		}
 		
 

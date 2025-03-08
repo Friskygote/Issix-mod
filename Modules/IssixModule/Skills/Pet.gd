@@ -12,7 +12,9 @@ func getVisibleDescription():
 func getPerkTiers():
 	return [
 		[0],
+		[3],
 		[5],
+		[7],
 		[10],
 	]
 

@@ -12,14 +12,12 @@ var custom_scenes = {"yard_vaulthere": {6: "nova_horny"}, "mining_shafts_enterin
 var path = []
 var pawns_interactions = []
 var teleportwhenskipped = true
-var stageScene = StageScene.Duo
 var goodPoints = 0
 var waited = 0
 var sat_down = false
 var pace = 0
 
 func _initScene(_args = []):
-	stageScene = StageScene.PuppyDuo if shouldBeInHeavyBondage() else StageScene.Duo
 	rollDestination()
 	goodPoints = 0
 	waited = 0
@@ -41,7 +39,7 @@ func _run():
 		if pawns_interactions.size() < 2:
 			setState("follow")
 		else:
-			playAnimation(StageScene.SexTrain, "sex", {pc="nova", npc=pawns_interactions[0], npc2=pawns_interactions[1], bodyState={naked=true, hard=true}, npcBodyState={naked=true, hard=true}})
+			playAnimation(StageScene.SexTrain, "sex", {pc="nova", npc=pawns_interactions[0], npc2=pawns_interactions[1], bodyState={naked=true, hard=true}, npcBodyState={naked=true, hard=true}, npc2BodyState={naked=true, hard=true}})
 			if GM.pc.isBlindfolded() and !GM.pc.canHandleBlindness():
 				saynn("You are crawling on your fours while walking towards "+destinations[destination]+" while as you continue, both you and your Master become aware and curious about source of some intense sounds. You close in to the sounds, walking forward there is a little bit of free space on the left, you recognize the sounds as... Intense love making. The leash that usually slightly tugs on you becomes much more loose, signifying your Master has stopped, you take a break as well.")
 			else:
@@ -96,8 +94,8 @@ func _run():
 		saynn("Master looks forward, both of you speed up the walk until you catch up to {pawn1.name}.")
 		saynn("[say=issix]Excuse me, were you the one who assaulted my pet?[/say]")
 		saynn("[say=pawn1]Assaulted? The fuck you are talking about inmate?[/say]")
-		saynn("Issix closes in to them and moves his head to guard's ear, whispering something to {pawn1.him}. {pawn1.His} face expression changes immediately as he apologizes both to your Master as well as you while fleeing the place in embarrassment.")
-		saynn("[say=issix]Thank you for the mention. They should treat you with respect you deserve from now on.[/say]")
+		saynn("Issix closes in to them and moves his head to guard's ear, whispering something to {pawn1.him}. {pawn1.His} face expression changes immediately as {pawn1.he} apologizes both to your Master as well as you while fleeing the place in embarrassment.")
+		saynn("[say=issix]Thank you for the mention. {pawn1.he} should treat you with respect you deserve from now on.[/say]")
 		saynn("You wonder what Issix whispered to that guard to get that kind of effect. It must have been something really personal considering their reaction. Either way, the situation seems to be handled now.")
 		addButton("Follow", "Continue walking", "follow")
 
@@ -106,7 +104,7 @@ func _run():
 		clearCharacter()
 		addCharacter("issix")
 		if(state == "leashed"):
-			playAnimation(stageScene, "crawl", {npc="issix", npcAction="walk", flipNPC=true, bodyState={leashedBy="issix"}})
+			showAppropriateScene()
 		if(path.size() > 0):
 			aimCameraAndSetLocName(path[0])
 		
@@ -192,6 +190,12 @@ func _run():
 				distractionFailure()
 		addButton("Continue", "Continue", "follow")
 
+func showAppropriateScene():
+	if shouldBeInHeavyBondage():
+		playAnimation(StageScene.PuppyDuo, "walk", {pc="issix", npc="pc", flipNPC=true, npcBodyState={naked=true, leashedBy="issix"}})
+	else:
+		playAnimation(StageScene.Duo, "crawl", {npc="issix", npcAction="walk", flipNPC=true, bodyState={leashedBy="issix"}})
+
 func distractionSuccess():
 	GM.pc.addCredits(2)
 	addMessage("You obtained 2 work credits")
@@ -206,7 +210,7 @@ func checkSpeed(state):
 		pace += 1
 	if state != "follow":
 		if pace == 0:
-			goodPoints += 1
+			goodPoints += 2
 			addMessage("Your pace started matching your Master's.")
 	if pace < 0:
 		addMessage("You have bumped into your Master and earned an earful about watching your pace!")
@@ -232,7 +236,7 @@ func _react(_action: String, _args):
 		_action = "distraction1"
 
 	if _action == "tugmaster":
-		goodPoints += 1
+		goodPoints += 2
 
 	if _action == "return":
 		GM.pc.setLocation(corner)

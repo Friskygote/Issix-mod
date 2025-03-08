@@ -28,7 +28,7 @@ func _run():
 	if state == "refuse_training":
 		saynn("[say=pc]I don't think I'm up for that, sorry Master.[/say]")
 		saynn("[say=issix]It's entirely okey, this is a choice you have and I won't make you go with it against your own will. There are things I'm mostly ambivalent about, and this being one of them earns you a right to say no.[/say]")
-		addButton("Thank", "Thank your Master (end the conversation)", "endthescene")
+		addButton("Thank", "Thank your Master (end the conversation)", "endthescenenotraining")
 
 	if state == "accept_training":
 		saynn("[say=pc]I understand, in this case I'd love you to teach me tricks, Master.[/say]")
@@ -174,8 +174,12 @@ func _react(_action: String, _args):
 	if _action == "training":
 		GM.pc.addLust(10)
 
+	if(_action == "endthescenenotraining"):
+		endScene([false])
+		return
+
 	if(_action == "endthescene"):
-		endScene()
+		endScene([true])
 		return
 
 	setState(_action)

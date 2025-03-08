@@ -108,7 +108,7 @@ func _react(_action: String, _args):
 		setModuleFlag("IssixModule", "Learned_Commands", true)
 
 	if(_action == "endthescene"):
-		endScene()
+		endScene([true])
 		return
 
 	setState(_action)

@@ -127,6 +127,7 @@ func _react(_action: String, _args):
 		GM.pc.getInventory().unequipItem(item)
 
 	if(_action == "endthescene"):
+		increaseModuleFlag("IssixModule", "Pet_Time_Interaction_Today", 20*60)
 		endScene()
 		return
 

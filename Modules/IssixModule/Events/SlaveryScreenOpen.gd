@@ -37,9 +37,6 @@ func isRequirementsBased(methods: Array):
 
 func gatherScenes():
 	for scene in GlobalRegistry.scenes:
-		if scene == "PunRewPawjob":
-			#print(GlobalRegistry.scenes[scene].base_object())
-			print(isRequirementsBased(GlobalRegistry.scenes[scene].get_script_method_list()))
 		if isRequirementsBased(GlobalRegistry.scenes[scene].get_script_method_list()):
 			var iscene = GlobalRegistry.createScene(scene)  # Create temporary scene to be freed after this function runs, this is awful, I hate it, fuck
 			if !scenes.has(iscene.defaultCategory()):
