@@ -198,7 +198,6 @@ func _run():
 			saynn("You also put on your clothes.")
 		addButton("Head back", "Wait for Master and head back to the corner", "corner_med_end")
 
-
 	if state == "confessionary_soul_wakeup":
 		saynn("You(?) open your eyes, there is blurred darkness. You(?) blink a few times. The blur sharpens into more defined shapes. You were...")
 		saynn("[say=issix]{pc.name}[/say]")

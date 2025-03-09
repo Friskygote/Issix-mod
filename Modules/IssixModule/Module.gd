@@ -239,7 +239,8 @@ func _init():
 	]
 	statusEffects = [
 		"res://Modules/IssixModule/StatusEffects/BrandingPain.gd",
-		"res://Modules/IssixModule/StatusEffects/CatnipOverdose.gd"
+		"res://Modules/IssixModule/StatusEffects/CatnipOverdose.gd",
+		"res://Modules/IssixModule/StatusEffects/JacuzziRelax.gd",
 	]
 	speechModifiers = [
 		"res://Modules/IssixModule/SpeechModifiers/CatnipSpeech.gd",

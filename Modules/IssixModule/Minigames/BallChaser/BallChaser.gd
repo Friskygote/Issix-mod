@@ -25,6 +25,7 @@ func _ready():
 	game_started = false
 	tick = 0
 	balls = []
+	slider.set_position(Vector2(slider.get_parent_control().get_rect().get_center().x, slider.get_rect().position.y))
 
 func _on_start_game(event):
 	if game_started == false and event is InputEventMouseButton:
@@ -70,7 +71,7 @@ func calculate_score(ball_x: float):
 
 func choose_new_direction():
 	timer.wait_time = RNG.randf_range(0.4, 0.9)
-	chosen_x = RNG.randi_range(0, $GameScreen/Panel/FailZone.rect_size.x+70)
+	chosen_x = RNG.randi_range(0, $GameScreen/Panel/FailZone.rect_size.x)
 
 func move_spawner(delta):
 	spawner.rect_position = spawner.rect_position.linear_interpolate(Vector2(chosen_x, spawner.rect_position.y), delta * 3.5)

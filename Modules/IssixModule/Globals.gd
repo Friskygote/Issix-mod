@@ -179,3 +179,31 @@ static func addButtonCheckNoncon(text: String, tooltip: String, method: String, 
 		GM.ui.addDisabledButton(text, RNG.pick(["That's not what Master wants to hear", "I don't want to be a bad pet!", "This isn't available to me, good pet obeys"]))
 	else:
 		GM.ui.addButton(text, tooltip, method, args)
+
+# Undress all items covering slot
+static func undressForBodypart(character: BaseCharacter, slot: String, who = "You", remove_restraints=true, return_if_restraint=false, only_messages=false):
+	var all_items = []
+	var inventory: Inventory = character.getInventory()
+	var any_unequipped = false
+	for inventorySlot in InventorySlot.getAll():
+		if(!inventory.hasSlotEquipped(inventorySlot)):
+			continue
+
+		var item = inventory.getEquippedItem(inventorySlot)
+		if(item.coversBodypart(slot)):
+			all_items.append(item)
+
+	if remove_restraints == false and return_if_restraint:
+		for item in all_items:
+			if item.isRestraint():
+				return null
+
+	for item in all_items:
+		if (item.isRestraint() and remove_restraints == false) or (item.isRestraint() and item.getRestraintData().hasSmartLock()):
+			continue
+
+		GM.main.addMessage(who + " " + item.getTakingOffStringLong(true if who == "You" else false))
+		if only_messages:
+			inventory.unequipItem(item)
+		any_unequipped = true
+	return any_unequipped

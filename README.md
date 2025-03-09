@@ -16,7 +16,8 @@ The mod and contents in it is - surprise surprise - a work of fiction. Author do
 - Each pet has their own mechanic that increases their trust/affection towards the player
 - Finally, voluntary enslavement, if you eventually get enslaved it may make your game a bit more difficult
 - Some branches of choices and situations.
-- Hopefully at least around an hour of additional gameplay? Haven't tested yet, but the fact is, I counted more than 43k words in saynn (dialogues) is quite a bit. Not every part of what player sees is even in saynn, which makes the size of this mod way more than I anticipated.
+- Trading mechanic for using unneded bondage gear and turning it into something maybe more useful (selling ability to apply slut locks to gear) - this content doesn't require engaging in enslavement content so Issix mod can be used even if player is not into getting enslaved.
+- At least an hour of additional gameplay? Haven't tested yet, but the fact is, I counted more than 43k words in saynn (dialogues) is quite a bit. Not every part of what player sees is even in saynn, which makes the size of this mod way more than I anticipated.
 
 What isn't there is basically a lot of post-enslavement content. This is major focus of current work on the mod for it to grow to 1.0 release.
 
@@ -38,7 +39,6 @@ Here is a list of planned content:
 - Expanded slavery scenes/systems
 - Alternative route of enslavement for players who are the type of people that completes Undertale's genocide run 5 times just for fun *stares with judgement*
 - More Issix/pet related scenes around the prison
-- Issix's mechanic of dealing in BDSM restraints
 - A "last choice" reward, making the game harder and more annoying by stripping player's choices completely in relation to some slave related mechanics
 - Making use of existing system to improve affection with pets
   - Including ability to make love with Hiisi and Azazel

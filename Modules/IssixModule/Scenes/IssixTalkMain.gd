@@ -319,6 +319,8 @@ func _run():
 			
 	if(state in ["questresponseyes", "questresponseno"]):
 		GM.main.setModuleFlag("IssixModule", "Quest_Status", 1)
+		if checkIncompat():
+			saynn("[color=red][b]WARNING: You appear to have AcesWorldbuildingMod mod installed. It will cause incompatibility in this quest line. This mod has been in base game for a while now so it's redundant to have it. Uninstall it and restart the game please.[/b][/color]")
 		if(state=="questresponseyes"):
 			saynn("Issix grins after hearing the answer.")
 			saynn("[say=issix]Excellent. Now, what I want to do is verify your trust, and gain some of my own trust in you. You must be acutely aware how words, especially in this place"+ (" and especially coming from a red like yourself" if GM.pc.getInmateType() == InmateType.HighSec else "") + " can be deceptive.[/say]")
@@ -376,6 +378,12 @@ func calculateHaremScore():
 	score += clamp(GM.main.getModuleFlag("IssixModule", "Lamia_Times_Helped", 0), 0, 10) # 0 - 10
 	score += clamp(GM.main.getModuleFlag("IssixModule", "Hiisi_Affection", 0), 0, 12) # 0 - 12
 	return int(score) # -10 - 100, 90 required to start the quest
+
+func checkIncompat():
+	for mod in GlobalRegistry.getLoadedMods():
+		if "AcesWorldbuildingMod" in mod:
+			return true
+	return false
 
 func _react(_action: String, _args):
 	if _action in ["questresponseno", "questresponseyes"]:

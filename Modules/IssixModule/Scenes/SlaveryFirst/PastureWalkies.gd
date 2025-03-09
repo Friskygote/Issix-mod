@@ -6,7 +6,12 @@ var char1 = ""
 var char2 = ""
 var privates_choice = "ass"
 var borrowed_strapon = false
-var tasks := []
+var tasks := [["Threesome", "Say you'd like some not-so-private action with Issix and Hiisi", "threesome_issix"],
+			 ["Fetch", "Say you'd be up for a game of fetch, like a good puppy you are", "ball_chasing"],
+			 # ["Waterfall", "Check out the waterfall", "waterfall_check"],
+			 ["Outhouse", "Investigate the outhouse", "outhouse_thing"],
+			 # ["Hiisi", "Spend time with Hiisi", "hiisi_time"],
+			 ["Lamia", "Spend time with Lamia", "lamia_time"]]
 var tasks_finished = 0
 var minigameScene = preload("res://Modules/IssixModule/Minigames/BallChaser/BallChaser.tscn")
 var time_started_pasture = 0
@@ -20,11 +25,11 @@ func _initScene(_args = []):
 			 ["Fetch", "Say you'd be up for a game of fetch, like a good puppy you are", "ball_chasing"],
 			 # ["Waterfall", "Check out the waterfall", "waterfall_check"],
 			 ["Outhouse", "Investigate the outhouse", "outhouse_thing"],
-			 ["Hiisi", "Spend time with Hiisi", "hiisi_time"],
+			 # ["Hiisi", "Spend time with Hiisi", "hiisi_time"],
 			 ["Lamia", "Spend time with Lamia", "lamia_time"]]
 	tasks.shuffle()
 	tasks_finished = 0
-	time_started_pasture = 0
+	time_started_pasture = GM.main.getTime()
 
 # Main loop:
 # Player gets to choose from 2 options twice per pasture walk in regards to possible activities
@@ -408,6 +413,7 @@ func _run():
 		addButton("Finish", "Finish here", "2ndactivity")
 
 	if state == "end_pasture":
+		playAnimation(StageScene.Duo, "crawl", {npc="issix", npcAction="stand", bodyState={leashedBy="issix"}})
 		clearCharacter()
 		addCharacter("issix")
 		addCharacter("azazel")
@@ -434,25 +440,26 @@ func _run():
 		addButton("Finish", "That was the end of pasture walk for today", "endthescene")
 
 	if state == "outhouse_right":
-		addCharacter(GM.main.IS.getPawn(pawns_interactions[0]).getChar().getID())
-		addCharacter(GM.main.IS.getPawn(pawns_interactions[1]).getChar().getID())
-		addCharacter(GM.main.IS.getPawn(pawns_interactions[3]).getChar().getID())
 		if null in pawns_interactions or pawns_interactions.size() == 0:
 			addMessage("Error: Couldn't find enough paws! Please late the modder know.")
 			state = "outhouse_thing"
-		saynn("You enter the doors on the right, first thing you notice is the acrid smell that wafts in the air. In addition, it takes a while for your eyes to get used to the dimly lit room. The room looks surprisingly spacious inside, in fact, there are already 2 figures standing in it.")
-		saynn("[say=pawn1]{pawn2.name} look, we've got another guest here.[/say]")
-		saynn("[say=pawn2]Oh shit, you are right, welcome to toilets, you here to piss or help our friend here?[/say]")
-		saynn("Two inmates stand with their bottoms completely exposed. {pawn1.name} has {pawn1.his} {pawn1.privates} while {pawn2.name} stands with {pawn2.his} {pawn2.privates} in full visibility. Second inmate seems to point at something, at first you don't recognize what is it due to your eyes still getting to lack of light in here, however soon you begin to recognize a shape - it's a "+Util.getSpeciesName(GM.main.IS.getPawn(pawns_interactions[2]).getChar().getSpecies())+" who is kneeling bonded to the nearby wall next to urinals. A plate hangs from their neck saying „URINAL”. They are wearing a guard uniform and do not have a collar on their neck, their face has a ringed gag in it, the eyes are covered by the blindfold.")
-		saynn("[say=pc]H-help?[/say]")
-		saynn("[say=pawn2]Oh, don't look at us like that, {pawn3.he} volunteered by {pawn3.yourself} to be here. I think they are now... {pawn1.name} when did we start?[/say]")
-		saynn("[say=pawn1]One hour ago I think.[/say]")
-		saynn("[say=pawn2]One hour in here. I think they might be getting tired and people keep coming. So look, you could help them a little and join next to them to spread the load a little hehe.[/say]")
-		saynn("[say=pawn1]Hehe, I'm sure they would appreciate, being an urinal is a serious job, that piss must go somewhere after all.[/say]")
-		saynn("[say=pawn2]But if you don't want to, you can always use {pawn3.him}. So what is it?[/say]")
-		addButtonWithChecks("Help", "„Help” the guard by offering yourself as another urinal", "outhouse_urinal", [], [[ButtonChecks.NotOralBlocked]])
-		addButton("Piss", "You do feel kind of needy to piss actually...", "outhouse_piss")
-		addButton("Leave", "Say you think you took wrong doors", "outhouse_leave")
+		else:
+			addCharacter(GM.main.IS.getPawn(pawns_interactions[0]).getChar().getID())
+			addCharacter(GM.main.IS.getPawn(pawns_interactions[1]).getChar().getID())
+			addCharacter(GM.main.IS.getPawn(pawns_interactions[2]).getChar().getID())
+			saynn("You enter the doors on the right, first thing you notice is the acrid smell that wafts in the air. In addition, it takes a while for your eyes to get used to the dimly lit room. The room looks surprisingly spacious inside, in fact, there are already 2 figures standing in it.")
+			saynn("[say=pawn1]{pawn2.name} look, we've got another guest here.[/say]")
+			saynn("[say=pawn2]Oh shit, you are right, welcome to toilets, you here to piss or help our friend here?[/say]")
+			saynn("Two inmates stand with their bottoms completely exposed. {pawn1.name} has {pawn1.his} {pawn1.privates} while {pawn2.name} stands with {pawn2.his} {pawn2.privates} in full visibility. Second inmate seems to point at something, at first you don't recognize what is it due to your eyes still getting to lack of light in here, however soon you begin to recognize a shape - it's a "+Util.getSpeciesName(GM.main.IS.getPawn(pawns_interactions[2]).getChar().getSpecies())+" who is kneeling bonded to the nearby wall next to urinals. A plate hangs from their neck saying „URINAL”. They are wearing a guard uniform and do not have a collar on their neck, their face has a ringed gag in it, the eyes are covered by the blindfold.")
+			saynn("[say=pc]H-help?[/say]")
+			saynn("[say=pawn2]Oh, don't look at us like that, {pawn3.he} volunteered by {pawn3.yourself} to be here. I think they are now... {pawn1.name} when did we start?[/say]")
+			saynn("[say=pawn1]One hour ago I think.[/say]")
+			saynn("[say=pawn2]One hour in here. I think they might be getting tired and people keep coming. So look, you could help them a little and join next to them to spread the load a little hehe.[/say]")
+			saynn("[say=pawn1]Hehe, I'm sure they would appreciate, being an urinal is a serious job, that piss must go somewhere after all.[/say]")
+			saynn("[say=pawn2]But if you don't want to, you can always use {pawn3.him}. So what is it?[/say]")
+			addButtonWithChecks("Help", "„Help” the guard by offering yourself as another urinal", "outhouse_urinal", [], [[ButtonChecks.NotOralBlocked]])
+			addButton("Piss", "You do feel kind of needy to piss actually...", "outhouse_piss")
+			addButton("Leave", "Say you think you took wrong doors", "outhouse_leave")
 
 	if state == "outhouse_leave_right":
 		saynn("[say=pc]Uh huh, I think I took wrong doors, sorry for the trouble![/say]")
@@ -518,6 +525,8 @@ func _run():
 		addButton("Leave", "Leave the outhouse now", "2ndactivity")
 
 	if state == "outhouse_urinal":
+		playAnimation(StageScene.Solo, "kneel", {pc="pc", bodyState={naked=true, hard=true}})
+
 		if GM.pc.getPersonality().getStat(PersonalityStat.Coward) < 0:
 			saynn("[say=pc]I... I think I'd l-like to... Help t-them out.[/say]")
 		else:
@@ -540,7 +549,12 @@ func _run():
 		addButton("Wait", "All you can do is wait now", "outhouse_urinal2")
 
 	if state == "outhouse_urinal2":
-		addCharacter(GM.main.IS.getPawn(pawns_interactions[3]).getChar().getID())
+		var new_pawn = GM.main.IS.getPawn(pawns_interactions[3]).getChar()
+		if new_pawn.hasPenis():
+			playAnimation(StageScene.SexOral, "tease", {pc=new_pawn.getID(), npc="pc", bodyState={naked=true, hard=true}, npcBodyState={naked=true, hard=true}})
+		else:
+			playAnimation(StageScene.SexOral, "lick", {pc=new_pawn.getID(), npc="pc", bodyState={naked=true, hard=true}, npcBodyState={naked=true, hard=true}})
+		addCharacter(new_pawn.getID())
 		saynn("For a while nothing happens, the inmates in the room are playing Rock, Paper, Scissors. You start to worry what may happen if Master gets worried about where you are, what will they think if they find you here? Your thoughts get interrupted shortly as another person enters the room.")
 		saynn("[say=pawn4]Shit, why is it so dark here.[/say]")
 		saynn("{pawn4.He} looks for a light switch, finding none.")
@@ -551,9 +565,177 @@ func _run():
 		saynn("[say=pawn1]We just... Watch over urinals, that's it.[/say]")
 		saynn("[say=pawn4]Like I said, fucking perverts then, nobody is gonna steal ur- FUCK!.[/say]")
 		saynn("{pawn4.He}'s eyes seem to have adjusted to the light and it was genuine reaction to yours and {pawn3.name}'s situation. Both {pawn1.name} and {pawn2.name} chuckled at reaction.")
-		saynn("[say=pawn4]... Honestly, I have many questions but I'm also desperate, so whatever.[/say]")
-		saynn("")
+		saynn("[say=pawn4]... Honestly, I have many questions but I also [b]really[/b] need to piss, so whatever.[/say]")
+		if new_pawn.isWearingAnyUnderwear():
+			if new_pawn.hasPenis():
+				saynn("{pawn4.name} {pawn4.verb('displace')} {pawn4.his} clothes and {pawn4.verb('reveal')} {pawn4.his} {pawn4.penisSize} {pawn4.penis}.")
+			elif new_pawn.hasVagina():
+				saynn("{pawn4.name} {pawn4.verb('displace')} {pawn4.his} clothes and {pawn4.verb('reveal')} {pawn4.his} {pawn4.vagina}.")
+			else:
+				saynn("{pawn4.name} {pawn4.verb('displace')} {pawn4.his} clothes and {pawn4.verb('reveal')} {pawn4.his} nullge .")
 
+		saynn("He looks at both the guard on your right as well as you.")
+		saynn("[say=pawn1]I recommend you check the one on the right, they are new addition, you'd be its first.[/say]")
+		saynn("[say=pawn4]I certainly hope it has good plumbing then, there is gonna be a lot.[/say]")
+		if new_pawn.hasPenis():
+			saynn("{pawn4.He} {pawn4.verb('come')} closer to you until {pawn4.he} simply plug {pawn4.his} {pawn4.penis} into your hot mouth, it feels slightly salty, and your nose picks up strong smells from their crotch area which is now directly next to your nose.")
+		elif new_pawn.hasVagina():
+			saynn("{pawn4.He} {pawn4.verb('come')} closer to you until {pawn4.he} simply pushes upper part of {pawn4.his} vulva into your mouth attempting to make a seal. It's not a perfect fit, but with intensity {pawn4.he} {pawn4.verb('push', 'pushes')} into your helpless mouth it isn't a big issue, it feels slightly salty, and your nose picks up strong smells from {pawn4.his} crotch area which is now directly next to your nose.")
+		else:
+			saynn("{pawn4.He} {pawn4.verb('come')} closer to you until {pawn4.he} simply plug {pawn4.his} nullge into your hot mouth, your nose picks up strong smells from their crotch area which is now directly next to your nose.")
+
+		saynn("{pawn4.He} puts {pawn4.his} paw on your head and gives a sigh of relief.")
+		addButton("Piss", "And soon, you feel piss", "outhouse_urinal3")
+
+	if state == "outhouse_urinal3":
+		var new_pawn = GM.main.IS.getPawn(pawns_interactions[3]).getChar()
+		var piss_taste = RNG.pick(["bitter", "sweet", "acrid", "salty"])
+		if new_pawn.hasPenis():
+			playAnimation(StageScene.SexOral, "tease", {pc=new_pawn.getID(), npc="pc", bodyState={naked=true, hard=true}, npcBodyState={naked=true, hard=true}})
+		else:
+			playAnimation(StageScene.SexOral, "lick", {pc=new_pawn.getID(), npc="pc", bodyState={naked=true, hard=true}, npcBodyState={naked=true, hard=true}})
+		saynn("Immediately after, a torrent of "+piss_taste+" piss warms the inside of your mouth, you attempt to guzzle it all down as fast as you only can, which is difficult considering the sheer amount of piss there is to handle. "+("{pawn4.Name} grabs you by hair." if GM.pc.hasHair() else "{pawn4.Name} grabs you by fur on your neck."))
+
+		saynn("[say=pawn4]I can feel it pooling, I'm not stopping, so better guzzle it faster piss slut.[/say]")
+		saynn("motivated by additional pressure, you attempt to gulp the piss faster, with mediocre effect at first, however you eventually get into rhythm and are able to drink it consistently at pace. Person using you must have really been full, considering their pissing continued for lore than a minute. At the end you felt your belly complaining a little from large amount of fluid entering it, especially considering its high amount of salts.")
+		saynn("[say=pawn4]Ahhh. Fuck yeah. That was good.[/say]")
+		if new_pawn.isWearingAnyUnderwear():
+			saynn("{pawn4.He} fixes {pawn4.his} underwear.")
+
+		saynn("[say=pawn4]Gotta say, this urinals idea is pretty good, I'll give you that. Should be implemented all over the prison.[/say]")
+		saynn("[say=pawn2]Haha! We are glad you think so too. Care to spare any credits for maintenance? Urinals do need a lot of maintenance, you know.[/say]")
+		saynn("[say=pawn4]Sure, why the fuck not. That was best piss I've taken in a while, here you go.[/say]")
+		saynn("[say=pawn1]Your patronage is appreciated! Thank you.[/say]")
+
+		saynn("[say=pawn4]See ya.[/say]")
+		saynn("{pawn4.He} left. {pawn1.name} and {pawn2.name} chatter about making a business off urinals while you and the guard on your right can only kneel and wait.")
+		saynn("Afterwards there are two other creatures who enter the room, one guard, one inmate. The guard uses your mouth while the inmate uses mouth of the guard on your right. At that point you start worrying about your Master and other pets, they are likely getting worried over your absence. You try signaling to two inmates your want to leave however you are ignored. They eventually leave the room and it gets really silent in here.")
+		addButton("Wait", "Wait some more", "outhouse_urinal4")
+
+	if state == "outhouse_urinal4":
+		clearCharacter()
+		addCharacter("issix")
+		addCharacter(GM.main.IS.getPawn(pawns_interactions[2]).getChar().getID())
+		playAnimation(StageScene.SexOral, "tease", {pc="issix", npc="pc", bodyState={naked=true, hard=true}, npcBodyState={naked=true, hard=true}})
+		saynn("You hear the murmor of two familiar voices coming from the entrance to the room. It's Hiisi and Issix. You hear them enter the room.")
+		saynn("[say=hiisi]Ah, here is {pc.name}... Umm...[/say]")
+		saynn("[say=issix]Oh?[/say]")
+		saynn("They come straight to you after noticing you.")
+		saynn("[say=issix]Seems like you got tied up, do say, were you tied here against your will with that... Other guard?[/say]")
+		saynn("You blush and murmur negative answer.")
+		saynn("[say=issix]That's what I thought. You are a piss slut through and through. That's fine, I don't mind as long as you have fun, in fact... I could take a leak right now.[/say]")
+		saynn("[say=hiisi]I'll... Wait in front.[/say]")
+		saynn("[say=issix]Sure, thank you for the help Hiisi.[/say]")
+		saynn("[say=hiisi]Of course, Master.[/say]")
+		saynn("Hiisi leaves as Issix positions his {issix.penis} along with ring of your gag and pushes it in. He unceremoniously starts pissing without giving you much of time to prepare. A taste and smell you are well acquainted with, though being used as a urinal by your own Master this way feels even more intense than the usual. You gulp it all down like a good slut for his piss should.")
+		saynn("[say=issix]You like that, don't you? Maybe we should make this a regular thing. Don't think you would oppose.[/say]")
+		saynn("And he is right. Your belly at this point gets bloated with amount of piss from three different individuals with full bladder. Thankfully Issix's steam dies down.")
+		saynn("[say=issix]Great.[/say]")
+		if tasks_finished < 1:
+			saynn("[say=issix]We'll be going now, so let me get you out of here so we can wrap it up and leave.[/say]")
+			saynn("Issix unties your arms, and removes all of the other bonds from your body letting you get free. The piss sloshes inside of your belly as you stand up.")
+			saynn("[say=issix]Say goodbye to your friend here.[/say]")
+			saynn("You wave off at {pawn3.name}, who gives you a acknowledging grunt and leave the building with Master Issix.")
+			addButton("Leave", "Time to leave", "end_pasture_undress")
+		else:
+			saynn("[say=issix]Well, I'll tell the two at the entrance to wrap it up. Our game has ended and it would be great for you to come back. See you for now.[/say]")
+
+			saynn("Afterwards he leaves the room. Shortly after two inmates you are already acquainted with come back.")
+			saynn("[say=pawn1]Shit. You didn't tell us that you are Issix's little "+Globals.getPlayerPetName()+". Thought I were going to die when he approached me.[/say]")
+			saynn("[say=pawn2]Fuuck. He could fuck us up pretty badly if he wanted, but he was strangely nice, not like what we've heard about him...[/say]")
+			saynn("[say=pawn1]Let me help you get out of here.[/say]")
+			saynn("Then both of them fiddle with your bondage, retrieving the gag from you, untying your arms, freeing your head from the metal scaffolding and removing bonds from your legs.")
+			saynn("[say=pawn1]Here you go, please don't mention anything to your Master, okey? We don't want any trouble![/say]")
+			saynn("[say=pc]It's okey, he knows I wanted to be here...[/say]")
+			saynn("[say=pawn2]Good, we just... Don't want anything bad happen to us okey? Great. Go go now, your Master wants you or something I think.[/say]")
+			saynn("They shoo you out of the room.")
+			addButton("Leave", "Time to leave", "2ndactivity_undress")
+
+	if state == "outhouse_left":
+		if null in pawns_interactions or pawns_interactions.size() == 0:
+			addMessage("Error: Couldn't find enough paws! Please late the modder know.")
+			state = "outhouse_thing"
+		else:
+			addCharacter(GM.main.IS.getPawn(pawns_interactions[0]).getChar().getID())
+			saynn("You enter the doors on the left, and right there at the door frame you are already hit with incredibly warm and moisty air, it hits you like a ton of bricks, very intensely.")
+			saynn("[say=pc]What the hell?[/say]")
+			saynn("Inside there are two medium sized, circular pools of water, sounds of bubbling water echo from the walls. Next to the left wall a creature lies looking unconscious. Someone from inside the pool of water calls to you.")
+			saynn("[say=pawn1]Hey there, you seem confused.[/say]")
+			saynn("[say=pc]What is this place?[/say]")
+			saynn("[say=pawn1]Never been in jacuzzi before?[/say]")
+			saynn("[say=pc]Jacuzzi? In a prison?[/say]")
+			saynn("[say=pawn1]Are you really surprised or are you new in here? This prison is hardly a prison.[/say]")
+			saynn("You remember words of Issix, how he called BDCC a paradise, perhaps he was onto something there.")
+			saynn("[say=pc]I suppose you are right... But why here? Why do I learn of it only now?[/say]")
+			saynn("[say=pawn1]Stop thinking and hop in, there is plenty of space left.[/say]")
+			saynn("And what about {pawn2.him}? Why are they there?")
+			saynn("[say=pawn1]Oh they? I think they overdosed or something, they were already here when I came in.[/say]")
+			saynn("[say=pc]Don't they need medical attention?[/say]")
+			saynn("[say=pawn1]Nah, they do that regularly, maybe they like it here. They are fine, stop worrying.[/say]")
+			if GM.pc.getPersonality().getStat(PersonalityStat.Mean) < 0.0:
+				saynn("You decide to ignore those words and approach {pawn2.name}, they are breathing, that's for sure, and they have a pulse.")
+				saynn("[say=pc]You alright?[/say]")
+				saynn("{pawn2.He} opens eyes.")
+				saynn("[say=pawn2]Whaaat?[/say]")
+				saynn("[say=pc]I asked if you are okey.[/say]")
+				saynn("[say=pawn2]Yuuupppp.[/say]")
+				saynn("Everything they say seems slowed down. It seems like the other person spoke the truth, {pawn2.he} really seems out of it but otherwise okey.")
+				saynn("[say=pc]Okey then I guess.[/say]")
+				saynn("You leave and {pawn2.he} continues dozing off.")
+			else:
+				saynn("You decide to ignore this. Creature from Jacuzzi is likely right and they know situation better than you do.")
+			if GM.pc.isVisiblyPregnant():
+				saynn("[say=pawn1]Wait, are you pregnant?[/say]")
+				saynn("[say=pc]I am.[/say]")
+				saynn("[say=pawn1]Uhhh, maybe then you should skip the hot tub, might not be good for the baby.[/say]")
+			else:
+				saynn("[say=pawn1]Come on, don't be shy, get in.[/say]")
+				saynn("[say=pc]I'm not really prepared for jac-[/say]")
+				if !GM.pc.isFullyNaked():
+					saynn("[say=pawn1]Don't give me that. Just strip and come.[/say]")
+				else:
+					saynn("[say=pawn1]Don't give me that. Just come on, you are already naked, aren't you?[/say]")
+			addButton("Come in", "Enter same Jacuzzi pool as them", "outhouse_jacuzzi")
+			# addButton("Other", "Enter other Jacuzzi pool", "outhouse_jacuzzi_other")
+			addButton("Leave", "Maybe some other time...", "2ndactivity")
+
+	if state == "outhouse_jacuzzi":
+		if GM.pc.isVisiblyPregnant():
+			saynn("[say=pc]Whatever, I'm coming in.[/say]")
+			saynn("[say=pawn1]Don't say I didn't warn you.[/say]")
+		else:
+			saynn("[say=pc]Okey okey, I'm coming in.[/say]")
+		if !GM.pc.isFullyNaked():
+			saynn("You {pc.undressMessage}")
+
+		saynn("You step onto the small ladder leading to the Jacuzzi, put your {pc.toes} into the water, it's very warm.")
+		saynn("[say=pawn1]I promise I don't bite![/say]")
+
+		saynn("You put first {pc.foot}, then second in. The water pool isn't this deep, the deepest center would make the water reach your waist, there is also a half-height of that ledge connecting with walls of the pool so you can nicely sit and have your legs just hang. You sit there on the opposite side of tub from {pawn1.name}. There are some big and small bubbles in the water, all of them massage your legs, torso and arms which you have put into the water. It's a rare time you experienced in here.")
+		saynn("[say=pc]That's pretty niiiicceeee.[/say]")
+		saynn("[say=pawn1]I know right? So nice.[/say]")
+		saynn("[say=pc]How come this place isn't more crowded? I'd expect all of the inmates come here instead of working in the mines.[/say]")
+		saynn("[say=pawn1]Well... This place doesn't have a great reputation in this prison.[/say]")
+		saynn("[say=pc]And why is that?[/say]")
+		saynn("[say=pawn1]Drownings, sexual assaults. Some creatures also treat this place as their own territory making it impossible for others to come.[/say]")
+		saynn("[say=pc]So why I didn't have any issue hopping in?[/say]")
+		saynn("[say=pawn1]Heh, don't praise the day before the sun sets. I guess today is just more chill of a day. Just enjoy it I guess.[/say]")
+		saynn("[say=pc]Okey...[/say]")  # TODO add more content
+		addButton("Enjoy", "Enjoy the Jacuzzi", "outhouse_jacuzzi2")
+
+	if state == "outhouse_jacuzzi2":
+		saynn("You spend 20 more minutes just chilling in water uninterrupted by anyone else.")
+		saynn("[say=pawn1]Gotta go, see you some other time I guess?[/say]")
+		saynn("[say=pc]Sure hope so, thank you for not assaulting me.[/say]")
+		saynn("You say in a jest to the other creature referring to the previous conversation you've had.")
+		saynn("[say=pawn1]Haha, maybe next time, if you want.[/say]")
+		saynn("[say=pc]Maybe.[/say]")
+		saynn("{pawn1.Name} leaves, you leave soon after too. There is a point where soaking your skin too much feels wrong, and you've passed it, even though it was a very relaxing time.")
+		addMessage("( This content isn't finished, so this more or less placeholder takes its place, hope you enjoyed either way )")
+		if GM.pc.isFullyNaked():
+			addButton("Leave", "Leave jacuzzi", "2ndactivity")
+		else:
+			addButton("Leave", "Dry out, pick up your clothes and leave jacuzzi", "2ndactivity")
 
 	if state == "outhouse_thing":
 		if getModuleFlag("IssixModule", "Knows_Outhouse", false) == true:
@@ -565,9 +747,9 @@ func _run():
 		addButtonWithChecks("Right door", "Enter the doors on your right (CW: watersports)", "outhouse_right", [], [[ButtonChecks.ContentEnabled, ContentType.Watersports]])
 		addButton("Leave", "Leave the outhouse", "2ndactivity")
 
-	if state == "outhouse_left":
-		pass
-
+	if state == "lamia_time":
+		addMessage("( Hey there, this particular event is still WIP that I simply couldn't finish before this release. So for now, it's just a simple skip )")
+		addButton("Leave", "Leave the outhouse", "2ndactivity")
 
 func randomTasks():
 	var task = []
@@ -621,8 +803,28 @@ func _react(_action: String, _args):
 	if _action == "inventory":
 		runScene("InventoryScene", [], "inventory")
 
+	if _action == "outhouse_jacuzzi2":
+		processTime(10*60)
+
+	if _action == "outhouse_jacuzzi2":
+		processTime(20*60)
+		GM.main.IS.getPawn(pawns_interactions[0]).getChar().addEffect("JacuzziEffectsRelax", [7*60*60, GM.main.IS.getPawn(pawns_interactions[0]).getChar().isPregnant()])
+		GM.pc.addStamina(300)
+		GM.pc.addEffect("JacuzziEffectsRelax", [7*60*60, GM.pc.isPregnant()])
+
+	if _action in ["end_pasture_undress", "2ndactivity_undress"]:
+		GM.pc.getInventory().removeItemFromSlot(InventorySlot.Mouth)
+		if GM.pc.getInventory().hasSlotEquipped(InventorySlot.Ankles) and GM.pc.getInventory().getEquippedItem(InventorySlot.Ankles).id == "inmateanklecuffs":  # TODO clean this up, we don't know whether those are player's or non players
+			GM.pc.getInventory().removeItemFromSlot(InventorySlot.Ankles)
+		if GM.pc.getInventory().hasSlotEquipped(InventorySlot.Wrists) and GM.pc.getInventory().getEquippedItem(InventorySlot.Wrists).id == "inmatewristcuffs":
+			GM.pc.getInventory().removeItemFromSlot(InventorySlot.Wrists)
+		_action = _action.rsplit("_", false, 1)[0]
+
 	if _action in ["outhouse_left", "outhouse_right"]:
 		setModuleFlag("IssixModule", "Knows_Outhouse", true)
+
+	if _action == "outhouse_left":
+		pawns_interactions = Globals.pick_unique_one(Globals.findPawns([[[], []], [[], []], [[], []]]))
 
 	if _action == "outhouse_right":
 		pawns_interactions = Globals.pick_unique_one(Globals.findPawns([[["isInmate"], []], [["isInmate"], []], [["isGuard"], []], [[], []]]))
@@ -637,11 +839,11 @@ func _react(_action: String, _args):
 			_action = "ball_chaser_demon"
 		elif _args[0] < 900:
 			_action = "ball_chaser_lose"
-		elif _args[0] < 1900:
+		elif _args[0] < 1800:
 			_action = "ball_chaser_meh"
-		elif _args[0] < 2800:
+		elif _args[0] < 2700:
 			_action = "ball_chaser_okey"
-		elif _args[0] < 3100:
+		elif _args[0] < 3000:
 			_action = "ball_chaser_good"
 		else:
 			_action = "ball_chaser_great"
@@ -711,6 +913,25 @@ func _react(_action: String, _args):
 		var character = GM.main.IS.getPawn(pawns_interactions[2]).getChar()
 		character.cummedInMouthBy("pc", FluidSource.Pissing, 0.9)
 		character.cummedOnBy("pc", FluidSource.Pissing, 0.1)
+
+	if _action == "outhouse_urinal":
+		processTime(20*60)
+		GM.pc.getInventory().equipItem(GlobalRegistry.createItem("ringgag"))
+		if GM.pc.getInventory().unequipSlotUnlessRestraint(InventorySlot.Ankles):
+			GM.pc.getInventory().forceEquipStoreOtherUnlessRestraint(GlobalRegistry.createItem("inmateanklecuffs"))
+		if GM.pc.getInventory().unequipSlotUnlessRestraint(InventorySlot.Wrists):
+			GM.pc.getInventory().forceEquipStoreOtherUnlessRestraint(GlobalRegistry.createItem("inmatewristcuffs"))
+
+	if _action == "outhouse_urinal2":
+		processTime(20*60)
+
+	if _action == "outhouse_urinal3":
+		processTime(25*60)
+		GM.pc.cummedInMouthBy(GM.main.IS.getPawn(pawns_interactions[3]).getChar().getID(), FluidSource.Pissing, 2.0)
+
+	if _action == "outhouse_urinal4":
+		processTime(25*60)
+		GM.pc.cummedInMouthBy("issix", FluidSource.Pissing, 1.0)
 
 	if _action == "outhouse_donate":
 		GM.pc.addCredits(-3)
