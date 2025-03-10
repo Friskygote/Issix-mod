@@ -70,7 +70,7 @@ func findFreePawnsNearby() -> Array:
 	for pawn in pawns:
 		if(!pawn.canBeInterrupted() or !pawn.isInmate() or pawn.isPlayer()):
 			continue
-		result.append(pawn.charID)
+		result.append(pawn.getID())
 	return result
 
 func getPriority():
