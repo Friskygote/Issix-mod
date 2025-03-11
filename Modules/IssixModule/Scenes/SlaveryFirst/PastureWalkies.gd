@@ -192,14 +192,14 @@ func _run():
 			if privates_choice == "ass":
 				saynn("You've steered Azazel's {azazel.penisOrStrapon} towards your ass as he plunges right in. His {azazel.penisOrStrapon} enters it with certain force that comes with suddenness of the action, but thanks to fair amount of lube in your ass as well on the strapon this does not prove an issue. Azazel's paws land on same height as your waist finding grip to control speed at which he wants to bury his rubbery bone inside of you.")
 			else:
-				saynn("You've steered Azazel's {azazel.penisOrStrapon} towards your {pc.pussy} as he plunges right in. His {azazel.penisOrStrapon} enters it with certain force that comes with suddenness of the action, but thanks to fair amount of lube as well on the strapon this does not prove an issue. Azazel's paws land on same height as your waist finding grip to control speed at which he wants to bury his rubbery bone inside of you.")
+				saynn("You've steered Azazel's {azazel.penisOrStrapon} towards your {pc.vagina} as he plunges right in. His {azazel.penisOrStrapon} enters it with certain force that comes with suddenness of the action, but thanks to fair amount of lube as well on the strapon this does not prove an issue. Azazel's paws land on same height as your waist finding grip to control speed at which he wants to bury his rubbery bone inside of you.")
 		else:
-			var privates1 = "{pc.pussy}" if GM.pc.hasReachableVagina() else "{pc.ass}"
+			var privates1 = "{pc.vagina}" if GM.pc.hasReachableVagina() else RNG.pick(['ass', 'hole'])
 			saynn("As you are on your knees Master gives a command and your bottom feels squeezed between two horny beasts. Feelings assault you from both front and back, they aren't unpleasant by any means. Your Master's {issix.penis} accompanied by large amount of lube went right up your "+privates1+" penetrating it, while the move was sudden, Master didn't insert his entire length into your "+privates1+" but rather started entry with half of it, still growing a little as his tool gets stimulated even harder.")
 			if privates_choice == "ass":
 				saynn("On the other side your {pc.penisOrStrapon} got pushed inside of Azazel's backside by {azazel.him} pushing hard onto you with powerful hips.")
 			else:
-				saynn("On the other side your {pc.penisOrStrapon} got pushed inside of Azazel's {azazel.pussy} by {azazel.him} pushing hard onto you with powerful hips.")
+				saynn("On the other side your {pc.penisOrStrapon} got pushed inside of Azazel's {azazel.vagina} by {azazel.him} pushing hard onto you with powerful hips.")
 
 		saynn("[say=azazel]Mewwwl!!! Ahhhhh. Soo gooood.[/say]")
 		saynn("[say=issix]Fuck yeah, what a nice cocksleeve you make {"+char1+".Name}![/say]")
@@ -211,11 +211,11 @@ func _run():
 		saynn("After considerable amount of time arousal as well as tiredness begins to run their course and meowls and grunts increasingly take form of gasps.")
 		if char2 == "pc":
 			if privates_choice == "ass":
-				saynn("Azazel for a while now uses the entirety of his tool to ram your backdoor. With your front arms giving their way under repeated motions coming from Azazel, and with arousal buildup from terrific job Azazel has been doing in keeping you stimulated you collapse onto your elbows and climax. Azazel's release comes just moments later as his own {azazel.pussy} leaks profusely of his love juices.")
+				saynn("Azazel for a while now uses the entirety of his tool to ram your backdoor. With your front arms giving their way under repeated motions coming from Azazel, and with arousal buildup from terrific job Azazel has been doing in keeping you stimulated you collapse onto your elbows and climax. Azazel's release comes just moments later as his own {azazel.vagina} leaks profusely of his love juices.")
 			else:
-				saynn("Azazel for a while now uses the entirety of his tool to ram your wet {pc.pussy}. With your front arms giving their way under repeated motions coming from Azazel, and with arousal buildup from terrific job Azazel has been doing in keeping you stimulated you collapse onto your elbows and climax. Azazel's release comes just moments later as his own {azazel.pussy} leaks profusely of his love juices.")
+				saynn("Azazel for a while now uses the entirety of his tool to ram your wet {pc.vagina}. With your front arms giving their way under repeated motions coming from Azazel, and with arousal buildup from terrific job Azazel has been doing in keeping you stimulated you collapse onto your elbows and climax. Azazel's release comes just moments later as his own {azazel.vagina} leaks profusely of his love juices.")
 		else:
-			var privates1 = "{pc.pussy}" if GM.pc.hasReachableVagina() else "{pc.ass}"
+			var privates1 = "{pc.vagina}" if GM.pc.hasReachableVagina() else RNG.pick(['ass', 'hole'])
 			if privates_choice == "ass":
 				saynn("Your knees start to weaken from exhaustion of being in the center of attention - constantly drained by kitty in front of you and demon in your back. Your arousal from constant attention, well stimulated ass and even better stimulated {pc.penisOrStrapon} raises until it cannot anymore and you give in to the sweet sweet climax."+(" Azazel's pussy drains you of your load, which goes straight into his feline fertile womb. This is exactly what he wanted, since he looks back at you giving you a smirk." if GM.pc.hasReachablePenis() else "Azazel's ass drains you of your load which paints his inside walls with your salty treat. You have the feeling the naughty cat would prefer breeding in the other hole, however he is hardly dissatisfied either considering the mix of pheromones and just how wet the feline is. ")+"On the opposite side, Master Issix reaches his own climax putting his virile load inside of your "+privates1+".")
 			else:
@@ -238,7 +238,7 @@ func _run():
 			if char2 == "pc":
 				saynn("[say=azazel]Hihi, I think so too! And you made such cute moans while I rammed your pretty "+privates_choice+" with a strapon! Maaan, that was good, we should absolutely do it often.[/say]")  # It's 01:21 AM, honestly I'm pretty sleepy, meanwhile my brain now wants to add romance option with Azazel even though it's not even on my roadmap aaaaaaaaaaaaaaaaa
 			else:
-				saynn("[say=azazel]Hihi, I think so too! And you made such cute moans while getting rammed into your adorable "+("{pc.pussy}" if GM.pc.hasReachableVagina() else "{pc.ass}")+" by the Master! Your moves were also quite something, I mean, not on level of what I've experienced fooling around with other sex workers, but you are still a pretty decent slut, you know?[/say]")
+				saynn("[say=azazel]Hihi, I think so too! And you made such cute moans while getting rammed into your adorable "+("{pc.vagina}" if GM.pc.hasReachableVagina() else RNG.pick(['ass', 'hole']))+" by the Master! Your moves were also quite something, I mean, not on level of what I've experienced fooling around with other sex workers, but you are still a pretty decent slut, you know?[/say]")
 			saynn("His head tilts to the side as his eyes meet your face, you look at him as well, his head is a bit lower, he notices that and helps with his legs to push himself „higher” so he can be on the same level with your head. He gives you a genuine, warm smile, his eyes closing slightly.")
 			saynn("[say=azazel]Your paw is so cute, and {pc.name}... I like you, a lot.[/say]")
 			saynn("His face looks a little embarrassed, and his attempt to hid it only makes it more apparent.")
@@ -956,7 +956,7 @@ func _react(_action: String, _args):
 		# Equip strapon, if no strapon in inventory create Feline strapon and mark borrowed status as True
 		processTime(10*60)
 		var character = GlobalRegistry.getCharacter(char1)
-		if !character.HasReachablePenis() and character.canWearStrapon():
+		if !character.hasReachablePenis() and character.canWearStrapon():
 			var strapons = character.getStrapons()
 			if strapons.empty():
 				borrowed_strapon = true
@@ -1004,12 +1004,13 @@ func _react(_action: String, _args):
 
 	if _action == "threesome_prepare":
 		processTime(20*60)
-		GM.pc.addEffect(StatusEffect.LubedUp, 60*60)
-		GlobalRegistry.getCharacter("issix").addEffect(StatusEffect.LubedUp, 60*60)
-		GlobalRegistry.getCharacter("azazel").addEffect(StatusEffect.LubedUp, 60*60)
+		GM.pc.addEffect(StatusEffect.LubedUp, [60*60])
+		GlobalRegistry.getCharacter("issix").addEffect(StatusEffect.LubedUp, [60*60])
+		GlobalRegistry.getCharacter("azazel").addEffect(StatusEffect.LubedUp, [60*60])
 
 	if(_action == "endthescene"):
 		increaseModuleFlag("IssixModule", "Pet_Time_Interaction_Today", GM.main.getTime()-time_started_pasture)
+		GM.main.setModuleFlag("IssixModule", "Last_Walk", GM.main.getDays())
 		endScene()
 		return
 
