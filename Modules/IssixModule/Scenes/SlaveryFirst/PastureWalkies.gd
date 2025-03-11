@@ -6,12 +6,13 @@ var char1 = ""
 var char2 = ""
 var privates_choice = "ass"
 var borrowed_strapon = false
-var tasks := [["Threesome", "Say you'd like some not-so-private action with Issix and Hiisi", "threesome_issix"],
+const tasks := [["Threesome", "Say you'd like some not-so-private action with Issix and Hiisi", "threesome_issix"],
 			 ["Fetch", "Say you'd be up for a game of fetch, like a good puppy you are", "ball_chasing"],
 			 # ["Waterfall", "Check out the waterfall", "waterfall_check"],
 			 ["Outhouse", "Investigate the outhouse", "outhouse_thing"],
 			 # ["Hiisi", "Spend time with Hiisi", "hiisi_time"],
 			 ["Lamia", "Spend time with Lamia", "lamia_time"]]
+var available_tasks = tasks.duplicate(true)
 var tasks_finished = 0
 var minigameScene = preload("res://Modules/IssixModule/Minigames/BallChaser/BallChaser.tscn")
 var time_started_pasture = 0
@@ -21,13 +22,7 @@ func _init():
 	sceneID = "IssixPastureWalk"
 
 func _initScene(_args = []):
-	tasks = [["Threesome", "Say you'd like some not-so-private action with Issix and Hiisi", "threesome_issix"],
-			 ["Fetch", "Say you'd be up for a game of fetch, like a good puppy you are", "ball_chasing"],
-			 # ["Waterfall", "Check out the waterfall", "waterfall_check"],
-			 ["Outhouse", "Investigate the outhouse", "outhouse_thing"],
-			 # ["Hiisi", "Spend time with Hiisi", "hiisi_time"],
-			 ["Lamia", "Spend time with Lamia", "lamia_time"]]
-	tasks.shuffle()
+	available_tasks = tasks.duplicate(true)
 	tasks_finished = 0
 	time_started_pasture = GM.main.getTime()
 
@@ -231,7 +226,7 @@ func _run():
 
 	if state == "threesome_4_SexTrain":
 		saynn("After another minute it's Master who first moves away, stretches giving some pained sounds likely from being in position on knees for so long and goes to his bag to grab a bottle of water.")
-		if getModuleFlag("IssixModule", "Azazel_Affection_given", 5) > 40:
+		if getModuleFlag("IssixModule", "Azazel_Affection_given", 5) > 30:
 			saynn("You and Azazel collapse onto the blanket, your looks wander to the ceiling of the prison facility, his paw finds its way to yours and gently grabs it.")
 			saynn("[say=azazel]How did you like today's session?[/say]")
 			saynn("[say=pc]Pretty awesome, if I can say so myself.[/say]")
@@ -753,9 +748,12 @@ func _run():
 
 func randomTasks():
 	var task = []
-	task = tasks.pop_front()
+	if available_tasks.size() < 2:
+		available_tasks = tasks.duplicate()
+	available_tasks.shuffle()
+	task = available_tasks.pop_front()
 	addButton(task[0], task[1], task[2])
-	task = tasks.pop_front()
+	task = available_tasks.pop_front()
 	Globals.addButtonCheckNoncon(task[0], task[1], task[2])
 
 func onMinigameCompleted(result):
@@ -778,6 +776,7 @@ func saveData():
 	data["tasks_finished"] = tasks_finished
 	data["time_started_pasture"] = time_started_pasture
 	data["pawns_interactions"] = pawns_interactions
+	data["available_tasks"] = available_tasks
 
 	return data
 
@@ -792,6 +791,8 @@ func loadData(data):
 	tasks_finished = SAVE.loadVar(data, "tasks_finished", 0)
 	time_started_pasture = SAVE.loadVar(data, "time_started_pasture", 0)
 	pawns_interactions = SAVE.loadVar(data, "pawns_interactions", [])
+	available_tasks = SAVE.loadVar(data, "available_tasks", tasks.duplicate())
+	
 
 func resolveCustomCharacterName(_charID):
 	if _charID.begins_with("pawn"):
