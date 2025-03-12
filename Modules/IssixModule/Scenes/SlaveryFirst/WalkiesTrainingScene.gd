@@ -190,6 +190,33 @@ func _run():
 				distractionFailure()
 		addButton("Continue", "Continue", "follow")
 
+	if state == "distraction":
+		saynn("Risking bringing ire of Master on yourself, you choose to investigate the repeating sounds you don't recognize and only make you curious. You run off making your Master release the leash he held by being caught off guard.")
+		if GM.pc.isBlindfolded():
+			saynn("After running 15 meters relying on just your hearing you arrive somewhere and hit your head on metal grate. The noises definitely come from the inside.")
+		else:
+			saynn("After running 15 meters you arrive near a ventilator shaft behind the metal grate, the noises definitely come from behind it.")
+		saynn("Master Issix stands behind you frustrated, picking up the leash from the ground.")
+		if getModuleFlag("IssixModule", "Went_On_Own_Walkies", false) == true:
+			saynn("[say=issix]Eh, you need to stop doing this sometime, pets gonna pet... Yes, I get it, I'll check it out.[/say]")
+		else:
+			saynn("[say=issix]What on earth are you doing?[/say]")
+			saynn("To make Master think this is worth investigating you'll likely have to do some convincing, but how?")
+			addButton("Claw", "Bang your paws on the metal grate", "disctraction_fail_convince")
+			addButton("Whine", "Start whining at your Master to show something is wrong", "disctraction_fail_convince")
+			addButton("Jump", "Jump around like crazy to show that something is not okey", "disctraction_fail_convince")
+			addButtonWithChecks("Scream", "Start screaming at the metal grate", "disctraction_fail_convince", [], [[ButtonChecks.NotGagged]])
+			addButtonWithChecks("Talk", "Talk to your Master in regular speech", "disctraction_fail_convince", [], [[ButtonChecks.NotGagged]])
+			addButtonWithChecks("Eyes", "Make puppy eyes?", "disctraction_fail_convince", [], [[ButtonChecks.NotBlindfolded]])
+			addButtonWithChecks("Chew", "Try to chew on the metal grate", "disctraction_fail_convince", [], [[ButtonChecks.NotOralBlocked]])
+			addButtonWithChecks("Try open", "Try to open the metal grate and see what's behind", "disctraction_fail_convince", [], [[ButtonChecks.NotHandsBlocked]])
+		
+	if state == "disctraction_fail_convince":
+		saynn("[say=issix]No, bad "+Globals.getPlayerPetName()+"! That's not what a good pet does. With me, now![/say]")
+		saynn("You get a forceful pull of a leash dragging you away.")
+		addButton("Follow", "Ignore the thing and follow Master again", "follow")
+
+
 func showAppropriateScene():
 	if shouldBeInHeavyBondage():
 		playAnimation(StageScene.PuppyDuo, "walk", {pc="issix", npc="pc", flipNPC=true, npcBodyState={naked=true, leashedBy="issix"}})
@@ -231,6 +258,9 @@ func _react(_action: String, _args):
 		GM.pc.addPain(5)
 		goodPoints -= 1
 		sat_down = true
+
+	if _action == "disctraction_fail_convince":
+		goodPoints -= 2
 
 	if _action == "disctraction":  # TODO: Add more distractions
 		_action = "distraction1"

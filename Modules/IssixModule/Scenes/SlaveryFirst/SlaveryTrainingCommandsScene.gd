@@ -179,6 +179,7 @@ func _react(_action: String, _args):
 		return
 
 	if(_action == "endthescene"):
+		setModuleFlag("IssixModule", "Learned_Commands", false)
 		endScene([true])
 		return
 
