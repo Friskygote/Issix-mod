@@ -40,5 +40,7 @@
 - Lamia can help the player with unequipping bondage gear, though they can't help with smart-locks and sometimes might break the equipment
 - Player can ask Issix to take off Keylock locked items on them, however if Issix's mood isn't good this will fail
 
+Big thanks to BDCC community for reporting multiple bugs to me!
+
 ## Initial release
 - A lot of things I don't even plan to list

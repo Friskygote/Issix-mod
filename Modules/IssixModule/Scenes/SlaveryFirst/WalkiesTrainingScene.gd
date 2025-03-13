@@ -16,12 +16,14 @@ var goodPoints = 0
 var waited = 0
 var sat_down = false
 var pace = 0
+var distraction_happened = false
 
 func _initScene(_args = []):
 	rollDestination()
 	goodPoints = 0
 	waited = 0
 	sat_down = false
+	distraction_happened = false
 
 func _init():
 	sceneID = "WalkiesTrainingWithIssix"
@@ -130,7 +132,7 @@ func _run():
 		addButtonAt(6, "Follow", "Follow the leash at regular speed", "follow")
 		addButtonAt(7, "Faster", "Follow the leash a little bit faster", "followfast")
 		addButtonAt(8, "Slower", "Follow the leash a little bit slower", "followslow")
-		if RNG.chance(2):
+		if RNG.chance(2) and distraction_happened == false:
 			addButtonAt(9, "Check", "You've noticed something nearby, you could investigate but your Master wouldn't like it", "distraction")
 		addDisabledButtonAt(10, "Leashed", "Can't escape from the leash")
 		addDisabledButtonAt(11, "Leashed", "Can't escape from the leash")
@@ -190,36 +192,72 @@ func _run():
 				distractionFailure()
 		addButton("Continue", "Continue", "follow")
 
-	if state == "distraction":
+	if state == "distraction1":
 		saynn("Risking bringing ire of Master on yourself, you choose to investigate the repeating sounds you don't recognize and only make you curious. You run off making your Master release the leash he held by being caught off guard.")
 		if GM.pc.isBlindfolded():
 			saynn("After running 15 meters relying on just your hearing you arrive somewhere and hit your head on metal grate. The noises definitely come from the inside.")
 		else:
 			saynn("After running 15 meters you arrive near a ventilator shaft behind the metal grate, the noises definitely come from behind it.")
 		saynn("Master Issix stands behind you frustrated, picking up the leash from the ground.")
-		if getModuleFlag("IssixModule", "Went_On_Own_Walkies", false) == true:
+		if Globals.checkIfAchieved("Walkies_Distractions_State", "Issix_Seen_Distraction1"):
 			saynn("[say=issix]Eh, you need to stop doing this sometime, pets gonna pet... Yes, I get it, I'll check it out.[/say]")
+			addButton("Continue", "Master descends again...", "distraction1_success_repeat")
 		else:
+			# I do not like currently implementation of this, player doesn't know why given option is correct, this should be cleared up in the future TODO
 			saynn("[say=issix]What on earth are you doing?[/say]")
 			saynn("To make Master think this is worth investigating you'll likely have to do some convincing, but how?")
-			addButton("Claw", "Bang your paws on the metal grate", "disctraction_fail_convince")
-			addButton("Whine", "Start whining at your Master to show something is wrong", "disctraction_fail_convince")
-			addButton("Jump", "Jump around like crazy to show that something is not okey", "disctraction_fail_convince")
-			addButtonWithChecks("Scream", "Start screaming at the metal grate", "disctraction_fail_convince", [], [[ButtonChecks.NotGagged]])
-			addButtonWithChecks("Talk", "Talk to your Master in regular speech", "disctraction_fail_convince", [], [[ButtonChecks.NotGagged]])
-			addButtonWithChecks("Eyes", "Make puppy eyes?", "disctraction_fail_convince", [], [[ButtonChecks.NotBlindfolded]])
-			addButtonWithChecks("Chew", "Try to chew on the metal grate", "disctraction_fail_convince", [], [[ButtonChecks.NotOralBlocked]])
-			addButtonWithChecks("Try open", "Try to open the metal grate and see what's behind", "disctraction_fail_convince", [], [[ButtonChecks.NotHandsBlocked]])
+			addButton("Claw", "Bang your paws on the metal grate", "distraction1_fail_convince")
+			addButton("Whine", "Start whining at your Master to show something is wrong", "distraction1_success_convince")
+			addButton("Jump", "Jump around like crazy to show that something is not okey", "distraction1_fail_convince")
+			addButtonWithChecks("Scream", "Start screaming at the metal grate", "distraction1_fail_convince", [], [[ButtonChecks.NotGagged]])
+			addButtonWithChecks("Talk", "Talk to your Master in regular speech", "distraction1_fail_convince", [], [[ButtonChecks.NotGagged]])
+			addButtonWithChecks("Eyes", "Make puppy eyes?", "distraction1_fail_convince", [], [[ButtonChecks.NotBlindfolded]])
+			addButtonWithChecks("Chew", "Try to chew on the metal grate", "distraction1_fail_convince", [], [[ButtonChecks.NotOralBlocked]])
+			addButtonWithChecks("Try open", "Try to open the metal grate and see what's behind", "distraction1_fail_convince", [], [[ButtonChecks.NotHandsBlocked]])
+			addButton("Follow", "Ignore the thing and follow Master again", "follow")
 		
-	if state == "disctraction_fail_convince":
+	if state == "distraction1_fail_convince":
 		saynn("[say=issix]No, bad "+Globals.getPlayerPetName()+"! That's not what a good pet does. With me, now![/say]")
 		saynn("You get a forceful pull of a leash dragging you away.")
 		addButton("Follow", "Ignore the thing and follow Master again", "follow")
-
+		
+	if state == "distraction1_success_convince":
+		saynn("You whine at Master, he is still angry but seems like there is some attempt to understand you. He tries to analyze you looking at you quizzically, it just need to bring your point home now...")
+		addButton("Claw", "Bang your paws on the metal grate", "distraction1_success_convince_claw")
+		addDisabledButton("Whine", "You've already done this")
+		addButton("Jump", "Jump around like crazy to show that something is not okey", "distraction1_fail_convince")
+		addButtonWithChecks("Scream", "Start screaming at the metal grate", "distraction1_fail_convince", [], [[ButtonChecks.NotGagged]])
+		addButtonWithChecks("Talk", "Talk to your Master in regular speech", "distraction1_fail_convince", [], [[ButtonChecks.NotGagged]])
+		addButtonWithChecks("Eyes", "Make puppy eyes?", "distraction1_fail_convince", [], [[ButtonChecks.NotBlindfolded]])
+		addButtonWithChecks("Chew", "Try to chew on the metal grate", "distraction1_success_convince_chew", [], [[ButtonChecks.NotOralBlocked]])
+		addButtonWithChecks("Try open", "Try to open the metal grate and see what's behind", "distraction1_fail_convince", [], [[ButtonChecks.NotHandsBlocked]])
+		addButton("Follow", "Ignore the thing and follow Master again", "follow")
+		
+	if state in ["distraction1_success_convince_claw", "distraction1_success_convince_chew"]:
+		if state == "distraction1_success_convince_chew":
+			saynn("You start chewing on the metal grate, it's a hard metal that can easily break the best of fangs, but you think that putting teeth on it should be good enough to bring attention to what you want, and it works.")
+		else:
+			saynn("You start clawing at the metal grate, it's a hard metal and you are just making more noise and commotion around, but you think it should be good enough to bring attention to what you want, and it works.")
+		
+		saynn("[say=issix]Hmm, you say something is wrong behind there? Let me take a look.[/say]")
+		saynn("Issix approaches the metal grate, kneels and moves his ear to it. The repeating, strange sound continues.")
+		saynn("[say=issix]That's... Not good. Stay here, pet. Do not dare to go after me, I'll be back in 5 minutes, if that's not the case go immediately to Hiisi and tell hime what happened.[/say]")
+		saynn("He leashes you to the nearby handrail, unlocks metal grate in some magic way that you don't fully understand and fits within tight confines of metal rectangular corridor with ladder on its side coming down. You count the time as he is in there, first minute, the sound muffled a little bit, third minute the repeating coming from the metal shaft ceases. After 5 minutes since Master descended you still don't see him and you begin to think about leaving, which you realize would require yourself to untie your leash from the handrail, as you start formulating a plan you hear thuds coming from the shaft, hoping it's Master coming back you await him.")
+		saynn("After another minute a figure of your Master reappears, he crawls out of the metal shaft, dusting his clothes and closing the metal grate. His appearance is mildly unsettled but putting on a tough demeanor worthy of your Master. He doesn't elaborate what happened or what he did there.")
+		saynn("[say=issix]Okey, let's go.[/say]")
+		saynn("And so he unties your leash and begins to walk you again. What the hell was that?")
+		addButton("Continue", "Follow Master", "follow")
+		
+	if state == "distraction1_success_repeat":
+		saynn("Your Master does exactly what you saw the last time - they unscrew the metal grate, put it aside and descent below, coming back 5 minutes after. Never saying anything more about what they are doing and how they make the sound stop. And even though they seem frustrated by entire ordeal, it does seem they appreciate you bringing their attention to it.")
+		saynn("[say=issix]... Thank you pet, let's go.[/say]")
+		addButton("Continue", "Follow Master", "follow")
+		
 
 func showAppropriateScene():
 	if shouldBeInHeavyBondage():
-		playAnimation(StageScene.PuppyDuo, "walk", {pc="issix", npc="pc", flipNPC=true, npcBodyState={naked=true, leashedBy="issix"}})
+		playAnimation(StageScene.PuppyDuo, "walk", {pc="issix", npc="pc", npcAction="crawl", flipNPC=true, npcBodyState={naked=true, leashedBy="issix"}})
+		# TODO I'm aware this scene is wrong, PuppyDuo stage scene is limited and I'm yet to find a good solution
 	else:
 		playAnimation(StageScene.Duo, "crawl", {npc="issix", npcAction="walk", flipNPC=true, bodyState={leashedBy="issix"}})
 
@@ -262,8 +300,16 @@ func _react(_action: String, _args):
 	if _action == "disctraction_fail_convince":
 		goodPoints -= 2
 
-	if _action == "disctraction":  # TODO: Add more distractions
+	if _action == "distraction":  # TODO: Add more distractions
 		_action = "distraction1"
+		distraction_happened = true
+	
+	if _action == "distraction1_success_repeat":
+		goodPoints += 6
+		
+	if _action in ["distraction1_success_convince_chew", "distraction1_success_convince_claw"]:
+		processTime(7*60)
+		Globals.modifyDictStates("Walkies_Distractions_State", "Issix_Seen_Distraction1", true)
 
 	if _action == "tugmaster":
 		goodPoints += 2
@@ -354,6 +400,7 @@ func saveData():
 	data["waited"] = waited
 	data["sat"] = sat_down
 	data["pace"] = pace
+	data["distraction_happened"] = distraction_happened
 
 	return data
 	
@@ -368,5 +415,6 @@ func loadData(data):
 	waited = SAVE.loadVar(data, "waited", 0)
 	sat_down = SAVE.loadVar(data, "sat_down", false)
 	pace = SAVE.loadVar(data, "pace", 0)
+	distraction_happened = SAVE.loadVar(data, "distraction_happened", false)
 	
 	return null
