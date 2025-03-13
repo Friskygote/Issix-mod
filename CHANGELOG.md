@@ -1,4 +1,4 @@
-## 1.9.5
+## 0.9.5
 - Added Azazel's 4th corruption scene (only appearing before enslavement)
   - This is very involved "scene" as it introduces temporary floor exploring some mechanics. There is some body part morph for penis having characters, and "introduction" to two other perks that player will be able to obtain when playing as a pet
 - Implementation of Pet Commands perk
