@@ -2,6 +2,8 @@ extends "res://Modules/IssixModule/Scenes/RequirementsBasedScene.gd"
 
 var preference = 0
 
+const reasons = {10: "not coming to Master for a day"}
+
 func _init():
 	sceneID = "PunRewScold"
 
@@ -9,7 +11,7 @@ func _run():
 	if(state == ""):
 		saynn("You approach the harem but Issix calls you in.")
 		saynn("[say=issix]Pet. I'm disappointed.[/say]")
-		saynn("He continues - scolding you for your behavior. calling you a bad pet, and giving you advice on how to do better.")
+		saynn("He continues - scolding you for your behavior. Calling you a bad pet for "+reasons.get(int(GM.main.getModuleFlag("IssixModule", "PC_Should_Be_Punished", 0)), "being a bratty pet")+", and giving you advice on how to do better.")
 		addButton("Accept", "Accept your place", "accept")
 		Globals.addButtonCheckNoncon("Disagree", "Disagree with your Master", "decline")
 

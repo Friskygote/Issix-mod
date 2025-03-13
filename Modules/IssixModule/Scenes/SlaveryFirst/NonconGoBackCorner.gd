@@ -19,6 +19,7 @@ func _run():
 		addButton("Continue", "Observe", "move")
 
 	if state == "move":
+		playAnimation(StageScene.Solo, "walk")
 		saynn("Your body continues towards the corner.")
 		# Show room information
 		var roomID = GM.pc.getLocation()
@@ -47,7 +48,7 @@ func _react(_action: String, _args):
 
 	if _action == "open_pet_tasks":
 		endScene()
-		runScene("SlaveryScreenOpen")
+		runScene("SlaveryInfoScreen")
 		return
 
 	if(_action == "endthescene"):
