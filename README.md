@@ -43,8 +43,6 @@ Here is a list of planned content:
 - Expanded slavery scenes/systems
 - Alternative route of enslavement for players who are the type of people that completes Undertale's genocide run 5 times just for fun *stares with judgement*
 - More Issix/pet related scenes around the prison
-- Issix's mechanic of dealing in BDSM restraints
-- A "last choice" reward, making the game harder and more annoying by stripping player's choices completely in relation to some slave related mechanics
 - Making use of existing system to improve affection with pets
   - Including ability to make love with Hiisi and Azazel
 
@@ -82,14 +80,6 @@ So many reasons.
 - I wanted to make a statement. I'm writing this mod in times where certain awful people gain power over incredibly powerful state in the world, their policies represent oppression against creatures. So in part, this mod is part of my advocacy for sex-positivity as well as acceptance of LGBT+ creatures, and therefore a political statement.
 
 Majority of this mod's content has been written without too much thought put into it, on fly and on sheer impulse. I'm certainly far from award winning story writer, but I tried my best, only you can judge how good of a job I've done.
-
-# Credits
-Making games is a lot of work. This entire mod has taken me days worth of hours just to get to 1.0. And it's just a single mod. Rahi (Broken Dreams Correctional Center creator) has done enormous work on making a base game to build off. They have dedicated time and effort to create tools that allow others to make the additional content (this is a rarity! I want to see more of such projects, lets build kinky stuff together, open your kink games everyone!). 
-
-One does not simply make a kinky lewd game of this caliber in a single month.
-Thus, Rahi deserves a big chunk of the credit. While working on scenes, and other things I've used their existing work to make my own. It goes without saying that without BDCC, this mod wouldn't exist. So I'm grateful for their commitment and time. While I wish they were a bit more engaged at least on GitHub repo itself, I claim no expectations in that regard, they are free to have any amount of commitment they want.
-
-So at the end, if you like what I did, consider [supporting Rahi on Subscribestar](https://subscribestar.adult/rahi).
 
 # Alternatives
 During development of this modification Katz released their own „Dragon Slave” datapack which has similar goal of adding another Master with ability to enslave the player character. You may want to check that one out as well :)
