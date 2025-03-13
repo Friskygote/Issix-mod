@@ -82,7 +82,7 @@ func _init():
 		InterestTopic.FullyNaked: Interest.Loves,
 		InterestTopic.ExposedPussy: Interest.ReallyLikes,
 		InterestTopic.ExposedAnus: Interest.ReallyLikes,
-		InterestTopic.ExposedBreasts: Interest.ReallyLikes,
+		InterestTopic.ExposedBreasts: Interest.Likes,
 		InterestTopic.ExposedCock: Interest.ReallyLikes,
 		InterestTopic.ExposedPanties: Interest.Hates,
 		InterestTopic.ExposedBra: Interest.Hates,
@@ -117,10 +117,13 @@ func getGender():
 	return Gender.Male
 
 func _getAttacks():
-	return ["IssixSlaveTease", "trygetupattack", "simplepunchattack","CuffPCHands", "ForceGagPC", "ForceMuzzlePC", "simplekickattack", "biteattack", "shoveattack"]
+	return ["IssixSlaveTease", "trygetupattack", "simplepunchattack","CuffPCHands", "ForceGagPC", "ForceMuzzlePC", "simplekickattack", "biteattack", "shoveattack", "PetCommandRoll", "PetCommandSit"]
 	
 func getSmallDescription() -> String:
 	return "Wears a red block uniform with number P-533. He is an intimidating tall demon-dragon, has red fur."
+
+func getInmateNumber() -> String:
+	return "533"
 
 func getSpecies():
 	return [Species.Dragon, Species.Demon]
@@ -138,11 +141,12 @@ func createBodyparts():
 	giveBodypartUnlessSame(GlobalRegistry.createBodypart("demonhorns3"))
 	giveBodypartUnlessSame(GlobalRegistry.createBodypart("anthrobody"))
 	giveBodypartUnlessSame(GlobalRegistry.createBodypart("buffarms"))
+	giveBodypartUnlessSame(GlobalRegistry.createBodypart("anus"))
 	var breasts = GlobalRegistry.createBodypart("malebreasts")
 	breasts.size = 0
 	giveBodypartUnlessSame(breasts)
 	var penis = GlobalRegistry.createBodypart("dragonpenis")
-	penis.lengthCM = 15
+	penis.lengthCM = 24
 	penis.ballsScale = 1
 	giveBodypartUnlessSame(penis)
 	var tail = GlobalRegistry.createBodypart("demontail")

@@ -1,0 +1,231 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://Game/World/SubWorld.tscn" type="PackedScene" id=1]
+[ext_resource path="res://Game/World/GameRoom.tscn" type="PackedScene" id=2]
+[ext_resource path="res://Game/World/Floors/Cellblock.gd" type="Script" id=3]
+
+[node name="Cellblock" instance=ExtResource( 1 )]
+script = ExtResource( 3 )
+__meta__ = {
+"_editor_description_": "This entire thing looks like a sword lmaoooooo"
+}
+
+[node name="CellblockRoom4" parent="." index="0" instance=ExtResource( 2 )]
+self_modulate = Color( 1, 0.6, 0.8, 1 )
+position = Vector2( 0, 192 )
+roomName = "Lilac cellblock"
+roomID = "petsdream_cellblock_lilac_nearcell"
+roomDescription = "This is a large spacious area that actually looks pretty nice for a forever-prison. The stacks of cells are lined with white and purple paint. Carpets can be found in the cells and cheap but still nice looking sofas are scattered about. The occasional stain, broken decor or stitched together furniture breaks the illusion of comfort. Still, it’s probably the best one could hope for in a place like this. More cells are further south, down, and all around, you could find anyone’s cell if you really wanted to."
+canWest = false
+canEast = false
+roomColor = 4
+
+[node name="CellblockRoom5" parent="." index="1" instance=ExtResource( 2 )]
+position = Vector2( 0, 64 )
+roomName = "Corridor"
+roomID = "petsdream_cellblock_corridor_part1"
+roomDescription = "Your standing inside a giant sheet metal tube that stretches far away into the darkness ahead."
+canWest = false
+canEast = false
+
+[node name="CellblockRoom6" parent="." index="2" instance=ExtResource( 2 )]
+self_modulate = Color( 1, 0.6, 0.8, 1 )
+position = Vector2( 0, 256 )
+roomName = "End of Liliac hallway"
+roomID = "petsdream_cellblock_pink_playercell"
+roomDescription = "At the end of this hallway is a small chair-throne on which a differently looking Azazel sits."
+canWest = false
+canEast = false
+roomSprite = 1
+roomColor = 4
+
+[node name="CellblockRoom7" parent="." index="3" instance=ExtResource( 2 )]
+position = Vector2( 0, 128 )
+roomName = "Corridor"
+roomID = "petsdream_cellblock_nearcells"
+roomDescription = "This is where the 3 cell blocks branch off into their own sections. At the center there is a sizable „fountain”, where fluids fall from above, instead from below... From here, the orange, lilac, and red cell blocks lay further ahead."
+roomSprite = 7
+loctag_NoWallsNear = true
+
+[node name="CellblockRoom9" parent="." index="4" instance=ExtResource( 2 )]
+self_modulate = Color( 1, 0.6, 0.6, 1 )
+position = Vector2( 64, 128 )
+roomName = "High-security cellblock"
+roomID = "petsdream_cellblock_red_nearcell"
+roomDescription = "A long open space lined with armored windows and clear automatic doors. Unlike most other places in the prison, it is actually pretty dark in this cell block, with a number of unknown stains and trash lining the halls. Dim and broken lights that randomly dot the walls between cells. 
+The Red trim of the large hallway stretches east towards more cells, with even more to be found if you wanted to seek them out."
+canNorth = false
+canSouth = false
+roomColor = 2
+
+[node name="CellblockRoom12" parent="." index="5" instance=ExtResource( 2 )]
+self_modulate = Color( 1, 0.6, 0.6, 1 )
+position = Vector2( 128, 128 )
+roomName = "End of High-sec hallway"
+roomID = "petsdream_cellblock_red_playercell"
+roomDescription = "At the end of this hallway is a small chair-throne on which a canine sits."
+canNorth = false
+canSouth = false
+roomSprite = 1
+roomColor = 2
+
+[node name="CellblockRoom10" parent="." index="6" instance=ExtResource( 2 )]
+self_modulate = Color( 1, 0.8, 0.6, 1 )
+position = Vector2( -64, 128 )
+roomName = "General-security cellblock"
+roomID = "petsdream_cellblock_orange_nearcell"
+roomDescription = "A long open space with an orange trim, lined with 3 stories of transparent armored windows and clear automatic doors connected with a maze of stairs and catwalks. From down here you can see the highest level of cells actually have a half-wall for privacy, probably a reward for good behavior. Unfortunately, it is just about the only decoration around. Everything else has probably been stolen or vandalized. More Cells lay west of here, and even more probably accessed from… somewhere, but if you need to get someplace other than your own, you can figure it out later."
+canNorth = false
+canSouth = false
+roomColor = 5
+
+[node name="CellblockRoom11" parent="." index="7" instance=ExtResource( 2 )]
+self_modulate = Color( 1, 0.8, 0.6, 1 )
+position = Vector2( -128, 128 )
+roomName = "End of General hallway"
+roomID = "petsdream_cellblock_orange_playercell"
+roomDescription = "At the end of this hallway is a blanket engulfed in flames, on which Lamia lays without care in the world."
+canNorth = false
+canSouth = false
+roomSprite = 1
+roomColor = 5
+
+[node name="CellblockRoom1" parent="." index="8" instance=ExtResource( 2 )]
+roomName = "Corridor"
+roomID = "petsdream_cellblock_corridor_part2"
+roomDescription = "Your standing inside a giant sheet metal tube that stretches far away into the darkness ahead, you notice how it's becoming darker and yet darker."
+canWest = false
+canEast = false
+
+[node name="CellblockRoom2" parent="." index="9" instance=ExtResource( 2 )]
+position = Vector2( 0, -64 )
+roomName = "Corridor"
+roomID = "petsdream_cellblock_corridor_part3"
+roomDescription = "Your standing inside a giant sheet metal tube that stretches far away into the darkness ahead, most worrying is the fact that you don't see anything indicating there is an end to this dark tunel."
+canWest = false
+canEast = false
+
+[node name="CellblockRoom3" parent="." index="10" instance=ExtResource( 2 )]
+position = Vector2( 0, -128 )
+roomName = "Corridor"
+roomID = "petsdream_cellblock_corridor_part4"
+roomDescription = "Your standing inside a giant sheet metal tube that stretches far away into the darkness ahead. It's also where you can see a wall of... Goo? Isolating further dark tunel from the lightened tunel behind."
+canWest = false
+canEast = false
+
+[node name="CellblockRoom13" parent="." index="11" instance=ExtResource( 2 )]
+position = Vector2( 0, -192 )
+roomName = "Corridor"
+roomID = "petsdream_cellblock_corridor_part5"
+roomDescription = "Your standing inside a giant sheet metal tube that stretches far away into the darkness ahead. Darkness is consuming even more."
+canWest = false
+canEast = false
+
+[node name="CellblockRoom14" parent="." index="12" instance=ExtResource( 2 )]
+position = Vector2( 0, -256 )
+roomName = "Corridor"
+roomID = "petsdream_cellblock_corridor_part6"
+roomDescription = "Your standing inside a giant sheet metal tube that stretches far away into the darkness ahead. You can still see the walls and the floor, but the path continues to be shrouded in darkness. Is there even anything there?"
+canWest = false
+canEast = false
+
+[node name="CellblockRoom15" parent="." index="13" instance=ExtResource( 2 )]
+position = Vector2( 0, -320 )
+roomName = "Corridor"
+roomID = "petsdream_cellblock_corridor_part7"
+roomDescription = "Your standing inside a giant sheet metal tube that stretches far away into the darkness ahead. You realize, that soon you won't even see the floor."
+canWest = false
+canEast = false
+
+[node name="CellblockRoom16" parent="." index="14" instance=ExtResource( 2 )]
+position = Vector2( 0, -384 )
+roomName = "Corridor"
+roomID = "petsdream_cellblock_corridor_part8"
+roomDescription = "Your standing inside a giant sheet metal tube that stretches ahead and behind you."
+canWest = false
+canEast = false
+
+[node name="CellblockRoom17" parent="." index="15" instance=ExtResource( 2 )]
+position = Vector2( 0, -448 )
+roomName = "Corridor"
+roomID = "petsdream_cellblock_corridor_part9"
+roomDescription = "Your standing inside a giant sheet metal tube that stretches ahead, into complete darkness and behind you - where you came from."
+canWest = false
+canEast = false
+
+[node name="CellblockRoom18" parent="." index="16" instance=ExtResource( 2 )]
+position = Vector2( 0, -512 )
+roomName = "Corridor"
+roomID = "petsdream_cellblock_corridor_part10"
+roomDescription = "Your standing inside a giant sheet metal tube that stretches ahead? You haven't hit a wall - yet."
+canWest = false
+canEast = false
+
+[node name="CellblockRoom19" parent="." index="17" instance=ExtResource( 2 )]
+position = Vector2( 0, -576 )
+roomName = "Corridor"
+roomID = "petsdream_cellblock_corridor_part11"
+roomDescription = "Your standing inside a giant sheet metal tube, or at least you think you do. It's so dark that it's impossible to tell where exactly are you."
+canWest = false
+canEast = false
+
+[node name="CellblockRoom20" parent="." index="18" instance=ExtResource( 2 )]
+position = Vector2( 0, -640 )
+roomName = "Corridor"
+roomID = "petsdream_cellblock_corridor_part12"
+roomDescription = "Your standing inside a giant sheet metal tube, or at least you think you do. The light from behind is no longer visible to you, there is no light where you are. You can't tell if you are even walking in the right direction."
+canWest = false
+canEast = false
+
+[node name="CellblockRoom21" parent="." index="19" instance=ExtResource( 2 )]
+position = Vector2( 0, -704 )
+roomName = "Corridor"
+roomID = "petsdream_cellblock_corridor_part13"
+roomDescription = "Silence, darkness. Should you continue? No light in sight."
+canWest = false
+canEast = false
+
+[node name="CellblockRoom22" parent="." index="20" instance=ExtResource( 2 )]
+position = Vector2( 0, -768 )
+roomName = "Corridor"
+roomID = "petsdream_cellblock_corridor_part14"
+roomDescription = "You persist and walk forward, your effort is soon rewarded with a shimmer of light in front of you!"
+canWest = false
+canEast = false
+
+[node name="CellblockRoom23" parent="." index="21" instance=ExtResource( 2 )]
+position = Vector2( 0, -832 )
+roomName = "Corridor"
+roomID = "petsdream_cellblock_corridor_part15"
+roomDescription = "You eagerly follow the shimmer of light as it gets bigger and bigger. While you are still shrouded in darkness, you know if you keep walking further the goal will be within your reach."
+canWest = false
+canEast = false
+
+[node name="CellblockRoom24" parent="." index="22" instance=ExtResource( 2 )]
+position = Vector2( 0, -896 )
+roomName = "Corridor"
+roomID = "petsdream_cellblock_corridor_part16"
+roomDescription = "You see it! Just a little bit! You can make out a person from the distance, they are surrounded by purple mass that makes up the walls, ceiling and the floor."
+canWest = false
+canEast = false
+
+[node name="CellblockRoom25" parent="." index="23" instance=ExtResource( 2 )]
+self_modulate = Color( 1, 0.6, 0.8, 1 )
+position = Vector2( 0, -960 )
+roomName = "Corridor"
+roomID = "petsdream_cellblock_corridor_part17"
+roomDescription = "End of long hallways, filled with incredibly moist and musty air. Walls, ceiling as well as floors are made of purple squirming meaty mass that seemingly lives on its own. Right at one end of this space is a chair where Issix sits, amused at seeing you."
+canWest = false
+canEast = false
+roomSprite = 4
+roomColor = 4
+
+[connection signal="onEnter" from="CellblockRoom6" to="." method="_on_CellblockRoom11_onEnter"]
+[connection signal="onPreEnter" from="CellblockRoom6" to="." method="_on_CellblockRoom11_onPreEnter"]
+[connection signal="onReact" from="CellblockRoom6" to="." method="_on_CellblockRoom11_onReact"]
+[connection signal="onEnter" from="CellblockRoom12" to="." method="_on_CellblockRoom11_onEnter"]
+[connection signal="onPreEnter" from="CellblockRoom12" to="." method="_on_CellblockRoom11_onPreEnter"]
+[connection signal="onReact" from="CellblockRoom12" to="." method="_on_CellblockRoom11_onReact"]
+[connection signal="onEnter" from="CellblockRoom11" to="." method="_on_CellblockRoom11_onEnter"]
+[connection signal="onPreEnter" from="CellblockRoom11" to="." method="_on_CellblockRoom11_onPreEnter"]
+[connection signal="onReact" from="CellblockRoom11" to="." method="_on_CellblockRoom11_onReact"]

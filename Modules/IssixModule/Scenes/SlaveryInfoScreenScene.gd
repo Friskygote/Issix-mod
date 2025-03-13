@@ -1,30 +1,27 @@
 extends SceneBase
 
-var rng_per_day = null
+const Globals = preload("res://Modules/IssixModule/Globals.gd")
+
 var pet_time_start = null
 var reply_litter = null
 var azazel_teased_motherhood = false
-var azazel = null
 var AVERAGE_WALK_DELAY = 9
 var milk_result = []
+var allow_pawns = false
 
 func _init():
 	sceneID = "SlaveryInfoScreen"
 
 func _initScene(_args = []):
-	rng_per_day = RandomNumberGenerator.new()
-	rng_per_day.seed = GM.main.getDays()
-	azazel = GlobalRegistry.getCharacter("azazel")
 	reply_litter = 0
 
 func _run():
 	if(state == ""):
 		clearCharacter()
-		var last_walk = getModuleFlag("IssixModule", "Last_Walk", 0)
 		playAnimation(StageScene.Duo, "kneel", {npc="issix", npcAction="stand"})
 		if pet_time_start == null:
 			pet_time_start = GM.main.getTime()
-		addMessage("WARNING: A lot of the content in here is a placeholder. It will change, it will break, it will cause calamities. Treat it as a sneek peek into the (potential) future.")
+		#addMessage("WARNING: A lot of the content in here is a placeholder. It will change, it will break, it will cause calamities. Treat it as a sneek peek into the (potential) future.")
 		saynn("Your slave role: "+("pet" if GM.main.getModuleFlag("IssixModule", "PC_Enslavement_Role", 1) == 1 else "prostitute"))
 		saynn("Your training: "+trainingCheck())
 		saynn("Master's mood: "+getMood())
@@ -41,6 +38,8 @@ func _run():
 				pass
 		if playerToFuck() and getModuleFlag("IssixModule", "Had_Sex_With_Issix", false) != true:
 			saynn("[color=#983030][b]Master expects you to be available for fucking today.[/b][/color]")
+		if Globals.untilNextWalk() == 0 and GM.main.getTime() > 15*60*60 and GM.main.getTime() < 17*60*60:
+			saynn("[color=#ffaa00][b]Everyone at the corner is preparing to leave for the walk[/b][/color]")
 		setModuleFlag("IssixModule", "Last_Day_Visited_Master", GM.main.getDays())
 		addButton("Master", "Talk with your master about something", "issixpetmenu")
 		addButton("Azazel", "Actions in relation to Azazel", "azazelpetmenu")
@@ -55,21 +54,26 @@ func _run():
 			addDisabledButton("Play", "Play with other pets (WIP)")
 		else:
 			addDisabledButton("Play", "You are too tired to play with other pets (minimum 100 stamina)")
-		if GM.main.getDays()-last_walk == AVERAGE_WALK_DELAY:  # TODO Walks
-			if GM.main.getTime() < 54000:
-				addDisabledButton("Walk", "Walks are unimplemented at the moment, possibly in future releases!")
-			else:
-				addDisabledButton("Walk", "Too late for a walk")
+		addButton("Walk", "Ask when Master about walk to the „Pasture”", "issixwalkquestion")
+		addButton("Trash can", "Open the trash can", "trash_can")
 		addButton("Pass", "Pass the time (placeholder button for now, supposed to be actions with pets/master later)", "passtime")
 		if getModuleFlag("IssixModule", "Comic_Book_Unlocked", false) == true and getModuleFlag("IssixModule", "Comic_Books", 0) > 0:
 			addButtonWithChecks("Comic", "Read one of "+ str(getModuleFlag("IssixModule", "Comic_Books", 0)) +" comic books", "readabook", [], [ButtonChecks.NotBlindfolded])
-		if not (GM.main.getModuleFlag("IssixModule", "Is_Player_Forced_Today", 0) > (getTimeSpent())) or GM.main.isVeryLate():
+		if getModuleFlag("IssixModule", "Noncon_Mode_Enabled", false) == true:
+			if !isTimeOkey() and !GM.main.isVeryLate():
+				addDisabledButton("Leave", "You can't leave without spending enough time with other pets, you wouldn't forgive yourself to disobey Master")
+			else:
+				addButton("Leave", "Leave", "endthescene")
+		elif not (GM.main.getModuleFlag("IssixModule", "Is_Player_Forced_Today", 0) > (getTimeSpent())) or GM.main.isVeryLate():
 			addButton("Leave", "Leave", "endthescene")
-		GM.ES.triggerRun("OpeningSlaveryScreen")
+		#GM.ES.triggerRun("OpeningSlaveryScreen")
+		GM.ES.triggerReact(Trigger.TalkingToNPC, ["slaveryscreen"])
 
 	if state == "issixpetmenu":
 		addCharacter("issix")
-		saynn("[say=issix]"+getSituationalMessage() + " " + getMoodMessage()+"[/say]")
+		if getSituationalMessage():
+			saynn("[say=issix]"+getSituationalMessage()+"[/say]")
+		saynn("[say=issix]"+getMoodMessage()+"[/say]")
 		saynn("Is there anything you want to do with Master?")
 		if GM.pc.hasBreastsFullOfMilk():
 			saynn("[say=issix]{pc.Name}, wouldn't you want to unburden your heavy chest a little?[/say]")
@@ -78,10 +82,53 @@ func _run():
 			addButton("Sex", "Ask for sex with Master", "issixsexrequest")
 		else:
 			addDisabledButton("Sex", "You've already had sex with Issix today")
-		addButton("Walk", "Ask when he plans the next walk to the pasture", "issixwalkquestion")
-		addDisabledButton("Tasks", "Ask for extra tasks (WIP)")  # , "issixtaskquestion"
+		if getModuleFlag("IssixModule", "Trained_Pet_Today", false) == false:
+			addButton("Training", "Ask Master if he could train you to be a better pet", "issixpettraining")
+		else:
+			addDisabledButton("Training", "You can only train once per day")
+		match getModuleFlag("IssixModule", "Did_Task_Today"):
+			true:
+				addDisabledButton("Tasks", "You've already done a task today")
+			false:
+				addButton("Tasks", "Ask for extra tasks", "issixtaskquestionlist")
+			null:
+				pass
 		addDisabledButton("Options", "Ask your Master to change how he treats you (WIP)")  #, "issixoptions" Pet etiquette, make player communicate via animalistic sounds, unlocks optional training
+		if GM.pc.hasKeyholderLocksFrom("issix"):
+			addButton("Smartlocks", "Ask Issix for keys to gear on you", "issix_smartlock_ask_keys")
+		if getModuleFlag("IssixModule", "Mindlessness_Day_Start") == null:  # Didn't start any Noncon related activities
+			if GM.pc.getInventory().hasItemID("ObeyPill") and GM.pc.getSkillLevel("Pet") >= 10:
+				addButton("Slave Candy", "Ask Issix to use Slave Candy on you", "issix_slave_candy")
+			if getModuleFlag("IssixModule", "Mindlessness_Walkies_Status", 0) == 2:
+				addButton("Drone", "Talk with Master about your encounter with a guard who owns a drone", "guard_drone_owner_question")
+		elif GM.main.getModuleFlag("IssixModule", "Noncon_Mode_Enabled", false) != true:  # Is already nonconned
+			if getModuleFlag("IssixModule", "Mindlessness_Day_Start") + 4 >= GM.main.getDays():
+				addButton("Mindbreak", "Ask Master about the promised removal of free will", "issix_free_will_ask")
+		# If all training options have been finished, the option hasn't been rejected and Pet level 10+
+		# if GM.pc.getSkillLevel("Pet") >= 10 and getModuleFlag("IssixModule", "Issix_Mood", 50) > 85:
+		# 	addButton("Talk", "Talk with Master about being a pet", "mindbroken_intro")
 		addButton("Back", "Go back", "")
+
+	# if state == "mindbroken_intro":
+	# 	saynn("[say=pc]Master?[/say]")
+	# 	saynn("[say=issix]Yes, pet?[/say]")
+	# 	saynn("[say=pc]I were thinking, is there something else I could do to be an even better pet for you?[/say]")
+	# 	saynn("[say=issix]Hahahaha. Your ambition knows no bounds, does it? {pc.Name} for me you are already a perfect pet.[/say]")
+	# 	saynn("[say=pc]Please Master, there must be something I can do better! [/say]")
+
+
+	if state == "issixtaskquestionlist":
+		saynn("You can do certain tasks for Master to help in the harem and raise Issix's mood.")
+		addButton("Laundry", "Help Hiisi with laundry", "starthiisilaundry")
+		if getModuleFlag("IssixModule", "Drone_Task_Timeout", 0) == -1:
+			addDisabledButton("Drone", "Drone is currently unavailable, talk with Master Issix")
+		elif getModuleFlag("IssixModule", "Drone_Task_Timeout", 0) > 0:
+			addDisabledButton("Drone", "New drone has been ordered, however it will take a while before it gets to the prison")
+		elif GM.pc.getSkillsHolder().getSkill("Pet").getLevel() > 5:
+			addButtonWithChecks("Drone", "Help with finding items", "start_drone_task", [], [ButtonChecks.NotBlindfolded, ButtonChecks.NotHandsBlocked])
+		else:
+			addDisabledButton("????", "You haven't unlocked this yet")
+		addButton("Back", "Go back", "issixpetmenu")
 
 	if state == "issixmilkingfirst":
 		saynn("[say=pc]Master, you mentioned something about unburdening my chest?[/say]")
@@ -152,15 +199,17 @@ func _run():
 	if state == "azazelpetmenu":
 		addCharacter("azazel")
 		playAnimation(StageScene.Duo, "kneel", {pc="azazel", npcAction="kneel", npc="pc", bodyState={naked=false, hard=false}})
-		if GM.pc.getSkillLevel(Skill.SexSlave) < 15:
-			addDisabledButton("Learn sex", "Learn about sexual slavery from Azazel (WIP)")  # , "azazellearnslavery"
-		else:
-			addDisabledButton("Learn", "You are already a master of Azazel's craft of sexual servitude")
+		# if GM.pc.getSkillLevel(Skill.SexSlave) < 15:
+		# 	addDisabledButton("Learn sex", "Learn about sexual slavery from Azazel (WIP)")  # , "azazellearnslavery"
+		# else:
+		# 	addDisabledButton("Learn", "You are already a master of Azazel's craft of sexual servitude")
 		if GlobalRegistry.getCharacter("azazel").isPregnant() or GM.pc.isVisiblyPregnant():
-			if GM.pc.getSkillLevel(Skill.Fertility) < 10:
-				addDisabledButton("Learn fertility", "Learn about being harem's breeder (WIP)")  # , "azazellearnfertility"
+			if getModuleFlag("IssixModule", "Azazel_Fertility_Training_Today") == true:
+				addDisabledButton("Learn fertility", "You've trained fertility with Azazel today already")
+			elif GM.pc.getSkillLevel(Skill.Fertility) < 10 and GM.pc.hasAnyWomb():
+				addButton("Learn fertility", "Learn about being harem's breeder", "azazellearnfertility")
 			else:
-				addDisabledButton("Learn", "You already know everything about bearing children")
+				addDisabledButton("Learn", "You already know everything about bearing children or you don't have a womb")
 			if GlobalRegistry.getCharacter("azazel").isHeavilyPregnant() and canPromptLitterDialogue():
 				addButton("Guess litter", "Ask Azazel about his pregnancy", "azazelguesslitter")
 		addDisabledButton("Sex", "Ask for sex with Azazel (WIP)")  # , "azazelsexrequest"
@@ -209,6 +258,7 @@ func _run():
 		addButton("Reject", "You don't want to play if you don't know what's at stake", "azazelguesslitterreject")
 
 	if state == "littercountresult":
+		var azazel = GlobalRegistry.getCharacter("azazel")
 		if reply_litter == 0:
 			saynn("[say=pc]Zero.[/say]")
 			saynn("Azazel stares at you with confusion")
@@ -289,13 +339,236 @@ func _run():
 			addDisabledButton("Learn", "There isn't anything more you can learn from Hiisi about combat")
 
 		addDisabledButton("Sex", "Ask for sex with Hiisi (WIP)")  # , "hiisisexrequest"
+		if getModuleFlag("IssixModule", "Hiisi_Protects_PC", true):
+			addButton("Don't protect", "Tell Hiisi to stop protecting you in case of assault by an inmate", "hiisidontprotect")
+		else:
+			addButton("Protect", "Tell Hiisi to again protect you from assults of inmates", "hiisiprotect")
 		addButton("Back", "Go back", "")
 
+	if state == "hiisidontprotect":
+		saynn("[say=pc]Hey, Hiisi, could you please stop following me? I should be able to deal with inmates on my own.[/say]")
+		if GM.pc.getSkillLevel(Skill.Combat) < 16:
+			if getModuleFlag("IssixModule", "Trained_With_Hiisi_Combat") == null:  # Low skill and never trained with Hiisi
+				saynn("[say=hiisi]Are you sure? No offense, but you don't look like someone capable of defending {pc.himself}.[/say]")
+				saynn("[say=pc]Yeah, I'll be fine, trust me.[/say]")
+				saynn("[say=hiisi]Alright, I can do that, but please take care of yourself okey?[/say]")
+			else:
+				saynn("[say=hiisi]Are you sure? We did some combat training, but I'd say that you still need some more.[/say]")
+				saynn("[say=pc]Yup, I'm sure I'll be fine, trust me.[/say]")
+				saynn("[say=hiisi]Okey, sure. But please, be cautious, not a great place to live in.[/say]")
+		else:
+			saynn("[say=hiisi]Alright, if you say you are fine without my help then so be it. You do look capable if I had to say just... Please watch over yourself, okey?[/say]")
+		saynn("[say=pc]Don't worry, I will![/say]")
+		addButton("Finish", "End this conversation", "hiisipetmenu")
+
+	if state == "hiisiprotect":
+		saynn("[say=pc]Hey Hiisi, I'd like you to... Umm... Help me with other inmates again...[/say]")
+		saynn("[say=hiisi]Of course. Don't worry, I'll do my best, okey?[/say]")
+		saynn("[say=pc]Thank you Hiisi![/say]")
+		addButton("Finish", "End this conversation", "hiisipetmenu")
+
+	if state == "azazel_fertility_first_ask":
+		playAnimation(StageScene.Duo, "kneel", {pc="azazel"})
+		saynn("[say=pc]Heyy Azazel... Umm.[/say]")
+		saynn("Azazel smiles at you.")
+		saynn("[say=pc]I know you are harem's broodmother and I figured you'd have a lot of experience with, you know, having children?[/say]")
+		saynn("[say=azazel]Haha. Well, you know I only can ever have them for a little bit when they are in me, but then they take them away. But yes, I guess you could say I have some experience with that, why do you ask?[/say]")
+		saynn("[say=pc]Could you perhaps teach me something about that?[/say]")
+		saynn("He flashes you with mischievous smile.")
+		saynn("[say=azazel]But of course I can, cutie! I can make a great mother out of you, you'll see. Buuuuut. I'll want something in exchange.[/say]")
+		saynn("[say=pc]Oh? What would it be?[/say]")
+		if GM.pc.getSkillLevel(Skill.Fertility) < 6:
+			saynn("[say=azazel]Well, at first a bottle of Lube will do. But perhaps in the future I'll want a bit more, you know. I'm a fairly needy kitty.[/say]")
+			saynn("He purrs.")
+		if GM.pc.getSkillLevel(Skill.Fertility) > 5:
+			saynn("[say=azazel]Hehe, I'd like the ability to impregnate you.[/say]")
+			saynn("You are kind of stunned, ability to impregnate you? Azazel doesn't even have the-")
+			if GM.pc.hasVagina():
+				saynn("[say=azazel]You'll bring me a strapon with cum and I'll use it to ram it into your {pc.vagina}. If I can't, there will be no lesson for you. I want to see you have a big belly full of cubs hihi.[/say]")
+			elif GM.pc.hasWombIn(BodypartSlot.Anus):
+				saynn("[say=azazel]You'll bring me a strapon with cum and I'll use it to ram it between your sweet cheeks until it leaks with all of the content of it. If I can't - for whatever reason, there will be no lesson for you. I want to see you have a big belly full of cubs hihi.[/say]")
+			else:
+				saynn("-- THIS SHOULDN'T HAPPEN! UNLESS YOU HAVE WOMB SOMEWHERE IN STRANGE PLACE, IN WHICH CASE - GOOD FOR YOU BUT I HAVEN'T ADDED SUPPORT FOR THAT, LET ME KNOW --")
+			if !GM.pc.hasPenis() or GM.pc.hasPerk(Perk.StartMaleInfertility):
+				saynn("[say=pc]That's... Kinda hot but... Where will I get cum from?[/say]")
+				saynn("[say=azazel]Cmon cutie, you can figure it out, it can be anyone, best if it's Master's cum![/say]")
+
+			saynn("[say=pc]So, you want to impregnate me every lesson?[/say]")
+			saynn("[say=azazel]Indeed! The best way to teach you is with you having your belly full of cubs, isn't it?[/say]")
+			saynn("[say=pc]I guess...[/say]")
+			saynn("[say=azazel]Also, one of us should be pregnant, I can't work my teacher magic without some inspiration.[/say]")
+			saynn("[say=pc]That's... Certainly a requirement.[/say]")
+			saynn("[say=azazel]Easier thank you may think![/say]")
+		addButton("Agree", "Agree to kitten's proposal", "azazelfertilityagree")
+		addButton("Maybe later", "Say you have to think about it some more", "azazelpetmenu")
+
+	if state == "azazelfertilityagree":
+		saynn("[say=pc]Sure, we can do it.[/say]")
+		saynn("[say=azazel]Yaaaay! Thank you, I hope to teach you all I know! I have tons of experience.[/say]")
+		saynn("[say=azazel]Should we have first lesson?[/say]")
+		if GM.pc.getSkillLevel(Skill.Fertility) < 6:
+			if GM.pc.getInventory().hasItemID("lube"):
+				addButton("Sure", "Say yes", "azazelfertilityfirstlube")
+			else:
+				addDisabledButton("No Lube", "Can't do that without lube")
+		else:
+			if checkIfPCHasLoadedStrapons():
+				addButton("Sure", "Say yes", "azazelfertilitysecondsex")
+			else:
+				addDisabledButton("No Strapons", "You don't have loaded strapons")
+		addButton("Later", "You have to go!", "azazelpetmenu")
+
+	if state in ["azazelfertilityfirstlube", "azazelfertilityrepeatlube"]:
+		if state == "azazelfertilityfirstlube":
+			saynn("[say=azazel]Alrighty then! Pass me the lube {pc.boy}![/say]")
+		else:
+			saynn("[say=pc]Heey, can we do fertility training right now?[/say]")
+			saynn("[say=azazel]Sure! I'm up for it. Have you brought the slick juice?[/say]")
+		if GM.pc.getInventory().hasItemID("lube"):
+			saynn("[say=pc]Yup, have it here, catch.[/say]")
+			saynn("You throw the bottle of lube at Azazel, he catches it.")
+			saynn("[say=azazel]Thaaaanks, that will come in handy later hehe. "+("Let the learning begin!" if state == "azazelfertilityfirstlube" else "Now, where were we last time...")+"[/say]")
+			addMessage("You've gave Azazel one bottle of lube")
+			addButton("Continue", "Continue", "azazelfertilityfirst")
+		else:
+			saynn("[say=pc]Uhhh, frick, I forgot.[/say]")
+			saynn("[say=azazel]Well, I'll wait. As much as I want to breed you, I need lube for stuff![/say]")
+			addButton("Leave", "", "azazelpetmenu")
+
+	if state in ["azazelfertilitysecondsex", "azazelfertilityrepeatsex"]:
+		if state == "azazelfertilitysecondsex":
+			saynn("[say=azazel]Yay![/say]")
+		else:
+			saynn("[say=pc]Heey, can we do fertility training right now?[/say]")
+			saynn("[say=azazel]Well, that depends in your strapon is loaded and your womb ready to receive a happy load hihi.[/say]")
+		saynn("He eyes you with lust.")
+		saynn("[say=azazel]First, show me your toys! I wanna see them.[/say]")
+		if checkIfPCHasLoadedStrapons():
+			saynn("You show Azazel the strapons you have.")
+			saynn("[say=azazel]Yay! They look fine![/say]")
+			saynn("He places his paw on your stomach and looks you in the eyes.")
+			if GM.pc.hasPerk(Perk.StartInfertile):
+				saynn("[say=azazel]Waaait a minute! You can't have children! You are infertile![/say]")
+				saynn("Azazel says in accusatory tone. You actually get embarassed a little.")
+				saynn("[say=pc]Y-yeah...[/say]")
+				saynn("[say=azazel]I'm only willing to teach creatures that actually can bear children, otherwise it makes no sense![/say]")
+				saynn("He crosses his arms and puts on a pouty face.")
+				saynn("[say=pc]Alright, sorry then...[/say]")
+				addButton("Leave", "", "azazelpetmenu")
+				return
+			if GM.pc.hasReachableVagina() or (GM.pc.hasWombIn(BodypartSlot.Anus) and GM.pc.hasReachableAnus()):
+				saynn("[say=azazel]Good {pc.boy}. Now, which one should we use?[/say]")
+				for strapon in checkPCStrapon():
+					addButton(strapon.getVisibleName(), "Let Azazel borrow "+strapon.getVisibleName(), "azazelfertilitybreeding", [strapon])
+			else:
+				saynn("[say=azazel]Maaaan, don't tell me you have your holes blocked? How am I supposed to breed you if I can't even put baby batter into your waiting womb? Cmooon.[/say]")
+				saynn("[say=azazel]Free up your breeding hole and come back, I want to breed you![/say]")
+				addButton("Leave", "", "azazelpetmenu")
+		else:
+			if GM.pc.hasStrapons():
+				saynn("[say=pc]Here you go![/say]")
+				saynn("You show the feline strapons you've got, he checks them out.")
+				saynn("[say=azazel]None of them are loaded with enough of cum. I want to breed you.[/say]")
+				saynn("He annoyed.")
+				saynn("[say=azazel]Come back when you have loaded strapons! I won't teach you until them meh![/say]")
+				addMessage("You must come with at least one strapon loaded with 200ml of cum.")
+				addButton("Leave", "", "azazelpetmenu")
+			else:
+				saynn("[say=pc]Oh, sorry, I forgot strapons, give me a minute.[/say]")
+				saynn("[say=azazel]Cmooonnn, come back soon! I wanna fuuuck![/say]")
+				addButton("Leave", "", "azazelpetmenu")
+
+	if state == "azazelfertilitybreeding":
+		if GM.main.getDays() % 2 == 0:
+			playAnimation(StageScene.SexLotus, "fast", {pc="pc", npc="azazel", npcCum=true, bodyState={naked=true, hard=true}, npcBodyState={naked=true, hard=true}})
+		else:
+			playAnimation(StageScene.SexAllFours, "fast", {pc="azazel", npc="pc", pcCum=true, bodyState={naked=true, hard=true}, npcBodyState={naked=true, hard=true}})
+		if !GM.pc.isFullyNaked():
+			saynn("Azazel eagerly puts on the strapon and prepares you for fucking, taking off all of his own and your clothes, he runs his paw over your "+Globals.getSkinWord()+" sensually.")
+		else:
+			saynn("Azazel eagerly puts on the strapon and prepares for fucking, taking off all of his clothes, he runs his paw over your "+Globals.getSkinWord()+" sensually.")
+		if GM.pc.hasReachableVagina():
+			saynn("He moves his paw fingers towards your {pc.pussyStretch} {pc.pussy} lips. With his other paw he applies lube.")
+		else:
+			saynn("He moves his paw fingers towards your {pc.analStretch} pucker. With his other paw he applies lube.")
+
+		saynn("He hums a song when doing all of this while at the same time he prepares a strapon wrapping its tape around his body keeping it securely attached.")
+		saynn("[say=azazel]Oki, I'm going in, operation fertilize {pc.name} is a go, nyaaa![/say]")
+		if GM.main.getDays() % 2 == 0:
+			saynn("Sitting feline takes your paws and leads you onto his legs until you are positioned directly above his {azazel.penisOrStrapon}. You lower onto his strapon very gently at first, however this doesn't take long as he motions you to speed up pretty fast. Soon you are bobbing on his dick like animal in heat. It doesn't seem like he is looking for a long fuck but rather he has only one goal in his mind.")
+		else:
+			saynn("Feline puts on {azazel.penisOrStrapon} and leads you to face away from him while on your fours, you oblige. It's pretty animalistic to fuck on fours, only bringing your lust further up. Not long after you feel the tip of his strapon touch you until it goes all in. Azazel quickens his pace really fast, ramming into you like an animal in heat. It doesn't seem like he is looking for a long fuck but rather he has only one goal in his mind.")
+
+		saynn("Your love making does attract attention of your Master, but you don't notice that, as you have more important task to fulfill in a moment and he prefers to just watch you two have fun.")
+		addButton("Cum!", "Cum!", "azazelfertilitybreedingfinish")
+
+	if state == "azazelfertilityswitchstates":
+		saynn("[say=pc]Please teach me more about fertility.[/say]")
+		saynn("[say=azazel]Sure! Though... This time lube won't do.[/say]")
+		saynn("[say=pc]What do you mean?[/say]")
+		saynn("[say=azazel]You know plenty already, this time I'd want something different... I'd like the ability to impregnate you.[/say]")
+		saynn("You are kind of stunned, ability to impregnate you? Azazel doesn't even have the-")
+		if GM.pc.hasVagina():
+			saynn("[say=azazel]You'll bring me a strapon with cum and I'll use it to ram it into your {pc.vagina}. If I can't, there will be no lesson for you. I want to see you have a big belly full of cubs hihi.[/say]")
+		elif GM.pc.hasWombIn(BodypartSlot.Anus):
+			saynn("[say=azazel]You'll bring me a strapon with cum and I'll use it to ram it between your sweet cheeks until it leaks with all of the content of it. If I can't - for whatever reason, there will be no lesson for you. I want to see you have a big belly full of cubs hihi.[/say]")
+		else:
+			saynn("-- THIS SHOULDN'T HAPPEN! UNLESS YOU HAVE WOMB SOMEWHERE IN STRANGE PLACE, IN WHICH CASE - GOOD FOR YOU BUT I HAVEN'T ADDED SUPPORT FOR THAT, LET ME KNOW --")
+		if !GM.pc.hasPenis() or GM.pc.hasPerk(Perk.StartMaleInfertility):
+			saynn("[say=pc]That's... Kinda hot but... Where will I get cum from?[/say]")
+			saynn("[say=azazel]Cmon cutie, you can figure it out, it can be anyone, best if it's Master's cum![/say]")
+
+		saynn("[say=pc]So, you want to impregnate me every lesson?[/say]")
+		saynn("[say=azazel]Indeed! The best way to teach you is with you having your belly full of cubs, isn't it?[/say]")
+		saynn("[say=pc]I guess...[/say]")
+		saynn("[say=azazel]Also, one of us should be pregnant, I can't work my teacher magic without some inspiration.[/say]")
+		saynn("[say=pc]That's... Certainly a requirement.[/say]")
+		saynn("[say=azazel]Easier thank you may think![/say]")
+		addButton("Go for it", "Sure, why not, if it helps you train", "azazelfertilityagreeswitched")
+		addButton("Maybe later", "Say you have to think about it some more", "azazelpetmenu")
+
+	if state == "azazelfertilitybreedingfinish":
+		if GM.main.getDays() % 2 == 0:
+			playAnimation(StageScene.SexLotus, "tease", {pc="pc", npc="azazel", npcCum=true, pcCum=true, bodyState={naked=true, hard=true}, npcBodyState={naked=true, hard=true}})
+		else:
+			playAnimation(StageScene.SexAllFours, "teaseflop", {pc="azazel", npc="pc", pcCum=true, npcCum=true, bodyState={naked=true, hard=true}, npcBodyState={naked=true, hard=true}})
+
+		saynn("Eventually the moment comes, and both Azazel as well as you come to a climax. You can feel your fertile body squeezing the {azazel.strapon} for its contents until it ends up deep inside of you, perhaps leading to pregnancy. This idea only arose you even further as you were making love to Azazel.")
+		saynn("[say=azazel]Nyaaaaa. That was cool, did you enjoy your breeding? Mroowww.[/say]")
+		saynn("[say=pc]I did, thank you Azazel![/say]")
+		if GM.pc.hasReachableVagina():
+			saynn("He pulls out the strapon out of your {pc.vagina}, it's still dripping bit of cum as he takes it out, but most ended up deep inside of you.")
+		else:
+			saynn("He pulls out the strapon out of your {pc.analStretch} ass, it's still dripping bit of cum as he takes it out, but most ended up deep inside of you.")
+
+		saynn("[say=azazel]Hehe, I hope you keep all that spudge inside of you and it makes you a wonderful mother, speaking of which, it's time for training, let me just...[/say]")
+
+		saynn("He takes off strapon and gives it back to you.")
+
+		saynn("[say=azazel]Thankiiii! Was fun.[/say]")
+		saynn("You recover and you both decide to continue to the lesson.")
+		addButton("Continue", "Continue to the lesson", "azazelfertilitysecond")
+
+	if state == "azazelfertilityfirst":
+		saynn("[say=azazel]Alright, when you are pregnant there are three trimesters, each takes around three months. First sperm fertilizes the egg, then that egg travels through a fun tube to the uterus where it attaches and begins to form the embryo...[/say]")
+		saynn("Azazel continues boring you with all of the details on pregnancy for what feels a looong time. You are surprised he knows so much, even though maybe you shouldn't he did bring likely countless children onto the world.")
+		saynn("[say=azazel]... and sometimes - until around middle of your second trimester when you wake up, you might feel sick and dizzy, in my experience it happens around 1 in 3 mornings. It's totally normal! You are not dying or anything, it's just pregnancy stuff.[/say]")
+		saynn("[say=azazel]Anyways, I hope you got all of that, it would be it for today. Come back some other day eh? There is still so much I have to tell you![/say]")
+		saynn("And just like that you've learned a lot about pregnancy and what it means.")
+		addButton("End lesson", "Lesson ended, you can go now", "azazelpetmenu")
+
+	if state == "azazelfertilitysecond":
+		saynn("[say=azazel]To be a good breeding bitch for our Master you'll have to make sure you stay healthy and take every opportunity to stay as fertile as possible. Keep in mind your ovulation calendar, when you go into heat it's the best time to start breedin', I like to keep all that cum in, you can help yourself with a plug - they are good for all kinds of holes hehe.[/say]")
+		saynn("[say=azazel]Don't get stressed, eat healthy... Well, not much you can do about that with prison food but still. Try to use lubricants that won't kill sperm before it reaches your eggs, avoid stress - best if you stay in the harem for that honestly. Prison can be stressful place but we are safe under Master's watch! When you get round belly make sure to keep it safe, you can still have sex just...[/say]")
+		saynn("He continues his long string of advice which you listen to. Eventually it ends.")
+		saynn("[say=azazel]Phew, I think that's all for today. Let me know if you need anything more![/say]")
+
+		addButton("End lesson", "Lesson ended, you can go now", "azazelpetmenu")
 
 	if state == "hiisilearncombatfirst":
 		playAnimation(StageScene.Yoga, "warrior", {pc="hiisi", bodyState={naked=true}})
 		saynn("Figuring Hiisi might need an encouragement to teach you something, you prepare an energy drink to further convince the canine to teach you combat.")
-		saynn("[say=pc]Hey Hissi, I were wondering, you seem to know how to fight, any chance you could perhaps teach me something?[/say]")
+		saynn("[say=pc]Hey Hiisi, I were wondering, you seem to know how to fight, any chance you could perhaps teach me something?[/say]")
 		saynn("Hiisi looks at you, surprised a little.")
 		saynn("[say=hiisi]Teach? Combat... I'm not so sure, I don't think I'm a good teacher material.[/say]")
 		saynn("[say=pc]I think you'd do great Hiisi.[/say]")
@@ -442,12 +715,23 @@ func _run():
 		addButton("Finish", "Finish this interaction", "lamiapetmenu")
 
 	if state == "issixwalkquestion":
-		var last_walk = getModuleFlag("IssixModule", "Last_Walk", 0)
-		if last_walk + 5 > GM.main.getDays():
+		saynn("[say=pc]Master, when do we go on next walk to the pasture?[/say]")
+		var to_walk = Globals.untilNextWalk()
+		if to_walk > 5:
 			saynn("[say=issix]We've just been on a walk pretty recently, so you'll have to be a little bit more patient my pet.[/say]")
+		elif to_walk == 1:
+			saynn("[say=issix]I plan to go out tomorrow, you excited? Just remember to come before 17:00 to hang out, otherwise there is little time.[/say]")
+		elif to_walk == 0:
+			saynn("[say=issix]Sorry, we've already been to the pasture today. We didn't want to wait at that point. Maybe next time? Just watch out for the day.[/say]")
 		else:
-			saynn("[say=issix]Hmm, soonish, probably in around "+ str(AVERAGE_WALK_DELAY-(GM.main.getDays()-last_walk)) + " days. Are you excited for the next walk?[/say]")
-		addButton("Back", "Go back", "issixpetmenu")
+			saynn("[say=issix]Hmm, soonish, probably in around "+ str(Globals.untilNextWalk(true)) + " days. Are you excited for the next walk?[/say]")
+		addButton("Back", "Go back", "")
+
+	if state == "noncon_issix_sex":
+		saynn("It appears that your Master requires your availability today. You swiftly report yourself for duties as his loyal pet.")
+		saynn("[say=pc]I'm here now Master! Please use me as you wish!~[/say]")
+		saynn("Your Master gives you a sly grin before possessively embracing your body.")
+		addButton("Sex", "Have sex with Master", "noncon_issix_sex_start")
 
 	if state == "issixsexrequest":
 		if GM.main.getModuleFlag("IssixModule", "Todays_Bred_Slave", "hiisi") == "pc":
@@ -461,7 +745,8 @@ func _run():
 			saynn("[say=issix]Aww, my "+GlobalRegistry.getModule("IssixModule").getPlayerPetName() +" is pent up? How cute.[/say]")
 		else:
 			saynn("[say=issix]Sex? Hmmm...[/say]")
-
+		var rng_per_day = RandomNumberGenerator.new()
+		rng_per_day.seed = GM.main.getDays()
 		if getModuleFlag("IssixModule", "Issix_Mood", 50) > 70 and rng_per_day.randi_range(1,2) == 2:
 			saynn("[say=issix]Sure, we can fuck, come here.[/say]")
 			addButton("Start", "Start sex", "startsexissix")
@@ -473,9 +758,208 @@ func _run():
 		saynn("[say=issix]You did good today, pet. Thank you.[/say]")
 		addButton("Back", "Go back", "")
 
+	if state == "after_sex_issix_unhappy":
+		if getModuleFlag("IssixModule", "PC_Bad_Sex", 1) <= 1:
+			saynn("[say=issix]That was bad. You should learn from Azazel how to do it correctly. Don't make me disappointed again.[/say]")
+			addButton("Back", "Go back", "")
+		else:
+			saynn("[say=issix]I told you to stop disappointing me with this pathetic excuse of what you call sex. I'm going to have to make sure you do not disappoint me again.[/say]")
+			addMessage("You've been assigned punishment by your Master.")  # TODO
+			addButton("Back", "Go back", "")
+
 	if state == "readabook":
 		saynn("You read one of the comic books, 20 minutes pass.")  # TODO Expand on this
 		addButton("Back", "Go back", "")
+
+	if state == "trash_can":
+		saynn("You can throw garbage into harems trash can")
+		addButton("Empty condoms", "Discard all of empty condoms in your inventory", "discard_condoms")
+		addButton("Back", "Close the trash can", "")
+
+	if state == "issix_smartlock_ask_keys_success":
+		saynn("[say=pc]M-master, may I have a key to your restraints?[/say]")
+		saynn("It's clear your predicament brings a smile to Master's face.")
+		saynn("[say=issix]Mmmm, you don't want to be rendered helpless by my gear pet? Owww, you hurt my feelings! You look great like this.[/say]")
+		saynn("[say=pc]*whine*[/say]")
+		saynn("[say=issix]I'll consider your plea but I want to see you beg. Beg for me to release you.[/say]")
+		addButton("Beg", "Beg your Master to free you from his restraints", "issix_beg_smartlocks")
+		addButton("Don't beg", "Decide not to beg and leave", "issixpetmenu")
+
+	if state == "issix_beg_smartlocks":
+		saynn("You beg your Master to free you of the restraints, he relents.")
+		saynn("[say=issix]Fine, it served its purpose.[/say]")
+		saynn("He then comes to you and opens each restraint with his key one by one until all of the keylocked by himself are no longer on your body.")
+		saynn("[say=issix]I'll keep them for another session, go.[/say]")
+		saynn("He winks and waves at you to go.")
+		addButton("Leave", "Leave", "issixpetmenu")
+
+	if state == "issix_smartlock_ask_keys_fail":
+		saynn("[say=pc]M-master, may I have a key to your restraints?[/say]")
+		saynn("Your Master's grimace doesn't seem very friendly.")
+		saynn("[say=issix]No. You look better this way, don't you dare reject my gifts.[/say]")
+		saynn("He grabs you by the arm and shakes you in show of power over your helplessness being bound by his gear.")
+		saynn("[say=issix]Now, leave.[/say]")
+		addButton("Leave", "Leave", "issixpetmenu")
+
+	if state == "issix_slave_candy":
+		saynn("[say=pc]Master! Could you please feed me this candy?[/say]")
+		saynn("You show Slave Candy to Master Issix, he takes it from your paw with interest and studies it.")
+		saynn("[say=issix]This is no ordinary candy, you know that right? It's also not something that [i]should[/i] be obtainable without specialized equipment, this is the type of thing sold on the rare kind of black markets. Where did you get it?[/say]")
+		saynn("You know you shouldn't be revealing anything about Blacktail Market, would Master even believe?"+(" Would Mirri give me the promised kiss of death?" if GM.main.getModuleFlag("IssixModule", "mirriNotBlacktail", false) else ""))
+		addButton("Lie", "Lie about origin of Slave Candy, say you found it on the station", "station_lie")
+		addButton("Mirri", "Admit the real source of the Slave Candy to Master", "mirri_mention")
+
+	if state == "station_lie":
+		saynn("[say=pc]I found it in medical wing, in one of the plastic containers.[/say]")
+		saynn("Your Master stares deep into your eyes and sighs.")
+		saynn("[say=issix]I know this station, I know the deliveries, I know what medical wing is capable of producing. What is so secret for you to lie to me like this? Why?[/say]")
+		saynn("Issix is not going to accept a lie like this.")
+		addButton("Mirri", "Admit the real source of the Slave Candy to Master", "mirri_mention")
+
+	if state == "mirri_mention":
+		saynn("[say=pc]... Please Master, nobody can know. I-[/say]")
+		saynn("[say=issix]You are safe here, I promise. What is it, pet?[/say]")
+		saynn("[say=pc]I've got the slave candy from a lady - Mirri from Syndicate...[/say]")
+		saynn("Issix doesn't seem surprised one bit.")
+		saynn("[say=issix]Blacktail Market.[/say]")
+		saynn("But you certainly are.")
+		saynn("[say=pc]How did yo-[/say]")
+		saynn("[say=issix]Please pet, I wouldn't be here if I didn't know my shit. Unexpected visitors from afar may slip attention from useless staff of this facility, but not me. I'm well aware of what Blacktail Market is and that we get visits from certain cat-like lady. They may be crafty and I may not know all of the details, but as long as you are in this corner I can assure your safety, you do not have to fear.[/say]")
+		saynn("„as long as you are in this corner” doesn't sound very reassuring, you do have to sleep after all. However you guess there is only so much your Master can do.")
+		saynn("[say=pc]Thank you, Master.[/say]")
+		addButton("Questions", "Master has more questions for you", "mirri_questions")
+
+	if state == "mirri_questions":
+		saynn("[say=issix]So, who is that cat lady... Mirri? Did she hurt you? I assume not considering your mind seems in-tact.[/say]")
+
+		saynn("[say=pc]I'm fine, Master, I've been just trading with her.[/say]")
+		saynn("You notice that Hiisi is listening to your conversation with Master.")
+		saynn("[say=issix]Trading? What an imprisoned pet from BDCC could possibly have to interest Syndicate? Wait, you don't mean to say that the missing slaves from your...[/say]")
+		saynn("[say=pc]Yes, Master. I've been selling slaves to Mirri.[/say]")
+		saynn("You expect Master to be angry, wouldn't he be? BDCC is in part his territory, hard to tell how he would react.")
+		saynn("[say=issix]That's... Concerning, to say the least. And why are you doing such a thing in the first place? I doubt Syndicate would offer you freedom, not that you could accept it considering your circumstances.[/say]")
+		saynn("[say=pc]It's complicated, Master.[/say]")
+		saynn("[say=issix]Then speak, we have the time.[/say]")
+		# TODO I know there are developments to Blacktail story, however I haven't progressed in my own save so far to be able to write for it
+		saynn("You explain the entire deal you have with Mirri, her insistence on you getting slaves for her to sell, the little cut of the deal you have for every sold slave, teleporting to Synticate station and the reserved wolf Luxe.")
+		saynn("[say=issix]I see. It is troubling, though the fact that so far it seems that only Mirri knows the coordinates of BDCC and they don't seem cooperative to share it with others in Syndicate is a saving grace. What I'd like for you to do is keep me updated with developments regarding Syndicate. If it ever comes to situation where we are in danger I'd have to intervene. And be careful around the cat... They sound like trouble. Hiisi, keep paw on the pulse, okey? And no talking with anyone else about it, we don't need attention.[/say]")
+		saynn("You breathe with relief, it doesn't seem like Master is angry at you. Though you do feel there is a sliver of disappointment in his voice, he likely wishes you'd tell him sooner.")
+		addButton("Slave candy?", "Ask again about feeding Slave Candy to you", "slave_candy_again")
+		addButton("Leave", "Leave the topic be", "issixpetmenu")
+
+	if state == "slave_candy_again":
+		saynn("[say=pc]Umm, Master, what about Slave Candy again? Can you feed it to me so I can be an even better pet for you?[/say]")
+		saynn("[say=issix]Do you really think so little of yourself? You are MY pet! I don't take just any pets, to be owned by myself is a privilege. You don't need no Slave Candy to be „better” for me. Don't tell me your self-esteem is worse than Azazel's, it already took a lot from me to turn him around.[/say]")
+		saynn("Master seems frustrated with your attitude, though he falls into deeper thought.")
+		if GM.pc.getSkillLevel("Pet") < 10:
+			saynn("[say=issix]Besides, what you are asking for is not something one can reverse. It's permanent change in one's mind, to make someone a permanent slave both in body and mind. I'm not one to push anyone towards such a fate. Thought...[/say]")
+			saynn("He pauses, you look at him with sparkling eyes, for the firest time his dark orbs meet your pleading gaze.")
+			saynn("[say=issix]Do you remember the time when I asked you about whether you believe in existence of souls?[/say]")
+			saynn("[say=pc]Yes, Master.[/say]")
+			if getModuleFlag("IssixModule", "QuestionnaireQ1", false) == true:
+				saynn("[say=issix]You answered yes. And I explained to you the nature of souls as I see them. To do what you are asking me for - is to take away your soul.[/say]")
+			else:
+				saynn("[say=issix]You answered that you don't believe in existence of souls. And that's fine, what is a „soul” is not exactly defined anywhere. But to me, me doing what you are asking for is doing exactly that - stripping you of the last thing you have, pet. Of your soul.[/say]")
+
+			saynn("[say=issix]It is the ultimate sacrifice you could make to someone else, the final one, where you truthfully strip yourself of any choice. You would be doing do exactly as I say, you wouldn't have an option to disobey me. I'd become extension of your will, at best you'll have second wheel - entirely insignificant, a mere puppet. I'll own you fully, and you'd be just a husk of yourself.[/say]")
+			saynn("You stir, this is exactly what you want, isn't it? To let someone else take the reins, to become Master's - forever.")
+
+			saynn("[say=issix]I can't accept that. I'm sorry pet, but this is too far. I love my pets the way they are, they do not need to go to such extremes for me.[/say]")
+			saynn("He kisses your cheek.")
+			saynn("[say=issix]And that? Keep that for your slaves, don't let it get anywhere near your mouth, okey?[/say]")
+			saynn("[say=pc]Yes, Master.[/say]")
+			saynn("You say saddened.")
+			saynn("[say=issix]Don't look at me like that, I know what I'm doing and I'm not letting you get hurt. That's all.[/say]")
+			saynn("[say=pc]I understand, Master. Thank you.[/say]")
+			saynn("( Issix doesn't believe you are ready to lose your free will, you'll have to prove to him that you are ready )")
+			addButton("Back", "", "issixpetmenu")
+		else:
+			saynn("Finally, he sighs.")
+			saynn("[say=issix]Do you remember the time when I asked you about whether you believe in existence of souls?[/say]")
+			saynn("[say=pc]Yes, Master.[/say]")
+			if getModuleFlag("IssixModule", "QuestionnaireQ1", false) == true:
+				saynn("[say=issix]You answered yes. And I explained to you the nature of souls as I see them. To do what you are asking me for - is to take away your soul.[/say]")
+			else:
+				saynn("[say=issix]You answered that you don't believe in existence of souls. And that's fine, what is a „soul” is not exactly defined anywhere. But to me, me doing what you are asking for is doing exactly that - stripping you of the last thing you have, pet. Of your soul.[/say]")
+
+			saynn("[say=issix]Despite the consequences of losing your own free will forever, despite the fact that it will make you my puppet - a creature lacking ability to make decisions of their own, you still want to do it?[/say]")
+			saynn("[say=issix]You already know I love my pets how they are, so don't feel pressured to answer one way or another.[/say]")
+			addButton("Yes", "Answer yes (this is EXTREME, you won't have a chance to avoid certain content, it will literally strip you of choice and make your game MORE DIFFICULT. This is point of no return (unless you cheat), CW: parasite, soul vore, non-con, watersports, blood)", "slave_candy_yes")
+			addButton("No", "Answer no", "slave_candy_no")
+
+	if state == "slave_candy_yes":
+		saynn("[say=pc]Yes, Master. I want to be changed, be forever yours, in body and mind.[/say]")
+		saynn("[say=issix]*sigh* I see. In that case, I'm willing to fulfill your last wish, but we will not be using any Slave Candy, understood? If you want to walk this way, we do it my way.[/say]")
+		saynn("You become very excited on prospect of becoming Master's pet in mind too, to give yourself in to losing your free will and letting Master own you for good."+(" The tail behind you wags excitedly." if GM.pc.hasTail() else ""))
+		saynn("[say=pc]I'm so happy! Thank you Master so much![/say]")
+		saynn("[say=issix]What I don't do for my pets. Ahhhh.[/say]")
+		saynn("[say=pc]So... How will Master do it?[/say]")
+		saynn("[say=issix]You'll learn in due time. I need to make appropriate preparations before I can change you.[/say]")
+		saynn("[say=pc]Understood. I'll wait then, Master.[/say]")
+		saynn("[say=issix]Good. I'll let you know when I'm ready.[/say]")
+		addButton("Back", "", "issixpetmenu")
+
+	if state == "slave_candy_no":
+		saynn("[say=pc]I don't think I'm ready for such sacrifice yet, Master.[/say]")
+		saynn("[say=issix]That's what I thought too. I'm glad you think so as well. If you ever change your mind - do tell, but for now let's just drop this.[/say]")
+		addButton("Back", "", "issixpetmenu")
+
+	if state == "issix_free_will_ask":
+		saynn("[say=pc]Master, are you ready with... The thing we discussed?[/say]")
+		saynn("[say=issix]Not yet, have patience "+Globals.getPlayerPetName()+".[/say]")
+		addButton("Back", "", "issixpetmenu")
+
+	if state == "guard_drone_owner_question":
+		saynn("[say=pc]Master, I have a question.[/say]")
+		saynn("[say=issix]Yes, pet?[/say]")
+		saynn("[say=pc]Would Master be interested in making me a drone?[/say]")
+		saynn("Issix looks at you with his head tilted to side in both concern as well as confusion.")
+		saynn("[say=issix]A drone? Where did you get this idea from?[/say]")
+		saynn("[say=pc]There was this... Pair when were were back on the Pasture, a guard and an inmate, and the guard had the inmate leashed. They looked strange so I came closer to notice how strange inmate's behavior was - he was very robotic.[/say]")
+		saynn("[say=pc]Later I stumbled upon both and we talked briefly. I were confused about nature of drones so I inquired and they explained to me that the pet was a drone, it had its own designation and has no free will. I were wondering if I could become one too, I could be a better pet for You, Master.[/say]")
+		saynn("Master sighs")
+		saynn("[say=issix]You are already a great pet for me, {pc.name}, you don't need to do anything more to be a good pet. Don't think of yourself so little, besides, doing so is a doubt put on me, a good Master doesn't let their pet think they are somehow not enough.[/say]")
+		saynn("[say=pc]I didn't think about it this way, I'm sorry Master.[/say]")
+		saynn("You produce a sad whine.")
+		saynn("[say=issix]Don't do it again, okey? Great.[/say]")
+		addButton("Drone?", "Continue with drone topic", "issix_guard_drone_question2")
+
+	if state == "issix_guard_drone_question2":
+		saynn("[say=pc]But... Would that be possible? For me to be a drone? I... Can't hide that I do like this idea.[/say]")
+		saynn("[say=issix]It's true, I can feel it in you, you yearn for this kind of experience.[/say]")
+		saynn("Master sighs")
+		saynn("[say=issix]I won't allow you to become a drone, as that's not something I'm willing to do, however...[/say]")
+		saynn("[say=issix]Do you remember the time when I asked you about whether you believe in existence of souls?[/say]")
+		saynn("[say=pc]Yes, Master.[/say]")
+		if getModuleFlag("IssixModule", "QuestionnaireQ1", false) == true:
+			saynn("[say=issix]You answered yes. And I explained to you the nature of souls as I see them. What I can do - is to take away your soul away.[/say]")
+		else:
+			saynn("[say=issix]You answered that you don't believe in existence of souls. And that's fine, what is a „soul” is not exactly defined anywhere. What I can do for you is strip you of the last thing you have, pet. Of your soul.[/say]")
+
+		saynn("[say=issix]The consequences of losing your own free will forever are dire, it will make you my puppet - a creature lacking ability to make decisions of their own, it's not exactly the same as the drone you saw, but it's pretty darn close. I don't feel like this is the „right” path, however if you are insistent you want to free yourself of burden of decision, if you want to truthfully become mine forever – this is a way to do this. Knowing all of this, my question to you is – do you still want to go with this idea?[/say]")
+		saynn("[say=issix]You already know I love my pets how they are, so don't feel pressured to answer one way or another.[/say]")
+
+		addButton("Yes", "Say yes (this is EXTREME, you won't have a chance to avoid certain content, it will literally strip you of choice and make your game MORE DIFFICULT. This is point of no return (unless you cheat), CW: parasite, soul vore, non-con, watersports, blood)", "issix_guard_drone_yes")
+		addButton("Drop topic", "Drop the topic of losing free will", "issix_guard_drone_no")
+
+	if state == "issix_guard_drone_yes":
+		# That's enough of writing for me anyways :sob:
+		saynn("[say=pc]Yes, Master. I want to be changed, be forever yours, in body and mind.[/say]")
+		saynn("[say=issix]*sigh* I see. In that case, I'm willing to fulfill your last wish.[/say]")
+		saynn("You become very excited on prospect of becoming Master's pet in mind too, to give yourself in to losing your free will and letting Master own you for good."+(" The tail behind you wags excitedly." if GM.pc.hasTail() else ""))
+		saynn("[say=pc]I'm so happy! Thank you Master so much![/say]")
+		saynn("[say=issix]What I don't do for my pets. Ahhhh.[/say]")
+		saynn("[say=pc]So... How will Master do it?[/say]")
+		saynn("[say=issix]You'll learn in due time. I need to make appropriate preparations before I can change you.[/say]")
+		saynn("[say=pc]Understood. I'll wait then, Master.[/say]")
+		saynn("[say=issix]Good. I'll let you know when I'm ready.[/say]")
+		addButton("Back", "", "issixpetmenu")
+
+	if state == "issix_guard_drone_no":
+		saynn("[say=pc]I don't think I'm ready for such sacrifice yet, Master.[/say]")
+		saynn("[say=issix]That's what I thought too. I'm glad you think so as well. If you ever change your mind - do tell, but for now let's just drop this.[/say]")
+		addButton("Back", "", "issixpetmenu")
+
 
 func getTimeSpent():
 	return getModuleFlag("IssixModule", "Pet_Time_Interaction_Today", 0)+(GM.main.getTime()-pet_time_start)
@@ -494,8 +978,13 @@ func getTimeSpentReadable():
 		return "[color=red]0 minutes[/color]"
 	return "[color="+("green" if isTimeOkey() else "red")+"]"+ Util.getTimeStringHumanReadable(getTimeSpent()) + "[/color]"
 
+func supportsSexEngine():
+	return true
+
 func getSituationalMessage():
 	var responses = []
+	var random = RandomNumberGenerator.new()
+	random.seed = GM.main.getDays()
 	if GM.pc.isWearingHypnovisor():
 		responses.append("Making sure you stay obedient for your Master with that thing? That's cute. I like it.")
 	if GM.pc.isHeavilyPregnant():
@@ -516,7 +1005,9 @@ func getSituationalMessage():
 		responses.append("Fuck yes. It gotta be one of my favorite things when my pet's paws are reduced to absolutely useless mittens. I think this look befits you, in fact, I think you should wear them permanently.")
 	if GM.pc.getInventory().hasItemIDEquipped("GasMask"):
 		responses.append("Where the hell have you found that thing? A fucking gas mask? Damn. Did not expect that.")
-	return ""
+	if responses:
+		return responses[random.randi_range(0, responses.size()-1)]
+	return null
 
 func getMoodMessage():
 	var issix_mood = getModuleFlag("IssixModule", "Issix_Mood", 50)
@@ -531,9 +1022,23 @@ func getMoodMessage():
 	elif issix_mood < 75:
 		return RNG.pick(["*whistles* What's up?", "Should have seen the look of the new guard when I swiped their baton haha.", "Dum dee dum...", "Nice day today, huh?"])
 	elif issix_mood < 90:
-		return RNG.pick(["Eat, fuck, sleep repeat haha.", "Don't you just love life? So full of wonders.", "Glass is half full today."])
+		return RNG.pick(["Eat, sleep, fuck repeat haha.", "Don't you just love life? So full of wonders.", "Glass is half full today."])
 	else:
 		return RNG.pick(["How are you today, pet? Maybe I should walk y'all hungry beasts huh?", "Maaan, do you ever just stop and take it aaallllll in for a second? It's soo good."])
+
+# Return all Strapons that have 200ml of Cum or more
+func checkPCStrapon():
+	var available_strapons := []
+	for strapon in GM.pc.getStrapons():
+		var fluids = strapon.getFluids()
+		var fluids_type = fluids.getFluidAmountByType()
+		if fluids_type.has("Cum"):
+			if fluids_type["Cum"] >= 200:
+				available_strapons.append(strapon)
+	return available_strapons
+
+func checkIfPCHasLoadedStrapons():
+	return checkPCStrapon().size() > 0
 
 func getMood():
 	var issix_mood = getModuleFlag("IssixModule", "Issix_Mood", 50)
@@ -553,14 +1058,14 @@ func getMood():
 		return "[color=green]excellent[/color]"
 
 static func playerToFuck():
-	return (int(GM.main.getDays()) % 2 == 1) and GM.main.getModuleFlag("IssixModule", "Todays_Bred_Slave", "") == "pc"
+	return GM.main.getModuleFlag("IssixModule", "Todays_Bred_Slave", "") == "pc"
 
 func getDays():
 	var days_enslaved = getModuleFlag("IssixModule", "Misc_Slavery_Info", {})["day_enslaved"]
 	return GM.main.getDays() - days_enslaved
 
 func trainingCheck():
-	var training_level = getModuleFlag("IssixModule", "PC_Training_Level", 0)
+	var training_level = GM.pc.getSkillLevel("Pet")
 	if training_level < 3:
 		return "poor"
 	elif training_level < 6:
@@ -572,12 +1077,9 @@ func trainingCheck():
 	else:
 		return "very good"
 
-static func addIssixMood(mood: int):
-	GM.main.setModuleFlag("IssixModule", "Issix_Mood", clamp(GM.main.getModuleFlag("IssixModule", "Issix_Mood", 50)+mood, 0, 100))
-
 func registerOffspringGuess():
 	var past_guesses: Dictionary = getModuleFlag("IssixModule", "Litter_Guessing_Game", {"guesses_off": [], "last_guess": GM.CS.getChildrenAmountOf("azazel")})
-	past_guesses["guesses_off"].append(reply_litter-azazel.getPregnancyLitterSize())
+	past_guesses["guesses_off"].append(reply_litter-GlobalRegistry.getCharacter("azazel").getPregnancyLitterSize())
 	past_guesses["last_guess"] = GM.CS.getChildrenAmountOf("azazel")
 	setModuleFlag("IssixModule", "Litter_Guessing_Game", past_guesses.duplicate(true))
 
@@ -585,10 +1087,92 @@ func canPromptLitterDialogue():
 	return getModuleFlag("IssixModule", "Litter_Guessing_Game", {"guesses_off": [], "last_guess": -1})["last_guess"] != GM.CS.getChildrenAmountOf("azazel")
 
 func _react(_action: String, _args):
+	if _action == "noncon_issix_sex_start":
+		getCharacter("issix").prepareForSexAsDom()
+		GlobalRegistry.getCharacter("issix").addPain(-50)
+		runScene("GenericSexScene", ["issix", "pc"], "subbysexissix")
+
 	if _action == "startsexissix":
 		getCharacter("issix").prepareForSexAsDom()
 		GlobalRegistry.getCharacter("issix").addPain(-50)
 		runScene("GenericSexScene", ["issix", "pc"], "subbysexissix")
+
+	if _action == "starthiisilaundry":
+		runScene("HiisiLaundryTask")
+		_action = "issixpetmenu"
+
+	if _action == "hiisidontprotect":
+		setModuleFlag("IssixModule", "Hiisi_Protects_PC", false)
+
+	if _action == "hiisiprotect":
+		setModuleFlag("IssixModule", "Hiisi_Protects_PC", true)
+
+	if _action == "azazelfertilitybreeding":
+		var strapon = _args[0]
+		getCharacter("azazel").getInventory().forceEquipStoreOtherUnlessRestraint(strapon)
+		GM.pc.addEffect(StatusEffect.LubedUp, [30*60])
+		GM.pc.addLust(50)
+
+	if _action == "azazelfertilitybreedingfinish":
+		if GM.pc.hasReachableVagina():
+			GM.pc.cummedInVaginaBy("azazel", FluidSource.Strapon, RNG.randf_range(0.8, 1.0))
+		elif GM.pc.hasReachableAnus():
+			GM.pc.cummedInAnusBy("azazel", FluidSource.Strapon, RNG.randf_range(0.8, 1.0))
+		GM.pc.cummedOnBy("pc", FluidSource.Penis if GM.pc.hasPenis() else FluidSource.Vagina)
+		GlobalRegistry.getCharacter("azazel").cummedOnBy("pc", FluidSource.Penis if GM.pc.hasPenis() else FluidSource.Vagina)
+		GM.pc.addLust(-90)
+		GM.pc.addStamina(-10)
+
+	if _action == "discard_condoms":
+		var counter = 0
+		for condom in GM.pc.getInventory().getAllOf("UsedCondom"):
+			condom.getFluids().removeEmptyInternalEntries()
+			if condom.getFluids().isEmpty():
+				counter += 1
+				condom.destroyMe()
+		addMessage("You've trashed "+str(counter)+" empty condoms.")
+		_action = "trash_can"
+
+	if _action == "azazelguesslitterguess":
+		processTime(5*60)
+
+	if _action == "azazelfertilitysecond":
+		GM.pc.getInventory().addItem(getCharacter("azazel").getInventory().getEquippedItem(InventorySlot.Strapon))
+
+	if _action == "azazelfertilityagreeswitched":
+		setModuleFlag("IssixModule", "Had_Previously_Trained_Fertility_LVL1", false)
+		_action = "azazelfertilityrepeatsex"
+
+	if _action == "azazellearnfertility":
+		if getModuleFlag("IssixModule", "Azazel_Fertility_Training_Today") == null:
+			_action = "azazel_fertility_first_ask"
+		elif GM.pc.getSkillLevel(Skill.Fertility) < 6:
+			_action = "azazelfertilityrepeatlube"
+		else:
+			if getModuleFlag("IssixModule", "Had_Previously_Trained_Fertility_LVL1") == true:
+				_action = "azazelfertilityswitchstates"
+			else:
+				_action = "azazelfertilityrepeatsex"
+
+	if _action == "azazelfertilityfirst":
+		GM.pc.getInventory().removeXFromItemOrDelete(GM.pc.getInventory().getFirstOf("lube"), 1)
+		GlobalRegistry.getCharacter("azazel").getInventory().addItem(GlobalRegistry.createItem("lube"))
+		setModuleFlag("IssixModule", "Had_Previously_Trained_Fertility_LVL1", true)
+
+	if _action in ["azazelfertilityfirst", "azazelfertilitysecond"]:
+		processTime(25*60)
+		var skill = GM.pc.getSkillsHolder().getSkill(Skill.Fertility)
+		var exp_calc = 25
+		if skill != null:
+			exp_calc = int(skill.getRequiredExperience(skill.getLevel()+1)/4)
+		GM.pc.addSkillExperience(Skill.Fertility, exp_calc)  # Needs <4 trainings per level, to not be too OP
+		addMessage("You've gained "+str(exp_calc)+"XP in Fertility thanks to training with Azazel.")
+		GM.main.setModuleFlag("IssixModule", "Azazel_Fertility_Training_Today", true)
+		GM.pc.addStamina(-25)
+
+	if _action == "issixpettraining":
+		runScene("IssixGenericTrainSession")
+		_action = "issixpetmenu"
 
 	if _action == "lamiapetrequest":
 		GM.pc.addPain(-10)
@@ -600,6 +1184,10 @@ func _react(_action: String, _args):
 		else:
 			_action = "lamiapetrequestanother"
 		GM.main.setModuleFlag("IssixModule", "Have_Received_Headpats_Lamia", true)
+
+	if _action == "start_drone_task":
+		allow_pawns = true
+		runScene("DroneFlightTask", [], "drone_end")
 
 	if _action == "issixmilkingq":
 		if GM.main.getModuleFlag("IssixModule", "Total_Fluids_Milked", 0) == 0:
@@ -686,12 +1274,13 @@ func _react(_action: String, _args):
 		match guesses["guesses_off"].size():
 			0:
 				_action = "azazelguesslitterfirst"
-			1,2,3:
+			# 1,2,3:
+			_:  # TODO this has to be added
 				_action = "azazelguesslitterrepeat"
-			4:
-				_action = "azazelguesslitterlast"
-			_:
-				_action = "azazelguesslitterfun"
+			# 4:
+			# 	_action = "azazelguesslitterlast"
+			# _:
+			# 	_action = "azazelguesslitterfun"
 
 	if _action == "lamiahelpbondage":
 		var bondage = GM.pc.getInventory().getEquppedRemovableRestraintsNoLockedSmartlocks()
@@ -708,6 +1297,38 @@ func _react(_action: String, _args):
 		processTime(15*60)
 		_action = ""
 
+	if _action == "issixwalkquestion":
+		if Globals.untilNextWalk() == 0 and 17 * 60 * 60 > GM.main.getTime():
+			runScene("IssixPastureWalk", [], "walkies")
+
+	if _action == "issix_smartlock_ask_keys":
+		if getModuleFlag("IssixModule", "Issix_Mood", 50) < 50:
+			_action = "issix_smartlock_ask_keys_fail"
+		else:
+			_action = "issix_smartlock_ask_keys_success"
+
+	if _action == "issix_beg_smartlocks":
+		var amount = GM.pc.unlockAllKeyholderLocksFrom("issix")
+		addMessage("Your Master has freed you from "+str(amount)+" restraint"+("s" if amount > 1 else "")+".")
+
+	if _action == "issix_slave_candy":
+		if getModuleFlag("IssixModule", "Told_Issix_About_Blacktail") == true:
+			_action = "slave_candy_again"
+
+	if _action == "slave_candy_yes":
+		setModuleFlag("IssixModule", "Mindlessness_Day_Start", GM.main.getDays())
+
+	if _action == "mirri_questions":
+		processTime(20*60)
+		setModuleFlag("IssixModule", "Told_Issix_About_Blacktail", true)
+
+	if _action == "issix_guard_drone_yes":
+		setModuleFlag("IssixModule", "Mindlessness_Day_Start", GM.main.getDays())
+		setModuleFlag("IssixModule", "Mindlessness_Walkies_Status", 3)
+
+	# if _action == "issix_guard_drone_no":
+	# 	setModuleFlag("IssixModule", "Mindlessness_Walkies_Status", 100)
+
 	if(_action == "endthescene"):
 		# increaseModuleFlag("IssixModule", "PC_Training_Level")
 		increaseModuleFlag("IssixModule", "Pet_Time_Interaction_Today", GM.main.getTime()-pet_time_start)
@@ -720,13 +1341,34 @@ func _react(_action: String, _args):
 func onTextBoxEnterPressed(_new_text:String):
 	GM.main.pickOption("littercountresult", [])
 
+func supportsShowingPawns() -> bool:
+	return allow_pawns
 
 func _react_scene_end(_tag, _result):
 	if _tag == "subbysexissix":
 		setModuleFlag("IssixModule", "Had_Sex_With_Issix", true)
 		processTime(20*60)
-		addIssixMood(5)
-		setState("after_sex_issix")
+		var issix_sex_result = _result[0].get("doms", {}).get("issix", {})
+		var pc_sex_result = _result[0].get("subs", {}).get("pc", {})
+		if pc_sex_result.get("isUnconscious"):
+			Globals.addIssixMood(5)
+		elif issix_sex_result.get("satisfaction") < 0.8:
+			increaseModuleFlag("IssixModule", "PC_Bad_Sex")
+			setState("after_sex_issix_unhappy")
+		else:
+			Globals.addIssixMood(5)
+			setState("after_sex_issix")
+
+	if _tag == "drone_end":
+		allow_pawns = false
+		setState("issixpetmenu")
+
+	if _tag == "walkies":
+		setState("issixpetmenu")
+
+	if _result is Array:
+		if _result.has("force_close"):
+			GM.main.pickOption("endthescene", [])
 
 
 func saveData():
@@ -736,6 +1378,7 @@ func saveData():
 	data["replyLitter"] = reply_litter
 	data["petTimeStart"] = pet_time_start
 	data["azazelTease"] = azazel_teased_motherhood
+	data["allowPawns"] = allow_pawns
 
 	return data
 
@@ -746,3 +1389,36 @@ func loadData(data):
 	pet_time_start = SAVE.loadVar(data, "petTimeStart", null)
 	azazel_teased_motherhood = SAVE.loadVar(data, "azazelTease", false)
 	reply_litter = SAVE.loadVar(data, "reply_litter", 0)
+	allow_pawns = SAVE.loadVar(data, "allowPawns", false)
+
+func getDebugActions():
+	return [
+		{
+			"id": "spawnGuard",
+			"name": "SpawnGuard",
+			"args": [
+			],
+		},
+		{
+			"id": "checkGuard",
+			"name": "checkGuard",
+			"args": [
+			],
+		},
+		{
+			"id": "intcheck",
+			"name": "intcheck",
+			"args": [
+			],
+		},
+	]
+
+func doDebugAction(_id, _args = {}):
+	if(_id == "spawnGuard"):
+		GM.main.IS.trySpawnPawn("Guard")
+	if _id == "checkGuard":
+		for pawn in GM.main.IS.pawns:
+			if !GM.main.IS.pawns[pawn].isPlayer():
+				print(String(GM.main.IS.pawns[pawn].getChar().npcAttacks))
+	if _id == "intcheck":
+		setState("azazel_fertility_first_ask")

@@ -278,7 +278,7 @@ func _run():
 			addButton("Anal", "Use your tool in doggy ass", "hiisisubanal")
 			addDisabledButton("Oral", "Make the doggo suck your tool")  # TODO, "hiisisuboral"
 		elif (GM.pc.isWearingStrapon() or GM.pc.hasStrapons() and GM.pc.canWearStrapon()):
-			var strapons: ItemBase = GM.pc.getStrapons()
+			var strapons = GM.pc.getStrapons()
 			for strapon in strapons:
 				addButton("Anal", "Use a "+strapon.getCasualName()+" on doggy ass", "hiisisubanal", [strapon.id])
 				#addButton("Oral", "Make the doggo suck your "+strapon.getCasualName(), "hiisisuboral", [strapon])
@@ -497,13 +497,14 @@ func _run():
 		addButton("Headpat", "Give the artist fox a headpat", "headpat")
 		
 	if state == "hugandthank":
+		playAnimation(StageScene.Hug, "hug", {pc="lamia", npc="pc", bodyState={naked=true, hard=true}, npcBodyState={naked=true, hard=true}})
 		saynn("Stunned, your heart melted, the first thing that comes to your mind is to hug the fox. You do that completely on impulse with no hesitation. Fox at first taken aback by that gesture (embarrassed, blushing hard), eventually embraces the hug and reciprocates. Still hugging you say")
 		saynn("[say=pc]Thank you Lamia, I love it so much. I'll cherish it.[/say]")
 		saynn("They smile and nod twice to you excitedly.")
 		addButton("Back", "End the conversation", "lamia")
 				
 	if state == "headpat":
-		playAnimation(StageScene.Grope, "pat", {pc="pc", npc="lamia", bodyState={naked=true, hard=false}, npcBodyState={naked=true, hard=false}})
+		playAnimation(StageScene.Grope, "pat", {pc="lamia", npc="pc", bodyState={naked=true, hard=false}, npcBodyState={naked=true, hard=false}})
 		saynn("Stunned, your heart melted, the first thing that comes to your mind is to give the fox a headpat. You put your paw on their head and gently pat them. Their ears flatten and their face seems very pleased by your patting.")
 		saynn("[say=pc]Thank you Lamia, I like it very much.[/say]")
 		saynn("They smile and nod to you excitedly.")
@@ -680,7 +681,7 @@ func _react(_action: String, _args):
 	if _action == "hiisisubanal":
 		processTime(10*60)
 		if _args:
-			GM.pc.getInventory().forceEquipStoreOtherUnlessRestraint(answer)
+			GM.pc.getInventory().forceEquipStoreOtherUnlessRestraint(GM.pc.getInventory().getFirstOf(answer))
 		GM.pc.addLust(30)
 
 	if _action == "hiisisubanal2":
@@ -695,6 +696,7 @@ func _react(_action: String, _args):
 		processTime(10*60)
 		GM.pc.orgasmFrom("rahi")
 		GM.main.getCharacter("hiisi").cummedOnBy("pc")
+		GM.pc.getInventory().unequipSlot(InventorySlot.Strapon)
 		GM.pc.addLust(-100)
 
 	if _action == "azazelskyresponse":

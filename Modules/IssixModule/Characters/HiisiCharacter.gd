@@ -77,10 +77,19 @@ func _init():
 	}
 	
 func interestVerbalReaction(interest):
-	if(interest == InterestTopic.Pregnant):
-		return "Oh, do you have litter in there? Cuuute, meoowwww!"
+	if(interest == InterestTopic.BigCock):
+		return "Fuck, I hate monsters like that."
 	if(interest == InterestTopic.Blindfolds):
-		return "Purrr. How is your hearing? Can you hear me purring from over there?"
+		return "Really like it when you don't see what I do."
+	if(interest == InterestTopic.BDSMRestraints):
+		return "The less you can do the better, squirm all you want."
+	if(interest == InterestTopic.CoveredInCum):
+		return "Should really have cleaned yourself beforehand, you look disgusting."
+	if(interest == InterestTopic.ExposedPussy):
+		return "I like what I see."
+	if(interest == InterestTopic.Gags):
+		return "If we have to do that, better to do that without you complaining."
+
 	
 func _getName():
 	return "Hiisi"
@@ -99,6 +108,9 @@ func getThickness() -> int:
 
 func getFemininity() -> int:
 	return 0
+
+func getInmateNumber() -> String:
+	return "964"
 
 func createBodyparts():
 	giveBodypartUnlessSame(GlobalRegistry.createBodypart("anthrobody"))

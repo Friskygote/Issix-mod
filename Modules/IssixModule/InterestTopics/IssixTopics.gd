@@ -7,7 +7,7 @@ func _init():
 
 func getTopicValue(_topicID, _pc):
 	if(_topicID == "IssixBrand"):
-		if(GM.main.getModuleFlag("IssixModule", "Issix_Branded_PC") == true):
+		if(_pc.isPlayer() and GM.main.getModuleFlag("IssixModule", "Issix_Branded_PC") == true):
 			return 1.0
 
 	return 0.0
@@ -21,7 +21,7 @@ func getVisibleName(_topicID):
 
 func getAddsToFocus(_topicID, _focus) -> float:
 	if(_topicID == "IssixBrand"):
-		if(_focus == LustFocus.Butt):
+		if(_focus == LustFocus.Body):
 			return 1.0
 
 	return 0.0

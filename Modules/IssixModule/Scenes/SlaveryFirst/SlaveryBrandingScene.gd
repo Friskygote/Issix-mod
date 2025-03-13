@@ -1,5 +1,7 @@
 extends SceneBase
 
+const Globals = preload("res://Modules/IssixModule/Globals.gd")
+
 var attitude = null
 var timedifference = 0
 
@@ -94,12 +96,10 @@ func _run():
 		saynn("[say=eliza]And you know what I think of branding, Iss- inmate.[/say]")
 		saynn("Master chuckles")
 		saynn("[say=issix]Yeah yeah, animalistic and brutal. Spare me the story.[/say]")
-		if !GM.pc.isFullyNaked():
+		if !Globals.isPlayerSuperNaked():
 			saynn("[say=eliza]Please strip the inmate.[/say]")
 			saynn("Issix comes to you and methodically strips you of everything you have on yourself.")
-			for slot in GM.pc.getInventory().getEquippedItems():
-				saynn("Master took off your "+GM.pc.getInventory()["equippedItems"][slot].getVisibleName()+".")
-				GM.pc.getInventory().unequipSlot(slot)
+			Globals.undressPlayerExceptCollar("Issix")
 			saynn("He takes a step back as if to admire your body.")
 			saynn("[say=issix]{pc.He} is ready.[/say]")
 
@@ -212,7 +212,7 @@ func _react(_action: String, _args):
 		GM.pc.setLocation("hall_ne_corner")
 		timedifference = GM.main.getTimeCap() - GM.main.timeOfDay
 		processTime(timedifference)
-		increaseModuleFlag("IssixModule", "Progression_Points")
+		GM.pc.addSkillExperience("Pet", 200)
 
 	if _action == "brandtalk":
 		attitude = _args[0]
@@ -222,6 +222,7 @@ func _react(_action: String, _args):
 		GM.pc.addStamina(-300)
 		GM.pc.addPain(300)
 		GM.pc.addEffect("AfterBrandPain")
+		setModuleFlag("IssixModule", "Issix_Branded_PC", true)
 
 	if _action == "firstwalk":
 		processTime(10*60)
@@ -246,6 +247,7 @@ func _react(_action: String, _args):
 			"What a great day for marking a pet",
 			"I got this branding iron as a gift, actually. not a very standard one, would you agree?",
 		], "medical_confessionary", "crawl"])
+		GM.main.addRoomMemory("medical_confessionary", "You remember being branded by your Master in this very room recently.", 3)
 
 	if(_action == "endthescene"):
 		setModuleFlag("IssixModule", "Progression_Day_Next", GM.main.getDays()+4)

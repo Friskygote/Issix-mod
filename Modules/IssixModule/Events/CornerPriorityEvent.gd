@@ -4,7 +4,7 @@ func _init():
 	id = "IssixSpecialEvent"
 
 
-var registered_special_scenes = [['IssixSlaveryIntroCont', 1, {}], ['IssixBringsComicbooks', 2, {"Comic_Books": 1}], ['IssixSlaveryBowlTraing', 2, {}], ['IssixSlaveryBranding', 3, {}]]
+var registered_special_scenes = [['IssixSlaveryIntroCont', 0, {}], ['IssixSlaveryBranding', 0, {}], ['IssixBringsComicbooks', 1, {"Comic_Books": 1}]]
 
 class CustomSorter:
 	static func sort_by_progressionpoints(a, b):
@@ -29,13 +29,20 @@ func checkRequirements(requirements: Dictionary):
 
 func shouldBeShownForcedEvent():
 	var scenes_seen = getModuleFlag("IssixModule", "Misc_Slavery_Info", {"scenes_seen": []})
-	var current_progression_points = GM.main.getModuleFlag("IssixModule", "Progression_Points", 0)
-	if GM.main.getDays() >= GM.main.getModuleFlag("IssixModule", "Progression_Day_Next", 0) and GM.main.getModuleFlag("IssixModule", "Unwelcome_At_Corner", false) != true:
+	GM.pc.getSkillsHolder().ensureSkillExists("Pet")
+	var current_progression_points = GM.pc.getSkillsHolder().getSkill("Pet").getLevel()
+	if GM.main.getModuleFlag("IssixModule", "Unwelcome_At_Corner", false) == true:
+		return null
+	if getModuleFlag("IssixModule", "Mindlessness_Day_Start", GM.main.getDays()) + 5 <= GM.main.getDays() and GM.main.getModuleFlag("IssixModule", "Noncon_Mode_Enabled", false) != true:
+		return "NonconModeStart"
+	if GM.main.getDays() >= GM.main.getModuleFlag("IssixModule", "Progression_Day_Next", 999999):
 		registered_special_scenes.sort_custom(CustomSorter, "sort_by_progressionpoints")
 		for scene in registered_special_scenes:
 			if scene[1] > current_progression_points:
 				return null
 			if scenes_seen["scenes_seen"].find(scene[0]) == -1 and checkRequirements(scene[2]):
+				if scene[0] == "IssixSlaveryBranding" and GM.main.getDays() < scenes_seen["day_enslaved"]+9:  # Special case for branding scene
+					continue
 				return scene[0]
 	return null
 

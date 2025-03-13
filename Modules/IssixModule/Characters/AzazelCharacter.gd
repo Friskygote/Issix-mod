@@ -43,7 +43,7 @@ func _init():
 		Fetish.Bondage : FetishInterest.Loves,
 		Fetish.Rigging : FetishInterest.Likes,
 		Fetish.Condoms : FetishInterest.Dislikes,
-		Fetish.DrugUse : FetishInterest.Likes,
+		Fetish.DrugUse : FetishInterest.Loves,
 		Fetish.Exhibitionism : FetishInterest.Loves,
 		Fetish.Tribadism : FetishInterest.Dislikes,
 		Fetish.StraponSexVaginal : FetishInterest.Dislikes,
@@ -64,7 +64,9 @@ func _init():
 		InterestTopic.MasculineBody: Interest.ReallyLikes,
 		InterestTopic.ThickBody: Interest.Dislikes,
 		InterestTopic.SlimBody: Interest.Loves,
+		InterestTopic.AverageMassBody: Interest.ReallyLikes,
 		InterestTopic.BigBreasts: Interest.Hates,
+		InterestTopic.LactatingBreasts: Interest.KindaLikes,
 		InterestTopic.StuffedPussy: Interest.Likes,
 		InterestTopic.StuffedPussyOrAss: Interest.KindaLikes,
 		InterestTopic.Pregnant: Interest.Loves,
@@ -82,7 +84,9 @@ func _init():
 		InterestTopic.LoosePussy: Interest.Neutral,
 		InterestTopic.TightAnus: Interest.Likes,
 		InterestTopic.TightPussy: Interest.Likes,
-		InterestTopic.BigCock: Interest.Hates,
+		InterestTopic.BigCock: Interest.KindaLikes,
+		InterestTopic.AverageCock: Interest.Loves,
+		InterestTopic.SmallCock: Interest.Likes
 	}
 	
 func updateBodyparts():
@@ -93,6 +97,22 @@ func interestVerbalReaction(interest):
 		return "Oh, do you have litter in there? Cuuute, meoowwww!"
 	if(interest == InterestTopic.Blindfolds):
 		return "Purrr. How is your hearing? Can you hear me purring from over there?"
+	if(interest == InterestTopic.ThickBody):
+		return "Thiccy {pc.boy} are you? That's fine. Not really raving about it but thick bodies have their own advantages."
+	if(interest == InterestTopic.SlimBody):
+		return "You are so slim! Just like myself! That's super cool!"
+	if(interest == InterestTopic.AverageMassBody):
+		return "Haha, you've got a bit more meat there than I do, it's more fun to fuck you this way!"
+	if(interest == InterestTopic.Bodywritings):
+		return "You have entire story written on your body! Though I guess it only calls you what you are."
+	if(interest == InterestTopic.LactatingBreasts):
+		return "Milky, aren't you? Master could use some..."
+	if(interest == InterestTopic.BDSMRestraints):
+		return "You look pretty in those, I have a nice pile of restraints in my room, super fun to play around with them, especially when you have a partner."
+	if(interest == InterestTopic.NoCock):
+		return "No cock? Awww, I really like getting rammed in my {pussy} with a real meat, but no matter, there are more ways to have fun than just with a {penis}"
+	if(interest == InterestTopic.StuffedPussy):
+		return "Purrr. You must love having your {pussy} stuffed, I know I do."
 	
 func _getName():
 	return "Azazel"
@@ -102,6 +122,9 @@ func getGender():
 	
 func getSmallDescription() -> String:
 	return "Wears an lilac uniform with number P-655. He is the embodiment of ”meek”."
+
+func getInmateNumber() -> String:
+	return "655"
 
 func getSpecies():
 	return [Species.Feline]

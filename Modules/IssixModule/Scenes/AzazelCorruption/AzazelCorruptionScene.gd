@@ -6,6 +6,7 @@ func _init():
 func _run():
 	if(state == ""):
 		addCharacter("azazel")
+		playAnimation(StageScene.Hug, "idle", {pc="pc", npc="azazel", bodyState={naked=false}, npcBodyState={naked=true}})
 		saynn("As you walk in the hallway you spot a certain familiar feline a few steps in front of you. It's Azazel, he stands against the wall with his entire body fully naked, right leg on the floor while left one bent and is in contact with the wall. Looking at you, he winks.")
 		saynn("[say=azazel]Heeeey there {pc.name}, sweetie! How are you doing?[/say]")
 		saynn("[say=pc]Pretty fine, what are you doing here? Shouldn't you be with your Master?[/say]")

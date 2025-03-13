@@ -103,6 +103,9 @@ func getGender():
 func getSmallDescription() -> String:
 	return "Wears an orange uniform with number P-790."
 
+func getInmateNumber() -> String:
+	return "790"
+
 func getSpecies():
 	return [Species.Canine]  # if in the future foxes are introduced, the character is canonically a fox
 

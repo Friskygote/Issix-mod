@@ -14,7 +14,7 @@ func getMoreDescription():
 	return "You can now only eat like a pet, from the bowl without using your paws or tools."
 
 func getSkillTier():
-	return 0
+	return 1
 
 func getPicture():
 	return "res://Modules/IssixModule/Skills/Images/bowl.png"

@@ -178,11 +178,8 @@ func loadData(data):
 	undressed = SAVE.loadVar(data, "undressed", null)
 
 func _react(_action: String, _args):
-	# if _action == "stripping":
-	# 	for slot in GM.pc.getInventory().getAllEquippedItems():  # Force unequip all items, why is there getEquippedItems and getAllEquippedItems doing the same thing lol
-	# 		var item = GM.pc.getInventory().getAllEquippedItems()[slot]
-	# 		if GM.pc.getInventory().unequipSlotUnlessRestraint(slot):
-	# 			addMessage("Azazel took off your "+item.getVisibleName()+".")
+	if _action == "donotfollow":
+		setModuleFlag("IssixModule", "Azazel_Corruption_Musk_Happened", false)
 
 	if _action == "nogasmask":
 		processTime(10*60)
@@ -202,6 +199,7 @@ func _react(_action: String, _args):
 	if _action == "followedazazel":
 		processTime(10*60)
 		GM.pc.setLocation("cellblock_lilac_nearcell")
+		setModuleFlag("IssixModule", "Azazel_Corruption_Musk_Happened", true)
 
 	if(_action == "endthescene"):
 		setModuleFlag("IssixModule", "Azazel_Corruption_Scene", 4)

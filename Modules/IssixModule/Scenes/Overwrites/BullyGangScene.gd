@@ -60,7 +60,7 @@ func _run():
 		else:
 			addDisabledButton("Pay", "Not enough credits")
 		addButton("Intimidate", "Tell them you won’t leave or pay", "intimidate")
-		if getModuleFlag("IssixModule", "PC_Training_Level", 0) > 0 and getModuleFlag("IssixModule", "PC_Enslavement_Role", 0) == 1:
+		if GM.pc.getSkillsHolder().hasPerk("PetWalkies"):
 			if (GM.pc.getPersonality().getStat(PersonalityStat.Coward) > 0.3):
 				addDisabledButton("Issix", "You are too cowardly to bring up your Master")
 			else:
@@ -178,3 +178,6 @@ func getDevCommentary():
 
 func hasDevCommentary():
 	return true
+
+func getSceneCreator():
+	return "Rahi, Frisk"

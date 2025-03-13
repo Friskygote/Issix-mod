@@ -87,9 +87,9 @@ func _react(_action: String, _args):
 		], "gym_entrance", "crawl"])
 
 	if(_action == "endthescene"):
-		GM.pc.addSkillExperience("Pet", 300)
-		increaseModuleFlag("IssixModule", "Progression_Points")
+		GM.pc.addSkillExperience("Pet", 100)
 		increaseModuleFlag("IssixModule", "PC_Training_Level")
+		setModuleFlag("IssixModule", "Hiisi_Protects_PC", true)
 		endScene()
 		return
 
