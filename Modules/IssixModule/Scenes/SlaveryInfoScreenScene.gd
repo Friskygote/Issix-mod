@@ -1155,7 +1155,7 @@ func _react(_action: String, _args):
 				_action = "azazelfertilityrepeatsex"
 
 	if _action == "azazelfertilityfirst":
-		GM.pc.getInventory().removeXFromItemOrDelete("lube", 1)
+		GM.pc.getInventory().removeXFromItemOrDelete(GM.pc.getInventory().getFirstOf("lube"), 1)
 		GlobalRegistry.getCharacter("azazel").getInventory().addItem(GlobalRegistry.createItem("lube"))
 		setModuleFlag("IssixModule", "Had_Previously_Trained_Fertility_LVL1", true)
 
