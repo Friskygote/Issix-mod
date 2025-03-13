@@ -52,7 +52,7 @@ func _react(_action: String, _args):
 			setModuleFlag("IssixModule", "Announcer_PC_Naive", false)
 			addMessage("You've exchanged one luck token to the announcer for 90 credits.")
 			GM.pc.addCredits(90)
-		GM.pc.getInventory().removeFirstOf("LuckToken")
+		GM.pc.getInventory().removeXFromItemOrDelete(GM.pc.getInventory().getFirstOf("LuckToken"), 1)
 
 	if _action == "agreesell":
 		var item = GM.pc.getInventory().getFirstOf("LuckToken")

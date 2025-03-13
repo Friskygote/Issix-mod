@@ -23,7 +23,6 @@ func _run():
 		saynn("[say=issix]If you ask me, I don't mind this. No other inmate can touch you anyways.[/say]")
 		addButton("Accept", "Proceed with training for commands (makes your more vulnerable in the future)", "accept_training")
 		addButton("Refuse", "Refuse training for commands", "refuse_training")
-		# NONCON TODO
 
 	if state == "refuse_training":
 		saynn("[say=pc]I don't think I'm up for that, sorry Master.[/say]")
@@ -179,6 +178,7 @@ func _react(_action: String, _args):
 		return
 
 	if(_action == "endthescene"):
+		setModuleFlag("IssixModule", "Learned_Commands", false)
 		endScene([true])
 		return
 

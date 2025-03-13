@@ -9,7 +9,10 @@ func _run():
 	if(state == ""):
 		addCharacter("lamiademon")
 		saynn("You face Lamia. A fiery fox simply sits atop of a burning blanket, which doesn't seem to concern the fox at all. On the blanket, next to them lies a jar filled with water and many dark segmented worms swimming around and sticking to the glass with their circular opening of the body. On three walls surrounding them are countless drawings decorating the walls, you can see a few pentagrams, horned creatures, fiery hells.")
-		addButton("Talk", "Talk with the fox", "talk")
+		if !Globals.checkIfAchieved("Azazel_Corr_Dream_State", "Lost_Speech"):
+			addButton("Talk", "Talk with the fox", "talk")
+		else:
+			addDisabledButton("Talk", "Talk?")
 		if Globals.checkIfAchieved("Azazel_Corr_Dream_State", "Talked_With_Lamia"):
 			addButton("Speech", "Learn how to speak like a good pet does", "finish")
 		addButton("Appearance", "Look at the fox", "appearance")

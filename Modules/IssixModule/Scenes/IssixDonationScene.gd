@@ -169,7 +169,7 @@ func _react(_action: String, _args):
 			newLock.onLocked({forcer = "pc"})
 			item.getRestraintData().setSmartLock(newLock)
 
-		item.getRestraintData.setLevel(item.getRestraintData.getLevel()+1)  # Just an extra
+		item.getRestraintData().setLevel(item.getRestraintData().getLevel()+1)  # Just an extra
 		# Hey kids, don't do this at home, it's bound to be dangerous (seriously, I'm fucking surprised that works, though it feels like shoestring held kind of feature and fairly restricted)
 
 		if lock == SmartLock.SlutLock:

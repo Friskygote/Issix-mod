@@ -90,7 +90,7 @@ func _run():
 			true:
 				addDisabledButton("Tasks", "You've already done a task today")
 			false:
-				addButton("Tasks", "Ask for extra tasks", "issixtaskquestion")
+				addButton("Tasks", "Ask for extra tasks", "issixtaskquestionlist")
 			null:
 				pass
 		addDisabledButton("Options", "Ask your Master to change how he treats you (WIP)")  #, "issixoptions" Pet etiquette, make player communicate via animalistic sounds, unlocks optional training
@@ -128,7 +128,7 @@ func _run():
 			addButtonWithChecks("Drone", "Help with finding items", "start_drone_task", [], [ButtonChecks.NotBlindfolded, ButtonChecks.NotHandsBlocked])
 		else:
 			addDisabledButton("????", "You haven't unlocked this yet")
-		addButton("Back", "Go back", "")
+		addButton("Back", "Go back", "issixpetmenu")
 
 	if state == "issixmilkingfirst":
 		saynn("[say=pc]Master, you mentioned something about unburdening my chest?[/say]")
@@ -1022,7 +1022,7 @@ func getMoodMessage():
 	elif issix_mood < 75:
 		return RNG.pick(["*whistles* What's up?", "Should have seen the look of the new guard when I swiped their baton haha.", "Dum dee dum...", "Nice day today, huh?"])
 	elif issix_mood < 90:
-		return RNG.pick(["Eat, fuck, sleep repeat haha.", "Don't you just love life? So full of wonders.", "Glass is half full today."])
+		return RNG.pick(["Eat, sleep, fuck repeat haha.", "Don't you just love life? So full of wonders.", "Glass is half full today."])
 	else:
 		return RNG.pick(["How are you today, pet? Maybe I should walk y'all hungry beasts huh?", "Maaan, do you ever just stop and take it aaallllll in for a second? It's soo good."])
 
@@ -1097,6 +1097,10 @@ func _react(_action: String, _args):
 		GlobalRegistry.getCharacter("issix").addPain(-50)
 		runScene("GenericSexScene", ["issix", "pc"], "subbysexissix")
 
+	if _action == "starthiisilaundry":
+		runScene("HiisiLaundryTask")
+		_action = "issixpetmenu"
+
 	if _action == "hiisidontprotect":
 		setModuleFlag("IssixModule", "Hiisi_Protects_PC", false)
 
@@ -1151,7 +1155,7 @@ func _react(_action: String, _args):
 				_action = "azazelfertilityrepeatsex"
 
 	if _action == "azazelfertilityfirst":
-		GM.pc.getInventory().removeFirstOf("lube")
+		GM.pc.getInventory().removeXFromItemOrDelete(GM.pc.getInventory().getFirstOf("lube"), 1)
 		GlobalRegistry.getCharacter("azazel").getInventory().addItem(GlobalRegistry.createItem("lube"))
 		setModuleFlag("IssixModule", "Had_Previously_Trained_Fertility_LVL1", true)
 
@@ -1304,7 +1308,8 @@ func _react(_action: String, _args):
 			_action = "issix_smartlock_ask_keys_success"
 
 	if _action == "issix_beg_smartlocks":
-		addMessage("Your Master has freed you from "+str(GM.pc.unlockAllKeyholderLocksFrom("issix"))+" restraints.")
+		var amount = GM.pc.unlockAllKeyholderLocksFrom("issix")
+		addMessage("Your Master has freed you from "+str(amount)+" restraint"+("s" if amount > 1 else "")+".")
 
 	if _action == "issix_slave_candy":
 		if getModuleFlag("IssixModule", "Told_Issix_About_Blacktail") == true:

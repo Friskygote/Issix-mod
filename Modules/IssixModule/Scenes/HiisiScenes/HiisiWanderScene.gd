@@ -1,14 +1,12 @@
 extends SceneBase
 
 var pawnID := ""
-var pawn = null
 
 func _init():
 	sceneID = "HiisiWanderScene1"
 
 func _initScene(_args = []):
 	pawnID = _args[0]
-	pawn = GlobalRegistry.getCharacter(pawnID)
 	GM.main.IS.getPawn(pawnID).setLocation(GM.pc.getLocation())
 
 func resolveCustomCharacterName(_charID):
@@ -48,7 +46,7 @@ func _run():
 		removeCharacter("lamia")
 		playAnimation(StageScene.Duo, "kick", {pc="hiisi", npc=pawnID, npcAction="defeat"})
 		saynn("The inmate starts swinging {npc.his} fists at Hiisi, who skillfully blocks all of the attacks. Every 3rd attack or so he successfully counters the attack leaving the troublemaking inmate look more and more tired and wasted. The power imbalance between the two is pretty visible from perspective of a viewer, though {npc.name} doesn't seem to realize that yet.")
-		if pawn.getSpecies().has("canine"):
+		if GlobalRegistry.getCharacter(pawnID).getSpecies().has("canine"):
 			saynn("[say=npc]I despise things like you.[/say]")
 		else:
 			saynn("[say=npc]Stupid mutt. Should have stayed at your doghouse.[/say]")

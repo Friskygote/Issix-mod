@@ -205,7 +205,7 @@ func _run():
 
 	if state == "hiisihelp":
 		saynn("[say=pc]Hey Hiisi, anything you'd like help with? I'd be happy to do something for you![/say]")
-		match hiisi_help_type[0]:
+		match RNG.randi_range(1, 4 if getModuleFlag("IssixModule", "Hiisi_Crossword_Used", 0) < 5 else 3):
 			1:
 				saynn("[say=hiisi]Actually, yeah, I'd have something for you, this little padlock recently got stuck and I've been trying to open it without much luck, perhaps you'd be able to do something about it?[/say]")
 				saynn("You look at the padlock, it connects two pieces of chain together, and even though its in unlocked position, the metal shackle is stuck inside the body. For a moment you try sheer brute force, though you imagine Hiisi already tried it considering his musculature. Your next strategy involves jigging the shackle in all direction, after a while the strategy proves successful and you manage to open the padlock.")
@@ -231,14 +231,14 @@ func _run():
 				saynn("He puts the assembled dispenser back into the bag and thanks you for your help.")
 				addButton("Back", "You've helped the canine today, by helping them assemble a dispenser of some sorts", "hiisitalk")
 			4:
-				saynn("[say=hiisi]Hmm. Actually, yeah, if you are willing to... I've been trying to solve a bunch of riddles lately and stumbled upon question that I'm not exactly sure how to answer, perhaps you could know. It goes as follows: "+ hiisi_help_type[1][0]+". Any idea what could it be?[/say]")
-				addButton(hiisi_help_type[1][1], "Answer this", "hiisihelpresponse")
+				saynn("[say=hiisi]Hmm. Actually, yeah, if you are willing to... I've been trying to solve a bunch of riddles lately and stumbled upon question that I'm not exactly sure how to answer, perhaps you could know. It goes as follows: "+ crossword_puzzles[int(getModuleFlag("IssixModule", "Hiisi_Crossword_Used", 0))][0]+". Any idea what could it be?[/say]")
+				addButton(crossword_puzzles[int(getModuleFlag("IssixModule", "Hiisi_Crossword_Used", 0))][1], "Answer this", "hiisihelpresponse")
 
 	if state == "hiisihelpresponse":
-		saynn("[say=pc]What about "+hiisi_help_type[1][1]+"?[/say]")
+		saynn("[say=pc]What about "+crossword_puzzles[int(getModuleFlag("IssixModule", "Hiisi_Crossword_Used", 0))-1][1]+"?[/say]")
 		saynn("Dog thinks for a little bit.")
 		saynn("[say=hiisi]I think that would work, thanks {pc.name}![/say]")
-		if hiisi_help_type[1][1] == "Necromancy":
+		if getModuleFlag("IssixModule", "Hiisi_Crossword_Used", 0) >= 5:
 			saynn("[say=hiisi]Actually, I think that was the last one, so nice! Thank you![/say]")
 			saynn("[say=pc]Oh, that's wonderful! So, no more riddles for me?[/say]")
 			saynn("[say=hiisi]Yeah, I think we are done with those.[/say]")
@@ -928,19 +928,9 @@ func _react(_action: String, _args):
 		if GM.main.getModuleFlag("IssixModule", "Hiisi_Affection", 0) in [3, 6, 9]:
 			addMessage("New random wander scene for Hiisi has been unlocked")
 		setModuleFlag("IssixModule", "Hiisi_Helped_Today", true)
-		hiisi_help_type = [RNG.randi_range(1,4)]
-		if hiisi_help_type[0] == 4:
-			var solved = getModuleFlag("IssixModule", "Hiisi_Crossword_Used", 0)
-			if solved == -1:
-				hiisi_help_type = [RNG.randi_range(1,3)]
-			hiisi_help_type.append(crossword_puzzles[solved])
-			if solved == 5:
-				setModuleFlag("IssixModule", "Hiisi_Crossword_Used", -1)  # Mainly for future compatibility
-			else:
-				increaseModuleFlag("IssixModule", "Hiisi_Crossword_Used")
 
 	if _action == "hiisihelpresponse":
-		pass
+		increaseModuleFlag("IssixModule", "Hiisi_Crossword_Used")
 
 	if _action == "hiisisilence":
 		setModuleFlag("IssixModule", "Hiisi_Name_Helped", true)

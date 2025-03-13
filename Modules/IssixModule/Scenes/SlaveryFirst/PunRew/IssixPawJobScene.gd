@@ -12,6 +12,11 @@ func _run():
 		saynn("[say=issix]No, I think something better is in order. How about a pawjob {pc.name}? What do you think? Would you like to have some nice stimulation?[/say]")
 		addButton("Yes!", "Be excited about it", "yespawjob")
 		Globals.addButtonCheckNoncon("Meh", "Reject the proposed activity", "nopawjob")
+		
+	if state == "nopawjob":
+		saynn("[say=pc]I... Sorry Master, I do not want to do any of that.[/say]")
+		saynn("[say=issix]Huh? You do not want a reward from me? That's... Okey, I suppose. Fine then, you can go.[/say]")
+		addButton("Leave", "Leave", "endthescene")
 
 	if state == "yespawjob":
 		saynn("[say=pc]I like the idea Master.[/say]")
@@ -78,7 +83,7 @@ func _run():
 		if preference < 3:
 			addButton("Cum", "Let it go", "climax")
 		else:
-			addButton("Climax", "Let it go", "Climax")
+			addButton("Climax", "Let it go", "climax")
 
 	if state == "climax":
 		saynn("[say=pc]Yipppp![/say]")

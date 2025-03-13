@@ -100,7 +100,7 @@ func _run():
 		addButton("Task complete", "You've completed the task", "endthescene")
 
 	if state == "laundryattacksuccess":
-		saynn("The object hits you straight in faceleaving you in pain and confusion. You are unsure what hit you, though judging by texture, and weight of what hit you you can sayy it was likely plastic. There is commotion around you, and among ringing sound in your ears you feel punches violating your body.")
+		saynn("The object hits you straight in face leaving you in pain and confusion. You are unsure what hit you, though judging by texture, and weight of what hit you you can sayy it was likely plastic. There is commotion around you, and among ringing sound in your ears you feel punches violating your body.")
 
 		saynn("Vision eventually clears, what you see are two other inmates laying with their backs to the ground.")
 		saynn("You look at yourself, there is blood coming from your nose and you feel in pain both on your face as well as your torso.")

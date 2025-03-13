@@ -278,7 +278,7 @@ func _run():
 			addButton("Anal", "Use your tool in doggy ass", "hiisisubanal")
 			addDisabledButton("Oral", "Make the doggo suck your tool")  # TODO, "hiisisuboral"
 		elif (GM.pc.isWearingStrapon() or GM.pc.hasStrapons() and GM.pc.canWearStrapon()):
-			var strapons: ItemBase = GM.pc.getStrapons()
+			var strapons = GM.pc.getStrapons()
 			for strapon in strapons:
 				addButton("Anal", "Use a "+strapon.getCasualName()+" on doggy ass", "hiisisubanal", [strapon.id])
 				#addButton("Oral", "Make the doggo suck your "+strapon.getCasualName(), "hiisisuboral", [strapon])
@@ -681,7 +681,7 @@ func _react(_action: String, _args):
 	if _action == "hiisisubanal":
 		processTime(10*60)
 		if _args:
-			GM.pc.getInventory().forceEquipStoreOtherUnlessRestraint(answer)
+			GM.pc.getInventory().forceEquipStoreOtherUnlessRestraint(GM.pc.getInventory().getFirstOf(answer))
 		GM.pc.addLust(30)
 
 	if _action == "hiisisubanal2":
@@ -696,6 +696,7 @@ func _react(_action: String, _args):
 		processTime(10*60)
 		GM.pc.orgasmFrom("rahi")
 		GM.main.getCharacter("hiisi").cummedOnBy("pc")
+		GM.pc.getInventory().unequipSlot(InventorySlot.Strapon)
 		GM.pc.addLust(-100)
 
 	if _action == "azazelskyresponse":

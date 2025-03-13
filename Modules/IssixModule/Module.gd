@@ -111,7 +111,8 @@ func getFlags():
 		"Mindlessness_Day_Start": flag(FlagType.Number),
 		"Noncon_Mode_Enabled": flag(FlagType.Bool),
 		"Learned_Speech": flag(FlagType.Bool),
-		"Obtained_New_Name": flag(FlagType.Bool)
+		"Obtained_New_Name": flag(FlagType.Bool),
+		"Walkies_Distractions_State": flag(FlagType.Dict)
 		}
 		
 
@@ -373,12 +374,19 @@ func calculateDailyScore() -> int:
 			else:
 				score -= 7
 				GM.main.setModuleFlag("IssixModule", "PC_Pet_Didnt_Fullfill_Daily", true)
+				GM.main.setModuleFlag("IssixModule", "PC_Should_Be_Punished", 10)
 		else:
 			if time_served >= 60*60:
 				score += 1
 			else:
 				score -= 5
 				GM.main.setModuleFlag("IssixModule", "PC_Pet_Didnt_Fullfill_Daily", true)
+				GM.main.setModuleFlag("IssixModule", "PC_Should_Be_Punished", 10)
+	if score > 0:
+		# Reward player if master happy
+		if GM.main.getModuleFlag("IssixModule", "Issix_Mood", 50) > 80:
+			if RNG.chance(35):
+				GM.main.setModuleFlag("IssixModule", "PC_Should_Be_Rewarded", 10)
 	return score
 
 func tickDay():
@@ -424,9 +432,5 @@ func resetFlagsOnNewDay():  # I apologize for abusing this hook, but startNewDay
 	GM.main.setModuleFlag("IssixModule", "Trained_Pet_Today", false)
 	if GM.main.getModuleFlag("IssixModule", "Did_Task_Today") != null:
 		GM.main.setModuleFlag("IssixModule", "Did_Task_Today", false)
-	# Reward player if master happy
-	if GM.main.getModuleFlag("IssixModule", "Issix_Mood", 50) > 80:
-		if RNG.chance(35):
-			GM.main.setModuleFlag("IssixModule", "PC_Should_Be_Rewarded", 10)
 	if GM.main.getDays() >= GM.main.getModuleFlag("IssixModule", "Drone_Task_Timeout", 0):
 		GM.main.setModuleFlag("IssixModule", "Drone_Task_Timeout", 0)
