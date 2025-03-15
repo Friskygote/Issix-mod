@@ -12,7 +12,7 @@ func getDescription():
 func canUseInCombat():
 	return true
 
-func useInCombat(_attacker:Character, _receiver):
+func useInCombat(_attacker, _receiver):
 	_attacker.addStamina(15)
 	removeXOrDestroy(1)
 	return _attacker.getName() + " ate a cookie. They feel a little bit more full."
