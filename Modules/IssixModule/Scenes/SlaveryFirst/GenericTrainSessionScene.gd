@@ -116,6 +116,8 @@ func createButtons():
 			break
 	for y in range(available_special_training.size()):
 		var training_name = available_special_training[y]
+		if training_name == "Speech":
+			continue
 		addButtonAt(5+y, training_name, "Receive a special training in "+training_name.to_lower(), "special_"+training_name.to_lower())
 
 func destroyBorrowedEquipment():
