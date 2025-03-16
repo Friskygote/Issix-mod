@@ -1168,6 +1168,7 @@ func _react(_action: String, _args):
 		GM.pc.addSkillExperience(Skill.Fertility, exp_calc)  # Needs <4 trainings per level, to not be too OP
 		addMessage("You've gained "+str(exp_calc)+"XP in Fertility thanks to training with Azazel.")
 		GM.main.setModuleFlag("IssixModule", "Azazel_Fertility_Training_Today", true)
+		Globals.increaseValueFromStateFlag("Misc_Slavery_Info", "training_sessions")
 		GM.pc.addStamina(-25)
 
 	if _action == "issixpettraining":
@@ -1243,6 +1244,7 @@ func _react(_action: String, _args):
 		GM.pc.addSkillExperience(Skill.Combat, exp_calc)  # Needs <4 trainings per level, to not be too OP
 		addMessage("You've gained "+str(exp_calc)+"XP in Combat thanks to training with Hiisi.")
 		GM.main.setModuleFlag("IssixModule", "Trained_With_Hiisi_Combat", true)
+		Globals.increaseValueFromStateFlag("Misc_Slavery_Info", "training_sessions")
 		GM.pc.addStamina(-80)
 		var combat_level = GM.pc.getSkillLevel(Skill.Combat)
 		if combat_level < 3:
@@ -1262,6 +1264,7 @@ func _react(_action: String, _args):
 	if _action == "readabook":
 		processTime(20*60)
 		increaseModuleFlag("IssixModule", "Comic_Books", -1)
+		Globals.increaseValueFromStateFlag("Misc_Slavery_Info", "books_read")
 
 	if _action == "haremeat":
 		processTime(10*60)
@@ -1350,6 +1353,7 @@ func _react_scene_end(_tag, _result):
 		processTime(20*60)
 		var issix_sex_result = _result[0].get("doms", {}).get("issix", {})
 		var pc_sex_result = _result[0].get("subs", {}).get("pc", {})
+		Globals.increaseValueFromStateFlag("Misc_Slavery_Info", "sex_with_issix")
 		if pc_sex_result.get("isUnconscious"):
 			Globals.addIssixMood(5)
 		elif issix_sex_result.get("satisfaction") < 0.8:

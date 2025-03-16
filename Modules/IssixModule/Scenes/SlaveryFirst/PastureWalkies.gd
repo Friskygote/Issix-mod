@@ -73,13 +73,14 @@ func _run():
 		saynn("[say=pc]Oh.[/say]")
 		saynn("[say=hiisi]Everyone was fine at the end, but nobody likes being ran into.[/say]")
 		saynn("[say=pc]*chuckle* Can imagine.[/say]")
-		saynn("[say=issix]What will you two do? Any plans? Should I take something out of the bag?[/say]")
+		saynn("[say=issix]What will you two do? Any plans? Should I take something out of the bag?[/say]\n\n")
+		displayProgress()
 		randomTasks()
 
 	if state == "2ndactivity":
 		clearCharacter()
 		saynn("You are deliberating what to do now.")
-
+		displayProgress()
 		randomTasks()
 
 		if hasAllPerksRequiredForMindfuck() and getModuleFlag("IssixModule", "Mindlessness_Walkies_Status", 0) < 1 and getModuleFlag("IssixModule", "Mindlessness_Day_Start") == null:
@@ -799,6 +800,46 @@ func resolveCustomCharacterName(_charID):
 		return pawns_interactions[int(_charID[-1])-1]
 
 	return null
+	
+func calculateExperienceForLevel(level: int):
+	if level == 1:
+		return GM.pc.getSkillsHolder().getSkill("Pet").getRequiredExperience(level)
+	else:
+		return GM.pc.getSkillsHolder().getSkill("Pet").getRequiredExperience(level) + calculateExperienceForLevel(level-1)
+	
+func decrease_increase(value: int):
+	if value > 0:
+		return "increased"
+	elif value < 0:
+		return "decreased"
+	return "stalled"
+	
+# Function to display progress on various statistics player achieved since last walk
+func displayProgress():
+	var statistics = getModuleFlag("IssixModule", "Last_Pasture_Statistics", {})
+	saynn("[b]Since last pasture you have:[/b]")
+	var cur_experience = calculateExperienceForLevel(GM.pc.getSkillsHolder().getSkill("Pet").getLevel()) + GM.pc.getSkillsHolder().getSkill("Pet").getExperience()
+	sayn("Gained "+ str(cur_experience - statistics.get("PetExp", 0)) + " Pet experience points.")
+	sayn("Trained "+str(Globals.returnValueFromStateFlag("Misc_Slavery_Info", "training_sessions", 0) - statistics.get("Trainings", 0))+" times.")
+	var val = getModuleFlag("IssixModule", "Issix_Mood", 0) - statistics.get("Mood", 0)
+	sayn("Done "+str(Globals.returnValueFromStateFlag("Misc_Slavery_Info", "tasks", 0) - statistics.get("Tasks", 0))+" tasks, and Issix's mood "+decrease_increase(val)+" by "+str(val)+".")
+	var affection_sum = getModuleFlag("IssixModule", "Lamia_Times_Helped", 0) + getModuleFlag("IssixModule", "Azazel_Affection_given", 0) + getModuleFlag("IssixModule", "Hiisi_Affection", 0)
+	sayn(decrease_increase(affection_sum).capitalize() + " pets affection by "+str(affection_sum-statistics.get("PetAffection", 0))+" points.")
+	sayn("Had sex with Issix "+str(Globals.returnValueFromStateFlag("Misc_Slavery_Info", "sex_with_issix", 0) - statistics.get("SexIssix", 0))+" times.")
+	if Globals.returnValueFromStateFlag("Misc_Slavery_Info", "books_read", 0) - statistics.get("BooksRead", 0) > 0:
+		saynn("Read "+str(Globals.returnValueFromStateFlag("Misc_Slavery_Info", "books_read", 0) - statistics.get("BooksRead", 0)) +" books.")
+	
+# Save the information about the progress
+func updateProgress():
+	var dict = getModuleFlag("IssixModule", "Last_Pasture_Statistics", {})
+	dict["PetExp"] = calculateExperienceForLevel(GM.pc.getSkillsHolder().getSkill("Pet").getLevel()) + GM.pc.getSkillsHolder().getSkill("Pet").getExperience()
+	dict["Trainings"] = Globals.returnValueFromStateFlag("Misc_Slavery_Info", "training_sessions", 0)
+	dict["Tasks"] = Globals.returnValueFromStateFlag("Misc_Slavery_Info", "tasks", 0)
+	dict["PetAffection"] = getModuleFlag("IssixModule", "Lamia_Times_Helped", 0) + getModuleFlag("IssixModule", "Azazel_Affection_given", 0) + getModuleFlag("IssixModule", "Hiisi_Affection", 0)
+	dict["SexIssix"] = Globals.returnValueFromStateFlag("Misc_Slavery_Info", "sex_with_issix", 0)
+	dict["BooksRead"] = Globals.returnValueFromStateFlag("Misc_Slavery_Info", "books_read", 0)
+	setModuleFlag("IssixModule", "Last_Pasture_Statistics", dict)
+	
 
 func _react(_action: String, _args):
 	if _action == "inventory":
@@ -1011,6 +1052,7 @@ func _react(_action: String, _args):
 
 	if(_action == "endthescene"):
 		increaseModuleFlag("IssixModule", "Pet_Time_Interaction_Today", GM.main.getTime()-time_started_pasture)
+		updateProgress()
 		GM.main.setModuleFlag("IssixModule", "Last_Walk", GM.main.getDays())
 		endScene()
 		return

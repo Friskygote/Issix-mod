@@ -195,6 +195,7 @@ func _react_scene_end(_tag, _result):
 		goodPoints += 2 if GM.pc.hasBlockedHands() else 0
 		destroyBorrowedEquipment()
 		setModuleFlag("IssixModule", "Trained_Pet_Today", true)
+		Globals.increaseValueFromStateFlag("Misc_Slavery_Info", "training_sessions")
 		if _result:
 			goodPoints += _result[0]*2
 			if goodPoints > 2:
@@ -210,11 +211,13 @@ func _react_scene_end(_tag, _result):
 	if _tag == "special_commands_training_complete":
 		if _result and _result[0] == true:
 			setModuleFlag("IssixModule", "Trained_Pet_Today", true)
+			Globals.increaseValueFromStateFlag("Misc_Slavery_Info", "training_sessions")
 		endScene(["force_close"])
 		return
 
 	if _tag == "special_bowl_training_complete":
 		setModuleFlag("IssixModule", "Trained_Pet_Today", true)
+		Globals.increaseValueFromStateFlag("Misc_Slavery_Info", "training_sessions")
 		endScene()
 		return
 

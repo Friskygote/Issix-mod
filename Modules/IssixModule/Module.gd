@@ -112,7 +112,8 @@ func getFlags():
 		"Noncon_Mode_Enabled": flag(FlagType.Bool),
 		"Learned_Speech": flag(FlagType.Bool),
 		"Obtained_New_Name": flag(FlagType.Bool),
-		"Walkies_Distractions_State": flag(FlagType.Dict)
+		"Walkies_Distractions_State": flag(FlagType.Dict),
+		"Last_Pasture_Statistics": flag(FlagType.Dict)
 		}
 		
 

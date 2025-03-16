@@ -89,6 +89,11 @@ static func checkIfAchieved(flagName: String, stateKey: String) -> bool:
 
 static func returnValueFromStateFlag(flagName: String, stateKey: String, default=null):
 	return GM.main.getModuleFlag("IssixModule", flagName, {}).get(stateKey, default)
+	
+static func increaseValueFromStateFlag(flagName: String, stateKey: String, amount=1, default=0):
+	var dict = GM.main.getModuleFlag("IssixModule", flagName, {})
+	dict[stateKey] = int(dict[stateKey] + amount) if dict.has(stateKey) else int(default + amount)
+	GM.main.setModuleFlag("IssixModule", flagName, dict)
 
 # Return average time for which there should be a walk
 static func averageWalkTime() -> int:

@@ -349,6 +349,7 @@ func _react(_action: String, _args):
 	if(_action == "endthescene"):
 		Globals.addIssixMood(5)
 		setModuleFlag("IssixModule", "Did_Task_Today", true)
+		Globals.increaseValueFromStateFlag("Misc_Slavery_Info", "tasks")
 		addMessage("Issix's mood has improved")
 		endScene()
 		return
@@ -359,6 +360,7 @@ func _react(_action: String, _args):
 
 	if _action == "endthescenefail":
 		setModuleFlag("IssixModule", "Did_Task_Today", true)
+		Globals.increaseValueFromStateFlag("Misc_Slavery_Info", "tasks")
 		Globals.addIssixMood(-3)
 		endScene()
 		return
