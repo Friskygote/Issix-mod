@@ -744,8 +744,53 @@ func _run():
 		addButton("Leave", "Leave the outhouse", "2ndactivity")
 
 	if state == "lamia_time":
-		addMessage("( Hey there, this particular event is still WIP that I simply couldn't finish before this release. So for now, it's just a simple skip )")
-		addButton("Leave", "Leave the outhouse", "2ndactivity")
+		saynn("You see that Lamia pulls out a couple of devices from his bag. First one is a white, plastic looking rectangular shape that has two parts, upper and lower with separation going through the center, a clasp is visible on one of the sides seemingly keeping two parts connected.")
+		saynn("The second one consists of a silver funnel going into a black metal box with wide but not thick opening on one of the sides of that box. You've never seen such devices in your life.")
+		saynn("[say=pc]Hey Lamia, what are those? They look curious.[/say]")
+		saynn("Lamia looks at you with a smile and passes both devices to you. You unclasp and open the first one, the surface inside is strange to say the least. It has many medium sized metal pins that look as if made from metal though they aren't cool in touch. They also don't feel stable with them reacting to your touch and pulling into the device as if they were on a spring. You close the device and look at the device from all sides, there are subtle buttons on the side and input panel.")
+		saynn("[say=pc]That's curious, so, what is it?[/say]")
+		saynn("Lamia's answer comes in form of a manual on Master's tablet. „Kitchen Cooker 4000” is the name you read. The manual says that this device can apply heat from all sides to all kinds of food items.")
+		saynn("[say=pc]Woah, nice![/say]")
+		saynn("You are then passed the second item. The metallic funnel is detachable and you can see basically nothing when looking through the hole that funnel was connected to into the device. This device also features some subtle buttons, and the design even though looks nothing like the previous item, still shows some design patterns making you feel like it's made by the same producer. Your guess is confirmed as Lamia shows a manual page for this one as well.")
+		saynn("„Food Creator Ultimate v.9.9.9.0”, this more vague name applies to a device that apparently can turn bland looking yellow granulate into actual dishes, that on  the manual look stunning leaving you salivating right there. The granulate goes into the funnel and the food is supposed to be somehow printed through the very thin hole on the side, though the manual doesn't go into detail..")
+		saynn("[say=pc]What the fuck, is that true? Can it do that?[/say]")
+		saynn("Lamia shakes his head saddened.")
+		saynn("[say=pc]Aww..[/say]")
+		saynn("Lamia takes both devices, along with a package of small yellow orbs, likely granulate mentioned on a previous page. He fiddles with the second device and hands it back to you, then he puts a plate below and gestures for you to hold still the device in certain angle.")
+		saynn("[say=pc]So I just hold it here like this?[/say]")
+		saynn("Lamia nods, he takes the granulate in his paws.")
+		
+		addButton("Pours", "Then he pours it into the funnel", "lamia_time_food")
+		
+	if state == "lamia_time_food":
+		saynn("You hold the device rotated 45 degrees above the plate, the side with a hole facing the plate, Lamia starts pouring the granulate, sound of dry granulate hitting the metallic funnel spread nearby. The machine makes loud, concerning noises as it starts to vibrate aggressively..")
+		saynn("[say=pc]Uhhh, is it supposed to do that?[/say]")
+		saynn("Your words are met with a simple response of Lamia continuing to pour the granulate into the funnel which empties out at rate you certainly didn't expect it to, it's going as if inside the device there was a black hole consuming everything.")
+		var food := ""
+		match RNG.randi_range(1, 4):
+			1:
+				food = "green purée blobs, they look very much like flattened spheres which you assume was the general idea what they were supposed to be. They are covered by a white sauce on top. Near those blobs there are brown meat looking tough looking slabs covered in dark brown sauce."
+			2:
+				food = "it filled to the brim with pasta, its pretty watery and breaks apart on slightest touch, in it there are red looking chunks of vegetables. It all gives a smell of oil."
+			3:
+				food = "orange and crisp looking chunks, of potatoes? You could almost call them fries if not for their irregular shapes."
+			4:
+				food = "earthy smelling green sprouts mixed with white stalks of something that looks like a plant. The entire meal looks like a mix of two salads with white sauce on the side of the plate."
+		saynn("The device is getting hot and then the plate starts reflecting a lot of light that comes from the device, after a blinding flash you look again at the plate to see "+food)
+		saynn("[say=pc]Woooooow.[/say]")
+		saynn("Lamia laugs. He takes tongs from his bag and pulls out a chunk of the meal on the plate consuming it. He closes his eyes for a moment before the tasting begins. At the end they shrug it off, they seem to be neither enjoying it too much nor they feel disgusted by it. He gives you a second pair of tongs to try out.")
+		var taste := ""
+		match RNG.randi_range(1, 3):
+			1:
+				taste = "a bit bland and lacking"
+			2:
+				taste = "a bit too salty for your taste but overall ok"
+			3:
+				taste = "very good if not for the fact the mean has some bitter tasting spice in it"
+		saynn("You pull a small chunk and put it in your mouth. The taste is "+taste+", you pull through it and at the end it does feel better than paste in the canteen.")
+		saynn("[say=pc]*munch munch* Well, no idea how that made food, and it's certainly not what I saw on the manual, but I guess it's not that bad.[/say]")
+		saynn("Vulpine agrees with you. You both eat from the same plate until there is nothing left. You thank Lamia for the meal.")
+		addButton("Leave", "Meal finished", "2ndactivity")
 
 func randomTasks():
 	var task = []
@@ -874,6 +919,10 @@ func _react(_action: String, _args):
 	if _action == "onward":
 		processTime(5*60)
 		time_started_pasture = GM.main.getTime()
+		
+	if _action == "lamia_time_food":
+		GM.pc.addStamina(60)
+		# TODO Maybe a status effect?
 
 	if _action == "minigameResult":  # TODO Take into account bondage gear
 		GM.pc.addStamina(-60)
