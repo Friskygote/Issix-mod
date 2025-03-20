@@ -119,7 +119,7 @@ static func getBodyCoveringItem(character, bodyslot):
 	for inventorySlot in equippedItems:
 		var item = equippedItems[inventorySlot]
 		if(item.coversBodypart(bodyslot)):
-			return true
+			return item
 
 	return null
 

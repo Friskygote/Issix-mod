@@ -55,7 +55,7 @@ func _run():
 
 	if state == "talkrefuse":
 		saynn("[say=azazeldemon]This wasn't a request, it was an order. I'm not the one to instill loyalty into you, but... I think we could do with you being a bit more obedient.[/say]")
-		saynn("He approaches you. At first you try ta take a step back but... You can't. His eyes look so beautiful. Purple eyes with such a pretty glow. Azazel puts two of his paw fingers on your forehead.")
+		saynn("He approaches you. At first you try to take a step back but... You can't. His eyes look so beautiful. Purple eyes with such a pretty glow. Azazel puts two of his paw fingers on your forehead.")
 		saynn("[say=azazeldemon][color=#ac1eff][corrupt]Azeryūze[/corrupt][/color][/say]")
 
 		saynn("Instantly as he finishes saying the word that you didn't understand, you felt different. You can't say what changed, but it felt significant.")
